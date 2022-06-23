@@ -667,7 +667,6 @@
                                 <span class="nav-text fadeable">
                	  <span>สินค้า</span>
                     </span>
-
                                 <b class="caret fa fa-angle-left rt-n90"></b>
 
                                 <!-- or you can use custom icons. first add `d-style` to 'A' -->
@@ -676,86 +675,47 @@
                                     <b class="caret d-collapsed fa fa-plus text-80"></b>
                                 -->
                             </a>
-
                             <div class="hideable submenu collapse">
                                 <ul class="submenu-inner">
-
                                     <li class="nav-item">
-
-                                        <a href="html/dashboard-2.html" class="nav-link">
-
-                          <span class="nav-text">
-               				  <span>กลุ่มสินค้า</span>
-                          </span>
-
-
+                                        <a href="productcat.php" class="nav-link">
+                                          <span class="nav-text">
+                                              <span>กลุ่มสินค้า</span>
+                                          </span>
                                         </a>
-
-
                                     </li>
-
-
                                     <li class="nav-item">
-
                                         <a href="html/dashboard-3.html" class="nav-link">
-
-                          <span class="nav-text">
-               				  <span>ยี่ห้อ</span>
-                          </span>
-
-
+                                          <span class="nav-text">
+                                              <span>ยี่ห้อ</span>
+                                          </span>
                                         </a>
-
-
                                     </li>
-
-
                                     <li class="nav-item">
-
                                         <a href="html/dashboard-4.html" class="nav-link">
-
-                          <span class="nav-text">
-               				  <span>รหัสสินค้า</span>
-                          </span>
-
-
+                                          <span class="nav-text">
+                                              <span>รหัสสินค้า</span>
+                                          </span>
                                         </a>
-
-
                                     </li>
-
-
                                     <li class="nav-item">
-
                                         <a href="html/horizontal.html" class="nav-link">
-
-                          <span class="nav-text">
-               				  <span>หน่วยนับ</span>
-                          </span>
-
-
+                                          <span class="nav-text">
+                                              <span>หน่วยนับ</span>
+                                          </span>
                                         </a>
-
-
                                     </li>
                                 </ul>
                             </div>
-
                             <b class="sub-arrow"></b>
-
                         </li>
-
-
                         <li class="nav-item">
-
                             <a href="#" class="nav-link dropdown-toggle collapsed">
                                 <i class="nav-icon fa fa-user-cog"></i>
                                 <span class="nav-text fadeable">
-               	  <span>สมาชิก</span>
-                    </span>
-
+                                  <span>สมาชิก</span>
+                                </span>
                                 <b class="caret fa fa-angle-left rt-n90"></b>
-
                                 <!-- or you can use custom icons. first add `d-style` to 'A' -->
                                 <!--
                                     <b class="caret d-n-collapsed fa fa-minus text-80"></b>
@@ -768,53 +728,29 @@
 
                                     <li class="nav-item">
 
-                                        <a href="html/buttons.html" class="nav-link">
-
-                          <span class="nav-text">
-               				  <span>ประเภทสมาชิก</span>
-                          </span>
-
-
+                                        <a href="member_type.php" class="nav-link">
+                                          <span class="nav-text">
+                                              <span>ประเภทสมาชิก</span>
+                                          </span>
                                         </a>
-
-
                                     </li>
-
-
                                     <li class="nav-item">
-
                                         <a href="html/tooltips.html" class="nav-link">
-
-                          <span class="nav-text">
-               				  <span>Center</span>
-                          </span>
-
-
+                                          <span class="nav-text">
+                                              <span>Center</span>
+                                          </span>
                                         </a>
-
-
                                     </li>
-
-
-
-
-
-
-
                                 </ul>
                             </div>
-
                             <b class="sub-arrow"></b>
-
                         </li>
                         <li class="nav-item">
-
                             <a href="#" class="nav-link dropdown-toggle collapsed">
                                 <i class="nav-icon fa fa-wrench"></i>
                                 <span class="nav-text fadeable">
-               	  <span>ข้อมูลการซ่อม</span>
-                    </span>
-
+                                      <span>ข้อมูลการซ่อม</span>
+                                        </span>
                                 <b class="caret fa fa-angle-left rt-n90"></b>
 
                                 <!-- or you can use custom icons. first add `d-style` to 'A' -->
@@ -826,29 +762,17 @@
 
                             <div class="hideable submenu collapse">
                                 <ul class="submenu-inner">
-
                                     <li class="nav-item">
-
                                         <a href="html/buttons.html" class="nav-link">
-
-                          <span class="nav-text">
-               				  <span>คำสั่งซ่อม</span>
-                          </span>
-
-
+                                          <span class="nav-text">
+                                              <span>คำสั่งซ่อม</span>
+                                          </span>
                                         </a>
-
-
                                     </li>
-
-
                                 </ul>
                             </div>
-
                             <b class="sub-arrow"></b>
-
                         </li>
-
 
 
 <!--                        <li class="nav-item">-->
@@ -880,19 +804,13 @@
                                      <span class="fadeinable mt-n2 text-125">&hellip;</span>
                                  -->
                         </li>
-
-
                         <li class="nav-item">
-
                             <a href="#" class="nav-link dropdown-toggle collapsed">
                                 <i class="nav-icon fa fa-lock-open"></i>
                                 <span class="nav-text fadeable">
-               	  <span>ผู้ดูแลระบบ</span>
-
-                    </span>
-
+                                  <span>ผู้ดูแลระบบ</span>
+                                </span>
                                 <b class="caret fa fa-angle-left rt-n90"></b>
-
                                 <!-- or you can use custom icons. first add `d-style` to 'A' -->
                                 <!--
                                     <b class="caret d-n-collapsed fa fa-minus text-80"></b>
@@ -902,62 +820,33 @@
 
                             <div class="hideable submenu collapse">
                                 <ul class="submenu-inner">
-
                                     <li class="nav-item">
-
                                         <a href="html/page-profile.html" class="nav-link">
-
-                          <span class="nav-text">
-               				  <span>กลุ่มผู้ใช้งาน</span>
-                          </span>
-
-
+                                          <span class="nav-text">
+                                              <span>กลุ่มผู้ใช้งาน</span>
+                                          </span>
                                         </a>
-
-
                                     </li>
-
-
                                     <li class="nav-item">
-
                                         <a href="html/page-login.html" class="nav-link">
-
-                          <span class="nav-text">
-               				  <span>ผู้ใช้งาน</span>
-                          </span>
-
-
+                                              <span class="nav-text">
+                                                  <span>ผู้ใช้งาน</span>
+                                              </span>
                                         </a>
-
-
                                     </li>
-
-
                                     <li class="nav-item">
-
                                         <a href="html/page-pricing.html" class="nav-link">
-
-                          <span class="nav-text">
-               				  <span>สิทธิ์การเข้าถึง</span>
-                          </span>
-
-
+                                          <span class="nav-text">
+                                              <span>สิทธิ์การเข้าถึง</span>
+                                          </span>
                                         </a>
-
-
                                     </li>
-
                                 </ul>
                             </div>
-
                             <b class="sub-arrow"></b>
-
                         </li>
-
                     </ul>
-
                 </div><!-- /.sidebar scroll -->
-
 
                 <div class="sidebar-section">
                     <div class="sidebar-section-item fadeable-bottom">
