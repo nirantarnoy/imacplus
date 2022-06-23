@@ -32,10 +32,10 @@ if(isset($_SESSION['msg-error'])){
 <input type="hidden" class="msg-error" value="<?=$noti_error?>">
 
 <div class="d-sm-flex align-items-center justify-content-between mb-4">
-    <h1 class="h3 mb-0 text-gray-800">ประเภทสินค้า</h1>
+    <h1 class="h3 mb-0 text-gray-800">ประเภทสมาชิก</h1>
     <div class="btn-group">
         <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-success shadow-sm" onclick="showaddbank($(this))"><i
-                class="fas fa-plus-circle fa-sm text-white-50"></i> สร้างใหม่</a>
+                    class="fas fa-plus-circle fa-sm text-white-50"></i> สร้างใหม่</a>
         <!--        <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i class="fas fa-download fa-sm text-white-50"></i> Export Data</a>-->
     </div>
 
@@ -52,7 +52,7 @@ if(isset($_SESSION['msg-error'])){
             <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                 <thead>
                 <tr>
-                    <th>Code</th>
+                    <th style="width: 10%">Code</th>
                     <th style="width: 10%">Name</th>
                     <th>Description</th>
                     <th style="width: 25%">-</th>
@@ -71,7 +71,7 @@ if(isset($_SESSION['msg-error'])){
             <form action="add_productcat_data.php" id="form-user" method="post">
                 <!-- Modal Header -->
                 <div class="modal-header">
-                    <h4 class="modal-title" style="color: #1c606a">เพิ่มข้อมูลประเภทสินค้า</h4>
+                    <h4 class="modal-title" style="color: #1c606a">เพิ่มข้อมูลประเภทสมาชิก</h4>
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
                 </div>
 
@@ -101,9 +101,6 @@ if(isset($_SESSION['msg-error'])){
                         </div>
                     </div>
                     <br>
-
-
-
                 </div>
 
                 <!-- Modal footer -->

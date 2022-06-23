@@ -24,7 +24,7 @@ if (isset($_POST['recid'])) {
 
 if ($recid <= 0) {
     if ($name != '') {
-        $sql = "INSERT INTO product_cat (code,name,description)
+        $sql = "INSERT INTO product_group (code,name,description)
            VALUES ('$code','$name','$description')";
 
         if ($result = $connect->query($sql)) {
@@ -37,16 +37,18 @@ if ($recid <= 0) {
     }
 
 } else {
-    $sql = "UPDATE product_cat SET code='$code',name='$name',description='$description'";
-    $sql.=" WHERE id='$recid'";
-
-    if ($result = $connect->query($sql)) {
-        $_SESSION['msg-success'] = 'Saved data successfully';
-        header('location:productcat.php');
-    } else {
-        $_SESSION['msg-error'] = 'Save data error';
-        header('location:productcat.php');
-    }
+    $_SESSION['msg-error'] = 'Save data error';
+    header('location:productcat.php');
+//    $sql = "UPDATE product_group SET code='$code',name='$name',description='$description'";
+//    $sql.=" WHERE id='$recid'";
+//
+//    if ($result = $connect->query($sql)) {
+//        $_SESSION['msg-success'] = 'Saved data successfully';
+//        header('location:productcat.php');
+//    } else {
+//        $_SESSION['msg-error'] = 'Save data error';
+//        header('location:productcat.php');
+//    }
 }
 
 ?>

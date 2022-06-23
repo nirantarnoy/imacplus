@@ -10,7 +10,7 @@ if(isset($_POST['delete_id'])){
 }
 
 if($id > 0){
-    $sql = "DELETE FROM product_cat WHERE id=".$id;
+    $sql = "DELETE FROM product_group WHERE id=".$id;
     if ($result = $connect->query($sql)) {
         $_SESSION['msg-success'] = 'Deleted data successfully';
         header('location:productcat.php');

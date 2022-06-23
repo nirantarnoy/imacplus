@@ -76,6 +76,15 @@
 <!-- demo.js is only for Ace's demo and you shouldn't use it -->
 <script src="app/browser/demo.js"></script>
 
+<script src="node_modules/datatables/media/js/jquery.dataTables.js"></script>
+<script src="node_modules/datatables.net-bs4/js/dataTables.bootstrap4.js"></script>
+<script src="node_modules/datatables.net-colreorder/js/dataTables.colReorder.js"></script>
+<script src="node_modules/datatables.net-select/js/dataTables.select.js"></script>
+
+
+<!--alert-->
+<script src="node_modules/sweetalert2/dist/sweetalert2.all.js"></script>
+<script src="node_modules/interactjs/dist/interact.js"></script>
 
 
 <!-- "Dashboard" page script to enable its demo functionality -->
