@@ -8,11 +8,11 @@ session_start();
 //echo date('H:i');return;
 include "header.php";
 
-$position_data = getPositionmodel($connect);
-$per_check = checkPer($user_position,"is_product_cat", $connect);
-if(!$per_check){
-    header("location:errorpage.php");
-}
+//$position_data = getPositionmodel($connect);
+//$per_check = checkPer($user_position,"is_product_cat", $connect);
+//if(!$per_check){
+//    header("location:errorpage.php");
+//}
 
 $noti_ok = '';
 $noti_error = '';
@@ -185,22 +185,46 @@ include "footer.php";
     }
 
     function recDelete(e) {
-        //e.preventDefault();
         var recid = e.attr('data-id');
         $(".delete-id").val(recid);
-        swal({
-            title: "Are you sure to delete?",
-            text: "",
-            type: "warning",
-            showCancelButton: true,
-            closeOnConfirm: false,
-            showLoaderOnConfirm: true
-        }, function () {
+        var swalWithBootstrapButtons = Swal.mixin({
+            customClass: {
+                confirmButton: 'btn btn-success mx-2',
+                cancelButton: 'btn btn-danger mx-2'
+            },
+            buttonsStyling: false
+        })
 
-            $("#form-delete").submit();
-            // e.attr("href",url);
-            // e.trigger("click");
-        });
+        swalWithBootstrapButtons.fire({
+            title: 'ยืนยัน?',
+            text: "คุณต้องการลบข้อมูลใช่หรือไม่!",
+            type: 'warning',
+            showCancelButton: true,
+            scrollbarPadding: false,
+            confirmButtonText: 'ใช่',
+            cancelButtonText: 'ไม่ใช่',
+            reverseButtons: true
+        }).then(function(result) {
+            if (result.value) {
+                $("#form-delete").submit();
+            }
+        })
+        //e.preventDefault();
+        // var recid = e.attr('data-id');
+        // $(".delete-id").val(recid);
+        // swal({
+        //     title: "Are you sure to delete?",
+        //     text: "",
+        //     type: "warning",
+        //     showCancelButton: true,
+        //     closeOnConfirm: false,
+        //     showLoaderOnConfirm: true
+        // }, function () {
+        //
+        //     $("#form-delete").submit();
+        //     // e.attr("href",url);
+        //     // e.trigger("click");
+        // });
     }
     function notify() {
         // $.toast({
@@ -220,36 +244,79 @@ include "footer.php";
         var msg_ok = $(".msg-ok").val();
         var msg_error = $(".msg-error").val();
         if(msg_ok != ''){
-            $.toast({
-                title: 'แจ้งเตือนการทำงาน',
-                subtitle: '',
-                content: msg_ok,
-                type: 'success',
-                delay: 3000,
-                // img: {
-                //     src: 'image.png',
-                //     class: 'rounded',
-                //     title: 'แจ้งการทำงาน',
-                //     alt: 'Alternative'
-                // },
-                pause_on_hover: false
-            });
+            $.aceToaster.add({
+                placement: 'tr',
+                body: "<p class='p-3 mb-0 text-center'>\
+                        <span class='d-inline-block text-center mb-3 py-3 px-1 border-1 brc-success radius-round'>\
+                            <i class='fa fa-check fa-2x w-6 text-success-m1 mx-2px'></i>\
+                        </span><br />\
+                        บันทึกข้อมูลสำเร็จ\
+                    </p>\
+                    <button data-dismiss='toast' class='btn btn-block btn-success radius-t-0 border-0'>OK</button></div>",
+
+                width: 360,
+                delay: 5000,
+
+                close: false,
+
+                className: 'bgc-white-tp1 shadow ',
+
+                bodyClass: 'border-0 p-0 text-dark-tp2',
+                headerClass: 'd-none',
+            })
+            // $.toast({
+            //     title: 'แจ้งเตือนการทำงาน',
+            //     subtitle: '',
+            //     content: msg_ok,
+            //     type: 'success',
+            //     delay: 3000,
+            //     // img: {
+            //     //     src: 'image.png',
+            //     //     class: 'rounded',
+            //     //     title: 'แจ้งการทำงาน',
+            //     //     alt: 'Alternative'
+            //     // },
+            //     pause_on_hover: false
+            // });
         }
         if(msg_error != ''){
-            $.toast({
-                title: 'แจ้งเตือนการทำงาน',
-                subtitle: '',
-                content: msg_error,
-                type: 'danger',
-                delay: 3000,
-                // img: {
-                //     src: 'image.png',
-                //     class: 'rounded',
-                //     title: 'แจ้งการทำงาน',
-                //     alt: 'Alternative'
-                // },
-                pause_on_hover: false
-            });
+            $.aceToaster.add({
+                placement: 'tr',
+                body: "<div class='p-3 m-2 d-flex'>\
+                     <span class='align-self-center text-center mr-3 py-2 px-1 border-1 bgc-danger radius-round'>\
+                        <i class='fa fa-times text-180 w-4 text-white mx-2px'></i>\
+                     </span>\
+                     <div>\
+                        <h4 class='text-dark-tp3'>มีบางอย่างผิดพลาด</h4>\
+                        <span class='text-dark-tp3 text-110'>กรูณาติดต่อผู้ดูแลระบบ</span>\
+                     </div>\
+                    </div>\
+                    <button data-dismiss='toast' class='btn text-grey btn-h-light-danger position-tr mr-1 mt-1'><i class='fa fa-times'></i></button></div>",
+
+                width: 480,
+                delay: 5000,
+
+                close: false,
+
+                className: 'shadow border-none radius-0 border-l-4 brc-danger',
+
+                bodyClass: 'border-0 p-0',
+                headerClass: 'd-none'
+            })
+            // $.toast({
+            //     title: 'แจ้งเตือนการทำงาน',
+            //     subtitle: '',
+            //     content: msg_error,
+            //     type: 'danger',
+            //     delay: 3000,
+            //     // img: {
+            //     //     src: 'image.png',
+            //     //     class: 'rounded',
+            //     //     title: 'แจ้งการทำงาน',
+            //     //     alt: 'Alternative'
+            //     // },
+            //     pause_on_hover: false
+            // });
         }
 
     }

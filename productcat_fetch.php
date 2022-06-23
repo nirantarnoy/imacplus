@@ -7,7 +7,7 @@ if(!isset($_SESSION['userid'])){
 }
 include("common/dbcon.php");
 $query_filter = '';
-$query = "SELECT * FROM product_cat WHERE ";
+$query = "SELECT * FROM product_group WHERE ";
 //if(isset($_POST["region_name"])){
 //    $query .= 'region_name LIKE "%'.$_POST["region_name"].'%" AND ';
 //}

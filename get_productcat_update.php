@@ -8,7 +8,7 @@ if (isset($_POST['id'])) {
 }
 
 if ($id) {
-    $query = "SELECT * FROM product_cat WHERE id='$id' ";
+    $query = "SELECT * FROM product_group WHERE id='$id' ";
     $statement = $connect->prepare($query);
     $statement->execute();
     $result = $statement->fetchAll();
