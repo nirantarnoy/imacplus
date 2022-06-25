@@ -98,179 +98,7 @@
                 <div class="navbar-nav">
                     <ul class="nav">
 
-                        <li class="nav-item dropdown dropdown-mega">
-                            <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" role="button"
-                               aria-haspopup="true" aria-expanded="false">
-                                <i class="fa fa-list-alt mr-2 d-lg-none"></i>
-                                Mega
-                                <i class="caret fa fa-angle-down d-none d-lg-block"></i>
-                                <i class="caret fa fa-angle-left d-block d-lg-none"></i>
-                            </a>
-                            <div class="dropdown-menu p-0 dropdown-animated bgc-secondary-l4 brc-primary-m3 border-t-0 border-b-2 ace-scrollbar">
-                                <div class="d-flex flex-column">
 
-                                    <div class="row mx-0">
-
-                                        <div class="col-lg-4 col-12 p-2 p-lg-3 p-xl-4 d-flex flex-column align-items-center">
-                                            <div class="w-100 mb-3">
-                                                <h5 class="col-lg-9 mx-auto text-dark-m2 px-0">
-                                                    <i class="fa fa-clipboard-check mr-1 text-purple-m1"></i>
-                                                    Current Tasks
-                                                </h5>
-                                            </div>
-
-                                            <div class="col-lg-9 list-group px-0 border-1 brc-default-l2 radius-1 shadow-md">
-                                                <a href="#"
-                                                   class="border-0 bgc-h-primary-l4 list-group-item list-group-item-action">
-                                                    <i class="fab fa-facebook text-blue-m1 text-110 mr-2"></i>
-                                                    Cras justo odio
-                                                </a>
-                                                <a href="#"
-                                                   class="border-0 bgc-h-primary-l4 list-group-item list-group-item-action text-primary">
-                                                    <i class="fa fa-user text-success-m1 text-110 mr-2"></i>
-                                                    Dapibus ac facilisis in
-                                                </a>
-                                                <a href="#"
-                                                   class="border-0 bgc-h-primary-l4 list-group-item list-group-item-action">
-                                                    <i class="fa fa-clock text-purple-m1 text-110 mr-2"></i>
-                                                    Morbi leo risus
-                                                </a>
-                                                <a href="#"
-                                                   class="border-0 list-group-item list-group-item-action bgc-success-l2">
-                                                    <i class="fa fa-check text-orange-d1 text-110 mr-2"></i>
-                                                    Porta ac consectetur
-                                                    <span class="ml-2 badge badge-primary badge-pill badge-lg">14</span>
-                                                </a>
-                                                <a href="#"
-                                                   class="border-0 list-group-item list-group-item-action disabled">Vestibulum
-                                                    at eros</a>
-                                            </div>
-                                        </div><!-- .col:mega tasks -->
-
-
-                                        <div class="bgc-white col-lg-4 col-12 p-4">
-                                            <h5 class="text-dark-m2">
-                                                <i class="fas fa-bullhorn mr-1 text-primary-m1"></i>
-                                                Notifications
-                                            </h5>
-
-                                            <div class="mt-3">
-                                                <div class="media mt-2 px-3 pt-1 border-l-2 brc-purple-m2">
-                                                    <div class="bgc-purple radius-1 mr-3 p-3">
-                                                        <i class="fa fa-user text-white text-150"></i>
-                                                    </div>
-                                                    <div class="media-body pb-0 mb-0 text-90 text-grey-m1">
-                                                        <div class="text-grey-d2 font-bolder">@username1</div>
-                                                        Donec id elit non mi porta gravida at eget metus. Fusce
-                                                        dapibus...
-                                                    </div>
-                                                </div>
-
-                                                <hr/>
-
-                                                <div class="media mt-2 px-3 pt-1 border-l-2 brc-warning-m2">
-                                                    <div class="bgc-warning radius-1 mr-3 p-3">
-                                                        <i class="fa fa-user text-white text-150"></i>
-                                                    </div>
-                                                    <div class="media-body pb-0 mb-0 text-90 text-grey-m1">
-                                                        <div class="text-grey-d2 font-bolder">@username2</div>
-                                                        Fusce dapibus, tellus ac cursus commodo, tortor mauris...
-                                                    </div>
-                                                </div>
-
-                                                <hr/>
-
-                                                <div class="media mt-2 px-3 pt-1 border-l-2 brc-success-m2">
-                                                    <div class="bgc-success radius-1 mr-3 p-3">
-                                                        <i class="fa fa-user text-white text-150"></i>
-                                                    </div>
-                                                    <div class="media-body pb-0 mb-0 text-90 text-grey-m1">
-                                                        <div class="text-grey-d2 font-bolder">@username3</div>
-                                                        Tortor mauris condimentum nibh, fusce dapibus...
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                        </div><!-- .col:mega notifications -->
-
-
-                                        <div class="col-lg-4 col-12 p-4 dropdown-clickable">
-                                            <h5 class="text-dark-m2">
-                                                <i class="fa fa-envelope mr-1 text-green-m1"></i>
-                                                Contact Us
-                                            </h5>
-
-                                            <form class="my-3">
-                                                <div class="form-group mb-2">
-                                                    <input placeholder="Name" type="text"
-                                                           class="form-control border-l-2"/>
-                                                </div>
-
-                                                <div class="form-group mb-2">
-                                                    <input placeholder="Email" type="text"
-                                                           class="form-control border-l-2"/>
-                                                </div>
-
-                                                <div class="form-group mb-4">
-                                                    <textarea
-                                                            class="form-control brc-primary-m2 border-l-2 text-grey-d1"
-                                                            rows="3" placeholder="Your message..."></textarea>
-                                                </div>
-
-                                                <div class="text-center">
-                                                    <button type="reset"
-                                                            class="btn px-3 btn-secondary btn-bold tex1t-110">
-                                                        Reset
-                                                    </button>
-
-                                                    <button data-dismiss="dropdown" type="button"
-                                                            class="btn btn-outline-primary btn-bgc-white px-3 btn-bold btn-text-slide-x"
-                                                            style="width: 8rem;">
-                                                        Submit<i
-                                                                class="btn-text-2  move-right fa fa-arrow-right text-120 align-text-bottom ml-1"></i>
-                                                    </button>
-                                                </div>
-                                            </form>
-                                        </div><!-- .col:mega contact -->
-
-                                    </div><!-- .row: mega -->
-
-
-                                    <!-- Big Action Buttons -->
-                                    <div class="order-first order-lg-last ">
-                                        <hr class="d-none d-lg-block brc-default-l1 my-0"/>
-                                        <!-- border above buttons in desktop mode -->
-
-                                        <div class="row mx-0 bgc-primary-l4">
-                                            <div class="col-lg-8 offset-lg-2 d-flex justify-content-center py-4 d-flex">
-
-                                                <button class="mx-2px btn btn-sm btn-app btn-outline-warning btn-h-outline-warning btn-a-outline-warning radius-1 border-2">
-                                                    <i class="fa fa-cog text-190 d-block mb-2 h-4"></i>
-                                                    <span class="text-muted">Settings</span>
-                                                </button>
-
-                                                <button class="mx-2px btn btn-sm btn-app btn-outline-info btn-h-outline-info radius-1 border-2">
-                                                    <i class="fa fa-edit text-190 d-block mb-2 h-4"></i>
-                                                    Edit
-                                                    <span class="position-tr text-danger-m2 text-130 mr-1">*</span>
-                                                </button>
-
-                                                <button class="mx-2px btn btn-sm btn-app btn-dark radius-1">
-                                                    <i class="fa fa-lock text-150 d-block mb-2 h-4"></i>
-                                                    Lock
-                                                </button>
-
-                                            </div>
-                                        </div><!-- .row:megamenu big buttons -->
-
-                                        <hr class="d-lg-none brc-default-l1 mt-0"/>
-                                        <!-- border below buttons in mobile mode -->
-                                    </div>
-
-
-                                </div>
-                            </div>
-                        </li>
 
                         <li class="nav-item dropdown dropdown-mega">
                             <a class="nav-link dropdown-toggle pl-lg-3 pr-lg-4" data-toggle="dropdown" href="#"
@@ -540,28 +368,11 @@
                                     <div class="dropdown-divider"></div>
                                 </div>
 
-                                <div class="dropdown-clickable px-3 py-25 bgc-h-secondary-l3 border-b-1 brc-secondary-l2">
-                                    <!-- online/offline toggle -->
-                                    <div class="d-flex justify-content-center align-items-center tex1t-600">
-                                        <label for="id-user-online" class="text-grey-d1 pt-2 px-2">offline</label>
-                                        <input type="checkbox"
-                                               class="ace-switch ace-switch-sm text-grey-l1 brc-green-d1"
-                                               id="id-user-online"/>
-                                        <label for="id-user-online"
-                                               class="text-green-d1 text-600 pt-2 px-2">online</label>
-                                    </div>
-                                </div>
 
                                 <a class="mt-1 dropdown-item btn btn-outline-grey bgc-h-primary-l3 btn-h-light-primary btn-a-light-primary"
-                                   href="html/page-profile.html">
+                                   href="#">
                                     <i class="fa fa-user text-primary-m1 text-105 mr-1"></i>
-                                    Profile
-                                </a>
-
-                                <a class="dropdown-item btn btn-outline-grey bgc-h-success-l3 btn-h-light-success btn-a-light-success"
-                                   href="#" data-toggle="modal" data-target="#id-ace-settings-modal">
-                                    <i class="fa fa-cog text-success-m1 text-105 mr-1"></i>
-                                    Settings
+                                    Change password
                                 </a>
 
                                 <div class="dropdown-divider brc-primary-l2"></div>
@@ -646,28 +457,20 @@
 
 
                         <li class="nav-item active">
-
-                            <a href="html/dashboard.html" class="nav-link">
+                            <a href="index.php" class="nav-link">
                                 <i class="nav-icon fa fa-tachometer-alt"></i>
                                 <span class="nav-text fadeable">
-               	  <span>Dashboard</span>
-                    </span>
-
-
+                                  <span>Dashboard</span>
+                                </span>
                             </a>
-
                             <b class="sub-arrow"></b>
-
                         </li>
-
-
                         <li class="nav-item">
-
                             <a href="#" class="nav-link dropdown-toggle collapsed">
                                 <i class="nav-icon fa fa-cube"></i>
                                 <span class="nav-text fadeable">
-               	  <span>สินค้า</span>
-                    </span>
+                                  <span>สินค้า</span>
+                                </span>
                                 <b class="caret fa fa-angle-left rt-n90"></b>
 
                                 <!-- or you can use custom icons. first add `d-style` to 'A' -->
@@ -686,23 +489,23 @@
                                         </a>
                                     </li>
                                     <li class="nav-item">
-                                        <a href="html/dashboard-3.html" class="nav-link">
-                                          <span class="nav-text">
-                                              <span>ยี่ห้อ</span>
-                                          </span>
-                                        </a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a href="html/dashboard-4.html" class="nav-link">
+                                        <a href="item.php" class="nav-link">
                                           <span class="nav-text">
                                               <span>รหัสสินค้า</span>
                                           </span>
                                         </a>
                                     </li>
                                     <li class="nav-item">
-                                        <a href="html/horizontal.html" class="nav-link">
+                                        <a href="unit.php" class="nav-link">
                                           <span class="nav-text">
                                               <span>หน่วยนับ</span>
+                                          </span>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="itembrand.php" class="nav-link">
+                                          <span class="nav-text">
+                                              <span>ยี่ห้อ</span>
                                           </span>
                                         </a>
                                     </li>
@@ -736,9 +539,9 @@
                                         </a>
                                     </li>
                                     <li class="nav-item">
-                                        <a href="html/tooltips.html" class="nav-link">
+                                        <a href="member.php" class="nav-link">
                                           <span class="nav-text">
-                                              <span>Center</span>
+                                              <span>สมาชิก</span>
                                           </span>
                                         </a>
                                     </li>
@@ -764,7 +567,7 @@
                             <div class="hideable submenu collapse">
                                 <ul class="submenu-inner">
                                     <li class="nav-item">
-                                        <a href="html/buttons.html" class="nav-link">
+                                        <a href="workorder.php" class="nav-link">
                                           <span class="nav-text">
                                               <span>คำสั่งซ่อม</span>
                                           </span>
@@ -792,6 +595,60 @@
 <!--                        </li>-->
 
 
+                        <li class="nav-item-caption">
+                            <span class="fadeable pl-3">ตั้งค่าคะแนน Point</span>
+                            <span class="fadeinable mt-n2 text-125">&hellip;</span>
+                            <!--
+                                     OR something like the following (with `.hideable` text)
+                                 -->
+                            <!--
+                                     <div class="hideable">
+                                         <span class="pl-3">OTHER</span>
+                                     </div>
+                                     <span class="fadeinable mt-n2 text-125">&hellip;</span>
+                                 -->
+                        </li>
+                        <li class="nav-item">
+                            <a href="#" class="nav-link dropdown-toggle collapsed">
+                                <i class="nav-icon fa fa-trophy"></i>
+                                <span class="nav-text fadeable">
+                                  <span>ข้อมูลคะแนน</span>
+                                </span>
+                                <b class="caret fa fa-angle-left rt-n90"></b>
+                                <!-- or you can use custom icons. first add `d-style` to 'A' -->
+                                <!--
+                                    <b class="caret d-n-collapsed fa fa-minus text-80"></b>
+                                    <b class="caret d-collapsed fa fa-plus text-80"></b>
+                                -->
+                            </a>
+
+                            <div class="hideable submenu collapse">
+                                <ul class="submenu-inner">
+                                    <li class="nav-item">
+                                        <a href="#" class="nav-link">
+                                          <span class="nav-text">
+                                              <span>Point</span>
+                                          </span>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="#" class="nav-link">
+                                              <span class="nav-text">
+                                                  <span>Point</span>
+                                              </span>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="#" class="nav-link">
+                                          <span class="nav-text">
+                                              <span>Point</span>
+                                          </span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                            <b class="sub-arrow"></b>
+                        </li>
                         <li class="nav-item-caption">
                             <span class="fadeable pl-3">สิทธิ์การใช้งาน</span>
                             <span class="fadeinable mt-n2 text-125">&hellip;</span>
@@ -822,21 +679,21 @@
                             <div class="hideable submenu collapse">
                                 <ul class="submenu-inner">
                                     <li class="nav-item">
-                                        <a href="html/page-profile.html" class="nav-link">
+                                        <a href="user_group.php" class="nav-link">
                                           <span class="nav-text">
                                               <span>กลุ่มผู้ใช้งาน</span>
                                           </span>
                                         </a>
                                     </li>
                                     <li class="nav-item">
-                                        <a href="html/page-login.html" class="nav-link">
+                                        <a href="user.php" class="nav-link">
                                               <span class="nav-text">
                                                   <span>ผู้ใช้งาน</span>
                                               </span>
                                         </a>
                                     </li>
                                     <li class="nav-item">
-                                        <a href="html/page-pricing.html" class="nav-link">
+                                        <a href="#" class="nav-link">
                                           <span class="nav-text">
                                               <span>สิทธิ์การเข้าถึง</span>
                                           </span>
@@ -849,46 +706,7 @@
                     </ul>
                 </div><!-- /.sidebar scroll -->
 
-                <div class="sidebar-section">
-                    <div class="sidebar-section-item fadeable-bottom">
-                        <div class="fadeinable">
-                            <!-- shows this when collapsed -->
-                            <div class="pos-rel">
-                                <img alt="Alexa's Photo" src="assets/image/avatar/avatar3.jpg" width="42"
-                                     class="px-1px radius-round mx-2 border-2 brc-default-m2"/>
-                                <span class="bgc-success radius-round border-2 brc-white p-1 position-tr mr-1 mt-2px"></span>
-                            </div>
-                        </div>
-
-                        <div class="fadeable hideable w-100 bg-transparent shadow-none border-0">
-                            <!-- shows this when full-width -->
-                            <div id="sidebar-footer-bg"
-                                 class="d-flex align-items-center bgc-white shadow-sm mx-2 mt-2px py-2 radius-t-1 border-x-1 border-t-2 brc-primary-m3">
-                                <div class="d-flex mr-auto py-1">
-                                    <div class="pos-rel">
-                                        <img alt="Alexa's Photo" src="assets/image/avatar/avatar3.jpg" width="42"
-                                             class="px-1px radius-round mx-2 border-2 brc-default-m2"/>
-                                        <span class="bgc-success radius-round border-2 brc-white p-1 position-tr mr-1 mt-2px"></span>
-                                    </div>
-
-                                    <div>
-                                        <span class="text-blue-d1 font-bolder">User</span>
-                                        <div class="text-80 text-grey">
-                                            Admin
-                                        </div>
-                                    </div>
-                                </div>
-
-
-                                <a href="loginpage.php"
-                                   class="d-style btn btn-outline-orange btn-h-light-orange btn-a-light-orange border-0 p-2 mr-1"
-                                   title="Logout">
-                                    <i class="fa fa-sign-out-alt text-150 text-orange-d2 f-n-hover"></i>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+<!--                -->
 
             </div>
         </div>

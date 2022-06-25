@@ -7,9 +7,9 @@ session_start();
 include "header.php";
 //include("models/PositionModel.php");
 
-if (!isset($_SESSION['userid'])) {
-    header("location:loginpage.php");
-}
+//if (!isset($_SESSION['userid'])) {
+//    header("location:loginpage.php");
+//}
 //$position_data = getPositionmodel($connect);
 //$per_check = checkPer($user_position,"is_user", $connect);
 //if(!$per_check){

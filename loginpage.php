@@ -1,3 +1,13 @@
+<?php
+ob_start();
+session_start();
+
+$mes_error = '';
+if(isset($_SESSION['msg_err'])){
+    $mes_error = $_SESSION['msg_err'];
+    unset($_SESSION['msg_err']);
+}
+?>
 <!doctype html>
 <html lang="en">
 
@@ -192,11 +202,12 @@
                                             Welcome back
                                         </div>
 
-
-                                        <form autocomplete="off" class="form-row mt-4">
+                                        <input type="hidden" class="message" value="<?=$mes_error?>">
+                                        <div class="alert alert-danger alert-msg" style="display: none;text-align: center;"><?=$mes_error?></div>
+                                        <form id="form-login" autocomplete="off" class="form-row mt-4" method="post" action="login_action.php">
                                             <div class="form-group col-sm-10 offset-sm-1 col-md-8 offset-md-2 col-lg-6 offset-lg-3">
                                                 <div class="d-flex align-items-center input-floating-label text-blue brc-blue-m2">
-                                                    <input type="text" class="form-control form-control-lg pr-4 shadow-none" id="id-login-username" />
+                                                    <input type="text" class="form-control form-control-lg pr-4 shadow-none username" id="id-login-username" name="username" value="" />
                                                     <i class="fa fa-user text-grey-m2 ml-n4"></i>
                                                     <label class="floating-label text-grey-l1 ml-n3" for="id-login-username">
                                                         Username
@@ -207,7 +218,7 @@
 
                                             <div class="form-group col-sm-10 offset-sm-1 col-md-8 offset-md-2 col-lg-6 offset-lg-3 mt-2 mt-md-1">
                                                 <div class="d-flex align-items-center input-floating-label text-blue brc-blue-m2">
-                                                    <input type="password" class="form-control form-control-lg pr-4 shadow-none" id="id-login-password" />
+                                                    <input type="password" class="form-control form-control-lg pr-4 shadow-none password" id="id-login-password" name="password" />
                                                     <i class="fa fa-key text-grey-m2 ml-n4"></i>
                                                     <label class="floating-label text-grey-l1 ml-n3" for="id-login-password">
                                                         Password
@@ -225,13 +236,14 @@
 
                                             <div class="form-group col-sm-10 offset-sm-1 col-md-8 offset-md-2 col-lg-6 offset-lg-3">
                                                 <label class="d-inline-block mt-3 mb-0 text-dark-l1">
-                                                    <input type="checkbox" class="mr-1" id="id-remember-me" />
+                                                    <input type="checkbox" class="mr-1" id="id-remember-me" name="rememberme" value=""/>
                                                     Remember me
                                                 </label>
 
-                                                <button type="button" class="btn btn-primary btn-block px-4 btn-bold mt-2 mb-4">
+                                                <button type="button" class="btn btn-primary btn-block px-4 btn-bold mt-2 mb-4 btn-submit">
                                                     Sign In
                                                 </button>
+<!--                                                <input type="submit" value="Sign In" class="btn btn-primary btn-block px-4 btn-bold mt-2 mb-4 btn-submit">-->
                                             </div>
                                         </form>
 
@@ -292,13 +304,23 @@
                                         </div>
 
 
-                                        <form autocomplete="off" class="form-row mt-4">
+                                        <form autocomplete="off" class="form-row mt-4" action="register_action.php" method="post">
                                             <div class="form-group col-sm-10 offset-sm-1 col-md-8 offset-md-2 col-lg-6 offset-lg-3">
                                                 <div class="d-flex align-items-center input-floating-label text-success brc-success-m2">
-                                                    <input type="email" class="form-control form-control-lg pr-4 shadow-none" id="id-signup-email" />
+                                                    <input type="text" class="form-control form-control-lg pr-4 shadow-none" id="id-signup-email" name="phone" value="" />
+                                                    <i class="fa fa-mobile text-grey-m2 ml-n4"></i>
+                                                    <label class="floating-label text-grey-l1 text-100 ml-n3" for="id-signup-email">
+                                                        เบอร์โทร
+                                                    </label>
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group col-sm-10 offset-sm-1 col-md-8 offset-md-2 col-lg-6 offset-lg-3">
+                                                <div class="d-flex align-items-center input-floating-label text-success brc-success-m2">
+                                                    <input type="email" class="form-control form-control-lg pr-4 shadow-none" id="id-signup-email" name="email" value="" />
                                                     <i class="fa fa-envelope text-grey-m2 ml-n4"></i>
                                                     <label class="floating-label text-grey-l1 text-100 ml-n3" for="id-signup-email">
-                                                        Email
+                                                        อีเมล์
                                                     </label>
                                                 </div>
                                             </div>
@@ -306,7 +328,7 @@
 
                                             <div class="form-group col-sm-10 offset-sm-1 col-md-8 offset-md-2 col-lg-6 offset-lg-3 mt-1">
                                                 <div class="d-flex align-items-center input-floating-label text-success brc-success-m2">
-                                                    <input type="text" class="form-control form-control-lg pr-4 shadow-none" id="id-signup-username" />
+                                                    <input type="text" class="form-control form-control-lg pr-4 shadow-none" id="id-signup-username" name="username" value="" />
                                                     <i class="fa fa-user text-grey-m2 ml-n4"></i>
                                                     <label class="floating-label text-grey-l1 text-100 ml-n3" for="id-signup-username">
                                                         Username
@@ -317,7 +339,7 @@
 
                                             <div class="form-group col-sm-10 offset-sm-1 col-md-8 offset-md-2 col-lg-6 offset-lg-3 mt-1">
                                                 <div class="d-flex align-items-center input-floating-label text-success brc-success-m2">
-                                                    <input type="password" class="form-control form-control-lg pr-4 shadow-none" id="id-signup-password" />
+                                                    <input type="password" class="form-control form-control-lg pr-4 shadow-none" id="id-signup-password" name="password" value="" />
                                                     <i class="fa fa-key text-grey-m2 ml-n4"></i>
                                                     <label class="floating-label text-grey-l1 text-100 ml-n3" for="id-signup-password">
                                                         Password
@@ -328,7 +350,7 @@
 
                                             <div class="form-group col-sm-10 offset-sm-1 col-md-8 offset-md-2 col-lg-6 offset-lg-3 mt-1">
                                                 <div class="d-flex align-items-center input-floating-label text-success brc-success-m2">
-                                                    <input type="password" class="form-control form-control-lg pr-4 shadow-none" id="id-signup-password2" />
+                                                    <input type="password" class="form-control form-control-lg pr-4 shadow-none" id="id-signup-password2" name="confirmpassword" value="" />
                                                     <i class="fas fa-sync-alt text-grey-m2 ml-n4"></i>
                                                     <label class="floating-label text-grey-l1 text-100 ml-n3" for="id-signup-password2">
                                                         Confirm Password
@@ -343,9 +365,10 @@
                                                     <span class="text-dark-m3">ฉันอ่านและยอมรับ <a href="#" class="text-blue-d2">ข้อตกลงการใช้งาน</a></span>
                                                 </label>
 
-                                                <button type="button" class="btn btn-success btn-block px-4 btn-bold mt-2 mb-3">
-                                                    สมัครสมาชิก
-                                                </button>
+<!--                                                <button type="button" class="btn btn-success btn-block px-4 btn-bold mt-2 mb-3">-->
+<!--                                                    -->
+<!--                                                </button>-->
+                                                <input type="submit" class="btn btn-success btn-block px-4 btn-bold mt-2 mb-3" value="สมัครสมาชิก">
                                             </div>
                                         </form>
 
@@ -471,6 +494,42 @@
 
 <!-- "Login" page script to enable its demo functionality -->
 <script src="views/pages/page-login/@page-script.js"></script>
+
+<script>
+    $(function(){
+        err_message();
+        $(".btn-submit").click(function(e){
+
+            e.preventDefault();
+            var username = $(".username").val();
+            var pwd = $(".password").val();
+
+            if(username == ''){
+                $(".message").val("กรุณากรอกข้อมูล Username");
+                $(".username").focus();
+                err_message();
+                return false;
+            }
+            if(pwd == ''){
+                $(".message").val("กรุณากรอกข้อมูล Password");
+                $(".password").focus();
+                err_message();
+                return false;
+            }
+            $("form#form-login").submit();
+        });
+
+        function err_message(){
+            var e_msg = $(".message").val();
+            if(e_msg !=''){
+                $(".alert-msg").html(e_msg).show();
+            }else{
+                $(".alert-msg").hide();
+            }
+
+        }
+    });
+</script>
 </body>
 
 </html>

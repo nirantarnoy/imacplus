@@ -62,4 +62,23 @@ function getMembername($connect,$code){
     }
 
 }
+function getMaxid($connect){
+    $query = "SELECT MAX(id) as id FROM member WHERE id > 0";
+    $statement = $connect->prepare($query);
+    $statement->execute();
+    $result = $statement->fetchAll();
+    $filtered_rows = $statement->rowCount();
+    $num = '';
+    $runno = '';
+    $new = 0;
+    //return $filtered_rows;
+    if($filtered_rows > 0){
+        foreach($result as $row){
+            $num = $row['id'];
+        }
+        return $num;
+    }else{
+        return 0;
+    }
+}
 ?>
