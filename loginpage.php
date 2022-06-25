@@ -3,7 +3,7 @@ ob_start();
 session_start();
 
 $mes_error = '';
-if(isset($_SESSION['msg_err'])){
+if (isset($_SESSION['msg_err'])) {
     $mes_error = $_SESSION['msg_err'];
     unset($_SESSION['msg_err']);
 }
@@ -14,7 +14,7 @@ if(isset($_SESSION['msg_err'])){
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1">
-<!--    <base href="../" />-->
+    <!--    <base href="../" />-->
 
     <title>Login - Ace Admin</title>
 
@@ -27,7 +27,6 @@ if(isset($_SESSION['msg_err'])){
     <link rel="stylesheet" type="text/css" href="node_modules/@fortawesome/fontawesome-free/css/solid.css">
 
 
-
     <!-- include vendor stylesheets used in "Login" page. see "/views//pages/partials/page-login/@vendor-stylesheets.hbs" -->
 
 
@@ -35,13 +34,12 @@ if(isset($_SESSION['msg_err'])){
     <link rel="stylesheet" type="text/css" href="dist/css/ace-font.css">
 
 
-
     <!-- ace.css -->
     <link rel="stylesheet" type="text/css" href="dist/css/ace.css">
 
 
     <!-- favicon -->
-    <link rel="icon" type="image/png" href="assets/favicon.png" />
+    <link rel="icon" type="image/png" href="assets/favicon.png"/>
 
     <!-- "Login" page styles, specific to this page for demo only -->
     <link rel="stylesheet" type="text/css" href="views/pages/page-login/@page-style.css">
@@ -73,7 +71,8 @@ if(isset($_SESSION['msg_err'])){
                                     <div class="carousel-inner minw-100 h-100">
                                         <div class="carousel-item active minw-100 h-100">
                                             <!-- default carousel section that you see when you open login page -->
-                                            <div style="background-image: url(assets/image/login-bg-1.svg);" class="px-3 bgc-blue-l4 d-flex flex-column align-items-center justify-content-center">
+                                            <div style="background-image: url(assets/image/login-bg-1.svg);"
+                                                 class="px-3 bgc-blue-l4 d-flex flex-column align-items-center justify-content-center">
                                                 <a class="mt-5 mb-2" href="html/dashboard.html">
                                                     <i class="fa fa-backward text-secondary-m2 fa-3x"></i>
                                                 </a>
@@ -83,22 +82,24 @@ if(isset($_SESSION['msg_err'])){
                                                 </h2>
 
                                                 <div class="mt-5 mx-4 text-dark-tp3">
-<!--                              <span class="text-120">-->
-<!--                           Join our community to make friends,<br /> meet experts &amp; receive exclusive offers!-->
-<!--                       </span>-->
-                                                    <hr class="mb-1 brc-black-tp10" />
+                                                    <!--                              <span class="text-120">-->
+                                                    <!--                           Join our community to make friends,<br /> meet experts &amp; receive exclusive offers!-->
+                                                    <!--                       </span>-->
+                                                    <hr class="mb-1 brc-black-tp10"/>
                                                     <div>
-<!--                                                        <a id="id-start-carousel" href="#" class="text-95 text-dark-l2 d-inline-block mt-3">-->
-<!--                                                            <i class="far fa-image text-110 text-purple-m1 mr-1 w-2"></i>-->
-<!--                                                            Change background image-->
-<!--                                                        </a>-->
-<!--                                                        <br />-->
-                                                        <a id="id-remove-carousel" href="#" class="text-md text-dark-l2 d-inline-block mt-3">
+                                                        <!--                                                        <a id="id-start-carousel" href="#" class="text-95 text-dark-l2 d-inline-block mt-3">-->
+                                                        <!--                                                            <i class="far fa-image text-110 text-purple-m1 mr-1 w-2"></i>-->
+                                                        <!--                                                            Change background image-->
+                                                        <!--                                                        </a>-->
+                                                        <!--                                                        <br />-->
+                                                        <a id="id-remove-carousel" href="#"
+                                                           class="text-md text-dark-l2 d-inline-block mt-3">
                                                             <i class="far fa-trash-alt text-110 text-orange-d1 mr-1 w-2"></i>
                                                             Remove this section
                                                         </a>
-                                                        <br />
-                                                        <a id="id-fullscreen" href="#" class="text-md text-dark-l2 d-inline-block mt-3">
+                                                        <br/>
+                                                        <a id="id-fullscreen" href="#"
+                                                           class="text-md text-dark-l2 d-inline-block mt-3">
                                                             <i class="fa fa-expand text-110 text-green-m1 mr-1 w-2"></i>
                                                             Make full-size
                                                         </a>
@@ -106,16 +107,16 @@ if(isset($_SESSION['msg_err'])){
                                                 </div>
 
                                                 <div class="mt-auto mb-4 text-dark-tp2">
-                                                    iMac Plus &copy; <?=date('Y')?>
+                                                    iMac Plus &copy; <?= date('Y') ?>
                                                 </div>
                                             </div>
                                         </div>
 
 
-
                                         <div class="carousel-item minw-100 h-100">
                                             <!-- the second carousel item with dark background -->
-                                            <div style="background-image: url(assets/image/login-bg-2.svg);" class="d-flex flex-column align-items-center justify-content-start">
+                                            <div style="background-image: url(assets/image/login-bg-2.svg);"
+                                                 class="d-flex flex-column align-items-center justify-content-start">
                                                 <a class="mt-5 mb-2" href="html/dashboard.html">
                                                     <i class="fa fa-backward text-secondary-m2 fa-3x"></i>
                                                 </a>
@@ -127,9 +128,9 @@ if(isset($_SESSION['msg_err'])){
                                         </div>
 
 
-
                                         <div class="carousel-item minw-100 h-100">
-                                            <div style="background-image: url(assets/image/login-bg-3.jpg);" class="d-flex flex-column align-items-center justify-content-start">
+                                            <div style="background-image: url(assets/image/login-bg-3.jpg);"
+                                                 class="d-flex flex-column align-items-center justify-content-start">
                                                 <div class="bgc-black-tp4 radius-1 p-3 w-90 text-center my-3 h-100">
                                                     <a class="mt-5 mb-2" href="html/dashboard.html">
                                                         <i class="fa fa-backward text-secondary-m2 fa-3x"></i>
@@ -143,9 +144,9 @@ if(isset($_SESSION['msg_err'])){
                                         </div>
 
 
-
                                         <div class="carousel-item minw-100 h-100">
-                                            <div style="background-image: url(assets/image/login-bg-4.jpg);" class="d-flex flex-column align-items-center justify-content-start">
+                                            <div style="background-image: url(assets/image/login-bg-4.jpg);"
+                                                 class="d-flex flex-column align-items-center justify-content-start">
                                                 <a class="mt-5 mb-2" href="html/dashboard.html">
                                                     <i class="fa fa-backward text-secondary-m2 fa-3x"></i>
                                                 </a>
@@ -163,14 +164,17 @@ if(isset($_SESSION['msg_err'])){
 
                             <div id="id-col-main" class="col-12 col-lg-7 py-lg-5 bgc-white px-0">
                                 <!-- you can also use these tab links -->
-                                <ul class="d-none mt-n4 mb-4 nav nav-tabs nav-tabs-simple justify-content-end bgc-black-tp11" role="tablist">
+                                <ul class="d-none mt-n4 mb-4 nav nav-tabs nav-tabs-simple justify-content-end bgc-black-tp11"
+                                    role="tablist">
                                     <li class="nav-item mx-2">
-                                        <a class="nav-link active px-2" data-toggle="tab" href="#id-tab-login" role="tab" aria-controls="id-tab-login" aria-selected="true">
+                                        <a class="nav-link active px-2" data-toggle="tab" href="#id-tab-login"
+                                           role="tab" aria-controls="id-tab-login" aria-selected="true">
                                             ลงชื่อเข้าใช้งาน
                                         </a>
                                     </li>
                                     <li class="nav-item mx-2">
-                                        <a class="nav-link px-2" data-toggle="tab" href="#id-tab-signup" role="tab" aria-controls="id-tab-signup" aria-selected="false">
+                                        <a class="nav-link px-2" data-toggle="tab" href="#id-tab-signup" role="tab"
+                                           aria-controls="id-tab-signup" aria-selected="false">
                                             สมัครสมาชิก
                                         </a>
                                     </li>
@@ -202,14 +206,19 @@ if(isset($_SESSION['msg_err'])){
                                             Welcome back
                                         </div>
 
-                                        <input type="hidden" class="message" value="<?=$mes_error?>">
-                                        <div class="alert alert-danger alert-msg" style="display: none;text-align: center;"><?=$mes_error?></div>
-                                        <form id="form-login" autocomplete="off" class="form-row mt-4" method="post" action="login_action.php">
+                                        <input type="hidden" class="message" value="<?= $mes_error ?>">
+                                        <div class="alert alert-danger alert-msg"
+                                             style="display: none;text-align: center;"><?= $mes_error ?></div>
+                                        <form id="form-login" autocomplete="off" class="form-row mt-4" method="post"
+                                              action="login_action.php">
                                             <div class="form-group col-sm-10 offset-sm-1 col-md-8 offset-md-2 col-lg-6 offset-lg-3">
                                                 <div class="d-flex align-items-center input-floating-label text-blue brc-blue-m2">
-                                                    <input type="text" class="form-control form-control-lg pr-4 shadow-none username" id="id-login-username" name="username" value="" />
+                                                    <input type="text"
+                                                           class="form-control form-control-lg pr-4 shadow-none username"
+                                                           id="id-login-username" name="username" value=""/>
                                                     <i class="fa fa-user text-grey-m2 ml-n4"></i>
-                                                    <label class="floating-label text-grey-l1 ml-n3" for="id-login-username">
+                                                    <label class="floating-label text-grey-l1 ml-n3"
+                                                           for="id-login-username">
                                                         Username
                                                     </label>
                                                 </div>
@@ -218,9 +227,12 @@ if(isset($_SESSION['msg_err'])){
 
                                             <div class="form-group col-sm-10 offset-sm-1 col-md-8 offset-md-2 col-lg-6 offset-lg-3 mt-2 mt-md-1">
                                                 <div class="d-flex align-items-center input-floating-label text-blue brc-blue-m2">
-                                                    <input type="password" class="form-control form-control-lg pr-4 shadow-none password" id="id-login-password" name="password" />
+                                                    <input type="password"
+                                                           class="form-control form-control-lg pr-4 shadow-none password"
+                                                           id="id-login-password" name="password"/>
                                                     <i class="fa fa-key text-grey-m2 ml-n4"></i>
-                                                    <label class="floating-label text-grey-l1 ml-n3" for="id-login-password">
+                                                    <label class="floating-label text-grey-l1 ml-n3"
+                                                           for="id-login-password">
                                                         Password
                                                     </label>
                                                 </div>
@@ -228,7 +240,8 @@ if(isset($_SESSION['msg_err'])){
 
 
                                             <div class="col-sm-10 offset-sm-1 col-md-8 offset-md-2 col-lg-6 offset-lg-3 text-right text-md-right mt-n2 mb-2">
-                                                <a href="#" class="text-primary-m1 text-95" data-toggle="tab" data-target="#id-tab-forgot">
+                                                <a href="#" class="text-primary-m1 text-95" data-toggle="tab"
+                                                   data-target="#id-tab-forgot">
                                                     Forgot Password?
                                                 </a>
                                             </div>
@@ -236,14 +249,16 @@ if(isset($_SESSION['msg_err'])){
 
                                             <div class="form-group col-sm-10 offset-sm-1 col-md-8 offset-md-2 col-lg-6 offset-lg-3">
                                                 <label class="d-inline-block mt-3 mb-0 text-dark-l1">
-                                                    <input type="checkbox" class="mr-1" id="id-remember-me" name="rememberme" value=""/>
+                                                    <input type="checkbox" class="mr-1" id="id-remember-me"
+                                                           name="rememberme" value=""/>
                                                     Remember me
                                                 </label>
 
-                                                <button type="button" class="btn btn-primary btn-block px-4 btn-bold mt-2 mb-4 btn-submit">
+                                                <button type="button"
+                                                        class="btn btn-primary btn-block px-4 btn-bold mt-2 mb-4 btn-submit">
                                                     Sign In
                                                 </button>
-<!--                                                <input type="submit" value="Sign In" class="btn btn-primary btn-block px-4 btn-bold mt-2 mb-4 btn-submit">-->
+                                                <!--                                                <input type="submit" value="Sign In" class="btn btn-primary btn-block px-4 btn-bold mt-2 mb-4 btn-submit">-->
                                             </div>
                                         </form>
 
@@ -251,24 +266,29 @@ if(isset($_SESSION['msg_err'])){
                                         <div class="form-row">
                                             <div class="col-sm-10 offset-sm-1 col-md-8 offset-md-2 col-lg-6 offset-lg-3 d-flex flex-column align-items-center justify-content-center">
 
-                                                <hr class="brc-default-l2 mt-0 mb-2 w-100" />
+                                                <hr class="brc-default-l2 mt-0 mb-2 w-100"/>
 
                                                 <div class="p-0 px-md-2 text-dark-tp3 my-3">
                                                     ยังไม่เป็นสมาชิกกับทางเราหรือเปล่า?
-                                                    <a class="text-success-m1 text-600 mx-1" data-toggle="tab" data-target="#id-tab-signup" href="#">
+                                                    <a class="text-success-m1 text-600 mx-1" data-toggle="tab"
+                                                       data-target="#id-tab-signup" href="#">
                                                         สมัครตอนนี้
                                                     </a>
                                                 </div>
 
-                                                <hr class="brc-default-l2 w-100 mb-2" />
-                                                <div class="mt-n4 bgc-white-tp2 px-3 py-1 text-secondary-d3 text-90">หรือเข้าใช้งานผ่าน</div>
+                                                <hr class="brc-default-l2 w-100 mb-2"/>
+                                                <div class="mt-n4 bgc-white-tp2 px-3 py-1 text-secondary-d3 text-90">
+                                                    หรือเข้าใช้งานผ่าน
+                                                </div>
 
                                                 <div class="my-2">
-                                                    <button type="button" class="btn btn-bgc-white btn-lighter-primary btn-h-primary btn-a-primary border-2 radius-round btn-lg mx-1">
+                                                    <button type="button"
+                                                            class="btn btn-bgc-white btn-lighter-primary btn-h-primary btn-a-primary border-2 radius-round btn-lg mx-1">
                                                         <i class="fab fa-facebook-f text-110"></i>
                                                     </button>
 
-                                                    <button type="button" class="btn btn-bgc-white btn-lighter-red btn-h-red btn-a-red border-2 radius-round btn-lg px-25 mx-1">
+                                                    <button type="button"
+                                                            class="btn btn-bgc-white btn-lighter-red btn-h-red btn-a-red border-2 radius-round btn-lg px-25 mx-1">
                                                         <i class="fab fa-google text-110"></i>
                                                     </button>
                                                 </div>
@@ -278,9 +298,12 @@ if(isset($_SESSION['msg_err'])){
                                     </div>
 
 
-                                    <div class="tab-pane mh-100 px-3 px-lg-0 pb-3" id="id-tab-signup" data-swipe-prev="#id-tab-login">
+                                    <div class="tab-pane mh-100 px-3 px-lg-0 pb-3" id="id-tab-signup"
+                                         data-swipe-prev="#id-tab-login">
                                         <div class="position-tl ml-3 mt-3 mt-lg-0">
-                                            <a href="#" class="btn btn-light-default btn-h-light-default btn-a-light-default btn-bgc-tp" data-toggle="tab" data-target="#id-tab-login">
+                                            <a href="#"
+                                               class="btn btn-light-default btn-h-light-default btn-a-light-default btn-bgc-tp"
+                                               data-toggle="tab" data-target="#id-tab-login">
                                                 <i class="fa fa-arrow-left"></i>
                                             </a>
                                         </div>
@@ -297,19 +320,26 @@ if(isset($_SESSION['msg_err'])){
                                         <div class="d-lg-none text-secondary-m1 my-4 text-center">
                                             <i class="fa fa-backward text-secondary-m2 text-200 mb-4"></i>
                                             <h1 class="text-170">
-                                                <span class="text-blue-d1">iMac <span class="text-80 text-dark-tp4">Plus</span></span>
+                                                <span class="text-blue-d1">iMac <span
+                                                            class="text-80 text-dark-tp4">Plus</span></span>
                                             </h1>
 
                                             Create an Account
                                         </div>
+                                        <input type="hidden" class="message2" value="<?= $mes_error ?>">
+                                        <div class="alert alert-danger alert-msg2"
+                                             style="display: none;text-align: center;"><?= $mes_error ?></div>
 
-
-                                        <form autocomplete="off" class="form-row mt-4" action="register_action.php" method="post">
+                                        <form id="form-register" autocomplete="off" class="form-row mt-4"
+                                              action="register_action.php" method="post">
                                             <div class="form-group col-sm-10 offset-sm-1 col-md-8 offset-md-2 col-lg-6 offset-lg-3">
                                                 <div class="d-flex align-items-center input-floating-label text-success brc-success-m2">
-                                                    <input type="text" class="form-control form-control-lg pr-4 shadow-none" id="id-signup-email" name="phone" value="" />
+                                                    <input type="text"
+                                                           class="form-control form-control-lg pr-4 shadow-none phone-regis"
+                                                           id="id-signup-email" name="phone" value=""/>
                                                     <i class="fa fa-mobile text-grey-m2 ml-n4"></i>
-                                                    <label class="floating-label text-grey-l1 text-100 ml-n3" for="id-signup-email">
+                                                    <label class="floating-label text-grey-l1 text-100 ml-n3"
+                                                           for="id-signup-email">
                                                         เบอร์โทร
                                                     </label>
                                                 </div>
@@ -317,9 +347,12 @@ if(isset($_SESSION['msg_err'])){
 
                                             <div class="form-group col-sm-10 offset-sm-1 col-md-8 offset-md-2 col-lg-6 offset-lg-3">
                                                 <div class="d-flex align-items-center input-floating-label text-success brc-success-m2">
-                                                    <input type="email" class="form-control form-control-lg pr-4 shadow-none" id="id-signup-email" name="email" value="" />
+                                                    <input type="email"
+                                                           class="form-control form-control-lg pr-4 shadow-none email-regis"
+                                                           id="id-signup-email" name="email" value=""/>
                                                     <i class="fa fa-envelope text-grey-m2 ml-n4"></i>
-                                                    <label class="floating-label text-grey-l1 text-100 ml-n3" for="id-signup-email">
+                                                    <label class="floating-label text-grey-l1 text-100 ml-n3"
+                                                           for="id-signup-email">
                                                         อีเมล์
                                                     </label>
                                                 </div>
@@ -328,9 +361,12 @@ if(isset($_SESSION['msg_err'])){
 
                                             <div class="form-group col-sm-10 offset-sm-1 col-md-8 offset-md-2 col-lg-6 offset-lg-3 mt-1">
                                                 <div class="d-flex align-items-center input-floating-label text-success brc-success-m2">
-                                                    <input type="text" class="form-control form-control-lg pr-4 shadow-none" id="id-signup-username" name="username" value="" />
+                                                    <input type="text"
+                                                           class="form-control form-control-lg pr-4 shadow-none username-regis"
+                                                           id="id-signup-username" name="username" value=""/>
                                                     <i class="fa fa-user text-grey-m2 ml-n4"></i>
-                                                    <label class="floating-label text-grey-l1 text-100 ml-n3" for="id-signup-username">
+                                                    <label class="floating-label text-grey-l1 text-100 ml-n3"
+                                                           for="id-signup-username">
                                                         Username
                                                     </label>
                                                 </div>
@@ -339,9 +375,12 @@ if(isset($_SESSION['msg_err'])){
 
                                             <div class="form-group col-sm-10 offset-sm-1 col-md-8 offset-md-2 col-lg-6 offset-lg-3 mt-1">
                                                 <div class="d-flex align-items-center input-floating-label text-success brc-success-m2">
-                                                    <input type="password" class="form-control form-control-lg pr-4 shadow-none" id="id-signup-password" name="password" value="" />
+                                                    <input type="password"
+                                                           class="form-control form-control-lg pr-4 shadow-none password-regis"
+                                                           id="id-signup-password" name="password" value=""/>
                                                     <i class="fa fa-key text-grey-m2 ml-n4"></i>
-                                                    <label class="floating-label text-grey-l1 text-100 ml-n3" for="id-signup-password">
+                                                    <label class="floating-label text-grey-l1 text-100 ml-n3"
+                                                           for="id-signup-password">
                                                         Password
                                                     </label>
                                                 </div>
@@ -350,9 +389,12 @@ if(isset($_SESSION['msg_err'])){
 
                                             <div class="form-group col-sm-10 offset-sm-1 col-md-8 offset-md-2 col-lg-6 offset-lg-3 mt-1">
                                                 <div class="d-flex align-items-center input-floating-label text-success brc-success-m2">
-                                                    <input type="password" class="form-control form-control-lg pr-4 shadow-none" id="id-signup-password2" name="confirmpassword" value="" />
+                                                    <input type="password"
+                                                           class="form-control form-control-lg pr-4 shadow-none confirm-password"
+                                                           id="id-signup-password2" name="confirmpassword" value=""/>
                                                     <i class="fas fa-sync-alt text-grey-m2 ml-n4"></i>
-                                                    <label class="floating-label text-grey-l1 text-100 ml-n3" for="id-signup-password2">
+                                                    <label class="floating-label text-grey-l1 text-100 ml-n3"
+                                                           for="id-signup-password2">
                                                         Confirm Password
                                                     </label>
                                                 </div>
@@ -361,14 +403,16 @@ if(isset($_SESSION['msg_err'])){
 
                                             <div class="form-group col-sm-10 offset-sm-1 col-md-8 offset-md-2 col-lg-6 offset-lg-3 mt-2">
                                                 <label class="d-inline-block mt-3 mb-0 text-secondary-d2">
-                                                    <input type="checkbox" class="mr-1" id="id-agree" />
-                                                    <span class="text-dark-m3">ฉันอ่านและยอมรับ <a href="#" class="text-blue-d2">ข้อตกลงการใช้งาน</a></span>
+                                                    <input type="checkbox" class="mr-1" id="id-agree"/>
+                                                    <span class="text-dark-m3">ฉันอ่านและยอมรับ <a href="#"
+                                                                                                   class="text-blue-d2">ข้อตกลงการใช้งาน</a></span>
                                                 </label>
 
-<!--                                                <button type="button" class="btn btn-success btn-block px-4 btn-bold mt-2 mb-3">-->
-<!--                                                    -->
-<!--                                                </button>-->
-                                                <input type="submit" class="btn btn-success btn-block px-4 btn-bold mt-2 mb-3" value="สมัครสมาชิก">
+                                                <button type="button"
+                                                        class="btn btn-success btn-block px-4 btn-bold mt-2 mb-3 btn-register-submit">
+                                                    สมัครสมาชิก
+                                                </button>
+                                                <!--                                                <input type="submit" class="btn btn-success btn-block px-4 btn-bold mt-2 mb-3" value="สมัครสมาชิก">-->
                                             </div>
                                         </form>
 
@@ -376,24 +420,29 @@ if(isset($_SESSION['msg_err'])){
                                         <div class="form-row w-100">
                                             <div class="col-12 col-sm-10 offset-sm-1 col-md-8 offset-md-2 col-lg-6 offset-lg-3 d-flex flex-column align-items-center justify-content-center">
 
-                                                <hr class="brc-default-l2 mt-0 mb-2 w-100" />
+                                                <hr class="brc-default-l2 mt-0 mb-2 w-100"/>
 
                                                 <div class="p-0 px-md-2 text-dark-tp4 my-3">
                                                     คุณเป็นสมาชิกหรือเปล่า?
-                                                    <a class="text-blue-d1 text-600 mx-1" data-toggle="tab" data-target="#id-tab-login" href="#">
+                                                    <a class="text-blue-d1 text-600 mx-1" data-toggle="tab"
+                                                       data-target="#id-tab-login" href="#">
                                                         เข้าระบบที่นี่
                                                     </a>
                                                 </div>
 
-                                                <hr class="brc-default-l2 w-100 mb-2" />
-                                                <div class="mt-n4 bgc-white-tp2 px-3 py-1 text-secondary-d3 text-90">หรือลงทะเบียนสมาชิกผ่าน</div>
+                                                <hr class="brc-default-l2 w-100 mb-2"/>
+                                                <div class="mt-n4 bgc-white-tp2 px-3 py-1 text-secondary-d3 text-90">
+                                                    หรือลงทะเบียนสมาชิกผ่าน
+                                                </div>
 
                                                 <div class="mt-2 mb-3">
-                                                    <button type="button" class="btn btn-primary border-2 radius-round btn-lg mx-1">
+                                                    <button type="button"
+                                                            class="btn btn-primary border-2 radius-round btn-lg mx-1">
                                                         <i class="fab fa-facebook-f text-110"></i>
                                                     </button>
 
-                                                    <button type="button" class="btn btn-danger border-2 radius-round btn-lg px-25 mx-1">
+                                                    <button type="button"
+                                                            class="btn btn-danger border-2 radius-round btn-lg px-25 mx-1">
                                                         <i class="fab fa-google text-110"></i>
                                                     </button>
                                                 </div>
@@ -403,9 +452,12 @@ if(isset($_SESSION['msg_err'])){
                                     </div>
 
 
-                                    <div class="tab-pane mh-100 px-3 px-lg-0 pb-3" id="id-tab-forgot" data-swipe-prev="#id-tab-login">
+                                    <div class="tab-pane mh-100 px-3 px-lg-0 pb-3" id="id-tab-forgot"
+                                         data-swipe-prev="#id-tab-login">
                                         <div class="position-tl ml-3 mt-2">
-                                            <a href="#" class="btn btn-light-default btn-h-light-default btn-a-light-default btn-bgc-tp" data-toggle="tab" data-target="#id-tab-login">
+                                            <a href="#"
+                                               class="btn btn-light-default btn-h-light-default btn-a-light-default btn-bgc-tp"
+                                               data-toggle="tab" data-target="#id-tab-login">
                                                 <i class="fa fa-arrow-left"></i>
                                             </a>
                                         </div>
@@ -425,13 +477,16 @@ if(isset($_SESSION['msg_err'])){
                                                     Enter your email address and we'll send you the instructions:
                                                 </label>
                                                 <div class="d-flex align-items-center">
-                                                    <input type="email" class="form-control form-control-lg pr-4 shadow-none" id="id-recover-email" placeholder="Email" />
+                                                    <input type="email"
+                                                           class="form-control form-control-lg pr-4 shadow-none"
+                                                           id="id-recover-email" placeholder="Email"/>
                                                     <i class="fa fa-envelope text-grey-m2 ml-n4"></i>
                                                 </div>
                                             </div>
 
                                             <div class="form-group col-sm-10 offset-sm-1 col-md-8 offset-md-2 col-lg-6 offset-lg-3 mt-1">
-                                                <button type="button" class="btn btn-orange btn-block px-4 btn-bold mt-2 mb-4">
+                                                <button type="button"
+                                                        class="btn btn-orange btn-block px-4 btn-bold mt-2 mb-4">
                                                     Continue
                                                 </button>
                                             </div>
@@ -441,11 +496,13 @@ if(isset($_SESSION['msg_err'])){
                                         <div class="form-row w-100">
                                             <div class="col-12 col-sm-10 offset-sm-1 col-md-8 offset-md-2 col-lg-6 offset-lg-3 d-flex flex-column align-items-center justify-content-center">
 
-                                                <hr class="brc-default-l2 mt-0 mb-2 w-100" />
+                                                <hr class="brc-default-l2 mt-0 mb-2 w-100"/>
 
                                                 <div class="p-0 px-md-2 text-dark-tp4 my-3">
-                                                    <a class="text-blue-d1 text-600 btn-text-slide-x" data-toggle="tab" data-target="#id-tab-login" href="#">
-                                                        <i class="btn-text-2 fa fa-arrow-left text-110 align-text-bottom mr-2"></i>Back to Login
+                                                    <a class="text-blue-d1 text-600 btn-text-slide-x" data-toggle="tab"
+                                                       data-target="#id-tab-login" href="#">
+                                                        <i class="btn-text-2 fa fa-arrow-left text-110 align-text-bottom mr-2"></i>Back
+                                                        to Login
                                                     </a>
                                                 </div>
 
@@ -462,7 +519,7 @@ if(isset($_SESSION['msg_err'])){
                 </div><!-- /.row -->
 
                 <div class="d-lg-none my-3 text-white-tp1 text-center">
-                    <i class="fa fa-backward text-secondary-l3 mr-1 text-110"></i> iMac Plus &copy; <?=date('Y')?>
+                    <i class="fa fa-backward text-secondary-l3 mr-1 text-110"></i> iMac Plus &copy; <?= date('Y') ?>
                 </div>
             </div>
         </div>
@@ -477,40 +534,36 @@ if(isset($_SESSION['msg_err'])){
 <script src="node_modules/bootstrap/dist/js/bootstrap.js"></script>
 
 
-
 <!-- include vendor scripts used in "Login" page. see "/views//pages/partials/page-login/@vendor-scripts.hbs" -->
-
 
 
 <!-- include ace.js -->
 <script src="dist/js/ace.js"></script>
 
 
-
 <!-- demo.js is only for Ace's demo and you shouldn't use it -->
 <script src="app/browser/demo.js"></script>
-
 
 
 <!-- "Login" page script to enable its demo functionality -->
 <script src="views/pages/page-login/@page-script.js"></script>
 
 <script>
-    $(function(){
+    $(function () {
         err_message();
-        $(".btn-submit").click(function(e){
+        $(".btn-submit").click(function (e) {
 
             e.preventDefault();
             var username = $(".username").val();
             var pwd = $(".password").val();
 
-            if(username == ''){
+            if (username == '') {
                 $(".message").val("กรุณากรอกข้อมูล Username");
                 $(".username").focus();
                 err_message();
                 return false;
             }
-            if(pwd == ''){
+            if (pwd == '') {
                 $(".message").val("กรุณากรอกข้อมูล Password");
                 $(".password").focus();
                 err_message();
@@ -519,15 +572,70 @@ if(isset($_SESSION['msg_err'])){
             $("form#form-login").submit();
         });
 
-        function err_message(){
+        $(".btn-register-submit").click(function (e) {
+
+            e.preventDefault();
+            var username = $(".username-regis").val();
+            var pwd = $(".password-regis").val();
+            var confirm_pwd = $(".confirm-password").val();
+            var phone = $(".phone-regis").val();
+            var email = $(".email-regis").val();
+
+            if (phone == '') {
+                $(".message2").val("กรุณากรอกข้อมูล Phone");
+                $(".phone-regis").focus();
+                err_message2();
+                return false;
+            }
+            if (email == '') {
+                $(".message2").val("กรุณากรอกข้อมูล Email");
+                $(".email-regis").focus();
+                err_message2();
+                return false;
+            }
+            if (username == '') {
+
+                $(".message2").val("กรุณากรอกข้อมูล Username");
+                $(".username-regist").focus();
+                err_message2();
+                return false;
+            }
+            if (pwd == '') {
+                $(".message2").val("กรุณากรอกข้อมูล Password");
+                $(".password-regis").focus();
+                err_message2();
+                return false;
+            }
+            if (confirm_pwd == '') {
+                $(".message2").val("กรุณากรอกข้อมูล Confirm Password");
+                $(".confirm-password").focus();
+                err_message2();
+                return false;
+            }
+
+            $("form#form-register").submit();
+        });
+
+        function err_message() {
             var e_msg = $(".message").val();
-            if(e_msg !=''){
+            if (e_msg != '') {
                 $(".alert-msg").html(e_msg).show();
-            }else{
+            } else {
                 $(".alert-msg").hide();
             }
 
         }
+        function err_message2() {
+            var e_msg = $(".message2").val();
+            if (e_msg != '') {
+                $(".alert-msg2").html(e_msg).show();
+            } else {
+                $(".alert-msg2").hide();
+            }
+
+        }
+
+
     });
 </script>
 </body>

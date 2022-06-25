@@ -370,7 +370,7 @@
 
 
                                 <a class="mt-1 dropdown-item btn btn-outline-grey bgc-h-primary-l3 btn-h-light-primary btn-a-light-primary"
-                                   href="#">
+                                   href="changepassword.php">
                                     <i class="fa fa-user text-primary-m1 text-105 mr-1"></i>
                                     Change password
                                 </a>

@@ -18,35 +18,37 @@ include("models/ItembrandModel.php");
 
 $noti_ok = '';
 $noti_error = '';
-$status_data = [['id'=>1,'name'=>'Active'],['id'=>0,'name'=>'Inactive']];
+$status_data = [['id' => 1, 'name' => 'Active'], ['id' => 0, 'name' => 'Inactive']];
 
-if(isset($_SESSION['msg-success'])){
+if (isset($_SESSION['msg-success'])) {
     $noti_ok = $_SESSION['msg-success'];
     unset($_SESSION['msg-success']);
 }
 
-if(isset($_SESSION['msg-error'])){
+if (isset($_SESSION['msg-error'])) {
     $noti_error = $_SESSION['msg-error'];
     unset($_SESSION['msg-error']);
 }
 $item_brand_data = getItembrandData($connect);
+//print_r($item_brand_data);
 
 ?>
-<input type="hidden" class="msg-ok" value="<?=$noti_ok?>">
-<input type="hidden" class="msg-error" value="<?=$noti_error?>">
+<input type="hidden" class="msg-ok" value="<?= $noti_ok ?>">
+<input type="hidden" class="msg-error" value="<?= $noti_error ?>">
 
 <div class="d-sm-flex align-items-center justify-content-between mb-4">
     <h1 class="h3 mb-0 text-gray-800">สินค้า</h1>
     <div class="btn-group">
-        <a href="#" class="btn btn-light-green btn-h-green btn-a-green border-0 radius-3 py-2 text-600 text-90" onclick="showaddbank($(this))">
+        <a href="#" class="btn btn-light-green btn-h-green btn-a-green border-0 radius-3 py-2 text-600 text-90"
+           onclick="showaddbank($(this))">
                   <span class="d-none d-sm-inline mr-1">
                     สร้าง
                   </span>
-                <i class="fa fa-save text-110 w-2 h-2"></i>
+            <i class="fa fa-save text-110 w-2 h-2"></i>
         </a>
 
-<!--        <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-success shadow-sm" onclick="showaddbank($(this))"><i-->
-<!--                class="fas fa-plus-circle fa-sm text-white-50"></i> สร้างใหม่</a>-->
+        <!--        <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-success shadow-sm" onclick="showaddbank($(this))"><i-->
+        <!--                class="fas fa-plus-circle fa-sm text-white-50"></i> สร้างใหม่</a>-->
         <!--        <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i class="fas fa-download fa-sm text-white-50"></i> Export Data</a>-->
     </div>
 
@@ -63,15 +65,15 @@ $item_brand_data = getItembrandData($connect);
         <div class="table-responsive">
             <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                 <thead>
-                    <tr>
-                        <th>#</th>
-                        <th>Code</th>
-                        <th>Name</th>
-                        <th>Model</th>
-                        <th>Description</th>
-                        <th>Brand</th>
-                        <th>Status</th>
-                    </tr>
+                <tr>
+                    <th>#</th>
+                    <th>Code</th>
+                    <th>Name</th>
+                    <th>Model</th>
+                    <th>Description</th>
+                    <th>Brand</th>
+                    <th>Status</th>
+                </tr>
                 </thead>
                 <tbody>
                 </tbody>
@@ -119,12 +121,7 @@ $item_brand_data = getItembrandData($connect);
                             <!--                                   placeholder="กลุ่มลูกค้า" required>-->
                             <select name="brand_id" class="form-control brand-id" id="">
                                 <?php for ($i = 0; $i <= count($item_brand_data) - 1; $i++): ?>
-                                    <!--                                    --><?php //$selected = '';
-//                                    if ( == $cusgroup_data[$i]['id']) {
-//                                        $selected = "selected";
-//                                    }
-//                                    ?>
-                                    <option value="<?= $item_brand_data[$i]['id'] ?>"><?= $item_brand_data[$i]['name'] ?></option>
+                                    <option value="<?= $item_brand_data[$i]['id'] ?>" ><?= $item_brand_data[$i]['name'] ?></option>
                                 <?php endfor; ?>
                             </select>
                         </div>
@@ -133,7 +130,8 @@ $item_brand_data = getItembrandData($connect);
                     <div class="row">
                         <div class="col-lg-12">
                             <label for="">รายละเอียด</label>
-                            <textarea name="description" class="form-control description" id="" cols="30" rows="5"></textarea>
+                            <textarea name="description" class="form-control description" id="" cols="30"
+                                      rows="5"></textarea>
                         </div>
                     </div>
                     <br>
@@ -150,13 +148,15 @@ $item_brand_data = getItembrandData($connect);
                     <br>
 
 
-
                 </div>
 
                 <!-- Modal footer -->
                 <div class="modal-footer">
-                    <button type="submit" class="btn btn-success btn-save" data-dismiss="modalx"><i class="fa fa-save"></i> Save </button>
-                    <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fa fa-ban"></i> Cancel</button>
+                    <button type="submit" class="btn btn-success btn-save" data-dismiss="modalx"><i
+                                class="fa fa-save"></i> Save
+                    </button>
+                    <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fa fa-ban"></i> Cancel
+                    </button>
                 </div>
             </form>
         </div>
@@ -167,6 +167,7 @@ include "footer.php";
 ?>
 <script>
     notify();
+
     function showaddbank(e) {
         $(".user-recid").val(0);
         $(".bank-name").val('');
@@ -234,7 +235,7 @@ include "footer.php";
             $(".item-name").val(name);
             $(".item-code").val(code);
             $(".item-model").val(model);
-            $(".brand_id").val(brand_id);
+            $(".brand-id").val(brand_id).change();
             $(".description").val(description);
 
             $(".modal-title").html('แก้ไขข้อมูลยี่ห้อสินค้า');
@@ -263,7 +264,7 @@ include "footer.php";
             confirmButtonText: 'ใช่',
             cancelButtonText: 'ไม่ใช่',
             reverseButtons: true
-        }).then(function(result) {
+        }).then(function (result) {
             if (result.value) {
                 $("#form-delete").submit();
             }
@@ -285,6 +286,7 @@ include "footer.php";
         //     // e.trigger("click");
         // });
     }
+
     function notify() {
         // $.toast({
         //     title: 'Message Notify',
@@ -302,7 +304,7 @@ include "footer.php";
         // });
         var msg_ok = $(".msg-ok").val();
         var msg_error = $(".msg-error").val();
-        if(msg_ok != ''){
+        if (msg_ok != '') {
             $.aceToaster.add({
                 placement: 'tr',
                 body: "<p class='p-3 mb-0 text-center'>\
@@ -338,7 +340,7 @@ include "footer.php";
             //     pause_on_hover: false
             // });
         }
-        if(msg_error != ''){
+        if (msg_error != '') {
             $.aceToaster.add({
                 placement: 'tr',
                 body: "<div class='p-3 m-2 d-flex'>\

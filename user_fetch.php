@@ -20,9 +20,11 @@ $query = "SELECT * FROM user WHERE id > 0 ";
 //if(isset($_POST["university_name"])){
 //    $query .= 'dept_name LIKE "%'.$_POST["university_name"].'%" AND ';
 //}
+
+
 if(isset($_POST["search"]["value"]))
 {
-    $query .= '(display_name LIKE "%'.$_POST["search"]["value"].'%"';
+    $query .= 'AND (display_name LIKE "%'.$_POST["search"]["value"].'%"';
     $query .= 'OR username LIKE "%'.$_POST["search"]["value"].'%") ';
 }
 if(isset($_POST["order"]))
@@ -53,7 +55,7 @@ foreach ($result as $row){
     //$branch_name = $row['branch'];
     $i++;
     $sub_array = array();
-//    $sub_array[] = '<p style="font-weight: ;text-align: left">'.$row['display_name'].'</p>';
+    $sub_array[] = '<p style="font-weight: ;text-align: left">'.$row['display_name'].'</p>';
     $sub_array[] = '<p style="font-weight: ;text-align: left">'.$row['username'].'</p>';
     $sub_array[] = '<p style="font-weight: ;text-align: left">'.$row['group_id'].'</p>';
     $sub_array[] = '<div style="text-align: center"><div class="btn btn-secondary" data-id="'.$row['id'].'" onclick="showupdate($(this))"><i class="fas fa-edit"></i> Edit</div><span> </span><div class="btn btn-danger" data-id="'.$row['id'].'" onclick="recDelete($(this))"><i class="fas fa-trash-alt"></i> Delete</div></div>';
