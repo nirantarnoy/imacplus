@@ -16,6 +16,7 @@ include "header.php";
 
 $noti_ok = '';
 $noti_error = '';
+$status_data = [['id'=>1,'name'=>'Active'],['id'=>0,'name'=>'Inactive']];
 
 if(isset($_SESSION['msg-success'])){
     $noti_ok = $_SESSION['msg-success'];
@@ -34,8 +35,14 @@ if(isset($_SESSION['msg-error'])){
 <div class="d-sm-flex align-items-center justify-content-between mb-4">
     <h1 class="h3 mb-0 text-gray-800">ประเภทสินค้า</h1>
     <div class="btn-group">
-        <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-success shadow-sm" onclick="showaddbank($(this))"><i
-                class="fas fa-plus-circle fa-sm text-white-50"></i> สร้างใหม่</a>
+<!--        <a href="#" class="btn btn-light-green btn-h-green btn-a-green border-0 radius-3 py-2 text-600 text-90" onclick="showaddbank($(this))">-->
+<!--                  <span class="d-none d-sm-inline mr-1">-->
+<!--                    สร้าง-->
+<!--                  </span>-->
+<!--            <i class="fa fa-save text-110 w-2 h-2"></i>-->
+<!--        </a>-->
+<!--        <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-success shadow-sm" onclick="showaddbank($(this))"><i-->
+<!--                class="fas fa-plus-circle fa-sm text-white-50"></i> สร้างใหม่</a>-->
         <!--        <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i class="fas fa-download fa-sm text-white-50"></i> Export Data</a>-->
     </div>
 
@@ -45,17 +52,19 @@ if(isset($_SESSION['msg-error'])){
     <!--        <h6 class="m-0 font-weight-bold text-primary">DataTables Example</h6>-->
     <!--    </div>-->
     <div class="card-body">
-        <form action="delete_productcat.php" id="form-delete" method="post">
+        <form action="productcat_action.php" id="form-delete" method="post">
             <input type="hidden" name="delete_id" class="delete-id" value="">
+            <input type="hidden" name="action_type" value="delete">
         </form>
         <div class="table-responsive">
             <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                 <thead>
                 <tr>
+                    <th>#</th>
                     <th>Code</th>
-                    <th style="width: 10%">Name</th>
+                    <th>Name</th>
                     <th>Description</th>
-                    <th style="width: 25%">-</th>
+                    <th>Status</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -68,7 +77,7 @@ if(isset($_SESSION['msg-error'])){
 <div class="modal" id="myModal">
     <div class="modal-dialog">
         <div class="modal-content">
-            <form action="add_productcat_data.php" id="form-user" method="post">
+            <form action="productcat_action.php" id="form-user" method="post">
                 <!-- Modal Header -->
                 <div class="modal-header">
                     <h4 class="modal-title" style="color: #1c606a">เพิ่มข้อมูลประเภทสินค้า</h4>
@@ -78,6 +87,7 @@ if(isset($_SESSION['msg-error'])){
                 <!-- Modal body -->
                 <div class="modal-body">
                     <input type="hidden" name="recid" class="user-recid" value="">
+                    <input type="hidden" name="action_type" class="action-type" value="create">
                     <div class="row">
                         <div class="col-lg-12">
                             <label for="">Code</label>
@@ -88,19 +98,29 @@ if(isset($_SESSION['msg-error'])){
                     <br>
                     <div class="row">
                         <div class="col-lg-12">
-                            <label for="">Name</label>
-                            <input type="text" class="form-control bank-name" name="cat_name" value=""
+                            <label for="">ชื่อ</label>
+                            <input type="text" class="form-control name" name="name" value=""
                                    placeholder="Name">
                         </div>
                     </div>
                     <br>
                     <div class="row">
                         <div class="col-lg-12">
-                            <label for="">Description</label>
+                            <label for="">รายละเอียด</label>
                             <textarea name="description" class="form-control description" id="" cols="30" rows="5"></textarea>
                         </div>
                     </div>
                     <br>
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <label for="">สถานะ</label>
+                            <select name="status" id="" class="form-control status">
+                                <?php for ($i = 0; $i <= count($status_data) - 1; $i++): ?>
+                                    <option value="<?= $status_data[$i]['id'] ?>"><?= $status_data[$i]['name'] ?></option>
+                                <?php endfor; ?>
+                            </select>
+                        </div>
+                    </div>
 
 
 
@@ -157,9 +177,11 @@ include "footer.php";
     function showupdate(e) {
         var recid = e.attr("data-id");
         if (recid != '') {
+            var code = '';
             var name = '';
             var description = '';
-            $.ajax({
+            var status = '';
+                $.ajax({
                 'type': 'post',
                 'dataType': 'json',
                 'async': false,
@@ -168,18 +190,22 @@ include "footer.php";
                 'success': function (data) {
                     if (data.length > 0) {
                         // alert(data[0]['display_name']);
+                        code = data[0]['code'];
                         name = data[0]['name'];
                         description = data[0]['description'];
+                        status = data[0]['status'];
                     }
                 }
             });
 
             $(".user-recid").val(recid);
-            $(".bank-name").val(name);
+            $(".cat-code").val(code);
+            $(".status").val(status);
+            $(".name").val(name);
             $(".description").val(description);
 
             $(".modal-title").html('แก้ไขข้อมูลประเภทสินค้า');
-
+            $(".action-type").val('update');
             $("#myModal").modal("show");
         }
     }

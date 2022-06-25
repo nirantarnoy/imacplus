@@ -38,6 +38,7 @@
 </head>
 
 <body>
+<?php include "common/dbcon.php"?>
 <div class="body-container">
     <nav class="navbar navbar-expand-lg navbar-fixed navbar-blue">
         <div class="navbar-inner">

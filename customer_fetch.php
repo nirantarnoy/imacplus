@@ -9,16 +9,8 @@ include("common/dbcon.php");
 //include("models/ServiceModel.php");
 
 $query_filter = '';
-$query = "SELECT * FROM customer WHERE id > 0";
-//if(isset($_POST["region_name"])){
-//    $query .= 'region_name LIKE "%'.$_POST["region_name"].'%" AND ';
-//}
-//if(isset($_POST["type_name"])){
-//    $query .= 'proj_type LIKE "%'.$_POST["type_name"].'%" AND ';
-//}
-//if(isset($_POST["university_name"])){
-//    $query .= 'dept_name LIKE "%'.$_POST["university_name"].'%" AND ';
-//}
+$query = "SELECT * FROM customer WHERE id > 0 ";
+
 if(isset($_POST["search"]["value"]))
 {
     $query .= ' AND (name LIKE "%'.$_POST["search"]["value"].'%"';
@@ -55,7 +47,8 @@ foreach ($result as $row){
     $sub_array[] = '<p style="font-weight: ;text-align: left">'.$row['name'].'</p>';
     $sub_array[] = '<p style="font-weight: ;text-align: left">'.$row['phone'].'</p>';
     $sub_array[] = '<p style="font-weight: ;text-align: left">'.$row['email'].'</p>';
-    $sub_array[] = '<p style="font-weight: ;text-align: left">'.str_replace("/","'",$row['facebook']).'</p>';
+    $sub_array[] = '<p style="font-weight: ;text-align: left">'.$row['facebook'].'</p>';
+//    $sub_array[] = '<p style="font-weight: ;text-align: left">'.str_replace("/","'",$row['facebook']).'</p>';
 //    $sub_array[] = '<p style="font-weight: ;text-align: left">'.$row['email'].'</p>';
     $sub_array[] = '<div class="btn btn-secondary btn-sm" data-id="'.$row['id'].'" onclick="showupdate($(this))"><i class="fas fa-edit"></i> Edit</div><span> </span><div class="btn btn-danger btn-sm" data-id="'.$row['id'].'" onclick="recDelete($(this))"><i class="fas fa-trash-alt"></i> Delete</div>';
 

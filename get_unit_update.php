@@ -21,7 +21,7 @@ if ($id) {
 //           ,'is_tool'=>$row['is_tool'],'is_user'=>$row['is_user'],'is_all'=>$row['is_all']]);
 //    }
     foreach ($result as $row) {
-        array_push($data,['id'=>$row['id'],'name'=>$row['name'],'description'=>$row['description']]);
+        array_push($data,['id'=>$row['id'],'code'=>$row['code'],'name'=>$row['name'],'description'=>$row['description'],'status'=>$row['status']]);
     }
 
     echo json_encode($data);

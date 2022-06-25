@@ -8,7 +8,7 @@ if (isset($_POST['id'])) {
 }
 
 if ($id) {
-    $query = "SELECT * FROM product_group WHERE id='$id' ";
+    $query = "SELECT * FROM item_brand WHERE id='$id' ";
     $statement = $connect->prepare($query);
     $statement->execute();
     $result = $statement->fetchAll();
@@ -21,7 +21,7 @@ if ($id) {
 //           ,'is_tool'=>$row['is_tool'],'is_user'=>$row['is_user'],'is_all'=>$row['is_all']]);
 //    }
     foreach ($result as $row) {
-        array_push($data,['id'=>$row['id'],'code'=>$row['code'],'name'=>$row['name'],'description'=>$row['description'],'status'=>$row['status']]);
+        array_push($data,['id'=>$row['id'],'name'=>$row['name'],'description'=>$row['description'],'status'=>$row['status']]);
     }
 
     echo json_encode($data);

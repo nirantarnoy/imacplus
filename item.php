@@ -7,6 +7,8 @@ session_start();
 //}
 //echo date('H:i');return;
 include "header.php";
+include("models/StatusModel.php");
+include("models/ItembrandModel.php");
 
 //$position_data = getPositionmodel($connect);
 //$per_check = checkPer($user_position,"is_product_cat", $connect);
@@ -27,22 +29,24 @@ if(isset($_SESSION['msg-error'])){
     $noti_error = $_SESSION['msg-error'];
     unset($_SESSION['msg-error']);
 }
+$item_brand_data = getItembrandData($connect);
 
 ?>
 <input type="hidden" class="msg-ok" value="<?=$noti_ok?>">
 <input type="hidden" class="msg-error" value="<?=$noti_error?>">
 
 <div class="d-sm-flex align-items-center justify-content-between mb-4">
-    <h1 class="h3 mb-0 text-gray-800">ประเภทสมาชิก</h1>
+    <h1 class="h3 mb-0 text-gray-800">สินค้า</h1>
     <div class="btn-group">
         <a href="#" class="btn btn-light-green btn-h-green btn-a-green border-0 radius-3 py-2 text-600 text-90" onclick="showaddbank($(this))">
                   <span class="d-none d-sm-inline mr-1">
                     สร้าง
                   </span>
-            <i class="fa fa-save text-110 w-2 h-2"></i>
+                <i class="fa fa-save text-110 w-2 h-2"></i>
         </a>
+
 <!--        <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-success shadow-sm" onclick="showaddbank($(this))"><i-->
-<!--                    class="fas fa-plus-circle fa-sm text-white-50"></i> สร้างใหม่</a>-->
+<!--                class="fas fa-plus-circle fa-sm text-white-50"></i> สร้างใหม่</a>-->
         <!--        <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i class="fas fa-download fa-sm text-white-50"></i> Export Data</a>-->
     </div>
 
@@ -52,20 +56,22 @@ if(isset($_SESSION['msg-error'])){
     <!--        <h6 class="m-0 font-weight-bold text-primary">DataTables Example</h6>-->
     <!--    </div>-->
     <div class="card-body">
-        <form action="member_type_action.php" id="form-delete" method="post">
+        <form action="item_action.php" id="form-delete" method="post">
             <input type="hidden" name="delete_id" class="delete-id" value="">
             <input type="hidden" name="action_type" value="delete">
         </form>
         <div class="table-responsive">
             <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                 <thead>
-                <tr>
-                    <th>#</th>
-                    <th style="width: 10%">Name</th>
-                    <th>Description</th>
-                    <th>Percent</th>
-                    <th>status</th>
-                </tr>
+                    <tr>
+                        <th>#</th>
+                        <th>Code</th>
+                        <th>Name</th>
+                        <th>Model</th>
+                        <th>Description</th>
+                        <th>Brand</th>
+                        <th>Status</th>
+                    </tr>
                 </thead>
                 <tbody>
                 </tbody>
@@ -77,10 +83,10 @@ if(isset($_SESSION['msg-error'])){
 <div class="modal" id="myModal">
     <div class="modal-dialog">
         <div class="modal-content">
-            <form action="member_type_action.php" id="form-user" method="post">
+            <form action="item_action.php" id="form-user" method="post">
                 <!-- Modal Header -->
                 <div class="modal-header">
-                    <h4 class="modal-title" style="color: #1c606a">เพิ่มข้อมูลประเภทสมาชิก</h4>
+                    <h4 class="modal-title" style="color: #1c606a">เพิ่มข้อมูล Item</h4>
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
                 </div>
 
@@ -89,14 +95,38 @@ if(isset($_SESSION['msg-error'])){
                     <input type="hidden" name="recid" class="user-recid" value="">
                     <input type="hidden" name="action_type" class="action-type" value="create">
                     <div class="row">
-                        <div class="col-lg-6">
-                            <label for="">ชื่อ</label>
-                            <input type="text" class="form-control name" name="name" value=""
-                                   placeholder="Name">
+                        <div class="col-lg-4">
+                            <label for="">Code</label>
+                            <input type="text" class="form-control item-code" name="item_code" value=""
+                                   placeholder="Item code">
                         </div>
-                        <div class="col-lg-6">
-                            <label for="">เปอร์เซ็นต์</label>
-                            <input type="text" class="form-control percent-rate" name="percent_rate" value="">
+                        <div class="col-lg-4">
+                            <label for="">ชื่อ</label>
+                            <input type="text" class="form-control item-name" name="item_name" value=""
+                                   placeholder="Item name">
+                        </div>
+                        <div class="col-lg-4">
+                            <label for="">Model</label>
+                            <input type="text" class="form-control item-model" name="item_model" value=""
+                                   placeholder="Item model">
+                        </div>
+                    </div>
+                    <br>
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <label for="">Brand <span style="color: red"><b>*</b></span></label>
+                            <!--                            <input type="text" class="form-control cust-group-id" name="cust_group_id" value=""-->
+                            <!--                                   placeholder="กลุ่มลูกค้า" required>-->
+                            <select name="brand_id" class="form-control brand-id" id="">
+                                <?php for ($i = 0; $i <= count($item_brand_data) - 1; $i++): ?>
+                                    <!--                                    --><?php //$selected = '';
+//                                    if ( == $cusgroup_data[$i]['id']) {
+//                                        $selected = "selected";
+//                                    }
+//                                    ?>
+                                    <option value="<?= $item_brand_data[$i]['id'] ?>"><?= $item_brand_data[$i]['name'] ?></option>
+                                <?php endfor; ?>
+                            </select>
                         </div>
                     </div>
                     <br>
@@ -117,6 +147,10 @@ if(isset($_SESSION['msg-error'])){
                             </select>
                         </div>
                     </div>
+                    <br>
+
+
+
                 </div>
 
                 <!-- Modal footer -->
@@ -155,7 +189,7 @@ include "footer.php";
             }
         },
         "ajax": {
-            url: "member_type_fetch.php",
+            url: "item_fetch.php",
             type: "POST"
         },
         "columnDefs": [
@@ -170,22 +204,26 @@ include "footer.php";
     function showupdate(e) {
         var recid = e.attr("data-id");
         if (recid != '') {
+            var code = '';
             var name = '';
-            var percent = '';
+            var model = '';
+            var brand_id = '';
             var description = '';
             var status = '';
             $.ajax({
                 'type': 'post',
                 'dataType': 'json',
                 'async': false,
-                'url': 'get_member_type_update.php',
+                'url': 'get_item_update.php',
                 'data': {'id': recid},
                 'success': function (data) {
                     if (data.length > 0) {
                         // alert(data[0]['display_name']);
+                        code = data[0]['code'];
                         name = data[0]['name'];
+                        model = data[0]['model'];
+                        brand_id = data[0]['brand_id'];
                         description = data[0]['description'];
-                        percent = data[0]['percent_rate'];
                         status = data[0]['status'];
                     }
                 }
@@ -193,11 +231,13 @@ include "footer.php";
 
             $(".user-recid").val(recid);
             $(".status").val(status);
-            $(".name").val(name);
-            $(".percent-rate").val(percent);
+            $(".item-name").val(name);
+            $(".item-code").val(code);
+            $(".item-model").val(model);
+            $(".brand_id").val(brand_id);
             $(".description").val(description);
 
-            $(".modal-title").html('แก้ไขข้อมูลประเภทสินค้า');
+            $(".modal-title").html('แก้ไขข้อมูลยี่ห้อสินค้า');
             $(".action-type").val('update');
             $("#myModal").modal("show");
         }
