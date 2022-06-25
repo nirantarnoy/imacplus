@@ -645,28 +645,20 @@
 
 
                         <li class="nav-item active">
-
-                            <a href="html/dashboard.html" class="nav-link">
+                            <a href="index.php" class="nav-link">
                                 <i class="nav-icon fa fa-tachometer-alt"></i>
                                 <span class="nav-text fadeable">
-               	  <span>Dashboard</span>
-                    </span>
-
-
+                                  <span>Dashboard</span>
+                                </span>
                             </a>
-
                             <b class="sub-arrow"></b>
-
                         </li>
-
-
                         <li class="nav-item">
-
                             <a href="#" class="nav-link dropdown-toggle collapsed">
                                 <i class="nav-icon fa fa-cube"></i>
                                 <span class="nav-text fadeable">
-               	  <span>สินค้า</span>
-                    </span>
+                                  <span>สินค้า</span>
+                                </span>
                                 <b class="caret fa fa-angle-left rt-n90"></b>
 
                                 <!-- or you can use custom icons. first add `d-style` to 'A' -->
