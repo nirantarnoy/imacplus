@@ -6,9 +6,8 @@ if(!isset($_SESSION['userid'])){
    // header("location:loginpage.php");
 }
 include("common/dbcon.php");
-include("models/StatusModel.php");
 $query_filter = '';
-$query = "SELECT * FROM unit WHERE ";
+$query = "SELECT * FROM customer_group WHERE ";
 //if(isset($_POST["region_name"])){
 //    $query .= 'region_name LIKE "%'.$_POST["region_name"].'%" AND ';
 //}
@@ -43,18 +42,18 @@ $statement = $connect->prepare($query);
 $statement->execute();
 $result = $statement->fetchAll();
 
-$i = 0;
+$i =0;
 $data = array();
 $filtered_rows = $statement->rowCount();
 foreach ($result as $row){
 
-    $i++;
     //$branch_name = $row['branch'];
+    $i++;
     $sub_array = array();
-    $sub_array[] = '<p style="font-weight: ;text-align: left">'.$row['code'].'</p>';
+//    $sub_array[] = '<p style="font-weight: ;text-align: left">'.$i.'</p>';
     $sub_array[] = '<p style="font-weight: ;text-align: left">'.$row['name'].'</p>';
     $sub_array[] = '<p style="font-weight: ;text-align: left">'.$row['description'].'</p>';
-    $sub_array[] = '<p style="font-weight: ;text-align: left">'.getStatus($row['status']).'</p>';
+    $sub_array[] = '<p style="font-weight: ;text-align: left">'.$row['status'].'</p>';
     $sub_array[] = '<div class="btn btn-secondary btn-sm" data-id="'.$row['id'].'" onclick="showupdate($(this))"><i class="fas fa-edit"></i> Edit</div><span> </span><div class="btn btn-danger btn-sm" data-id="'.$row['id'].'" onclick="recDelete($(this))"><i class="fas fa-trash-alt"></i> Delete</div>';
 
     $data[] = $sub_array;

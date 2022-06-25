@@ -28,8 +28,11 @@ if ($id) {
                 'name'=>$row['name'],
                 'phone'=>$row['phone'],
                 'email'=>$row['email'],
+                'status'=>$row['status'],
+                'customer_group_id'=>$row['customer_group_id'],
                 'line_id'=> str_replace("/","'",$row['line_id']),
                 'facebook'=>str_replace("/","'",$row['facebook']),
+                'description'=>str_replace("/","'",$row['description']),
                 'note'=>str_replace("/","'",$row['note']),
                 'address'=> str_replace("/","'",$row['address']),
             ]);

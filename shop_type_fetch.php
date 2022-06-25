@@ -8,7 +8,7 @@ if(!isset($_SESSION['userid'])){
 include("common/dbcon.php");
 include("models/StatusModel.php");
 $query_filter = '';
-$query = "SELECT * FROM unit WHERE ";
+$query = "SELECT * FROM shop_type  ";
 //if(isset($_POST["region_name"])){
 //    $query .= 'region_name LIKE "%'.$_POST["region_name"].'%" AND ';
 //}
@@ -18,19 +18,19 @@ $query = "SELECT * FROM unit WHERE ";
 //if(isset($_POST["university_name"])){
 //    $query .= 'dept_name LIKE "%'.$_POST["university_name"].'%" AND ';
 //}
-if(isset($_POST["search"]["value"]))
-{
-    $query .= '(name LIKE "%'.$_POST["search"]["value"].'%"';
-    $query .= 'OR description LIKE "%'.$_POST["search"]["value"].'%") ';
-}
-if(isset($_POST["order"]))
-{
-    $query .= ' ORDER BY '.$_POST['order']['0']['column'].' '.$_POST['order']['0']['dir'].' ';
-}
-else
-{
-    $query .= ' ORDER BY id ASC ';
-}
+//if(isset($_POST["search"]["value"]))
+//{
+//    $query .= '(name LIKE "%'.$_POST["search"]["value"].'%"';
+//    $query .= 'OR description LIKE "%'.$_POST["search"]["value"].'%") ';
+//}
+//if(isset($_POST["order"]))
+//{
+//    $query .= ' ORDER BY '.$_POST['order']['0']['column'].' '.$_POST['order']['0']['dir'].' ';
+//}
+//else
+//{
+//    $query .= ' ORDER BY id ASC ';
+//}
 
 $query_filter = $query;
 
@@ -43,15 +43,15 @@ $statement = $connect->prepare($query);
 $statement->execute();
 $result = $statement->fetchAll();
 
-$i = 0;
+$i =0;
 $data = array();
 $filtered_rows = $statement->rowCount();
 foreach ($result as $row){
 
-    $i++;
     //$branch_name = $row['branch'];
+    $i++;
     $sub_array = array();
-    $sub_array[] = '<p style="font-weight: ;text-align: left">'.$row['code'].'</p>';
+//    $sub_array[] = '<p style="font-weight: ;text-align: left">'.$i.'</p>';
     $sub_array[] = '<p style="font-weight: ;text-align: left">'.$row['name'].'</p>';
     $sub_array[] = '<p style="font-weight: ;text-align: left">'.$row['description'].'</p>';
     $sub_array[] = '<p style="font-weight: ;text-align: left">'.getStatus($row['status']).'</p>';
