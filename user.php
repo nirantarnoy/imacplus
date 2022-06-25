@@ -1,6 +1,6 @@
 <?php
 ob_start();
-//session_start();
+session_start();
 //date_default_timezone_set('Asia/Bangkok');
 
 //echo date('H:i');return;
@@ -20,11 +20,11 @@ if (!isset($_SESSION['userid'])) {
 ?>
 <div class="d-sm-flex align-items-center justify-content-between mb-4">
     <h1 class="h3 mb-0 text-gray-800">ผู้ใช้งาน</h1>
-    <div class="btn-group">
-        <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-success shadow-sm" onclick="showadduser($(this))"><i
-                    class="fas fa-plus-circle fa-sm text-white-50"></i> สร้างใหม่</a>
-        <!--        <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i class="fas fa-download fa-sm text-white-50"></i> Export Data</a>-->
-    </div>
+    <!--    <div class="btn-group">-->
+    <!--        <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-success shadow-sm" onclick="showadduser($(this))"><i-->
+    <!--                    class="fas fa-plus-circle fa-sm text-white-50"></i> สร้างใหม่</a>-->
+    <!--        <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i class="fas fa-download fa-sm text-white-50"></i> Export Data</a>-->
+    <!--    </div>-->
 
 </div>
 <div class="card shadow mb-4">
@@ -39,10 +39,10 @@ if (!isset($_SESSION['userid'])) {
             <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                 <thead>
                 <tr>
+                    <th>#</th>
                     <th>Display Name</th>
                     <th>Username</th>
                     <th>Roles</th>
-                    <th style="width:25%;text-align: center;">-</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -101,75 +101,78 @@ if (!isset($_SESSION['userid'])) {
                         </div>
                     </div>
                     <br>
-<!--                    <h3>User Roles</h3>-->
-<!--                    <hr>-->
-<!--                    <div class="row">-->
-<!--                        <div class="col-lg-6">-->
-<!--                            <div class="form-check">-->
-<!--                                <div class="form-group">-->
-<!--                                    <div class="custom-control custom-checkbox small">-->
-<!--                                        <input type="checkbox" name="is_member" class="custom-control-input"-->
-<!--                                               id="is_member" onchange="checkboxChange($(this))">-->
-<!--                                        <label class="custom-control-label" for="is_member">Member</label>-->
-<!--                                    </div>-->
-<!--                                </div>-->
-<!--                                <div class="form-group">-->
-<!--                                    <div class="custom-control custom-checkbox small">-->
-<!--                                        <input type="checkbox" name="is_accounting" class="custom-control-input"-->
-<!--                                               id="is_accounting" onchange="checkboxChange($(this))">-->
-<!--                                        <label class="custom-control-label" for="is_accounting">Accounting</label>-->
-<!--                                    </div>-->
-<!--                                </div>-->
-<!--                                <div class="form-group">-->
-<!--                                    <div class="custom-control custom-checkbox small">-->
-<!--                                        <input type="checkbox" name="is_promotion" class="custom-control-input" id="is_promotion"-->
-<!--                                               onchange="checkboxChange($(this))">-->
-<!--                                        <label class="custom-control-label" for="is_promotion">Promotion Setting</label>-->
-<!--                                    </div>-->
-<!--                                </div>-->
-<!--                                <div class="form-group">-->
-<!--                                    <div class="custom-control custom-checkbox small">-->
-<!--                                        <input type="checkbox" name="is_capital" class="custom-control-input" id="is_capital"-->
-<!--                                               onchange="checkboxChange($(this))">-->
-<!--                                        <label class="custom-control-label" for="is_capital">Capital</label>-->
-<!--                                    </div>-->
-<!--                                </div>-->
-<!--                            </div>-->
-<!--                        </div>-->
-<!--                        <div class="col-lg-6">-->
-<!--                            <div class="form-check">-->
-<!--                                <div class="form-group">-->
-<!--                                    <div class="custom-control custom-checkbox small">-->
-<!--                                        <input type="checkbox" name="is_bank" class="custom-control-input" id="is_bank"-->
-<!--                                               onchange="checkboxChange($(this))">-->
-<!--                                        <label class="custom-control-label" for="is_bank">Bank</label>-->
-<!--                                    </div>-->
-<!--                                </div>-->
-<!--                                <div class="form-group">-->
-<!--                                    <div class="custom-control custom-checkbox small">-->
-<!--                                        <input type="checkbox" name="is_user" class="custom-control-input"-->
-<!--                                               id="is_user" onchange="checkboxChange($(this))">-->
-<!--                                        <label class="custom-control-label" for="is_user">User</label>-->
-<!--                                    </div>-->
-<!--                                </div>-->
-<!--                                <div class="form-group">-->
-<!--                                    <div class="custom-control custom-checkbox small">-->
-<!--                                        <input type="checkbox" name="is_all" class="custom-control-input" id="is_all">-->
-<!--                                        <label class="custom-control-label" for="is_all">All</label>-->
-<!--                                    </div>-->
-<!--                                </div>-->
-<!--                            </div>-->
-<!--                        </div>-->
-<!---->
-<!--                    </div>-->
+                    <!--                    <h3>User Roles</h3>-->
+                    <!--                    <hr>-->
+                    <!--                    <div class="row">-->
+                    <!--                        <div class="col-lg-6">-->
+                    <!--                            <div class="form-check">-->
+                    <!--                                <div class="form-group">-->
+                    <!--                                    <div class="custom-control custom-checkbox small">-->
+                    <!--                                        <input type="checkbox" name="is_member" class="custom-control-input"-->
+                    <!--                                               id="is_member" onchange="checkboxChange($(this))">-->
+                    <!--                                        <label class="custom-control-label" for="is_member">Member</label>-->
+                    <!--                                    </div>-->
+                    <!--                                </div>-->
+                    <!--                                <div class="form-group">-->
+                    <!--                                    <div class="custom-control custom-checkbox small">-->
+                    <!--                                        <input type="checkbox" name="is_accounting" class="custom-control-input"-->
+                    <!--                                               id="is_accounting" onchange="checkboxChange($(this))">-->
+                    <!--                                        <label class="custom-control-label" for="is_accounting">Accounting</label>-->
+                    <!--                                    </div>-->
+                    <!--                                </div>-->
+                    <!--                                <div class="form-group">-->
+                    <!--                                    <div class="custom-control custom-checkbox small">-->
+                    <!--                                        <input type="checkbox" name="is_promotion" class="custom-control-input" id="is_promotion"-->
+                    <!--                                               onchange="checkboxChange($(this))">-->
+                    <!--                                        <label class="custom-control-label" for="is_promotion">Promotion Setting</label>-->
+                    <!--                                    </div>-->
+                    <!--                                </div>-->
+                    <!--                                <div class="form-group">-->
+                    <!--                                    <div class="custom-control custom-checkbox small">-->
+                    <!--                                        <input type="checkbox" name="is_capital" class="custom-control-input" id="is_capital"-->
+                    <!--                                               onchange="checkboxChange($(this))">-->
+                    <!--                                        <label class="custom-control-label" for="is_capital">Capital</label>-->
+                    <!--                                    </div>-->
+                    <!--                                </div>-->
+                    <!--                            </div>-->
+                    <!--                        </div>-->
+                    <!--                        <div class="col-lg-6">-->
+                    <!--                            <div class="form-check">-->
+                    <!--                                <div class="form-group">-->
+                    <!--                                    <div class="custom-control custom-checkbox small">-->
+                    <!--                                        <input type="checkbox" name="is_bank" class="custom-control-input" id="is_bank"-->
+                    <!--                                               onchange="checkboxChange($(this))">-->
+                    <!--                                        <label class="custom-control-label" for="is_bank">Bank</label>-->
+                    <!--                                    </div>-->
+                    <!--                                </div>-->
+                    <!--                                <div class="form-group">-->
+                    <!--                                    <div class="custom-control custom-checkbox small">-->
+                    <!--                                        <input type="checkbox" name="is_user" class="custom-control-input"-->
+                    <!--                                               id="is_user" onchange="checkboxChange($(this))">-->
+                    <!--                                        <label class="custom-control-label" for="is_user">User</label>-->
+                    <!--                                    </div>-->
+                    <!--                                </div>-->
+                    <!--                                <div class="form-group">-->
+                    <!--                                    <div class="custom-control custom-checkbox small">-->
+                    <!--                                        <input type="checkbox" name="is_all" class="custom-control-input" id="is_all">-->
+                    <!--                                        <label class="custom-control-label" for="is_all">All</label>-->
+                    <!--                                    </div>-->
+                    <!--                                </div>-->
+                    <!--                            </div>-->
+                    <!--                        </div>-->
+                    <!---->
+                    <!--                    </div>-->
                     <br>
 
                 </div>
 
                 <!-- Modal footer -->
                 <div class="modal-footer">
-                    <button type="submit" class="btn btn-success btn-save" data-dismiss="modalx"><i class="fa fa-save"></i> Save </button>
-                    <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fa fa-ban"></i> Cancel</button>
+                    <button type="submit" class="btn btn-success btn-save" data-dismiss="modalx"><i
+                                class="fa fa-save"></i> Save
+                    </button>
+                    <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fa fa-ban"></i> Cancel
+                    </button>
                 </div>
             </form>
         </div>
@@ -228,8 +231,9 @@ include "footer.php";
             console.log("Digit: ", error.v, " is invalid for the position: ", error.p, ". We expect something like: ", error.e);
         }
     };
-    $("#start-time").mask("00:00", options);
-    $("#end-time").mask("00:00", options);
+    // $("#start-time").mask("00:00", options);
+    // $("#end-time").mask("00:00", options);
+
     $("#dataTable").DataTable({
         "processing": true,
         "serverSide": true,
