@@ -8,6 +8,7 @@ session_start();
 //echo date('H:i');return;
 include "header.php";
 include("models/StatusModel.php");
+include("models/ChecklistModel.php");
 
 //$position_data = getPositionmodel($connect);
 //$per_check = checkPer($user_position,"is_product_cat", $connect);
@@ -15,28 +16,60 @@ include("models/StatusModel.php");
 //    header("location:errorpage.php");
 //}
 
+$checklist_data = getChecklistmodel($connect);
+
+
+$col_1 = [];
+$col_2 = [];
+$col_3 = [];
+$col_4 = [];
+
+$item_nums = 0;
+
+
+if (count($checklist_data) > 0) {
+
+    for ($x = 0; $x <= count($checklist_data) - 1; $x++) {
+        if ($item_nums <= 7) {
+            array_push($col_1, ['id' => $checklist_data[$x]['id'], 'name' => $checklist_data[$x]['name']]);
+        }
+        if ($item_nums > 7 && $item_nums <= 15) {
+            array_push($col_2, ['id' => $checklist_data[$x]['id'], 'name' => $checklist_data[$x]['name']]);
+        }
+        if ($item_nums > 15 && $item_nums <= 22) {
+            array_push($col_3, ['id' => $checklist_data[$x]['id'], 'name' => $checklist_data[$x]['name']]);
+        }
+        if ($item_nums > 22 && $item_nums <= 30) {
+            array_push($col_4, ['id' => $checklist_data[$x]['id'], 'name' => $checklist_data[$x]['name']]);
+        }
+        $item_nums += 1;
+    }
+}
+
+
 $noti_ok = '';
 $noti_error = '';
-$status_data = [['id'=>1,'name'=>'Active'],['id'=>0,'name'=>'Inactive']];
+$status_data = [['id' => 1, 'name' => 'Active'], ['id' => 0, 'name' => 'Inactive']];
 
-if(isset($_SESSION['msg-success'])){
+if (isset($_SESSION['msg-success'])) {
     $noti_ok = $_SESSION['msg-success'];
     unset($_SESSION['msg-success']);
 }
 
-if(isset($_SESSION['msg-error'])){
+if (isset($_SESSION['msg-error'])) {
     $noti_error = $_SESSION['msg-error'];
     unset($_SESSION['msg-error']);
 }
 
 ?>
-<input type="hidden" class="msg-ok" value="<?=$noti_ok?>">
-<input type="hidden" class="msg-error" value="<?=$noti_error?>">
+<input type="hidden" class="msg-ok" value="<?= $noti_ok ?>">
+<input type="hidden" class="msg-error" value="<?= $noti_error ?>">
 
 <div class="d-sm-flex align-items-center justify-content-between mb-4">
     <h1 class="h3 mb-0 text-gray-800">คำสั่งซ่อม</h1>
     <div class="btn-group">
-        <a href="#" class="btn btn-light-green btn-h-green btn-a-green border-0 radius-3 py-2 text-600 text-90" onclick="showaddbank($(this))">
+        <a href="#" class="btn btn-light-green btn-h-green btn-a-green border-0 radius-3 py-2 text-600 text-90"
+           onclick="showaddbank($(this))">
                   <span class="d-none d-sm-inline mr-1">
                     สร้าง
                   </span>
@@ -78,9 +111,9 @@ if(isset($_SESSION['msg-error'])){
 </div>
 
 <div class="modal" id="myModal">
-    <div class="modal-dialog">
+    <div class="modal-dialog modal-lg">
         <div class="modal-content">
-            <form action="unit_action.php" id="form-user" method="post">
+            <form action="workorder_action.php" id="form-workorder" method="post">
                 <!-- Modal Header -->
                 <div class="modal-header">
                     <h4 class="modal-title" style="color: #1c606a">สร้างคำสั่งซ่อม</h4>
@@ -92,27 +125,131 @@ if(isset($_SESSION['msg-error'])){
                     <input type="hidden" name="recid" class="user-recid" value="">
                     <input type="hidden" name="action_type" class="action-type" value="create">
                     <div class="row">
-                        <div class="col-lg-6">
-                            <label for="">Code</label>
-                            <input type="text" class="form-control unit-code" name="unit_code" value=""
-                                   placeholder="Code">
+                        <div class="col-lg-3">
+                            <label for="">เลขที่ใบสั่งซ่อม</label>
+                            <input type="text" class="form-control workorder-no" name="workorder_no" value=""
+                                   placeholder="เลขที่">
                         </div>
-                        <div class="col-lg-6">
-                            <label for="">ชื่อ</label>
-                            <input type="text" class="form-control unit-name" name="unit_name" value=""
-                                   placeholder="Name">
+                        <div class="col-lg-3">
+                            <label for="">วันที่</label>
+                            <input type="text" class="form-control workorder-date" name="workorder_date" value=""
+                                   placeholder="วันที่">
+                        </div>
+                        <div class="col-lg-3">
+                            <label for="">ลูกค้า</label>
+                            <select class="form-control customer-id" name="customer_id" id="">
+                                <option value="">-</option>
+                            </select>
+                        </div>
+                        <div class="col-lg-3">
+                            <label for="">เบอร์โทร</label>
+                            <input type="text" class="form-control phone" name="phone" value=""
+                                   placeholder="เบอร์โทร">
                         </div>
                     </div>
                     <br>
                     <div class="row">
-                        <div class="col-lg-12">
-                            <label for="">รายละเอียด</label>
-                            <textarea name="description" class="form-control description" id="" cols="30" rows="5"></textarea>
+                        <div class="col-lg-4">
+                            <label for="">รับซ่อมโทรศัพท์มือถือยี่ห้อ</label>
+                            <select name="phone_brand" class="form-control phone-brand" id="">
+                                <option value="">-</option>
+                            </select>
+                        </div>
+                        <div class="col-lg-4">
+                            <label for="">รุ่น</label>
+                            <select name="phone_model" class="form-control phone-model" id="">
+                                <option value="">-</option>
+                            </select>
+                        </div>
+                        <div class="col-lg-4">
+                            <label for="">สี</label>
+                            <input type="text" class="form-control phone-color" name="phone_color" value=""
+                                   placeholder="สี">
                         </div>
                     </div>
                     <br>
+                    <h3>อาการเสียที่แจ้งซ่อม</h3>
                     <div class="row">
-                        <div class="col-lg-12">
+                        <div class="col-lg-3">
+                            <table>
+                                <?php if (count($col_1) > 0): ?>
+                                    <?php for ($i = 0; $i <= count($col_1) - 1; $i++): ?>
+                                    <?php $check_id = 'check'.$col_1[$i]['id'] ?>
+                                        <tr>
+                                            <td>
+                                                <input type="checkbox" name="check_list[]" id="<?=$check_id?>" style="border-radius: 10px;"
+                                                       value="<?= $col_1[$i]['id'] ?>" onclick="checkselected($(this))"><span> <?= $col_1[$i]['name'] ?></span>
+                                            </td>
+                                        </tr>
+
+                                    <?php endfor; ?>
+                                <?php endif; ?>
+                            </table>
+                        </div>
+                        <div class="col-lg-3">
+                            <table>
+                                <?php if (count($col_2) > 0): ?>
+                                    <?php for ($i = 0; $i <= count($col_2) - 1; $i++): ?>
+                                        <?php $check_id = 'check'.$col_1[$i]['id'] ?>
+                                        <tr>
+                                            <td>
+                                                <input type="checkbox" name="check_list[]" id="<?=$check_id?>" style="border-radius: 10px;"
+                                                       value="<?= $col_2[$i]['id'] ?>"><span> <?= $col_2[$i]['name'] ?></span>
+                                            </td>
+                                        </tr>
+
+                                    <?php endfor; ?>
+                                <?php endif; ?>
+                            </table>
+                        </div>
+                        <div class="col-lg-3">
+                            <table>
+                                <?php if (count($col_3) > 0): ?>
+                                    <?php for ($i = 0; $i <= count($col_3) - 1; $i++): ?>
+                                        <?php $check_id = 'check'.$col_1[$i]['id'] ?>
+                                        <tr>
+                                            <td>
+                                                <input type="checkbox" name="check_list[]" id="<?=$check_id?>" style="border-radius: 10px;"
+                                                       value="<?= $col_3[$i]['id'] ?>"><span> <?= $col_3[$i]['name'] ?></span>
+                                            </td>
+                                        </tr>
+
+                                    <?php endfor; ?>
+                                <?php endif; ?>
+                            </table>
+                        </div>
+                        <div class="col-lg-3">
+                            <table>
+                                <?php if (count($col_4) > 0): ?>
+                                    <?php for ($i = 0; $i <= count($col_4) - 1; $i++): ?>
+                                        <?php $check_id = 'check'.$col_1[$i]['id'] ?>
+                                        <tr>
+                                            <td>
+                                                <input type="checkbox" name="check_list[]" id="<?=$check_id?>" style="border-radius: 10px;"
+                                                       value="<?= $col_4[$i]['id'] ?>"><span> <?= $col_4[$i]['name'] ?></span>
+                                            </td>
+                                        </tr>
+
+                                    <?php endfor; ?>
+                                <?php endif; ?>
+                            </table>
+                        </div>
+                    </div>
+                    <br />
+                    <div class="row">
+                        <div class="col-lg-3">
+                            <label for="">รหัสเข้าเครื่อง</label>
+                            <input type="text" class="form-control customer-pass" name="customer_pass" value="">
+                        </div>
+                        <div class="col-lg-3">
+                            <label for="">ราคาประเมิณการซ่อม</label>
+                            <input type="text" class="form-control estimate-price" name="estimate_price" value="">
+                        </div>
+                        <div class="col-lg-3">
+                            <label for="">มัดจำ</label>
+                            <input type="text" class="form-control pre-pay" name="pre_pay" value="">
+                        </div>
+                        <div class="col-lg-3">
                             <label for="">สถานะ</label>
                             <select name="status" id="" class="form-control status">
                                 <?php for ($i = 0; $i <= count($status_data) - 1; $i++): ?>
@@ -124,13 +261,15 @@ if(isset($_SESSION['msg-error'])){
                     <br>
 
 
-
                 </div>
 
                 <!-- Modal footer -->
                 <div class="modal-footer">
-                    <button type="submit" class="btn btn-success btn-save" data-dismiss="modalx"><i class="fa fa-save"></i> Save </button>
-                    <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fa fa-ban"></i> Cancel</button>
+                    <button type="submit" class="btn btn-success btn-save" data-dismiss="modalx"><i
+                                class="fa fa-save"></i> Save
+                    </button>
+                    <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fa fa-ban"></i> Cancel
+                    </button>
                 </div>
             </form>
         </div>
@@ -141,6 +280,10 @@ include "footer.php";
 ?>
 <script>
     notify();
+    function checkselected(e){
+        // var c_value = e.attr('checked');
+        // alert(c_value);
+    }
     function showaddbank(e) {
         $(".user-recid").val(0);
         $(".bank-name").val('');
@@ -231,7 +374,7 @@ include "footer.php";
             confirmButtonText: 'ใช่',
             cancelButtonText: 'ไม่ใช่',
             reverseButtons: true
-        }).then(function(result) {
+        }).then(function (result) {
             if (result.value) {
                 $("#form-delete").submit();
             }
@@ -253,6 +396,7 @@ include "footer.php";
         //     // e.trigger("click");
         // });
     }
+
     function notify() {
         // $.toast({
         //     title: 'Message Notify',
@@ -270,7 +414,7 @@ include "footer.php";
         // });
         var msg_ok = $(".msg-ok").val();
         var msg_error = $(".msg-error").val();
-        if(msg_ok != ''){
+        if (msg_ok != '') {
             $.aceToaster.add({
                 placement: 'tr',
                 body: "<p class='p-3 mb-0 text-center'>\
@@ -306,7 +450,7 @@ include "footer.php";
             //     pause_on_hover: false
             // });
         }
-        if(msg_error != ''){
+        if (msg_error != '') {
             $.aceToaster.add({
                 placement: 'tr',
                 body: "<div class='p-3 m-2 d-flex'>\
