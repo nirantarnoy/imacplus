@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1">
-<!--        <base href="./" />-->
+    <!--        <base href="./" />-->
 
     <title>iMacPlus</title>
 
@@ -20,6 +20,13 @@
 
 
     <!-- include vendor stylesheets used in "Dashboard" page. see "/views//pages/partials/dashboard/@vendor-stylesheets.hbs" -->
+
+
+    <link rel="stylesheet" type="text/css" href="node_modules/tiny-date-picker/tiny-date-picker.css">
+    <link rel="stylesheet" type="text/css" href="node_modules/tiny-date-picker/date-range-picker.css">
+
+    <link rel="stylesheet" type="text/css"
+          href="node_modules/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.css">
 
 
     <!-- include fonts -->
@@ -38,7 +45,7 @@
 </head>
 
 <body>
-<?php include "common/dbcon.php"?>
+<?php include "common/dbcon.php" ?>
 <div class="body-container">
     <nav class="navbar navbar-expand-lg navbar-fixed navbar-blue">
         <div class="navbar-inner">
@@ -97,7 +104,6 @@
 
                 <div class="navbar-nav">
                     <ul class="nav">
-
 
 
                         <li class="nav-item dropdown dropdown-mega">
@@ -350,7 +356,7 @@
                                aria-haspopup="true" aria-expanded="false">
                                 <img id="id-navbar-user-image"
                                      class="d-none d-lg-inline-block radius-round border-2 brc-white-tp1 mr-2 w-6"
-                                     src="assets/image/avatar/avatar6.jpg" alt="Jason's Photo">
+                                     src="assets/image/avatar/admin.jpg" alt="Admin 's photo">
                                 <span class="d-inline-block d-lg-none d-xl-inline-block">
                               <span class="text-90" id="id-user-welcome">Welcome,</span>
                     <span class="nav-user-name">Admin</span>
@@ -438,6 +444,51 @@
                         <!-- the search box -->
                     </div>
 
+                    <?php
+                    $is_active = null;
+                    $is_show = null;
+                    function url_origin($s, $use_forwarded_host = false)
+                    {
+                        $ssl = (!empty($s['HTTPS']) && $s['HTTPS'] == 'on');
+                        $sp = strtolower($s['SERVER_PROTOCOL']);
+                        $protocol = substr($sp, 0, strpos($sp, '/')) . (($ssl) ? 's' : '');
+                        $port = $s['SERVER_PORT'];
+                        $port = ((!$ssl && $port == '80') || ($ssl && $port == '443')) ? '' : ':' . $port;
+                        $host = ($use_forwarded_host && isset($s['HTTP_X_FORWARDED_HOST'])) ? $s['HTTP_X_FORWARDED_HOST'] : (isset($s['HTTP_HOST']) ? $s['HTTP_HOST'] : null);
+                        $host = isset($host) ? $host : $s['SERVER_NAME'] . $port;
+                        return $protocol . '://' . $host;
+                    }
+
+                    function full_url($s, $use_forwarded_host = false)
+                    {
+                        return url_origin($s, $use_forwarded_host) . $s['REQUEST_URI'];
+                    }
+
+                    $absolute_url = full_url($_SERVER);
+
+                    $current_url = explode('/', $absolute_url);
+                   // print_r($current_url[4]);
+                    function checkActiveMenu($obj, $menu)
+                    {
+                        if ($obj == $menu) {
+                            $is_active = 'active';
+                        } else {
+                            $is_active = '';
+                        }
+                        return $is_active;
+                    }
+                    function checkShowMenu($obj, $menu)
+                    {
+                        if ($obj == $menu) {
+                            $is_show = 'show';
+                        } else {
+                            $is_show = '';
+                        }
+                        return $is_show;
+                    }
+
+                    ?>
+
                     <ul class="nav has-active-border active-on-right">
 
 
@@ -456,7 +507,7 @@
                         </li>
 
 
-                        <li class="nav-item active">
+                        <li class="nav-item  <?=checkActiveMenu($current_url[4],'index.php')?>">
                             <a href="index.php" class="nav-link">
                                 <i class="nav-icon fa fa-tachometer-alt"></i>
                                 <span class="nav-text fadeable">
@@ -479,19 +530,19 @@
                                     <b class="caret d-collapsed fa fa-plus text-80"></b>
                                 -->
                             </a>
-                            <div class="hideable submenu collapse">
+                            <div class="hideable submenu collapse <?=checkShowMenu($current_url[4],'productcat.php')?>">
                                 <ul class="submenu-inner">
-                                    <li class="nav-item">
-                                        <a href="productcat.php" class="nav-link">
+                                    <li class="nav-item <?=checkActiveMenu($current_url[4],'itembrand.php')?>">
+                                        <a href="itembrand.php" class="nav-link">
                                           <span class="nav-text">
-                                              <span>กลุ่มสินค้า</span>
+                                              <span>ยี่ห้อ</span>
                                           </span>
                                         </a>
                                     </li>
                                     <li class="nav-item">
                                         <a href="item.php" class="nav-link">
                                           <span class="nav-text">
-                                              <span>รหัสสินค้า</span>
+                                              <span>Models</span>
                                           </span>
                                         </a>
                                     </li>
@@ -499,13 +550,6 @@
                                         <a href="unit.php" class="nav-link">
                                           <span class="nav-text">
                                               <span>หน่วยนับ</span>
-                                          </span>
-                                        </a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a href="itembrand.php" class="nav-link">
-                                          <span class="nav-text">
-                                              <span>ยี่ห้อ</span>
                                           </span>
                                         </a>
                                     </li>
@@ -567,6 +611,13 @@
                             <div class="hideable submenu collapse">
                                 <ul class="submenu-inner">
                                     <li class="nav-item">
+                                        <a href="check_list.php" class="nav-link">
+                                          <span class="nav-text">
+                                              <span>Check List</span>
+                                          </span>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
                                         <a href="workorder.php" class="nav-link">
                                           <span class="nav-text">
                                               <span>คำสั่งซ่อม</span>
@@ -579,20 +630,20 @@
                         </li>
 
 
-<!--                        <li class="nav-item">-->
-<!---->
-<!--                            <a href="html/cards.html" class="nav-link">-->
-<!--                                <i class="nav-icon far fa-window-restore"></i>-->
-<!--                                <span class="nav-text fadeable">-->
-<!--               	  <span>สินค้า</span>-->
-<!--                    </span>-->
-<!---->
-<!---->
-<!--                            </a>-->
-<!---->
-<!--                            <b class="sub-arrow"></b>-->
-<!---->
-<!--                        </li>-->
+                        <!--                        <li class="nav-item">-->
+                        <!---->
+                        <!--                            <a href="html/cards.html" class="nav-link">-->
+                        <!--                                <i class="nav-icon far fa-window-restore"></i>-->
+                        <!--                                <span class="nav-text fadeable">-->
+                        <!--               	  <span>สินค้า</span>-->
+                        <!--                    </span>-->
+                        <!---->
+                        <!---->
+                        <!--                            </a>-->
+                        <!---->
+                        <!--                            <b class="sub-arrow"></b>-->
+                        <!---->
+                        <!--                        </li>-->
 
 
                         <li class="nav-item-caption">
@@ -706,7 +757,7 @@
                     </ul>
                 </div><!-- /.sidebar scroll -->
 
-<!--                -->
+                <!--                -->
 
             </div>
         </div>

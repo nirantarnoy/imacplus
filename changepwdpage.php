@@ -1,12 +1,11 @@
 <?php
-
-session_start();
+ob_start();
 include "header.php";
 if (empty($_SESSION['userid'])) {
-    header('location:loginpage.php');
+   // header('location:loginpage.php');
 }
 
-include 'common/dbcon.php';
+//include 'common/dbcon.php';
 
 
 

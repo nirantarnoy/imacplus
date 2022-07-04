@@ -4,9 +4,9 @@ session_start();
 date_default_timezone_set('Asia/Bangkok');
 include("common/dbcon.php");
 
-if (!isset($_SESSION['userid'])) {
-    header("location:loginpage.php");
-}
+//if (!isset($_SESSION['userid'])) {
+//    header("location:loginpage.php");
+//}
 
 $id = 0;
 $code = '';

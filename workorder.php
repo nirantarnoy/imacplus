@@ -9,6 +9,8 @@ session_start();
 include "header.php";
 include("models/StatusModel.php");
 include("models/ChecklistModel.php");
+include("models/ItembrandModel.php");
+
 
 //$position_data = getPositionmodel($connect);
 //$per_check = checkPer($user_position,"is_product_cat", $connect);
@@ -17,6 +19,8 @@ include("models/ChecklistModel.php");
 //}
 
 $checklist_data = getChecklistmodel($connect);
+$item_brand_data = getItembrandData($connect);
+
 
 
 $col_1 = [];
@@ -87,7 +91,7 @@ if (isset($_SESSION['msg-error'])) {
     <!--        <h6 class="m-0 font-weight-bold text-primary">DataTables Example</h6>-->
     <!--    </div>-->
     <div class="card-body">
-        <form action="unit_action.php" id="form-delete" method="post">
+        <form action="workorder_action.php" id="form-delete" method="post">
             <input type="hidden" name="delete_id" class="delete-id" value="">
             <input type="hidden" name="action_type" value="delete">
         </form>
@@ -100,7 +104,6 @@ if (isset($_SESSION['msg-error'])) {
                     <th>วันที่</th>
                     <th>ลูกค้า</th>
                     <th>สถานะ</th>
-                    <th></th>
                 </tr>
                 </thead>
                 <tbody>
@@ -128,18 +131,20 @@ if (isset($_SESSION['msg-error'])) {
                         <div class="col-lg-3">
                             <label for="">เลขที่ใบสั่งซ่อม</label>
                             <input type="text" class="form-control workorder-no" name="workorder_no" value=""
-                                   placeholder="เลขที่">
+                                   placeholder="เลขที่" readonly>
                         </div>
                         <div class="col-lg-3">
                             <label for="">วันที่</label>
-                            <input type="text" class="form-control workorder-date" name="workorder_date" value=""
-                                   placeholder="วันที่">
+<!--                            <input type="text" class="form-control workorder-date" name="workorder_date" value=""-->
+<!--                                   placeholder="วันที่">-->
+                            <input type="text" class="form-control work-date" name="workorder_date" value="<?=date('d/m/Y')?>"
+                                   placeholder="วันที่" readonly>
                         </div>
                         <div class="col-lg-3">
                             <label for="">ลูกค้า</label>
-                            <select class="form-control customer-id" name="customer_id" id="">
-                                <option value="">-</option>
-                            </select>
+                            <input type="text" class="form-control customer-name" name="customer_name" value=""
+                                   placeholder="ลูกค้า">
+
                         </div>
                         <div class="col-lg-3">
                             <label for="">เบอร์โทร</label>
@@ -151,14 +156,17 @@ if (isset($_SESSION['msg-error'])) {
                     <div class="row">
                         <div class="col-lg-4">
                             <label for="">รับซ่อมโทรศัพท์มือถือยี่ห้อ</label>
-                            <select name="phone_brand" class="form-control phone-brand" id="">
-                                <option value="">-</option>
+                            <select name="phone_brand" class="form-control phone-brand" id="" onchange="findbrandmodel($(this))">
+                                <option value="-1">--เลือกยี่ห้อ--</option>
+                                <?php for($i=0;$i<=count($item_brand_data)-1;$i++):?>
+                                <option value="<?=$item_brand_data[$i]['id']?>"><?=$item_brand_data[$i]['name']?></option>
+                                <?php endfor;?>
                             </select>
                         </div>
                         <div class="col-lg-4">
                             <label for="">รุ่น</label>
                             <select name="phone_model" class="form-control phone-model" id="">
-                                <option value="">-</option>
+                                <option value="">--เลือกรุ่น--</option>
                             </select>
                         </div>
                         <div class="col-lg-4">
@@ -280,6 +288,16 @@ include "footer.php";
 ?>
 <script>
     notify();
+ //   $('.workorder-date').datetimepicker({dateFormat: 'dd-mm-yy'});
+ //        var TinyDatePicker = DateRangePicker.TinyDatePicker;
+    //        TinyDatePicker('.workorder-date', {
+    //            dateFormat: 'dd-mm-yy',
+    //            mode: 'dp-below',
+    //        })
+    //        .on('statechange', function(ev) {
+    //
+    //        })
+
     function checkselected(e){
         // var c_value = e.attr('checked');
         // alert(c_value);
@@ -306,7 +324,7 @@ include "footer.php";
             }
         },
         "ajax": {
-            url: "unit_fetch.php",
+            url: "workorder_fetch.php",
             type: "POST"
         },
         "columnDefs": [
@@ -319,36 +337,85 @@ include "footer.php";
     });
 
     function showupdate(e) {
+        $("input[type='checkbox']").each(function () {
+            $(this).prop("checked", false);
+        });
         var recid = e.attr("data-id");
         if (recid != '') {
-            var code = '';
-            var name = '';
-            var description = '';
+            var work_no = '';
+            var work_date = '';
+            var customer_name = '';
+            var phone = '';
+            var brand = '';
+            var models = '';
+            var phone_color = '';
+            var customer_pass = '';
+            var estimate_price ='';
+            var pre_pay = '';
+            var note = '';
+            var checklist = null;
+
             var status = '';
             $.ajax({
                 'type': 'post',
                 'dataType': 'json',
                 'async': false,
-                'url': 'get_unit_update.php',
+                'url': 'get_workorder_update.php',
                 'data': {'id': recid},
                 'success': function (data) {
+
                     if (data.length > 0) {
                         // alert(data[0]['display_name']);
-                        code = data[0]['code'];
-                        name = data[0]['name'];
-                        description = data[0]['description'];
+                        work_no = data[0]['work_date'];
+                        work_date = data[0]['work_date'];
+                        customer_name = data[0]['customer_name'];
+                        phone = data[0]['phone'];
+                        customer_pass = data[0]['customer_pass'];
+                        brand = data[0]['brand'];
+                        models = data[0]['models'];
+                        phone_color = data[0]['phone_color'];
+                        estimate_price = data[0]['estimate_price'];
+                        pre_pay = data[0]['pre_pay'];
+                        note = data[0]['note'];
                         status = data[0]['status'];
+                        checklist = data[0]['check_list'];
                     }
+                },
+                'error': function(err){
+                    alert('ee');
                 }
             });
 
             $(".user-recid").val(recid);
             $(".status").val(status);
-            $(".unit-code").val(code);
-            $(".unit-name").val(name);
-            $(".description").val(description);
+            $(".workorder-no").val(work_no);
+            $(".work-date").val(work_date);
+            $(".customer-name").val(customer_name);
+            $(".phone").val(phone);
+            $(".phone-brand").val(brand).change();
+            $(".phone-model").val(models).change();
+            $(".phone-color").val(phone_color);
+            $(".estimate-price").val(estimate_price);
+            $(".customer-pass").val(customer_pass);
+            $(".pre-pay").val(pre_pay);
+            $(".note").val(note);
 
-            $(".modal-title").html('แก้ไขข้อมูลยหน่วยนับ');
+
+
+            if(checklist.length > 0){
+                $("input[type='checkbox']").each(function () {
+                   for(var x=0;x<=checklist.length-1;x++){
+                       if($(this).val() == checklist[x]['check_list_id'] ){
+                           $(this).prop("checked", true);
+                       }
+                   }
+                    // console.log('xx');
+                });
+
+            }
+
+
+            $(".modal-title").html('แก้ไขข้อมูลใบสั่งซ่อม');
             $(".action-type").val('update');
             $("#myModal").modal("show");
         }
@@ -395,6 +462,25 @@ include "footer.php";
         //     // e.attr("href",url);
         //     // e.trigger("click");
         // });
+    }
+
+    function findbrandmodel(e){
+        var brand_id = e.val();
+        if(brand_id != null){
+            $.ajax({
+                'type': 'post',
+                'dataType': 'html',
+                'async': false,
+                'url': 'get_item_model.php',
+                'data': {'id': brand_id},
+                'success': function (data) {
+                    if(data !=""){
+                        $(".phone-model").html(data);
+                    }
+
+                }
+            });
+        }
     }
 
     function notify() {

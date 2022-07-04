@@ -73,7 +73,7 @@ if (isset($_SESSION['msg_err'])) {
                                             <!-- default carousel section that you see when you open login page -->
                                             <div style="background-image: url(assets/image/login-bg-1.svg);"
                                                  class="px-3 bgc-blue-l4 d-flex flex-column align-items-center justify-content-center">
-                                                <a class="mt-5 mb-2" href="html/dashboard.html">
+                                                <a class="mt-5 mb-2" href="loginpage.php">
                                                     <i class="fa fa-backward text-secondary-m2 fa-3x"></i>
                                                 </a>
 

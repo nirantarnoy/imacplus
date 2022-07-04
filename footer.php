@@ -58,7 +58,9 @@
 <script src="node_modules/popper.js/dist/umd/popper.js"></script>
 <script src="node_modules/bootstrap/dist/js/bootstrap.js"></script>
 
-
+<script src="./node_modules/tiny-date-picker/dist/date-range-picker.js"></script>
+<script src="./node_modules/moment/moment.js"></script>
+<script src="./node_modules/eonasdan-bootstrap-datetimepicker/src/js/bootstrap-datetimepicker.js"></script>
 
 <!-- include vendor scripts used in "Dashboard" page. see "/views//pages/partials/dashboard/@vendor-scripts.hbs" -->
 <script src="node_modules/chart.js/dist/Chart.js"></script>
