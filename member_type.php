@@ -17,6 +17,7 @@ include "header.php";
 $noti_ok = '';
 $noti_error = '';
 $status_data = [['id'=>1,'name'=>'Active'],['id'=>0,'name'=>'Inactive']];
+$platform_type_date = [['id'=>1,'name'=>'Online'],['id'=>0,'name'=>'Offline']];
 
 if(isset($_SESSION['msg-success'])){
     $noti_ok = $_SESSION['msg-success'];
@@ -61,9 +62,10 @@ if(isset($_SESSION['msg-error'])){
                 <thead>
                 <tr>
                     <th>#</th>
-                    <th style="width: 10%">Name</th>
+                    <th style="width: 20%">Name</th>
                     <th>Description</th>
                     <th>Percent</th>
+                    <th>Type</th>
                     <th>status</th>
                 </tr>
                 </thead>
@@ -104,6 +106,17 @@ if(isset($_SESSION['msg-error'])){
                         <div class="col-lg-12">
                             <label for="">รายละเอียด</label>
                             <textarea name="description" class="form-control description" id="" cols="30" rows="5"></textarea>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <label for="">ประเภท</label>
+                            <select name="status" id="" class="form-control status">
+                                <?php for ($i = 0; $i <= count($platform_type_date) - 1; $i++): ?>
+                                    <option value="<?= $platform_type_date[$i]['id'] ?>"><?= $status_data[$i]['name'] ?></option>
+                                <?php endfor; ?>
+                            </select>
                         </div>
                     </div>
                     <br>

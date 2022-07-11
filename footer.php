@@ -91,6 +91,7 @@
 
 <!-- "Dashboard" page script to enable its demo functionality -->
 <script src="views/pages/dashboard/@page-script.js"></script>
+<script src="views/pages/page-profile/@page-script.js"></script>
 </body>
 
 </html>

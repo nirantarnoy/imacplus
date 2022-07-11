@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1">
     <!--        <base href="./" />-->
 
-    <title>iMacPlus</title>
+    <title>iMac Plus</title>
 
     <!-- include common vendor stylesheets & fontawesome -->
     <link rel="stylesheet" type="text/css" href="node_modules/bootstrap/dist/css/bootstrap.css">
@@ -42,6 +42,29 @@
 
     <!-- "Dashboard" page styles, specific to this page for demo only -->
     <link rel="stylesheet" type="text/css" href="views/pages/dashboard/@page-style.css">
+    <link rel="stylesheet" type="text/css" href="views/pages/page-profile/@page-style.css">
+
+
+    <style>
+        @font-face {
+            font-family: 'SukhumvitSet-Medium';
+            src: url('dist/font/SukhumvitSet-Medium.ttf') format('truetype');
+            font-weight: normal;
+            font-style: normal;
+        }
+
+        @font-face {
+            font-family: 'SukhumvitSet-Bold';
+            src: url('dist/font/SukhumvitSet-Bold.ttf') format('truetype');
+            font-weight: normal;
+            font-style: normal;
+        }
+
+        body {
+            font-family: "SukhumvitSet-Medium";
+            font-size: 16px;
+        }
+    </style>
 </head>
 
 <body>
@@ -350,7 +373,6 @@
                             </div>
                         </li>
 
-
                         <li class="nav-item dropdown order-first order-lg-last">
                             <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button"
                                aria-haspopup="true" aria-expanded="false">
@@ -376,8 +398,14 @@
 
 
                                 <a class="mt-1 dropdown-item btn btn-outline-grey bgc-h-primary-l3 btn-h-light-primary btn-a-light-primary"
-                                   href="changepassword.php">
+                                   href="profile.php">
                                     <i class="fa fa-user text-primary-m1 text-105 mr-1"></i>
+                                    Profile
+                                </a>
+
+                                <a class="mt-1 dropdown-item btn btn-outline-grey bgc-h-primary-l3 btn-h-light-primary btn-a-light-primary"
+                                   href="changepassword.php">
+                                    <i class="fa fa-key text-primary-m1 text-105 mr-1"></i>
                                     Change password
                                 </a>
 
@@ -678,14 +706,14 @@
                                     <li class="nav-item">
                                         <a href="#" class="nav-link">
                                           <span class="nav-text">
-                                              <span>Point</span>
+                                              <span>ประเภทอะไหล่</span>
                                           </span>
                                         </a>
                                     </li>
                                     <li class="nav-item">
                                         <a href="#" class="nav-link">
                                               <span class="nav-text">
-                                                  <span>Point</span>
+                                                  <span>ประเภทร้าน</span>
                                               </span>
                                         </a>
                                     </li>

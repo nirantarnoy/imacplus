@@ -43,6 +43,27 @@ if (isset($_SESSION['msg_err'])) {
 
     <!-- "Login" page styles, specific to this page for demo only -->
     <link rel="stylesheet" type="text/css" href="views/pages/page-login/@page-style.css">
+
+    <style>
+        @font-face {
+            font-family: 'SukhumvitSet-Light';
+            src: url('dist/font/SukhumvitSet-Light.ttf') format('truetype');
+            font-weight: normal;
+            font-style: normal;
+        }
+
+        @font-face {
+            font-family: 'SukhumvitSet-Bold';
+            src: url('dist/font/SukhumvitSet-Bold.ttf') format('truetype');
+            font-weight: normal;
+            font-style: normal;
+        }
+
+        body {
+            font-family: "SukhumvitSet-Light";
+            font-size: 16px;
+        }
+    </style>
 </head>
 
 <body>
