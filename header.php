@@ -575,12 +575,19 @@
                                         </a>
                                     </li>
                                     <li class="nav-item">
-                                        <a href="unit.php" class="nav-link">
+                                        <a href="standardprice.php" class="nav-link">
                                           <span class="nav-text">
-                                              <span>หน่วยนับ</span>
+                                              <span>มาตรฐานราคา</span>
                                           </span>
                                         </a>
                                     </li>
+<!--                                    <li class="nav-item">-->
+<!--                                        <a href="unit.php" class="nav-link">-->
+<!--                                          <span class="nav-text">-->
+<!--                                              <span>หน่วยนับ</span>-->
+<!--                                          </span>-->
+<!--                                        </a>-->
+<!--                                    </li>-->
                                 </ul>
                             </div>
                             <b class="sub-arrow"></b>
@@ -704,14 +711,14 @@
                             <div class="hideable submenu collapse">
                                 <ul class="submenu-inner">
                                     <li class="nav-item">
-                                        <a href="#" class="nav-link">
+                                        <a href="sparepart_type.php" class="nav-link">
                                           <span class="nav-text">
                                               <span>ประเภทอะไหล่</span>
                                           </span>
                                         </a>
                                     </li>
                                     <li class="nav-item">
-                                        <a href="#" class="nav-link">
+                                        <a href="shop_type.php" class="nav-link">
                                               <span class="nav-text">
                                                   <span>ประเภทร้าน</span>
                                               </span>

@@ -1,6 +1,6 @@
 <?php
-function getItemName($id,$connect){
-    $query = "SELECT * FROM item WHERE id='$id'";
+function getMembertypeName($id,$connect){
+    $query = "SELECT * FROM member_type WHERE id='$id'";
     $statement = $connect->prepare($query);
     $statement->execute();
     $result = $statement->fetchAll();
@@ -11,9 +11,9 @@ function getItemName($id,$connect){
         }
     }
 }
-function getItemData($connect){
+function getMemberTypeData($connect){
 
-    $query = "SELECT * FROM item WHERE id>0";
+    $query = "SELECT * FROM member_type WHERE id>0";
     $statement = $connect->prepare($query);
 
     $statement->execute();
@@ -27,10 +27,9 @@ function getItemData($connect){
     return $cus_data;
 
 }
+function getMemberTypeByTypeId($connect, $type_id){
 
-function getSparepartItemData($connect){
-
-    $query = "SELECT * FROM sparepart_type WHERE id>0 ORDER BY id";
+    $query = "SELECT * FROM member_type WHERE platform_type_id = '$type_id'";
     $statement = $connect->prepare($query);
 
     $statement->execute();
@@ -39,9 +38,10 @@ function getSparepartItemData($connect){
     $cus_data = array();
     $filtered_rows = $statement->rowCount();
     foreach ($result as $row){
-        array_push($cus_data,['id'=>$row['id'],'name'=>$row['name']]);
+        array_push($cus_data,['id'=>$row['id'],'name'=>$row['name'],'percent_rate'=>$row['percent_rate']]);
     }
     return $cus_data;
 
 }
+
 ?>
