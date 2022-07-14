@@ -1,6 +1,6 @@
 <?php
 include("common/dbcon.php");
-include("models/PromotionModel.php");
+//include("models/PromotionModel.php");
 $id = '';
 $data = [];
 
@@ -34,25 +34,17 @@ if ($id) {
 
         array_push($data,[
             'id'=>$row['id'],
-            'account_id'=>$row['account_id'],
-            'name'=>$row['name'],
-            'dob'=> $row['dob'] != null ?date("d/m/Y",strtotime($row['dob'])):date('d/m/Y'),
-            'phone'=>$row['phone'],
-            'id_number'=>$row['id_number'],
-            'bank_id'=>$row['bank_id'],
-            'bank_account'=>$row['bank_account'],
-            'is_level2'=>$row['is_level2'],
-            'card_photo'=>$row['id_card_photo'],
-            'bank_photo'=>$row['bank_photo'],
-            'turnover_amt' => number_format($last_turnover),
-            'turnover_date' => $last_turnover_date,
-            'turnover_get' => $count_turnover,
-            'promotion_date' => $last_pro,
-            'promotion_get' => $last_pro_count,
-            'promotion_name' => $last_pro_name,
-            'cash_in' => $cash_total[0]['cash_in'],
-            'cash_out' => $cash_total[0]['cash_out'],
-            'net_win' => $cash_total[0]['net_win'],
+            'fname'=>$row['first_name'],
+            'lname'=>$row['last_name'],
+            'zone_id'=>$row['zone_id'],
+            'parent_id'=>$row['parent_id'],
+            'member_type_id'=>$row['member_type_id'],
+            'phone'=>$row['phone_number'],
+            'email'=>$row['email'],
+            'line_id'=>$row['line_id'],
+            'url'=>$row['url'],
+            'point'=>$row['point'],
+            'status'=>$row['status'],
         ]);
     }
 
