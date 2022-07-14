@@ -17,36 +17,36 @@ include("models/StatusModel.php");
 
 $noti_ok = '';
 $noti_error = '';
-$status_data = [['id'=>1,'name'=>'Active'],['id'=>0,'name'=>'Inactive']];
+$status_data = [['id' => 1, 'name' => 'Active'], ['id' => 0, 'name' => 'Inactive']];
 
-if(isset($_SESSION['msg-success'])){
+if (isset($_SESSION['msg-success'])) {
     $noti_ok = $_SESSION['msg-success'];
     unset($_SESSION['msg-success']);
 }
 
-if(isset($_SESSION['msg-error'])){
+if (isset($_SESSION['msg-error'])) {
     $noti_error = $_SESSION['msg-error'];
     unset($_SESSION['msg-error']);
 }
 
 ?>
-<input type="hidden" class="msg-ok" value="<?=$noti_ok?>">
-<input type="hidden" class="msg-error" value="<?=$noti_error?>">
+<input type="hidden" class="msg-ok" value="<?= $noti_ok ?>">
+<input type="hidden" class="msg-error" value="<?= $noti_error ?>">
 
 <div class="d-sm-flex align-items-center justify-content-between mb-4">
     <h1 class="h3 mb-0 text-gray-800">Members</h1>
-<!--    <div class="btn-group">-->
-<!--        <a href="#" class="btn btn-light-green btn-h-green btn-a-green border-0 radius-3 py-2 text-600 text-90" onclick="showaddbank($(this))">-->
-<!--                  <span class="d-none d-sm-inline mr-1">-->
-<!--                    สร้าง-->
-<!--                  </span>-->
-<!--                <i class="fa fa-save text-110 w-2 h-2"></i>-->
-<!--        </a>-->
+    <!--    <div class="btn-group">-->
+    <!--        <a href="#" class="btn btn-light-green btn-h-green btn-a-green border-0 radius-3 py-2 text-600 text-90" onclick="showaddbank($(this))">-->
+    <!--                  <span class="d-none d-sm-inline mr-1">-->
+    <!--                    สร้าง-->
+    <!--                  </span>-->
+    <!--                <i class="fa fa-save text-110 w-2 h-2"></i>-->
+    <!--        </a>-->
 
-<!--        <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-success shadow-sm" onclick="showaddbank($(this))"><i-->
-<!--                class="fas fa-plus-circle fa-sm text-white-50"></i> สร้างใหม่</a>-->
-        <!--        <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i class="fas fa-download fa-sm text-white-50"></i> Export Data</a>-->
-<!--    </div>-->
+    <!--        <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-success shadow-sm" onclick="showaddbank($(this))"><i-->
+    <!--                class="fas fa-plus-circle fa-sm text-white-50"></i> สร้างใหม่</a>-->
+    <!--        <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i class="fas fa-download fa-sm text-white-50"></i> Export Data</a>-->
+    <!--    </div>-->
 
 </div>
 <div class="card shadow mb-4">
@@ -54,25 +54,25 @@ if(isset($_SESSION['msg-error'])){
     <!--        <h6 class="m-0 font-weight-bold text-primary">DataTables Example</h6>-->
     <!--    </div>-->
     <div class="card-body">
-        <form action="itembrand_action.php" id="form-delete" method="post">
+        <form action="member_action.php" id="form-delete" method="post">
             <input type="hidden" name="delete_id" class="delete-id" value="">
             <input type="hidden" name="action_type" value="delete">
         </form>
         <div class="table-responsive">
             <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                 <thead>
-                    <tr>
-                        <th>#</th>
-                        <th>Name</th>
-                        <th>Zone</th>
-                        <th>Parent</th>
-                        <th>ประเภทสมาชิก</th>
-                        <th>Phone</th>
-                        <th>Email</th>
-                        <th>Line id</th>
-                        <th>Point</th>
-                        <th>Status</th>
-                    </tr>
+                <tr>
+                    <th>#</th>
+                    <th>Name</th>
+                    <th>Zone</th>
+                    <th>Parent</th>
+                    <th>ประเภทสมาชิก</th>
+                    <th>Phone</th>
+                    <th>Email</th>
+                    <th>Line id</th>
+                    <th>Point</th>
+                    <th>Status</th>
+                </tr>
                 </thead>
                 <tbody>
                 </tbody>
@@ -84,7 +84,7 @@ if(isset($_SESSION['msg-error'])){
 <div class="modal" id="myModal">
     <div class="modal-dialog">
         <div class="modal-content">
-            <form action="itembrand_action.php" id="form-user" method="post">
+            <form action="member_action.php" id="form-user" method="post">
                 <!-- Modal Header -->
                 <div class="modal-header">
                     <h4 class="modal-title" style="color: #1c606a">เพิ่มข้อมูลยี่ห้อสินค้า</h4>
@@ -96,20 +96,59 @@ if(isset($_SESSION['msg-error'])){
                     <input type="hidden" name="recid" class="user-recid" value="">
                     <input type="hidden" name="action_type" class="action-type" value="create">
                     <div class="row">
-                        <div class="col-lg-12">
+                        <div class="col-lg-6">
                             <label for="">ชื่อ</label>
-                            <input type="text" class="form-control item-brand-name" name="item_brand_name" value=""
-                                   placeholder="Item brand name">
+                            <input type="text" class="form-control f-name" name="f_name" value=""
+                                   placeholder="First Name">
+                        </div>
+                        <div class="col-lg-6">
+                            <label for="">สกุล</label>
+                            <input type="text" class="form-control l-name" name="l_name" value=""
+                                   placeholder="Last Name">
                         </div>
                     </div>
                     <br>
                     <div class="row">
-                        <div class="col-lg-12">
-                            <label for="">รายละเอียด</label>
-                            <textarea name="description" class="form-control description" id="" cols="30" rows="5"></textarea>
+                        <div class="col-lg-4">
+                            <label for="">Zone</label>
+                            <input type="text" name="zone_id" class="form-control zone-id" value="">
+                        </div>
+                        <div class="col-lg-4">
+                            <label for="">Parent</label>
+                            <input type="text" name="parent_id" class="form-control parent-id" value="">
+                        </div>
+                        <div class="col-lg-4">
+                            <label for="">ประเภทสมาชิก</label>
+                            <input type="text" name="member_type_id" class="form-control member-type-id" value="">
                         </div>
                     </div>
                     <br>
+                    <div class="row">
+                        <div class="col-lg-4">
+                            <label for="">Phone Number</label>
+                            <input type="text" name="phone_number" class="form-control phone-number" value="">
+                        </div>
+                        <div class="col-lg-4">
+                            <label for="">Email</label>
+                            <input type="text" name="member_email" class="form-control member-email" value="">
+                        </div>
+                        <div class="col-lg-4">
+                            <label for="">Line ID</label>
+                            <input type="text" name="line_id" class="form-control line-id" value="">
+                        </div>
+                    </div>
+                    <br/>
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <label for="">URL</label>
+                            <input type="text" name="member_url" class="form-control member-url" value="">
+                        </div>
+                        <div class="col-lg-6">
+                            <label for="">Point</label>
+                            <input type="text" name="member_point" class="form-control member-point" value="">
+                        </div>
+                    </div>
+                    <br/>
                     <div class="row">
                         <div class="col-lg-12">
                             <label for="">สถานะ</label>
@@ -123,13 +162,15 @@ if(isset($_SESSION['msg-error'])){
                     <br>
 
 
-
                 </div>
 
                 <!-- Modal footer -->
                 <div class="modal-footer">
-                    <button type="submit" class="btn btn-success btn-save" data-dismiss="modalx"><i class="fa fa-save"></i> Save </button>
-                    <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fa fa-ban"></i> Cancel</button>
+                    <button type="submit" class="btn btn-success btn-save" data-dismiss="modalx"><i
+                                class="fa fa-save"></i> Save
+                    </button>
+                    <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fa fa-ban"></i> Cancel
+                    </button>
                 </div>
             </form>
         </div>
@@ -140,12 +181,13 @@ include "footer.php";
 ?>
 <script>
     notify();
-    function showaddbank(e) {
-        $(".user-recid").val(0);
-        $(".bank-name").val('');
-        $(".description").val('');
-        $("#myModal").modal("show");
-    }
+
+    // function showaddbank(e) {
+    //     $(".user-recid").val(0);
+    //     $(".bank-name").val('');
+    //     $(".description").val('');
+    //     $("#myModal").modal("show");
+    // }
 
     $("#dataTable").dataTable({
         "processing": true,
@@ -177,20 +219,36 @@ include "footer.php";
     function showupdate(e) {
         var recid = e.attr("data-id");
         if (recid != '') {
-            var name = '';
-            var description = '';
+            var fname = '';
+            var lname = '';
+            var zone_id = '';
+            var parent_id = '';
+            var member_type_id = '';
+            var phone = '';
+            var email = '';
+            var line_id = '';
+            var url = '';
+            var point = '';
             var status = '';
             $.ajax({
                 'type': 'post',
                 'dataType': 'json',
                 'async': false,
-                'url': 'get_itembrand_update.php',
+                'url': 'get_member_update.php',
                 'data': {'id': recid},
                 'success': function (data) {
                     if (data.length > 0) {
-                        // alert(data[0]['display_name']);
-                        name = data[0]['name'];
-                        description = data[0]['description'];
+                        // alert(data[0]['fname']);
+                        fname = data[0]['fname'];
+                        lname = data[0]['lname'];
+                        zone_id = data[0]['zone_id'];
+                        parent_id = data[0]['parent_id'];
+                        member_type_id = data[0]['member_type_id'];
+                        phone = data[0]['phone'];
+                        email = data[0]['email'];
+                        line_id = data[0]['line_id'];
+                        url = data[0]['url'];
+                        point = data[0]['point'];
                         status = data[0]['status'];
                     }
                 }
@@ -198,8 +256,17 @@ include "footer.php";
 
             $(".user-recid").val(recid);
             $(".status").val(status);
-            $(".item-brand-name").val(name);
-            $(".description").val(description);
+            $(".f-name").val(fname);
+            $(".l-name").val(lname);
+            $(".zone-id").val(zone_id);
+            $(".parent-id").val(parent_id);
+            $(".member-type-id").val(member_type_id);
+            $(".phone-number").val(phone);
+            $(".member-email").val(email);
+            $(".line-id").val(line_id);
+            $(".member-url").val(url);
+            $(".member-point").val(point);
+
 
             $(".modal-title").html('แก้ไขข้อมูลยี่ห้อสินค้า');
             $(".action-type").val('update');
@@ -227,7 +294,7 @@ include "footer.php";
             confirmButtonText: 'ใช่',
             cancelButtonText: 'ไม่ใช่',
             reverseButtons: true
-        }).then(function(result) {
+        }).then(function (result) {
             if (result.value) {
                 $("#form-delete").submit();
             }
@@ -249,6 +316,7 @@ include "footer.php";
         //     // e.trigger("click");
         // });
     }
+
     function notify() {
         // $.toast({
         //     title: 'Message Notify',
@@ -266,7 +334,7 @@ include "footer.php";
         // });
         var msg_ok = $(".msg-ok").val();
         var msg_error = $(".msg-error").val();
-        if(msg_ok != ''){
+        if (msg_ok != '') {
             $.aceToaster.add({
                 placement: 'tr',
                 body: "<p class='p-3 mb-0 text-center'>\
@@ -302,7 +370,7 @@ include "footer.php";
             //     pause_on_hover: false
             // });
         }
-        if(msg_error != ''){
+        if (msg_error != '') {
             $.aceToaster.add({
                 placement: 'tr',
                 body: "<div class='p-3 m-2 d-flex'>\
