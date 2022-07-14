@@ -27,4 +27,20 @@ function getItembrandData($connect){
     return $cus_data;
 
 }
+function getItemModelData($connect){
+
+    $query = "SELECT * FROM item WHERE id>0";
+    $statement = $connect->prepare($query);
+
+    $statement->execute();
+    $result = $statement->fetchAll();
+
+    $cus_data = array();
+    $filtered_rows = $statement->rowCount();
+    foreach ($result as $row){
+        array_push($cus_data,['id'=>$row['id'],'name'=>$row['name']]);
+    }
+    return $cus_data;
+
+}
 ?>

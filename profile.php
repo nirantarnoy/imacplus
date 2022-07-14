@@ -1,5 +1,11 @@
 <?php
+ob_start();
+session_start();
 include "header.php";
+include "models/MemberModel.php";
+include "models/UserModel.php";
+
+$member_id = getMemberFromUser($_SESSION['userid'], $connect);
 ?>
 
     <div class="row">
@@ -28,11 +34,11 @@ include "header.php";
                             </h3>
 
                             <span class="text-100 text-primary text-600">
-                            VIP SHOP
+                            VIP SHOP <br />
+
                         </span>
 
                             <span class="d-none badge bgc-orange-l3 text-orange-d3 pt-2px pb-1 text-85 radius-round px-25 border-1 brc-orange-m3">
-                            pro
                         </span>
                         </div>
 
@@ -51,15 +57,20 @@ include "header.php";
 <!---->
 <!--                        <hr class="w-90 mx-auto mb-1 brc-secondary-l3" />-->
 
-                        <div class="mt-3">
-                            <a href="#" class="btn btn-white btn-text-green btn-h-green btn-a-green radius-1 py-2 px-1 shadow-sm">
-                                <i class="fa fa-link w-4 text-120"></i>
-                            </a>
-
-                            <a href="#" class="btn btn-white btn-text-info btn-h-info btn-a-info radius-1 py-2 px-1 shadow-sm">
+                        <div class="mt-12">
+<!--                            <a href="#" class="btn btn-white btn-text-green btn-h-green btn-a-green radius-1 py-2 px-1 shadow-sm">-->
+<!--                                <i class="fa fa-link w-4 text-120"></i>-->
+<!--                            </a>-->
+                            <input type="hidden" id="member-url" value="<?=getMemberurl($connect,$member_id)?>">
+                            <a href="#" class="btn btn-white btn-text-info btn-h-info btn-a-info radius-1 py-2 px-1 shadow-sm" onclick="copyclipboard()">
                                 <i class="fa fa-copy w-4 text-120"></i>
                             </a>
 
+
+                        </div>
+                        <div class="mt-12">
+                            <br />
+                            <p>กดปุ่มเพื่อแนะนำเพื่อน</p>
                         </div>
 
                         <hr class="w-90 mx-auto mb-1 brc-secondary-l3" />
@@ -67,7 +78,7 @@ include "header.php";
                         <div class="row w-100 text-center">
                             <div class="col-4">
                                 <div class="px-1 pt-2">
-                                    <span class="text-150 text-primary-m3"><b>50.00</b></span>
+                                    <span class="text-150 text-primary-m3"><b>0.00</b></span>
                                     <br />
                                     <span class="text-grey-m1 text-90"><b>คะแนน mPoint</b></span>
                                 </div>
@@ -77,7 +88,7 @@ include "header.php";
 
                             <div class="col-4">
                                 <div class="px-1 pt-2">
-                                    <span class="text-150 text-primary-m3"><b>100.00</b></span>
+                                    <span class="text-150 text-primary-m3"><b><?=number_format(getMemberWalletAmount($connect,$member_id),2)?></b></span>
                                     <br />
                                     <span class="text-grey-m1 text-90"><b>จำนวนวอลเล็ท</b></span>
                                 </div>
@@ -87,7 +98,7 @@ include "header.php";
 
                             <div class="col-4">
                                 <div class="px-1 pt-2">
-                                    <span class="text-150 text-primary-m3"><b>5</b></span>
+                                    <span class="text-150 text-primary-m3"><b><?=number_format(getMemberChildCount($connect, $member_id))?></b></span>
                                     <br />
                                     <span class="text-grey-m1 text-90"><b>สมาชิกแนะนำ</b></span>
                                 </div>
@@ -102,15 +113,13 @@ include "header.php";
                         <hr class="w-90 mx-auto mb-1 border-dotted" />
                         <br />
 
-                        <div class="row">
-                            <div class="col-lg-2"></div>
-                            <div class="col-lg-8">
-                                <div class="btn btn-primary btn-lg" style="width: 100%">เติมวอลเล็ท</div>
+                        <div class="row w-100">
+                            <div class="col-lg-4"></div>
+                            <div class="col-lg-4">
+                                <a href="walletlist.php?element=1" class="btn btn-primary btn-lg" style="width: 100%">เติมวอลเล็ท</a>
                             </div>
-                            <div class="col-lg-2"></div>
+                            <div class="col-lg-4"></div>
                         </div>
-
-
 
 
                         <div class="mt-2 w-100 text-90 text-secondary radius-1 px-25 py-3">
@@ -235,3 +244,38 @@ include "header.php";
 <?php
 include "footer.php";
 ?>
+<script>
+    function copyclipboard(){
+        var copyText = document.getElementById("member-url");
+
+        /* Select the text field */
+        // copyText.select();
+        // copyText.setSelectionRange(0, 99999); /* For mobile devices */
+
+        /* Copy the text inside the text field */
+        navigator.clipboard.writeText(copyText.value);
+
+        /* Alert the copied text */
+        //alert("Copied the text: " + copyText.value);
+
+        $.aceToaster.add({
+            placement: 'tr',
+            body: "<p class='p-3 mb-0 text-center'>\
+                        <span class='d-inline-block text-center mb-3 py-3 px-1 border-1 brc-success radius-round'>\
+                            <i class='fa fa-check fa-2x w-6 text-success-m1 mx-2px'></i>\
+                        </span><br />\
+                        Copy ข้อมูลแล้ว\
+                    </p>",
+
+            width: 360,
+            delay: 2000,
+
+            close: true,
+
+            className: 'bgc-white-tp1 shadow ',
+
+            bodyClass: 'border-0 p-0 text-dark-tp2',
+            headerClass: 'd-none',
+        })
+    }
+</script>

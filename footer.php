@@ -88,10 +88,18 @@
 <script src="node_modules/sweetalert2/dist/sweetalert2.all.js"></script>
 <script src="node_modules/interactjs/dist/interact.js"></script>
 
+<!-- include vendor scripts used in "Wizard & Validation" page. see "/views//pages/partials/form-wizard/@vendor-scripts.hbs" -->
+<script src="node_modules/smartwizard/dist/js/jquery.smartWizard.js"></script>
+
+
+<script src="node_modules/jquery-validation/dist/jquery.validate.js"></script>
+
+<script src="node_modules/inputmask/dist/jquery.inputmask.js"></script>
 
 <!-- "Dashboard" page script to enable its demo functionality -->
 <script src="views/pages/dashboard/@page-script.js"></script>
 <script src="views/pages/page-profile/@page-script.js"></script>
+<script src="views/pages/form-wizard/@page-script.js"></script>
 </body>
 
 </html>

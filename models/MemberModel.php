@@ -62,6 +62,47 @@ function getMembername($connect,$code){
     }
 
 }
+function getMemberurl($connect,$id){
+    $query = "SELECT * FROM member WHERE id='$id'";
+    $statement = $connect->prepare($query);
+    $statement->execute();
+    $result = $statement->fetchAll();
+    $filtered_rows = $statement->rowCount();
+    if($filtered_rows > 0){
+        foreach($result as $row){
+            return $row['url'];
+        }
+    }
+
+}
+function getMemberChildCount($connect,$id){
+    $query = "SELECT * FROM member WHERE parent_id='$id'";
+    $statement = $connect->prepare($query);
+    $statement->execute();
+    $result = $statement->fetchAll();
+    $filtered_rows = $statement->rowCount();
+    return $filtered_rows;
+//    if($filtered_rows > 0){
+//        foreach($result as $row){
+//            return $row['url'];
+//        }
+//    }
+
+}
+function getMemberWalletAmount($connect,$id){
+    $query = "SELECT * FROM member WHERE id='$id'";
+    $statement = $connect->prepare($query);
+    $statement->execute();
+    $result = $statement->fetchAll();
+    $filtered_rows = $statement->rowCount();
+    //return $filtered_rows;
+    if($filtered_rows > 0){
+        foreach($result as $row){
+            return $row['wallet_amount'];
+        }
+    }
+
+}
 function getMaxid($connect){
     $query = "SELECT MAX(id) as id FROM member WHERE id > 0";
     $statement = $connect->prepare($query);
@@ -81,4 +122,5 @@ function getMaxid($connect){
         return 0;
     }
 }
+
 ?>

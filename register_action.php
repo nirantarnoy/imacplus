@@ -33,7 +33,10 @@ if (isset($_POST['url'])) {
 if($phone!="" && $email != "" && $username !="" && $password != ""){
 
 //    echo $phone;
-    $sql_member = "INSERT INTO member(phone_number,email,url)VALUES('$phone','$email','$url')";
+    $bytes = openssl_random_pseudo_bytes(8);
+    $member_url = 'http://localhost/imacplus/register.php&ref='. bin2hex($bytes);
+    //echo bin2hex($bytes);
+    $sql_member = "INSERT INTO member(phone_number,email,url)VALUES('$phone','$email','$member_url')";
     if ($rest = $connect->query($sql_member)) {
         $newpass = md5($password);
         $maxid = getMaxid($connect);

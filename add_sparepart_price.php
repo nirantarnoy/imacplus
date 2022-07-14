@@ -4,85 +4,97 @@ session_start();
 date_default_timezone_set('Asia/Bangkok');
 include("common/dbcon.php");
 
-$code = '';
-$name = '';
-$active_date = null;
-$contact_name = '';
-$address = '';
-$phone = '';
-$email = '';
-$line_id = '';
-$facebook = '';
+$item_id = '';
+$price = '';
+$price_vat = null;
+$sparepart_type = '';
+
 $recid = 0;
-$note = '';
 
 
-if (isset($_POST['cust_code'])) {
-    $code = $_POST['cust_code'];
+if (isset($_POST['line_item_id'])) {
+    $item_id = $_POST['line_item_id'];
 }
-if (isset($_POST['cust_name'])) {
-    $name = $_POST['cust_name'];
+if (isset($_POST['line_item_pirce'])) {
+    $price = $_POST['line_item_pirce'];
 }
-if (isset($_POST['phone'])) {
-    $phone = $_POST['phone'];
+if (isset($_POST['line_item_price_vat'])) {
+    $price_vat = $_POST['line_item_price_vat'];
 }
-if (isset($_POST['email'])) {
-    $email = $_POST['email'];
-}
-if (isset($_POST['line_id'])) {
-    $line_id = $_POST['line_id'];
-}
-if (isset($_POST['facebook'])) {
-    $facebook = $_POST['facebook'];
+if (isset($_POST['item_sparepart_type'])) {
+    $sparepart_type = $_POST['item_sparepart_type'];
 }
 
-if (isset($_POST['cust_address'])) {
-    $address = $_POST['cust_address'];
-}
-if (isset($_POST['cust_note'])) {
-    $note = $_POST['cust_note'];
-}
-
+//print_r($price_vat);return;
 if (isset($_POST['recid'])) {
     $recid = $_POST['recid'];
 }
 
-$line_id = str_replace("'","/",$line_id);
-$facebook = str_replace("'","/",$facebook);
-$note = str_replace("'","/",$note);
-$address = str_replace("'","/",$address);
 
 $c_timestamp = time();
 $c_user = 1;
-if ($recid <= 0) {
-    if ($code != '' && $name != '') {
-        //echo "ok";return;
-        $a_date = date('Y-m-d',strtotime($active_date));
-        //echo $a_date;return;
+if (1 > 0) {
+    if ($item_id != '' && $price != '' && $price_vat != '' && $sparepart_type != '') {
+        $a_date = date('Y-m-d');
+        $res = 0;
 
-        $sql = "INSERT INTO customer (code,name,address,phone,email,created_at,created_by,line_id,facebook,note)
-           VALUES ('$code','$name','$address','$phone','$email','$c_timestamp','$c_user','$line_id','$facebook','$note')";
+        for ($i = 0; $i <= count($item_id) - 1; $i++) {
+            $new_price = 0;
+            $new_price_vat = 0;
+            if ($price[$i] == null) {
+                $new_price = 0;
+                $new_price_vat = 0;
+            } else {
+                $new_price = $price[$i];
+                $new_price_vat = $price_vat[$i];
+            }
 
-        //echo $sql;return;
-        if ($result = $connect->query($sql)) {
+
+            $sql_check = "SELECT * FROM standard_part_price WHERE phone_model_id='$item_id[$i]' AND part_type_id='$sparepart_type'";
+            $statement = $connect->prepare($sql_check);
+
+            $statement->execute();
+            if ($statement->rowCount() > 0) {
+                $sql = "UPDATE standard_part_price SET platform_price='$new_price',platform_price_include_vat='$new_price_vat',updated_at='$c_timestamp',updated_by='$c_user' WHERE phone_model_id='$item_id[$i]' AND part_type_id='$sparepart_type'";
+
+                if ($connect->query($sql)) {
+                    $res += 1;
+                }
+            } else {
+                $sql = "INSERT INTO standard_part_price (phone_model_id,platform_price,platform_price_include_vat,part_type_id,status,created_at,created_by)
+           VALUES ('$item_id[$i]','$new_price','$new_price_vat','$sparepart_type',1,'$c_timestamp','$c_user')";
+
+                if ($result = $connect->query($sql)) {
+                    $res += 1;
+                }
+            }
+
+        }
+
+
+        if ($res > 0) {
             $_SESSION['msg-success'] = 'Saved data successfully';
-            header('location:customer.php');
+            header('location:standardprice.php?type=' . $sparepart_type);
         } else {
             $_SESSION['msg-error'] = 'Save data error';
-            header('location:customer.php');
+            header('location:standardprice.php?type=' . $sparepart_type);
         }
+    } else {
+        echo 'nodd';
     }
 
 } else {
+    echo "no";
+    return;
     $sql = "UPDATE customer SET code='$code',name='$name',phone='$phone',email='$email',address='$address',updated_at='$c_timestamp',updated_by='$c_user',line_id='$line_id',facebook='$facebook',note='$note'";
-    $sql.=" WHERE id='$recid'";
+    $sql .= " WHERE id='$recid'";
 
     if ($result = $connect->query($sql)) {
         $_SESSION['msg-success'] = 'Saved data successfully';
-        header('location:customer.php');
+        header('location:standardprice.php');
     } else {
         $_SESSION['msg-error'] = 'Save data error';
-        header('location:customer.php');
+        header('location:standardprice.php');
     }
 }
 

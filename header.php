@@ -28,6 +28,9 @@
     <link rel="stylesheet" type="text/css"
           href="node_modules/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.css">
 
+    <!-- include vendor stylesheets used in "Wizard & Validation" page. see "/views//pages/partials/form-wizard/@vendor-stylesheets.hbs" -->
+    <link rel="stylesheet" type="text/css" href="node_modules/smartwizard/dist/css/smart_wizard.min.css">
+    <link rel="stylesheet" type="text/css" href="node_modules/smartwizard/dist/css/smart_wizard_theme_circles.min.css">
 
     <!-- include fonts -->
     <link rel="stylesheet" type="text/css" href="dist/css/ace-font.css">
@@ -663,7 +666,15 @@
                             </div>
                             <b class="sub-arrow"></b>
                         </li>
-
+                        <li class="nav-item">
+                            <a href="walletpage.php" class="nav-link">
+                                <i class="nav-icon fa fa-wallet"></i>
+                                <span class="nav-text fadeable">
+                                  <span>เติม Wallet</span>
+                                </span>
+                            </a>
+                            <b class="sub-arrow"></b>
+                        </li>
 
                         <!--                        <li class="nav-item">-->
                         <!---->

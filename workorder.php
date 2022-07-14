@@ -20,7 +20,7 @@ include("models/ItembrandModel.php");
 
 $checklist_data = getChecklistmodel($connect);
 $item_brand_data = getItembrandData($connect);
-
+$item_model_data = getItemModelData($connect);
 
 
 $col_1 = [];
@@ -135,9 +135,10 @@ if (isset($_SESSION['msg-error'])) {
                         </div>
                         <div class="col-lg-3">
                             <label for="">วันที่</label>
-<!--                            <input type="text" class="form-control workorder-date" name="workorder_date" value=""-->
-<!--                                   placeholder="วันที่">-->
-                            <input type="text" class="form-control work-date" name="workorder_date" value="<?=date('d/m/Y')?>"
+                            <!--                            <input type="text" class="form-control workorder-date" name="workorder_date" value=""-->
+                            <!--                                   placeholder="วันที่">-->
+                            <input type="text" class="form-control work-date" name="workorder_date"
+                                   value="<?= date('d/m/Y') ?>"
                                    placeholder="วันที่" readonly>
                         </div>
                         <div class="col-lg-3">
@@ -156,17 +157,22 @@ if (isset($_SESSION['msg-error'])) {
                     <div class="row">
                         <div class="col-lg-4">
                             <label for="">รับซ่อมโทรศัพท์มือถือยี่ห้อ</label>
-                            <select name="phone_brand" class="form-control phone-brand" id="" onchange="findbrandmodel($(this))">
+                            <!--                            <select name="phone_brand" class="form-control phone-brand" id="" onchange="findbrandmodel($(this))">-->
+                            <select name="phone_brand" class="form-control phone-brand" id="">
                                 <option value="-1">--เลือกยี่ห้อ--</option>
-                                <?php for($i=0;$i<=count($item_brand_data)-1;$i++):?>
-                                <option value="<?=$item_brand_data[$i]['id']?>"><?=$item_brand_data[$i]['name']?></option>
-                                <?php endfor;?>
+                                <?php for ($i = 0; $i <= count($item_brand_data) - 1; $i++): ?>
+                                    <option value="<?= $item_brand_data[$i]['id'] ?>"><?= $item_brand_data[$i]['name'] ?></option>
+                                <?php endfor; ?>
                             </select>
                         </div>
                         <div class="col-lg-4">
                             <label for="">รุ่น</label>
-                            <select name="phone_model" class="form-control phone-model" id="">
+                            <select name="phone_model" class="form-control phone-model" id=""
+                                    onchange="findBrandid($(this))">
                                 <option value="">--เลือกรุ่น--</option>
+                                <?php for ($i = 0; $i <= count($item_model_data) - 1; $i++): ?>
+                                    <option value="<?= $item_model_data[$i]['id'] ?>"><?= $item_model_data[$i]['name'] ?></option>
+                                <?php endfor; ?>
                             </select>
                         </div>
                         <div class="col-lg-4">
@@ -182,10 +188,11 @@ if (isset($_SESSION['msg-error'])) {
                             <table>
                                 <?php if (count($col_1) > 0): ?>
                                     <?php for ($i = 0; $i <= count($col_1) - 1; $i++): ?>
-                                    <?php $check_id = 'check'.$col_1[$i]['id'] ?>
+                                        <?php $check_id = 'check' . $col_1[$i]['id'] ?>
                                         <tr>
                                             <td>
-                                                <input type="checkbox" name="check_list[]" id="<?=$check_id?>" style="border-radius: 10px;"
+                                                <input type="checkbox" name="check_list[]" id="<?= $check_id ?>"
+                                                       style="border-radius: 10px;"
                                                        value="<?= $col_1[$i]['id'] ?>" onclick="checkselected($(this))"><span> <?= $col_1[$i]['name'] ?></span>
                                             </td>
                                         </tr>
@@ -198,10 +205,11 @@ if (isset($_SESSION['msg-error'])) {
                             <table>
                                 <?php if (count($col_2) > 0): ?>
                                     <?php for ($i = 0; $i <= count($col_2) - 1; $i++): ?>
-                                        <?php $check_id = 'check'.$col_1[$i]['id'] ?>
+                                        <?php $check_id = 'check' . $col_1[$i]['id'] ?>
                                         <tr>
                                             <td>
-                                                <input type="checkbox" name="check_list[]" id="<?=$check_id?>" style="border-radius: 10px;"
+                                                <input type="checkbox" name="check_list[]" id="<?= $check_id ?>"
+                                                       style="border-radius: 10px;"
                                                        value="<?= $col_2[$i]['id'] ?>"><span> <?= $col_2[$i]['name'] ?></span>
                                             </td>
                                         </tr>
@@ -214,10 +222,11 @@ if (isset($_SESSION['msg-error'])) {
                             <table>
                                 <?php if (count($col_3) > 0): ?>
                                     <?php for ($i = 0; $i <= count($col_3) - 1; $i++): ?>
-                                        <?php $check_id = 'check'.$col_1[$i]['id'] ?>
+                                        <?php $check_id = 'check' . $col_1[$i]['id'] ?>
                                         <tr>
                                             <td>
-                                                <input type="checkbox" name="check_list[]" id="<?=$check_id?>" style="border-radius: 10px;"
+                                                <input type="checkbox" name="check_list[]" id="<?= $check_id ?>"
+                                                       style="border-radius: 10px;"
                                                        value="<?= $col_3[$i]['id'] ?>"><span> <?= $col_3[$i]['name'] ?></span>
                                             </td>
                                         </tr>
@@ -230,10 +239,11 @@ if (isset($_SESSION['msg-error'])) {
                             <table>
                                 <?php if (count($col_4) > 0): ?>
                                     <?php for ($i = 0; $i <= count($col_4) - 1; $i++): ?>
-                                        <?php $check_id = 'check'.$col_1[$i]['id'] ?>
+                                        <?php $check_id = 'check' . $col_1[$i]['id'] ?>
                                         <tr>
                                             <td>
-                                                <input type="checkbox" name="check_list[]" id="<?=$check_id?>" style="border-radius: 10px;"
+                                                <input type="checkbox" name="check_list[]" id="<?= $check_id ?>"
+                                                       style="border-radius: 10px;"
                                                        value="<?= $col_4[$i]['id'] ?>"><span> <?= $col_4[$i]['name'] ?></span>
                                             </td>
                                         </tr>
@@ -243,7 +253,7 @@ if (isset($_SESSION['msg-error'])) {
                             </table>
                         </div>
                     </div>
-                    <br />
+                    <br/>
                     <div class="row">
                         <div class="col-lg-3">
                             <label for="">รหัสเข้าเครื่อง</label>
@@ -288,8 +298,8 @@ include "footer.php";
 ?>
 <script>
     notify();
- //   $('.workorder-date').datetimepicker({dateFormat: 'dd-mm-yy'});
- //        var TinyDatePicker = DateRangePicker.TinyDatePicker;
+    //   $('.workorder-date').datetimepicker({dateFormat: 'dd-mm-yy'});
+    //        var TinyDatePicker = DateRangePicker.TinyDatePicker;
     //        TinyDatePicker('.workorder-date', {
     //            dateFormat: 'dd-mm-yy',
     //            mode: 'dp-below',
@@ -298,10 +308,11 @@ include "footer.php";
     //
     //        })
 
-    function checkselected(e){
+    function checkselected(e) {
         // var c_value = e.attr('checked');
         // alert(c_value);
     }
+
     function showaddbank(e) {
         $(".user-recid").val(0);
         $(".bank-name").val('');
@@ -350,7 +361,7 @@ include "footer.php";
             var models = '';
             var phone_color = '';
             var customer_pass = '';
-            var estimate_price ='';
+            var estimate_price = '';
             var pre_pay = '';
             var note = '';
             var checklist = null;
@@ -381,7 +392,7 @@ include "footer.php";
                         checklist = data[0]['check_list'];
                     }
                 },
-                'error': function(err){
+                'error': function (err) {
                     alert('ee');
                 }
             });
@@ -401,14 +412,13 @@ include "footer.php";
             $(".note").val(note);
 
 
-
-            if(checklist.length > 0){
+            if (checklist.length > 0) {
                 $("input[type='checkbox']").each(function () {
-                   for(var x=0;x<=checklist.length-1;x++){
-                       if($(this).val() == checklist[x]['check_list_id'] ){
-                           $(this).prop("checked", true);
-                       }
-                   }
+                    for (var x = 0; x <= checklist.length - 1; x++) {
+                        if ($(this).val() == checklist[x]['check_list_id']) {
+                            $(this).prop("checked", true);
+                        }
+                    }
                     // console.log('xx');
                 });
 
@@ -464,9 +474,9 @@ include "footer.php";
         // });
     }
 
-    function findbrandmodel(e){
+    function findbrandmodel(e) {
         var brand_id = e.val();
-        if(brand_id != null){
+        if (brand_id != null) {
             $.ajax({
                 'type': 'post',
                 'dataType': 'html',
@@ -474,8 +484,27 @@ include "footer.php";
                 'url': 'get_item_model.php',
                 'data': {'id': brand_id},
                 'success': function (data) {
-                    if(data !=""){
+                    if (data != "") {
                         $(".phone-model").html(data);
+                    }
+
+                }
+            });
+        }
+    }
+
+    function findBrandid(e) {
+        var model_id = e.val();
+        if (model_id != null) {
+            $.ajax({
+                'type': 'post',
+                'dataType': 'html',
+                'async': false,
+                'url': 'get_item_brand.php',
+                'data': {'id': model_id},
+                'success': function (data) {
+                    if (data != "") {
+                        $(".phone-brand").val(data).change();
                     }
 
                 }
