@@ -103,6 +103,40 @@ function getMemberWalletAmount($connect,$id){
     }
 
 }
+function getMemberType($connect,$id){
+    $query = "SELECT * FROM member WHERE id='$id'";
+    $statement = $connect->prepare($query);
+    $statement->execute();
+    $result = $statement->fetchAll();
+    $filtered_rows = $statement->rowCount();
+    //return $filtered_rows;
+    if($filtered_rows > 0){
+        foreach($result as $row){
+            return $row['member_type_id'];
+        }
+    }
+
+}
+function findParentForRegister($connect,$token){
+    $query = "SELECT * FROM member WHERE id>0";
+    $statement = $connect->prepare($query);
+    $statement->execute();
+    $result = $statement->fetchAll();
+    $filtered_rows = $statement->rowCount();
+    //return $filtered_rows;
+    if($filtered_rows > 0){
+        foreach($result as $row){
+            $x = explode('=',$row['url']);
+            if($x[1] == $token){
+                return $row['id'];
+            }
+//            return $row['wallet_amount'];
+        }
+    }else{
+        return 0;
+    }
+
+}
 function getMaxid($connect){
     $query = "SELECT MAX(id) as id FROM member WHERE id > 0";
     $statement = $connect->prepare($query);

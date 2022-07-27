@@ -7,6 +7,12 @@ if (isset($_SESSION['msg_err'])) {
     $mes_error = $_SESSION['msg_err'];
     unset($_SESSION['msg_err']);
 }
+
+$member_ref_id = null;
+if (isset($_GET['ref'])) {
+    $member_ref_id = $_GET['ref'];
+};
+//echo $member_ref_id;
 ?>
 <!doctype html>
 <html lang="en">
@@ -16,7 +22,7 @@ if (isset($_SESSION['msg_err'])) {
     <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1">
     <!--    <base href="../" />-->
 
-    <title>Login - Ace Admin</title>
+    <title>Login - iMac Plus</title>
 
     <!-- include common vendor stylesheets & fontawesome -->
     <link rel="stylesheet" type="text/css" href="node_modules/bootstrap/dist/css/bootstrap.css">
@@ -291,7 +297,8 @@ if (isset($_SESSION['msg_err'])) {
 
                                                 <div class="p-0 px-md-2 text-dark-tp3 my-3">
                                                     ยังไม่เป็นสมาชิกกับทางเราหรือเปล่า?
-                                                    <a class="text-success-m1 text-600 mx-1" data-toggle="tab"
+                                                    <a class="text-success-m1 text-600 mx-1 btn-to-register"
+                                                       data-toggle="tab"
                                                        data-target="#id-tab-signup" href="#">
                                                         สมัครตอนนี้
                                                     </a>
@@ -333,7 +340,7 @@ if (isset($_SESSION['msg_err'])) {
                                         <div class="d-none d-lg-block col-sm-10 offset-sm-1 col-md-8 offset-md-2 col-lg-6 offset-lg-3 mt-lg-4 px-0">
                                             <h4 class="text-dark-tp4 border-b-1 brc-grey-l1 pb-1 text-130">
                                                 <i class="fa fa-user text-purple mr-1"></i>
-                                                Create an Account
+                                                สมัครสมาชิก
                                             </h4>
                                         </div>
 
@@ -345,7 +352,7 @@ if (isset($_SESSION['msg_err'])) {
                                                             class="text-80 text-dark-tp4">Plus</span></span>
                                             </h1>
 
-                                            Create an Account
+                                            สมัครสมาชิก
                                         </div>
                                         <input type="hidden" class="message2" value="<?= $mes_error ?>">
                                         <div class="alert alert-danger alert-msg2"
@@ -353,6 +360,8 @@ if (isset($_SESSION['msg_err'])) {
 
                                         <form id="form-register" autocomplete="off" class="form-row mt-4"
                                               action="register_action.php" method="post">
+                                            <input type="hidden" class="member-ref-id" name="member_ref_id"
+                                                   value="<?= $member_ref_id ?>">
                                             <div class="form-group col-sm-10 offset-sm-1 col-md-8 offset-md-2 col-lg-6 offset-lg-3">
                                                 <div class="d-flex align-items-center input-floating-label text-success brc-success-m2">
                                                     <input type="text"
@@ -572,6 +581,9 @@ if (isset($_SESSION['msg_err'])) {
 <script>
     $(function () {
         err_message();
+        if ($(".member-ref-id").val() != '') {
+            $(".btn-to-register").trigger("click");
+        }
         $(".btn-submit").click(function (e) {
 
             e.preventDefault();
@@ -646,6 +658,7 @@ if (isset($_SESSION['msg_err'])) {
             }
 
         }
+
         function err_message2() {
             var e_msg = $(".message2").val();
             if (e_msg != '') {

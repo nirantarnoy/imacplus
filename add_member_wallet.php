@@ -2,6 +2,7 @@
 ob_start();
 session_start();
 include("common/dbcon.php");
+include("models/WalletModel.php");
 
 $member_id = $_SESSION['userid'];
 $wallet_pay = 0;
@@ -37,8 +38,9 @@ if ($member_id != null && $wallet_pay != '') {
     }
     $c_date = date('Y-m-d H:i:s');
     $created_at = time();
+    $get_lastno = getWalletLastNo($connect);
     $sql = "INSERT INTO wallet_trans (trans_no,trans_date,member_id,wallet_in_amount,transfer_doc,created_at,created_by,status)
-           VALUES ('001','$c_date','$member_id','$wallet_pay','$slip_doc','$created_at','$member_id', 0)";
+           VALUES ('$get_lastno','$c_date','$member_id','$wallet_pay','$slip_doc','$created_at','$member_id', 0)";
 
     if ($result = $connect->query($sql)) {
         $_SESSION['msg-success'] = 'Saved data successfully';

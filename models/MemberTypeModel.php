@@ -36,7 +36,7 @@ function getMemberTypeByTypeId($connect, $type_id){
     $result = $statement->fetchAll();
 
     $cus_data = array();
-    $filtered_rows = $statement->rowCount();
+    //$filtered_rows = $statement->rowCount();
     foreach ($result as $row){
         array_push($cus_data,['id'=>$row['id'],'name'=>$row['name'],'percent_rate'=>$row['percent_rate']]);
     }

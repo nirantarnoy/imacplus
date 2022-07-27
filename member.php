@@ -87,7 +87,7 @@ if (isset($_SESSION['msg-error'])) {
             <form action="member_action.php" id="form-user" method="post">
                 <!-- Modal Header -->
                 <div class="modal-header">
-                    <h4 class="modal-title" style="color: #1c606a">เพิ่มข้อมูลยี่ห้อสินค้า</h4>
+                    <h4 class="modal-title" style="color: #1c606a">เพิ่มข้อมูลสมาชิก</h4>
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
                 </div>
 
@@ -268,7 +268,7 @@ include "footer.php";
             $(".member-point").val(point);
 
 
-            $(".modal-title").html('แก้ไขข้อมูลยี่ห้อสินค้า');
+            $(".modal-title").html('แก้ไขข้อมูลสมาชิก');
             $(".action-type").val('update');
             $("#myModal").modal("show");
         }

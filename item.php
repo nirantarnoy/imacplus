@@ -30,6 +30,7 @@ if (isset($_SESSION['msg-error'])) {
     unset($_SESSION['msg-error']);
 }
 $item_brand_data = getItembrandData($connect);
+$device_type_data = getDeviceTypeData($connect);
 //print_r($item_brand_data);
 
 ?>
@@ -108,7 +109,7 @@ $item_brand_data = getItembrandData($connect);
                                    placeholder="Item name">
                         </div>
                         <div class="col-lg-4">
-                            <label for="">Model</label>
+                            <label for="">รุ่น</label>
                             <input type="text" class="form-control item-model" name="item_model" value=""
                                    placeholder="Item model">
                         </div>
@@ -116,12 +117,25 @@ $item_brand_data = getItembrandData($connect);
                     <br>
                     <div class="row">
                         <div class="col-lg-12">
-                            <label for="">Brand <span style="color: red"><b>*</b></span></label>
+                            <label for="">ยี่ห้อ <span style="color: red"><b>*</b></span></label>
                             <!--                            <input type="text" class="form-control cust-group-id" name="cust_group_id" value=""-->
                             <!--                                   placeholder="กลุ่มลูกค้า" required>-->
                             <select name="brand_id" class="form-control brand-id" id="">
                                 <?php for ($i = 0; $i <= count($item_brand_data) - 1; $i++): ?>
                                     <option value="<?= $item_brand_data[$i]['id'] ?>" ><?= $item_brand_data[$i]['name'] ?></option>
+                                <?php endfor; ?>
+                            </select>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <label for="">ประภทอุปกรณ์ <span style="color: red"><b>*</b></span></label>
+                            <!--                            <input type="text" class="form-control cust-group-id" name="cust_group_id" value=""-->
+                            <!--                                   placeholder="กลุ่มลูกค้า" required>-->
+                            <select name="device_type_id" class="form-control device-type-id" id="">
+                                <?php for ($i = 0; $i <= count($device_type_data) - 1; $i++): ?>
+                                    <option value="<?= $device_type_data[$i]['id'] ?>" ><?= $device_type_data[$i]['name'] ?></option>
                                 <?php endfor; ?>
                             </select>
                         </div>

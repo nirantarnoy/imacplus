@@ -7,7 +7,7 @@ function getDisplayname($id ,$connect){
     $filtered_rows = $statement->rowCount();
     if($filtered_rows > 0){
         foreach($result as $row){
-           return $row['display_name'];
+           return $row['username'];
         }
     }
 }

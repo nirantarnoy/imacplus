@@ -4,6 +4,7 @@ session_start();
 include "header.php";
 include "models/MemberModel.php";
 include "models/UserModel.php";
+include "models/MemberTypeModel.php";
 
 $member_id = getMemberFromUser($_SESSION['userid'], $connect);
 ?>
@@ -30,11 +31,11 @@ $member_id = getMemberFromUser($_SESSION['userid'], $connect);
 
                         <div class="text-center mt-2">
                             <h3 class="text-130 text-dark-m3">
-                                ทดสอบ ระบบ
+                                <?=getDisplayname($_SESSION['userid'], $connect)?>
                             </h3>
 
                             <span class="text-100 text-primary text-600">
-                            VIP SHOP <br />
+                            <?=getMembertypeName(getMemberType($connect,$member_id), $connect)?> <br />
 
                         </span>
 
@@ -78,7 +79,7 @@ $member_id = getMemberFromUser($_SESSION['userid'], $connect);
                         <div class="row w-100 text-center">
                             <div class="col-4">
                                 <div class="px-1 pt-2">
-                                    <span class="text-150 text-primary-m3"><b>0.00</b></span>
+                                    <span class="text-170 text-primary-m3"><b>0.00</b></span>
                                     <br />
                                     <span class="text-grey-m1 text-90"><b>คะแนน mPoint</b></span>
                                 </div>
@@ -88,7 +89,7 @@ $member_id = getMemberFromUser($_SESSION['userid'], $connect);
 
                             <div class="col-4">
                                 <div class="px-1 pt-2">
-                                    <span class="text-150 text-primary-m3"><b><?=number_format(getMemberWalletAmount($connect,$member_id),2)?></b></span>
+                                    <span class="text-170 text-primary-m3"><b><?=number_format(getMemberWalletAmount($connect,$member_id),2)?></b></span>
                                     <br />
                                     <span class="text-grey-m1 text-90"><b>จำนวนวอลเล็ท</b></span>
                                 </div>
@@ -98,12 +99,12 @@ $member_id = getMemberFromUser($_SESSION['userid'], $connect);
 
                             <div class="col-4">
                                 <div class="px-1 pt-2">
-                                    <span class="text-150 text-primary-m3"><b><?=number_format(getMemberChildCount($connect, $member_id))?></b></span>
+                                    <span class="text-170 text-primary-m3"><b><?=number_format(getMemberChildCount($connect, $member_id))?></b></span>
                                     <br />
                                     <span class="text-grey-m1 text-90"><b>สมาชิกแนะนำ</b></span>
                                 </div>
 
-                                <div class="position-rc h-75 border-l-1 brc-secondary-l3"></div>
+
                             </div>
 
 
