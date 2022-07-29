@@ -566,6 +566,13 @@
                                     <li class="nav-item <?=checkActiveMenu($current_url[4],'itembrand.php')?>">
                                         <a href="itembrand.php" class="nav-link">
                                           <span class="nav-text">
+                                              <span>ประเภทอุปกรณ์</span>
+                                          </span>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item <?=checkActiveMenu($current_url[4],'itembrand.php')?>">
+                                        <a href="itembrand.php" class="nav-link">
+                                          <span class="nav-text">
                                               <span>ยี่ห้อ</span>
                                           </span>
                                         </a>
@@ -652,6 +659,13 @@
                                         <a href="check_list.php" class="nav-link">
                                           <span class="nav-text">
                                               <span>Check List</span>
+                                          </span>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="quotation.php" class="nav-link">
+                                          <span class="nav-text">
+                                              <span>เสนอราคา</span>
                                           </span>
                                         </a>
                                     </li>

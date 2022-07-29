@@ -21,6 +21,7 @@ include("models/ItembrandModel.php");
 $checklist_data = getChecklistmodel($connect);
 $item_brand_data = getItembrandData($connect);
 $item_model_data = getItemModelData($connect);
+$item_type_data = getDeviceTypeData($connect);
 
 
 $col_1 = [];
@@ -155,7 +156,17 @@ if (isset($_SESSION['msg-error'])) {
                     </div>
                     <br>
                     <div class="row">
-                        <div class="col-lg-4">
+                        <div class="col-lg-3">
+                            <label for="">ประเภทอุปกรณ์</label>
+                            <!--                            <select name="phone_brand" class="form-control phone-brand" id="" onchange="findbrandmodel($(this))">-->
+                            <select name="phone_brand" class="form-control phone-brand" id="">
+                                <option value="-1">--เลือกประเภทอุปกรณ์--</option>
+                                <?php for ($i = 0; $i <= count($item_type_data) - 1; $i++): ?>
+                                    <option value="<?= $item_type_data[$i]['id'] ?>"><?= $item_type_data[$i]['name'] ?></option>
+                                <?php endfor; ?>
+                            </select>
+                        </div>
+                        <div class="col-lg-3">
                             <label for="">รับซ่อมโทรศัพท์มือถือยี่ห้อ</label>
                             <!--                            <select name="phone_brand" class="form-control phone-brand" id="" onchange="findbrandmodel($(this))">-->
                             <select name="phone_brand" class="form-control phone-brand" id="">
@@ -165,7 +176,7 @@ if (isset($_SESSION['msg-error'])) {
                                 <?php endfor; ?>
                             </select>
                         </div>
-                        <div class="col-lg-4">
+                        <div class="col-lg-3">
                             <label for="">รุ่น</label>
                             <select name="phone_model" class="form-control phone-model" id=""
                                     onchange="findBrandid($(this))">
@@ -175,7 +186,7 @@ if (isset($_SESSION['msg-error'])) {
                                 <?php endfor; ?>
                             </select>
                         </div>
-                        <div class="col-lg-4">
+                        <div class="col-lg-3">
                             <label for="">สี</label>
                             <input type="text" class="form-control phone-color" name="phone_color" value=""
                                    placeholder="สี">

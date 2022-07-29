@@ -44,4 +44,16 @@ function getSparepartItemData($connect){
     return $cus_data;
 
 }
+function getDeviceTypeName($id,$connect){
+    $query = "SELECT * FROM device_type WHERE id='$id'";
+    $statement = $connect->prepare($query);
+    $statement->execute();
+    $result = $statement->fetchAll();
+    $filtered_rows = $statement->rowCount();
+    if($filtered_rows > 0){
+        foreach($result as $row){
+            return $row['name'];
+        }
+    }
+}
 ?>

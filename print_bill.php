@@ -47,13 +47,13 @@ if (isset($_GET["trans_id"])) {
     $trans_id = $_GET["trans_id"];
 }
 
-$trans_no = '';
-$trans_data = [];
-$pay_amount = 0;
+$work_no = '';
+$work_date = '';
+$customer_id = '';
 $customer_name = '';
-$customer_address = '';
+$created_by = 0;
 
-$query = "SELECT * FROM workorder WHERE id =1";
+$query = "SELECT * FROM workorders WHERE id =3";
 //$query .= ' GROUP BY product_picking.tracking_no';
 $query .= ' ORDER BY id ASC ';
 
@@ -63,30 +63,24 @@ $result = $statement->fetchAll();
 $data = array();
 //$filtered_rows = $statement->rowCount();
 foreach ($result as $row) {
-//    $trans_no = $row['trans_no'];
-    array_push($trans_data, [
-        'customer_id' => $row['customer_id'],
-        'loan_no' => $row['loan_no'],
-        'interest_amount' => $row['interest_amount'],
-        'balance_amount' => $row['balance_amount'],
-    ]);
+    $work_no = $row['work_no'];
+    $work_date = $row['work_date'];
+    $customer_id = $row['customer_id'];
+    $customer_name = $row['customer_name'];
+    $created_by = $row['created_by'];
+//    array_push($trans_data, [
+//        'customer_id' => $row['customer_id'],
+//        'loan_no' => $row['loan_no'],
+//        'interest_amount' => $row['interest_amount'],
+//        'balance_amount' => $row['balance_amount'],
+//    ]);
 }
 
-$query2 = "SELECT * FROM workorder WHERE id =1";
-//$query .= ' GROUP BY product_picking.tracking_no';
-$query2 .= ' ORDER BY id ASC ';
 
-$statement2 = $connect->prepare($query2);
-$statement2->execute();
-$result2 = $statement2->fetchAll();
-foreach ($result2 as $row2) {
-//    $trans_no = $row['trans_no'];
+$total = 0;
+$total_discount = 0;
+$total_all = 0;
 
-    $pay_amount = $row2['pay_amount'];
-
-}
-
-$customer_name = $trans_data[0]['customer_id'] ? getCustomername($connect, $trans_data[0]['customer_id']) : $trans_data[0]['customer_name'];
 ?>
 <!DOCTYPE html>
 <html>
@@ -131,22 +125,24 @@ $customer_name = $trans_data[0]['customer_id'] ? getCustomername($connect, $tran
     <!--    <script type="text/javascript" src="js/ThaiBath-master/thaibath.js"></script>-->
 </head>
 <body>
-<img src="" alt="">
-<table class="table-header" style="width: 100%;" border="0">
 
+<table class="table-header" style="width: 100%;" border="0">
+    <tr>
+        <td colspan="3" style="text-align: center"><img src="uploads/logo/imaclogo.jpg" style="width: 30%" alt=""></td>
+    </tr>
     <tr>
         <td colspan="3">
-            วันที่ <small> <?= date('d/m/Y H:i:s'); ?></small>
+            วันที่ <small> <?= date('d/m/Y H:i:s', strtotime($work_date)); ?></small>
         </td>
     </tr>
     <tr>
         <td colspan="3">
-            ใบเสร็จรับเงิน <small> <?php //echo?></small>
+            ใบเสร็จรับเงิน <small> <?=$work_no?></small>
         </td>
     </tr>
     <tr>
         <td colspan="3">
-            ผู้รับเงิน <small> <?php //echo ?></small>
+            ผู้รับเงิน <small> <?=$created_by ?></small>
         </td>
     </tr>
 

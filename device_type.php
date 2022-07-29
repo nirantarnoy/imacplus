@@ -81,7 +81,7 @@ if(isset($_SESSION['msg-error'])){
             <form action="device_type_action.php" id="form-user" method="post">
                 <!-- Modal Header -->
                 <div class="modal-header">
-                    <h4 class="modal-title" style="color: #1c606a">เพิ่มข้อมูลประเภทร้านค้า</h4>
+                    <h4 class="modal-title" style="color: #1c606a">เพิ่มข้อมูลประเภทอุปกรณ์</h4>
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
                 </div>
 
@@ -196,7 +196,7 @@ include "footer.php";
             $(".code").val(code);
             $(".name").val(name);
 
-            $(".modal-title").html('แก้ไขข้อมูลร้านค้า');
+            $(".modal-title").html('แก้ไขข้อมูลประเภทอุปกรณ์');
             $(".action-type").val('update');
             $("#myModal").modal("show");
         }
