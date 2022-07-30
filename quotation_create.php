@@ -35,8 +35,8 @@ if(isset($_GET['update_id'])){
     $action_type = "update";
 }
 if($update_id){
-    $sale_data = getSaleDataupdate($update_id,$connect);
-    $sale_data_line = getSaleDataupdateline($update_id,$connect);
+    $sale_data = getQuotationDataupdate($update_id,$connect);
+    $sale_data_line = getQuotationDataupdateline($update_id,$connect);
     $rec_id = $update_id;
 }
 $customer_data = getCustomermodel($connect);
@@ -145,7 +145,7 @@ $status_data = getStatusData($connect);
                                         <td>
                                             <input type="hidden" name="line_rec_id[]"  class="line-rec-id" value="<?= $sale_data_line[$i]['id'] ?>">
                                             <input type="hidden" class="form-control line-product-id" name="line_product_id[]" value="<?= $sale_data_line[$i]['product_id'] ?>">
-                                            <input type="text" class="form-control line-product-name" name="line_product_name[]" value="<?= getProdname($sale_data_line[$i]['product_id'],$connect) ?>">
+                                            <input type="text" class="form-control line-product-name" name="line_product_name[]" value="<?= getItemName($sale_data_line[$i]['item_id'],$connect) ?>">
                                         </td>
                                         <td>
                                             <input type="number" class="form-control line-qty" name="line_qty[]" value="<?= $sale_data_line[$i]['qty'] ?>" onchange="calTotal($(this))">
@@ -155,8 +155,8 @@ $status_data = getStatusData($connect);
                                         </td>
 
                                         <td>
-                                            <input type="hidden" class="form-control line-total" name="line_total[]" value="<?= 0 ?>">
-                                            <input type="text" class="form-control line-total-show" name="line_total[]" value="<?= 0 ?>" readonly>
+                                            <input type="hidden" class="form-control line-total" name="line_total[]" value="<?= $sale_data_line[$i]['line_total'] ?>">
+                                            <input type="text" class="form-control line-total-show" name="line_total[]" value="<?= $sale_data_line[$i]['line_total'] ?>" readonly>
                                         </td>
 
                                         <td>
@@ -176,7 +176,10 @@ $status_data = getStatusData($connect);
                                     <td>
                                         <input type="number" class="form-control line-price" name="line_price[]" value="">
                                     </td>
-
+                                    <td>
+                                        <input type="hidden" class="form-control line-total" name="line_total[]" value="">
+                                        <input type="text" class="form-control line-total-show" name="line_total[]" value="" readonly>
+                                    </td>
 
                                     <td>
                                         <div class="btn btn-danger" onclick="removeline($(this))">ลบ</div>
@@ -226,7 +229,7 @@ $status_data = getStatusData($connect);
     </div>
 </div>
 
-<form action="sale_action.php" method="post" id="form-delete">
+<form action="quotation_action.php" method="post" id="form-delete">
     <input type="hidden" name="action_type" value="delete">
     <input type="hidden" class="delete-id" name="delete_id" value="">
 </form>
@@ -265,6 +268,8 @@ $status_data = getStatusData($connect);
                         <th style="text-align: center">เลือก</th>
                         <th>สินค้า/บริการ</th>
                         <th>รายละเอียด</th>
+                        <th>ประเภทอุปกรณ์</th>
+                        <th>ยี่ห้อ</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -293,7 +298,7 @@ include "footer.php";
 <script>
     notify();
     alltotal();
-    $('.quotation-date').datepicker({dateFormat: 'dd-mm-yy'});
+    // $('.quotation-date').datepicker({dateFormat: 'dd-mm-yy'});
     $(".btn-upload").click(function () {
         $("#myModal").modal("show");
     });
@@ -307,7 +312,7 @@ include "footer.php";
         "pageLength": 100,
         "filter": false,
         "ajax": {
-            url: "sale_fetch.php",
+            url: "quotation_fetch.php",
             type: "POST",
             data: function (data) {
                 // Read values
@@ -335,9 +340,9 @@ include "footer.php";
         dataTablex.draw();
     });
 
-    $('#search-email').change(function () {
-        dataTablex.draw();
-    });
+    // $('#search-email').change(function () {
+    //     dataTablex.draw();
+    // });
 
     // $('#search-prod').change(function(){
     //     dataTablex.draw();
@@ -522,10 +527,10 @@ include "footer.php";
     function addselecteditem(e) {
         // alert('hi');return;
         var id = e.attr('data-var');
-        var code = e.closest('tr').find('.line-find-code').val();
+        var model = e.closest('tr').find('.line-find-model').val();
         var name = e.closest('tr').find('.line-find-name').val();
         var type = e.closest('tr').find('.line-find-type').val();
-        var price = e.closest('tr').find('.line-find-price').val();
+        var brand = e.closest('tr').find('.line-find-brand').val();
         //alert(onhand);
         //  var qty = e.closest('tr').find('.line-qty').val();
         //  var total = e.closest('tr').find('.line-total').val();
@@ -533,12 +538,13 @@ include "footer.php";
             if (e.hasClass('btn-outline-success')) {
                 var obj = {};
                 obj['id'] = id;
-                obj['code'] = code;
+                obj['model'] = model;
                 obj['name'] = name;
                 obj['type'] = type;
-                obj['price'] = price;
+                obj['brand'] = brand;
                 //  obj['total'] = total;
                 selecteditem.push(obj);
+                // alert(selecteditem);
 
                 e.removeClass('btn-outline-success');
                 e.addClass('btn-success');

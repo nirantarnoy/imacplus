@@ -56,4 +56,17 @@ function getDeviceTypeName($id,$connect){
         }
     }
 }
+
+function getItemBrandName($id,$connect){
+    $query = "SELECT * FROM item_brand WHERE id='$id'";
+    $statement = $connect->prepare($query);
+    $statement->execute();
+    $result = $statement->fetchAll();
+    $filtered_rows = $statement->rowCount();
+    if($filtered_rows > 0){
+        foreach($result as $row){
+            return $row['name'];
+        }
+    }
+}
 ?>

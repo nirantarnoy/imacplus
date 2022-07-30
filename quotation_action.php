@@ -7,8 +7,10 @@ if (!isset($_SESSION['userid'])) {
     header("location:loginpage.php");
 }
 include("common/dbcon.php");
-include("models/SaleModel.php");
-include("common/order_lastno.php");
+//include("models/SaleModel.php");
+//include("common/order_lastno.php");
+include("models/QuotationModel.php");
+include("models/ItemModel.php");
 
 $id = 0;
 $delete_id = 0;
@@ -16,12 +18,13 @@ $selected = null;
 $userid = 0;
 
 $customer_id = '';
-$order_date = '';
+$quotation_no = '';
+$quotation_date = '';
 $emp_person = '';
 $emp_helper = '';
 $order_status = '';
 
-$line_product_id = '';
+$line_item_id = '';
 $line_qty = 0;
 $line_price = 0;
 $line_total = 0;
@@ -43,21 +46,24 @@ if (isset($_POST['selected_item'])) {
 if(isset($_POST['customer_id'])){
     $customer_id = $_POST['customer_id'];
 }
-if(isset($_POST['order_date'])){
-    $order_date = $_POST['order_date'];
+if(isset($_POST['quotation_no'])){
+    $quotation_no = $_POST['quotation_no'];
 }
-if(isset($_POST['emp_person'])){
-    $emp_person = $_POST['emp_person'];
+if(isset($_POST['quotation_date'])){
+    $quotation_date = $_POST['quotation_date'];
 }
-if(isset($_POST['emp_helper'])){
-    $emp_helper = $_POST['emp_helper'];
-}
+//if(isset($_POST['emp_person'])){
+//    $emp_person = $_POST['emp_person'];
+//}
+//if(isset($_POST['emp_helper'])){
+//    $emp_helper = $_POST['emp_helper'];
+//}
 if(isset($_POST['status'])){
     $status = $_POST['status'];
 }
 
 if(isset($_POST['line_product_id'])){
-    $line_product_id = $_POST['line_product_id'];
+    $line_item_id = $_POST['line_product_id'];
 }
 if(isset($_POST['line_qty'])){
     $line_qty = $_POST['line_qty'];
@@ -68,15 +74,15 @@ if(isset($_POST['line_price'])){
 //if(isset($_POST['line_total'])){
 //    $line_total = $_POST['line_total'];
 //}
-if(isset($_POST['line_promotion_id'])){
-    $line_promotion_id = $_POST['line_promotion_id'];
-}
-if(isset($_POST['line_dis_amount'])){
-    $line_discount_amount = $_POST['line_dis_amount'];
-}
-if(isset($_POST['line_dis_per'])){
-    $line_discount_per = $_POST['line_dis_per'];
-}
+//if(isset($_POST['line_promotion_id'])){
+//    $line_promotion_id = $_POST['line_promotion_id'];
+//}
+//if(isset($_POST['line_dis_amount'])){
+//    $line_discount_amount = $_POST['line_dis_amount'];
+//}
+//if(isset($_POST['line_dis_per'])){
+//    $line_discount_per = $_POST['line_dis_per'];
+//}
 
 
 
@@ -96,34 +102,38 @@ if(isset($_POST['recid'])){
 if(isset($_POST['delete_id'])){
     $delete_id = $_POST['delete_id'];
 }
-//print_r($line_discount_per);return;
+//print_r($line_rec_id);return;
 //echo $status; return;
 
 
 if($action == 'create'){
     $created_at = time();
     $created_by = $userid;
-    $last_no = getOrderLastNo($connect);
+    $quotation_no = getOuotationLastNo($connect);
 //    echo $last_no; return;
-    $new_order_date = date('Y-m-d');
-    $sql = "INSERT INTO orders(order_no,order_date,customer_id,emp_person,emp_helper,status,created_at,created_by)
-    VALUES('$last_no','$new_order_date','$customer_id','$emp_person','$emp_helper','$status','$created_at','$created_by')";
+    $new_quotation_date = date('Y-m-d');
+    $sql = "INSERT INTO quotation(quotation_no,quotation_date,customer_id,status,created_at,created_by)
+    VALUES('$quotation_no','$new_quotation_date','$customer_id','$status','$created_at','$created_by')";
 
     if ($result = $connect->query($sql)) {
-        $max_id = getMaxidSale($connect);
+        $max_id = getMaxidQuotation($connect);
         if($max_id){
-            if(count($line_product_id)){
-                for($i=0;$i<=count($line_product_id)-1;$i++){
+//            print_r($line_item_id);return;
+            if(count($line_item_id)){
+//                print_r($line_item_id);return;
+                for($i=0;$i<=count($line_item_id)-1;$i++){
                     $line_total = $line_price[$i] * $line_qty[$i];
-                    $sql4 = "INSERT INTO order_line(order_id,product_id,qty,price,line_total,disc_per,disc_amount,promotion_id,created_at)";
-                    $sql4 .= " VALUES('$max_id','$line_product_id[$i]','$line_qty[$i]','$line_price[$i]','$line_total','$line_discount_per[$i]','$line_discount_amount[$i]','$line_promotion_id[$i]','$created_at')";
+                    $item_name = getItemName($line_item_id[$i],$connect);
+                    $sql4 = "INSERT INTO quotation_line(quotation_id,item_id,item_name,qty,price,line_total,status)";
+                    $sql4 .= " VALUES('$max_id','$line_item_id[$i]','$item_name','$line_qty[$i]','$line_price[$i]','$line_total',$status)";
                     if ($result4 = $connect->query($sql4)) {
+                        echo 'hello';
                     }
                 }
             }
         }
         $_SESSION['msg-success'] = 'บันทึกข้อมูลเรียบร้อยแล้ว';
-        header('location:sale.php');
+        header('location:quotation.php');
     }
 }
 
@@ -132,21 +142,22 @@ if($action == 'update'){
         //  echo $id;return;
         $created_at = time();
         $created_by = $userid;
-        $sql2 = "UPDATE orders SET emp_person='$emp_person',emp_helper='$emp_helper',status='$status', updated_at='$created_at',updated_by='$created_by' WHERE id='$id'";
+        $sql2 = "UPDATE quotation SET customer_id='$customer_id',status='$status', updated_at='$created_at' WHERE id='$id'";
 
 //        echo $sql2;return;
         if ($result2 = $connect->query($sql2)) {
-            if(count($line_product_id)){
-                for($i=0;$i<=count($line_product_id)-1;$i++){
+            if(count($line_item_id)){
+                for($i=0;$i<=count($line_item_id)-1;$i++){
                     $line_total = $line_qty[$i]*$line_price[$i];
-//                    echo checkSaleHadrecord($line_rec_id[$i],$connect); return;
-                    if(checkSaleHadrecord($line_rec_id[$i],$connect)==1){
-                        $sql6 = "UPDATE order_line SET qty='$line_qty[$i]',price='$line_price[$i]',line_total='$line_total',disc_per='$line_discount_per[$i]',disc_amount='$line_discount_amount[$i]',promotion_id='$line_promotion_id[$i]', updated_at='$created_at' WHERE id='$line_rec_id[$i]'";
+//                    echo checkQuotationHasrecord($line_rec_id[$i],$connect); return;
+                    if(checkQuotationHasrecord($line_rec_id[$i],$connect)==1){
+                        $sql6 = "UPDATE quotation_line SET qty='$line_qty[$i]',price='$line_price[$i]',line_total='$line_total' WHERE id='$line_rec_id[$i]' ";
                         if ($result6 = $connect->query($sql6)) {}
 //                        echo $sql6; return;
                     }else{
-                        $sql5 = "INSERT INTO order_line(order_id,product_id,qty,price,line_total,disc_per,disc_amount,promotion_id,created_at)";
-                        $sql5 .= " VALUES('$id','$line_product_id[$i]','$line_qty[$i]','$line_price[$i]','$line_total','$line_discount_per[$i],'$line_discount_amount[$i],'$line_promotion_id[$i],'$created_at') ";
+                        $item_name = getItemName($line_item_id[$i],$connect);
+                        $sql5 = "INSERT INTO quotation_line(quotation_id,item_id,item_name,qty,price,line_total)";
+                        $sql5 .= " VALUES('$id','$line_item_id[$i]','$item_name','$line_qty[$i]','$line_price[$i]','$line_total') ";
                         if ($result5 = $connect->query($sql5)) {
 //                            echo $sql5; return;
                         }
@@ -157,7 +168,7 @@ if($action == 'update'){
             $delete_rec = explode(',',$remove_list);
             if(count($delete_rec)){
                 for($m=0;$m <= count($delete_rec)-1;$m++){
-                    $sql7 = "DELETE FROM order_line WHERE id='$delete_rec[$m]' ";
+                    $sql7 = "DELETE FROM quotation_line WHERE id='$delete_rec[$m]' ";
                     if ($result7 = $connect->query($sql7)) {}
                 }
             }
@@ -165,7 +176,7 @@ if($action == 'update'){
 
 
             $_SESSION['msg-success'] = 'บันทึกข้อมูลเรียบร้อยแล้ว';
-            header('location:sale.php');
+            header('location:quotation.php');
         }else{
             echo "no";return;
         }
@@ -174,12 +185,12 @@ if($action == 'update'){
 }
 if($action == 'delete'){
     if($delete_id > 0){
-        $sql3 = "DELETE FROM orders WHERE id='$delete_id'";
+        $sql3 = "DELETE FROM quotation WHERE id='$delete_id'";
         if ($result3 = $connect->query($sql3)) {
-            $sql8 = "DELETE FROM order_line WHERE order_id='$delete_id]' ";
+            $sql8 = "DELETE FROM quotation_line WHERE quotation_id='$delete_id]' ";
             if ($result8 = $connect->query($sql8)) {}
             $_SESSION['msg-success'] = 'ลบข้อมูลเรียบร้อยแล้ว';
-            header('location:sale.php');
+            header('location:quotation.php');
         }else{
             echo "no";return;
         }

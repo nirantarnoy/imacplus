@@ -27,8 +27,8 @@ if (isset($_POST['id'])) {
                        </td>';
         $html .= '<td>' . $row['model'] . '</td>';
         $html .= '<td>' . $row['name'] . '</td>';
-        $html .= '<td>' . getDeviceTypeName($row['device_type']) . '</td>';
-        $html .= '<td>' . $row['brand_id'] . '</td>';
+        $html .= '<td>' . getDeviceTypeName($row['device_type'],$connect) . '</td>';
+        $html .= '<td>' . getItemBrandName($row['brand_id'],$connect) . '</td>';
         $html .= '</tr>';
     }
 

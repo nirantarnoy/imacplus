@@ -23,10 +23,10 @@ if (isset($_POST['id'])) {
 //    echo json_encode($data);
 //}
 
-function getSaleDataupdate($id, $connect)
+function getQuotationDataupdate($id, $connect)
 {
     $data = [];
-    $query = "SELECT * FROM orders WHERE id='$id' ";
+    $query = "SELECT * FROM quotation WHERE id='$id' ";
     $statement = $connect->prepare($query);
     $statement->execute();
     $result = $statement->fetchAll();
@@ -35,22 +35,20 @@ function getSaleDataupdate($id, $connect)
     foreach ($result as $row) {
         array_push($data, [
             'id' => $row['id'],
-            'order_no' => $row['order_no'],
-            'order_date' => $row['order_date'],
+            'quotation_no' => $row['quotation_no'],
+            'quotation_date' => $row['quotation_date'],
             'customer_id' => $row['customer_id'],
             'status' => $row['status'],
-            'emp_person' => $row['emp_person'],
-            'emp_helper' => $row['emp_helper'],
         ]);
     }
 
     return $data;
 }
 
-function getSaleDataupdateline($id, $connect)
+function getQuotationDataupdateline($id, $connect)
 {
     $data = [];
-    $query = "SELECT * FROM order_line WHERE order_id='$id' ";
+    $query = "SELECT * FROM quotation_line WHERE quotation_id='$id' ";
     $statement = $connect->prepare($query);
     $statement->execute();
     $result = $statement->fetchAll();
@@ -59,16 +57,13 @@ function getSaleDataupdateline($id, $connect)
     foreach ($result as $row) {
         array_push($data, [
             'id' => $row['id'],
-            'product_id' => $row['product_id'],
+            'quotation_id' => $row['quotation_id'],
+            'item_id' => $row['item_id'],
+            'item_name' => $row['item_name'],
             'qty' => $row['qty'],
             'price' => $row['price'],
             'line_total' => $row['line_total'],
-            'disc_per' => $row['disc_per'],
-            'disc_amount' => $row['disc_amount'],
-            'promotion_id' => $row['promotion_id'],
 //            'status' => $row['status'],
-
-
         ]);
     }
 
