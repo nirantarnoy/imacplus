@@ -1,6 +1,6 @@
 <?php
-function getWalletLastNo($connect){
-    $query = "SELECT MAX(trans_no) as code FROM wallet_trans WHERE trans_no <>''";
+function getMemberUpgradeLastNo($connect){
+    $query = "SELECT MAX(trans_no) as code FROM member_upgrade WHERE trans_no <>''";
     $statement = $connect->prepare($query);
     $statement->execute();
     $result = $statement->fetchAll();
@@ -24,8 +24,8 @@ function getWalletLastNo($connect){
         return $runno.'00001';
     }
 }
-function getWalletMaxId($connect){
-    $query = "SELECT MAX(id) as id FROM wallet_trans WHERE id > 0";
+function getMemberUpgradeMaxId($connect, $member_id){
+    $query = "SELECT MAX(id) as id FROM member_upgrade WHERE member_id='$member_id'";
     $statement = $connect->prepare($query);
     $statement->execute();
     $result = $statement->fetchAll();

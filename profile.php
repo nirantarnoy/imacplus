@@ -79,7 +79,7 @@ $member_id = getMemberFromUser($_SESSION['userid'], $connect);
                         <div class="row w-100 text-center">
                             <div class="col-4">
                                 <div class="px-1 pt-2">
-                                    <span class="text-170 text-primary-m3"><b>0.00</b></span>
+                                    <span class="text-170 text-primary-m3"><b><?=number_format(getMemberPoint($connect,$member_id),2)?></b></span>
                                     <br />
                                     <span class="text-grey-m1 text-90"><b>คะแนน mPoint</b></span>
                                 </div>
@@ -115,11 +115,15 @@ $member_id = getMemberFromUser($_SESSION['userid'], $connect);
                         <br />
 
                         <div class="row w-100">
-                            <div class="col-lg-4"></div>
+                            <div class="col-lg-4">
+                                <a href="upgraderequest.php?element=1" class="btn btn-primary btn-lg" style="width: 100%">อัพเกรดสมาชิก</a>
+                            </div>
                             <div class="col-lg-4">
                                 <a href="walletlist.php?element=1" class="btn btn-primary btn-lg" style="width: 100%">เติมวอลเล็ท</a>
                             </div>
-                            <div class="col-lg-4"></div>
+                            <div class="col-lg-4">
+                                <a href="witdrawlist.php?element=1" class="btn btn-primary btn-lg" style="width: 100%">ถอน mPoint</a>
+                            </div>
                         </div>
 
 

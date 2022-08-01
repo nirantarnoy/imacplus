@@ -17,14 +17,15 @@ if (isset($_POST['action_type'])) {
 if ($id > 0) {
     if ($action == 'accept') {
         $res = 0;
-       // $member_id = getMemberFromUser($_SESSION['userid'], $connect);
-        $member_id = getMemberWalletId($id, $connect);
-        $old_wallet_amount = getOldWallet($connect, $member_id);
-        $accept_wallet_amount = getAcceptWallet($connect, $id);
-        $new_wallet_amount = ($old_wallet_amount + $accept_wallet_amount);
-      //  echo $new_wallet_amount;return;
-        if (updateMemberWallet($connect, $member_id, $new_wallet_amount)) {
-            if (updateWalletStatus($connect, $id)) {
+        $member_id = getMemberFromUpgradeId($id, $connect);
+        $upgrage_amount = getMemberUpgradeAmount($id, $connect);
+
+        $old_point = getOldWallet($connect, $member_id);
+
+        $new_point = ($old_point + $upgrage_amount);
+        //  echo $new_wallet_amount;return;
+        if (updateMemberPoint($connect, $member_id, $new_point)) {
+            if (updateMemberUpgradeStatus($connect, $id)) {
                 $res += 1;
             }
         }
@@ -53,11 +54,11 @@ if ($id > 0) {
         }
     }
 }
-function getMemberWalletId($id, $connect){
+function getMemberFromUpgradeId($id, $connect){
     $member_id = 0;
 
     if ($id > 0) {
-        $query = "SELECT * FROM wallet_trans WHERE id='$id'";
+        $query = "SELECT * FROM member_upgrade WHERE id='$id'";
         $statement = $connect->prepare($query);
         $statement->execute();
         $result = $statement->fetchAll();
@@ -69,6 +70,23 @@ function getMemberWalletId($id, $connect){
         }
     }
     return $member_id;
+}
+function getMemberUpgradeAmount($id, $connect){
+    $amount = 0;
+
+    if ($id > 0) {
+        $query = "SELECT * FROM member_upgrade WHERE id='$id'";
+        $statement = $connect->prepare($query);
+        $statement->execute();
+        $result = $statement->fetchAll();
+        $filtered_rows = $statement->rowCount();
+        if ($filtered_rows > 0) {
+            foreach ($result as $row) {
+                $amount = $row['upgrade_amount'];
+            }
+        }
+    }
+    return $amount;
 }
 function getOldWallet($connect, $member_id)
 {
@@ -108,9 +126,9 @@ function getAcceptWallet($connect, $id)
     return $amount;
 }
 
-function updateMemberWallet($connect, $member_id, $new_wallet_amount)
+function updateMemberPoint($connect, $member_id, $new_point)
 {
-    $sql = "UPDATE member SET wallet_amount='$new_wallet_amount' WHERE id='$member_id'";
+    $sql = "UPDATE member SET point='$new_point',member_type_id=5 WHERE id='$member_id'";
     if ($connect->query($sql)) {
         return 1;
     } else {
@@ -119,9 +137,9 @@ function updateMemberWallet($connect, $member_id, $new_wallet_amount)
 
 }
 
-function updateWalletStatus($connect, $id)
+function updateMemberUpgradeStatus($connect, $id)
 {
-    $sql = "UPDATE wallet_trans SET status=1 WHERE id='$id'";
+    $sql = "UPDATE member_upgrade SET status=1 WHERE id='$id'";
     if ($connect->query($sql)) {
         return 1;
     } else {
@@ -132,7 +150,7 @@ function updateWalletStatus($connect, $id)
 
 function declineWallet($connect, $id)
 {
-    $sql = "UPDATE wallet_trans SET status=2 WHERE id='$id'";
+    $sql = "UPDATE member_upgrade SET status=2 WHERE id='$id'";
     if ($connect->query($sql)) {
         return 1;
     } else {

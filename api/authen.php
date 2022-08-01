@@ -15,7 +15,12 @@ header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers
 //
 //mysqli_set_charset($link, 'utf8');
 //
-//$requestMethod = $_SERVER["REQUEST_METHOD"];
+include("../common/dbcon.php");
+include("../models/UserModel.php");
+include("../models/MemberModel.php");
+include("../models/MemberTypeModel.php");
+
+$requestMethod = $_SERVER["REQUEST_METHOD"];
 //
 ////ตรวจสอบหากใช้ Method GET
 //if($requestMethod == 'GET'){
@@ -44,7 +49,50 @@ header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers
 //
 //    echo json_encode($arr);
 //}
-$data = [];
-array_push($data,['name'=>'niran']);
 
-echo json_encode($data);
+if($requestMethod == 'POST'){
+    $user_data = [];
+
+    $username = '';
+    $password = '';
+
+    $jsonReqUrl  = "php://input";
+    $reqjson = file_get_contents($jsonReqUrl);
+    $reqjsonDecode = json_decode($reqjson, true);
+
+    $username = $reqjsonDecode['username'];
+    $password = $reqjsonDecode['password'];
+ //  echo  $reqjsonDecode['username'];
+//   print_r($reqjsonDecode);
+
+
+    if($username != '' && $password !=''){
+
+        $password = md5($password);
+
+        $sql = "SELECT * FROM user WHERE username='$username' AND password='$password'";
+        $statement = $connect->prepare($sql);
+
+        $statement->execute();
+        $result = $statement->fetchAll();
+
+
+//        $filtered_rows = $statement->rowCount();
+        foreach ($result as $row) {
+            $member_id = getMemberFromUser($row['id'], $connect);
+            array_push($user_data, [
+                'user_id' => $row['id'],
+                'username' => $row['username'],
+                'member_id' => $member_id,
+                'member_name' => getMembername($connect, $member_id),
+                'member_type_name' => getMemberTypeName($member_id, $connect),
+                'point' => getMemberPoint($connect, $member_id),
+                'wallet_amount' => getMemberWalletAmount($connect, $member_id),
+                'member_count' => getMemberChildCount($connect, $member_id),
+            ]);
+        }
+
+       // echo json_encode($user_data);
+    }
+    echo json_encode($user_data);
+}

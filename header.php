@@ -681,10 +681,28 @@
                             <b class="sub-arrow"></b>
                         </li>
                         <li class="nav-item">
+                            <a href="memberupgradepage.php" class="nav-link">
+                                <i class="nav-icon fa fa-wallet"></i>
+                                <span class="nav-text fadeable">
+                                  <span>อัพเกรดสมาชิก</span>
+                                </span>
+                            </a>
+                            <b class="sub-arrow"></b>
+                        </li>
+                        <li class="nav-item">
                             <a href="walletpage.php" class="nav-link">
                                 <i class="nav-icon fa fa-wallet"></i>
                                 <span class="nav-text fadeable">
                                   <span>เติม Wallet</span>
+                                </span>
+                            </a>
+                            <b class="sub-arrow"></b>
+                        </li>
+                        <li class="nav-item">
+                            <a href="witdrawpage.php" class="nav-link">
+                                <i class="nav-icon fa fa-wallet"></i>
+                                <span class="nav-text fadeable">
+                                  <span>ถอน mPoint</span>
                                 </span>
                             </a>
                             <b class="sub-arrow"></b>

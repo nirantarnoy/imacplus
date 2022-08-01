@@ -25,55 +25,55 @@ $delete_id = '';
 $action = null;
 $userid = 0;
 
-if(isset($_POST['customer_id'])){
+if (isset($_POST['customer_id'])) {
     $customer_id = $_POST['customer_id'];
 }
 
-if(isset($_POST['workorder_date'])){
+if (isset($_POST['workorder_date'])) {
     $order_date = $_POST['workorder_date'];
 }
 
-if(isset($_POST['customer_name'])){
+if (isset($_POST['customer_name'])) {
     $customer_name = $_POST['customer_name'];
 }
 
-if(isset($_POST['phone'])){
+if (isset($_POST['phone'])) {
     $customer_phone = $_POST['phone'];
 }
 
-if(isset($_POST['phone_brand'])){
+if (isset($_POST['phone_brand'])) {
     $brand = $_POST['phone_brand'];
 }
 
-if(isset($_POST['phone_model'])){
+if (isset($_POST['phone_model'])) {
     $phone_model = $_POST['phone_model'];
 }
 
-if(isset($_POST['phone_color'])){
+if (isset($_POST['phone_color'])) {
     $phone_color = $_POST['phone_color'];
 }
 
-if(isset($_POST['customer_pass'])){
+if (isset($_POST['customer_pass'])) {
     $phone_pass = $_POST['customer_pass'];
 }
 
-if(isset($_POST['estimate_price'])){
+if (isset($_POST['estimate_price'])) {
     $estimate_price = $_POST['estimate_price'];
 }
 
-if(isset($_POST['pre_pay'])){
+if (isset($_POST['pre_pay'])) {
     $pre_pay = $_POST['pre_pay'];
 }
 
-if(isset($_POST['status'])){
+if (isset($_POST['status'])) {
     $status = $_POST['status'];
 }
-if(isset($_POST['note'])){
+if (isset($_POST['note'])) {
     $note = $_POST['note'];
 }
 
-if(isset($_POST['check_list'])){
-   $check_list = $_POST['check_list'];
+if (isset($_POST['check_list'])) {
+    $check_list = $_POST['check_list'];
 }
 
 
@@ -90,7 +90,7 @@ if (isset($_POST['action_type'])) {
 
 //echo $action;return;
 
-if(count($check_list)){
+if (count($check_list)) {
     if ($action == 'create') {
         $created_at = time();
         $created_by = $userid;
@@ -102,9 +102,16 @@ if(count($check_list)){
         if ($result = $connect->query($sql)) {
             $maxid = getMaxid($connect);
 
-            for($i=0;$i<=count($check_list)-1;$i++){
+            for ($i = 0; $i <= count($check_list) - 1; $i++) {
                 $sql_line = "INSERT INTO workorder_line(workorder_id,check_list_id,is_checked)VALUES('$maxid','$check_list[$i]',1)";
-                if ($result_line = $connect->query($sql_line)) {}
+                if ($result_line = $connect->query($sql_line)) {
+                }
+            }
+
+            $sql_trans = "INSERT INTO transactions (trans_date,trans_type,trans_ref_id,qty,amount,status,created_at,created_by)
+                      VALUES ('$new_order_date',4,'$maxid',1,'$pre_pay',1,'$created_at','$created_by')";
+            if ($result_trans = $connect->query($sql_trans)) {
+
             }
 
             $_SESSION['msg-success'] = 'บันทึกข้อมูลเรียบร้อยแล้ว';
@@ -133,7 +140,7 @@ if(count($check_list)){
         if ($result = $connect->query($sql)) {
             $maxid = getMaxid($connect);
 
-            for($i=0;$i<=count($check_list)-1;$i++){
+            for ($i = 0; $i <= count($check_list) - 1; $i++) {
 //                $sql_line = "INSERT INTO workorder_line(workorder_id,check_list_id,is_checked)VALUES('$maxid','$check_list[$i]',1)";
 //                if ($result_line = $connect->query($sql_line)) {}
             }
@@ -144,15 +151,16 @@ if(count($check_list)){
     }
 
 }
-if($action == 'delete'){
+if ($action == 'delete') {
     echo "ok";
-    if($delete_id > 0){
+    if ($delete_id > 0) {
         $sql3 = "DELETE FROM workorders WHERE id='$delete_id'";
         if ($result3 = $connect->query($sql3)) {
             $_SESSION['msg-success'] = 'ลบข้อมูลเรียบร้อยแล้ว';
             header('location:workorder.php');
-        }else{
-            echo "no";return;
+        } else {
+            echo "no";
+            return;
         }
     }
 }

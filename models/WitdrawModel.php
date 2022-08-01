@@ -1,6 +1,6 @@
 <?php
-function getWalletLastNo($connect){
-    $query = "SELECT MAX(trans_no) as code FROM wallet_trans WHERE trans_no <>''";
+function getWitdrawLastNo($connect){
+    $query = "SELECT MAX(trans_no) as code FROM witdraw_trans WHERE trans_no <>''";
     $statement = $connect->prepare($query);
     $statement->execute();
     $result = $statement->fetchAll();
@@ -24,15 +24,14 @@ function getWalletLastNo($connect){
         return $runno.'00001';
     }
 }
-function getWalletMaxId($connect){
-    $query = "SELECT MAX(id) as id FROM wallet_trans WHERE id > 0";
+function getWitdrawMaxId($connect,$member_id){
+    $query = "SELECT MAX(id) as id FROM witdraw_trans WHERE member_id ='$member_id'";
     $statement = $connect->prepare($query);
     $statement->execute();
     $result = $statement->fetchAll();
     $filtered_rows = $statement->rowCount();
     $num = '';
-    $runno = '';
-    $new = 0;
+
     //return $filtered_rows;
     if($filtered_rows > 0){
         foreach($result as $row){

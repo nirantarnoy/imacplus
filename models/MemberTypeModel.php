@@ -11,6 +11,7 @@ function getMembertypeName($id,$connect){
         }
     }
 }
+
 function getMemberTypeData($connect){
 
     $query = "SELECT * FROM member_type WHERE id>0";

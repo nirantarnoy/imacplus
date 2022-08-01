@@ -17,12 +17,12 @@ if (isset($_POST['action_type'])) {
 if ($id > 0) {
     if ($action == 'accept') {
         $res = 0;
-       // $member_id = getMemberFromUser($_SESSION['userid'], $connect);
-        $member_id = getMemberWalletId($id, $connect);
+        $member_id = getMemberFromUser($_SESSION['userid'], $connect);
+
         $old_wallet_amount = getOldWallet($connect, $member_id);
         $accept_wallet_amount = getAcceptWallet($connect, $id);
         $new_wallet_amount = ($old_wallet_amount + $accept_wallet_amount);
-      //  echo $new_wallet_amount;return;
+        //  echo $new_wallet_amount;return;
         if (updateMemberWallet($connect, $member_id, $new_wallet_amount)) {
             if (updateWalletStatus($connect, $id)) {
                 $res += 1;
@@ -52,23 +52,6 @@ if ($id > 0) {
             header('location:walletpage.php');
         }
     }
-}
-function getMemberWalletId($id, $connect){
-    $member_id = 0;
-
-    if ($id > 0) {
-        $query = "SELECT * FROM wallet_trans WHERE id='$id'";
-        $statement = $connect->prepare($query);
-        $statement->execute();
-        $result = $statement->fetchAll();
-        $filtered_rows = $statement->rowCount();
-        if ($filtered_rows > 0) {
-            foreach ($result as $row) {
-                $member_id = $row['member_id'];
-            }
-        }
-    }
-    return $member_id;
 }
 function getOldWallet($connect, $member_id)
 {

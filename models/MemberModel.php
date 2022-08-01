@@ -57,7 +57,7 @@ function getMembername($connect,$code){
     $filtered_rows = $statement->rowCount();
     if($filtered_rows > 0){
         foreach($result as $row){
-            return $row['name'];
+            return $row['first_name'];
         }
     }
 
@@ -88,6 +88,18 @@ function getMemberChildCount($connect,$id){
 //        }
 //    }
 
+}
+function getMemberPoint($connect, $id){
+    $query = "SELECT * FROM member WHERE id='$id'";
+    $statement = $connect->prepare($query);
+    $statement->execute();
+    $result = $statement->fetchAll();
+    $filtered_rows = $statement->rowCount();
+    if($filtered_rows > 0){
+        foreach($result as $row){
+            return $row['point'];
+        }
+    }
 }
 function getMemberWalletAmount($connect,$id){
     $query = "SELECT * FROM member WHERE id='$id'";
