@@ -1,6 +1,6 @@
 <?php
-function getMaxid($connect){
-    $query = "SELECT MAX(id) as id FROM workorders WHERE id > 0";
+function getOrderMaxid($connect,$member_id){
+    $query = "SELECT MAX(id) as id FROM workorders WHERE created_by = '$member_id' ";
     $statement = $connect->prepare($query);
     $statement->execute();
     $result = $statement->fetchAll();
