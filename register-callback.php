@@ -4,6 +4,7 @@ session_start();
 require_once __DIR__ . '/vendor/php-graph-sdk-5.x/src/Facebook/autoload.php';
 include("common/dbcon.php");
 include("models/MemberModel.php");
+include("models/UserModel.php");
 
 // Use one of the helper classes to get a Facebook\Authentication\AccessToken entity.
 //   $helper = $fb->getRedirectLoginHelper();
@@ -66,7 +67,7 @@ if (isset($accessToken)) {
 //
 //    echo $strPicture;
 
-    if ($user['email'] != '') {
+    if ($user['email'] != '' && checkhasuser($user['email']) <= 0) {
 
         $user_regis_email = $user['email'];
         $parent_id = findParentForRegister($connect, $parent_id);

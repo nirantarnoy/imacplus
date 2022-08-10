@@ -80,7 +80,7 @@ if (isset($accessToken)) {
         if ($filtered_rows1 > 0) {
             foreach ($result1 as $row1) {
                 $member_id = $row1['id'];
-                $query = "SELECT * FROM user WHERE member_ref_id='$username'";
+                $query = "SELECT * FROM user WHERE member_ref_id='$member_id'";
                 $statement = $connect->prepare($query);
                 $statement->execute();
                 $result = $statement->fetchAll();
@@ -110,10 +110,14 @@ if (isset($accessToken)) {
                 }
                 header('location: https://www.imacplus.app/index.php');
             }
+        }else{
+            $_SESSION['msg_err'] = 'Usernam หรือ Password ไม่ถูกต้อง';
+            header('location: https://www.imacplus.app/loginpage.php');
         }
 
 
     } else {
+        $_SESSION['msg_err'] = 'Usernam หรือ Password ไม่ถูกต้อง';
         header('location: https://www.imacplus.app/loginpage.php');
     }
 
