@@ -478,6 +478,7 @@ include("models/UserModel.php");
                             </a>
                             <b class="sub-arrow"></b>
                         </li>
+                        <?php if($_SESSION['userid'] == 1):?>
                         <li class="nav-item">
                             <a href="#" class="nav-link dropdown-toggle collapsed">
                                 <i class="nav-icon fa fa-cube"></i>
@@ -533,6 +534,9 @@ include("models/UserModel.php");
                             </div>
                             <b class="sub-arrow"></b>
                         </li>
+                        <?php endif;?>
+
+                        <?php if($_SESSION['userid'] == 1):?>
                         <li class="nav-item">
                             <a href="#" class="nav-link dropdown-toggle collapsed">
                                 <i class="nav-icon fa fa-user-cog"></i>
@@ -546,7 +550,6 @@ include("models/UserModel.php");
                                     <b class="caret d-collapsed fa fa-plus text-80"></b>
                                 -->
                             </a>
-                            <?php if($_SESSION['userid'] == 1):?>
                             <div class="hideable submenu collapse">
                                 <ul class="submenu-inner">
 
@@ -567,9 +570,11 @@ include("models/UserModel.php");
                                     </li>
                                 </ul>
                             </div>
-                            <?php endif;?>
                             <b class="sub-arrow"></b>
                         </li>
+                        <?php endif;?>
+
+                        <?php if($_SESSION['userid'] == 1):?>
                         <li class="nav-item">
                             <a href="#" class="nav-link dropdown-toggle collapsed">
                                 <i class="nav-icon fa fa-wrench"></i>
@@ -612,6 +617,9 @@ include("models/UserModel.php");
                             </div>
                             <b class="sub-arrow"></b>
                         </li>
+                        <?php endif;?>
+
+                        <?php if($_SESSION['userid'] == 1):?>
                         <li class="nav-item">
                             <a href="memberupgradepage.php" class="nav-link">
                                 <i class="nav-icon fa fa-wallet"></i>
@@ -621,6 +629,9 @@ include("models/UserModel.php");
                             </a>
                             <b class="sub-arrow"></b>
                         </li>
+                        <?php endif;?>
+
+                        <?php if($_SESSION['userid'] == 1):?>
                         <li class="nav-item">
                             <a href="walletpage.php" class="nav-link">
                                 <i class="nav-icon fa fa-wallet"></i>
@@ -630,6 +641,9 @@ include("models/UserModel.php");
                             </a>
                             <b class="sub-arrow"></b>
                         </li>
+                        <?php endif;?>
+
+                        <?php if($_SESSION['userid'] == 1):?>
                         <li class="nav-item">
                             <a href="witdrawpage.php" class="nav-link">
                                 <i class="nav-icon fa fa-wallet"></i>
@@ -639,7 +653,9 @@ include("models/UserModel.php");
                             </a>
                             <b class="sub-arrow"></b>
                         </li>
+                        <?php endif;?>
 
+                        <?php if($_SESSION['userid'] == 1):?>
                         <li class="nav-item-caption">
                             <span class="fadeable pl-3">ตั้งค่าคะแนน Point</span>
                             <span class="fadeinable mt-n2 text-125">&hellip;</span>
@@ -653,6 +669,9 @@ include("models/UserModel.php");
                                      <span class="fadeinable mt-n2 text-125">&hellip;</span>
                                  -->
                         </li>
+                        <?php endif;?>
+
+                        <?php if($_SESSION['userid'] == 1):?>
                         <li class="nav-item">
                             <a href="#" class="nav-link dropdown-toggle collapsed">
                                 <i class="nav-icon fa fa-trophy"></i>
@@ -694,6 +713,9 @@ include("models/UserModel.php");
                             </div>
                             <b class="sub-arrow"></b>
                         </li>
+                        <?php endif;?>
+
+                        <?php if($_SESSION['userid'] == 1):?>
                         <li class="nav-item-caption">
                             <span class="fadeable pl-3">สิทธิ์การใช้งาน</span>
                             <span class="fadeinable mt-n2 text-125">&hellip;</span>
@@ -707,6 +729,9 @@ include("models/UserModel.php");
                                      <span class="fadeinable mt-n2 text-125">&hellip;</span>
                                  -->
                         </li>
+                        <?php endif;?>
+
+                        <?php if($_SESSION['userid'] == 1):?>
                         <li class="nav-item">
                             <a href="#" class="nav-link dropdown-toggle collapsed">
                                 <i class="nav-icon fa fa-lock-open"></i>
@@ -748,6 +773,7 @@ include("models/UserModel.php");
                             </div>
                             <b class="sub-arrow"></b>
                         </li>
+                        <?php endif;?>
                     </ul>
                 </div><!-- /.sidebar scroll -->
 
