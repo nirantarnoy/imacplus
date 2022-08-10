@@ -1,6 +1,9 @@
+<?php
+ob_start();
+session_start();
+?>
 <!doctype html>
 <html lang="en">
-
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1">
@@ -41,7 +44,7 @@
 
 
     <!-- favicon -->
-    <link rel="icon" type="image/png" href="assets/favicon.png"/>
+    <link rel="icon" type="image/png" href="uploads/icon/imaclogonew.ico"/>
 
     <!-- "Dashboard" page styles, specific to this page for demo only -->
     <link rel="stylesheet" type="text/css" href="views/pages/dashboard/@page-style.css">
@@ -73,7 +76,7 @@
 <body>
 <?php include "common/dbcon.php" ?>
 <div class="body-container">
-    <nav class="navbar navbar-expand-lg navbar-fixed navbar-blue">
+    <nav class="navbar navbar-expand-lg navbar-fixed" style="background-color: #363636">
         <div class="navbar-inner">
 
             <div class="navbar-intro justify-content-xl-between">
@@ -85,9 +88,11 @@
                 </button><!-- mobile sidebar toggler button -->
 
                 <a class="navbar-brand text-white" href="#">
-                    <i class="fa fa-backward"></i>
-                    <span>iMac</span>
-                    <span>Plus</span>
+<!--                    <i class="fa fa-backward"></i>-->
+
+                    <img src="uploads/logo/imaclogonew.png" style="width: 30%" alt="">
+                                        <span>iMac</span>
+                                        <span>Plus</span>
                 </a><!-- /.navbar-brand -->
 
                 <button type="button" class="btn btn-burger mr-2 d-none d-xl-flex" data-toggle="sidebar"
@@ -116,14 +121,14 @@
 
 
             <!-- mobile #navbarMenu toggler button -->
-            <button class="navbar-toggler ml-1 mr-2 px-1" type="button" data-toggle="collapse" data-target="#navbarMenu"
-                    aria-controls="navbarMenu" aria-expanded="false" aria-label="Toggle navbar menu">
-            <span class="pos-rel">
-                  <img class="border-2 brc-white-tp1 radius-round" width="36" src="assets/image/avatar/avatar6.jpg"
-                       alt="Jason's Photo">
-                  <span class="bgc-warning radius-round border-2 brc-white p-1 position-tr mr-n1px mt-n1px"></span>
-            </span>
-            </button>
+<!--            <button class="navbar-toggler ml-1 mr-2 px-1" type="button" data-toggle="collapse" data-target="#navbarMenu"-->
+<!--                    aria-controls="navbarMenu" aria-expanded="false" aria-label="Toggle navbar menu">-->
+<!--            <span class="pos-rel">-->
+<!--                  <img class="border-2 brc-white-tp1 radius-round" width="36" src="assets/image/avatar/avatar6.jpg"-->
+<!--                       alt="Jason's Photo">-->
+<!--                  <span class="bgc-warning radius-round border-2 brc-white p-1 position-tr mr-n1px mt-n1px"></span>-->
+<!--            </span>-->
+<!--            </button>-->
 
 
             <div class="navbar-menu collapse navbar-collapse navbar-backdrop" id="navbarMenu">
@@ -135,7 +140,7 @@
                         <li class="nav-item dropdown dropdown-mega">
                             <a class="nav-link dropdown-toggle pl-lg-3 pr-lg-4" data-toggle="dropdown" href="#"
                                role="button" aria-haspopup="true" aria-expanded="false">
-                                <i class="fa fa-bell text-110 icon-animated-bell mr-lg-2"></i>
+                                <i class="fa fa-bell text-110 text-white icon-animated-bell mr-lg-2"></i>
 
                                 <span class="d-inline-block d-lg-none ml-2">Notifications</span>
                                 <!-- show only on mobile -->
@@ -299,83 +304,6 @@
                         </li>
 
 
-                        <li class="nav-item dd-backdrop dropdown dropdown-mega">
-                            <a class="nav-link dropdown-toggle pl-lg-3 pr-lg-4" data-toggle="dropdown" href="#"
-                               role="button" aria-haspopup="true" aria-expanded="false">
-                                <i class="fa fa-flask text-110 icon-animated-vertical mr-lg-1"></i>
-
-                                <span class="d-inline-block d-lg-none ml-2">Tasks</span><!-- show only on mobile -->
-                                <span id="id-navbar-badge2" class="badge badge-sm text-95 text-yellow-l4">+2</span>
-
-                                <i class="caret fa fa-angle-left d-block d-lg-none"></i>
-                                <div class="dropdown-caret brc-warning-l2"></div>
-                            </a>
-                            <div class="dropdown-menu dropdown-xs dropdown-animated animated-1 p-0 bgc-white brc-warning-l1 shadow">
-                                <div class="bgc-orange-l2 py-25 px-4 border-b-1 brc-orange-l2">
-                      <span class="text-dark-tp4 text-600 text-90 text-uppercase">
-                              <i class="fa fa-check mr-2px text-warning-d2 text-120"></i>
-                              4 Tasks to complete
-                            </span>
-                                </div>
-
-
-                                <div class="px-4 py-2">
-                                    <div class="text-95">
-                                        <span class="text-grey-d1">Software update</span>
-                                    </div>
-                                    <div class="progress mt-2">
-                                        <div class="progress-bar bgc-info" role="progressbar" style="width: 60%;"
-                                             aria-valuenow="60" aria-valuemin="0" aria-valuemax="100">60%
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <hr class="my-1 mx-4"/>
-                                <div class="px-4 py-2">
-                                    <div class="text-95">
-                                        <span class="text-grey-d1">Hardware upgrade</span>
-                                    </div>
-                                    <div class="progress mt-2">
-                                        <div class="progress-bar bgc-warning" role="progressbar" style="width: 40%;"
-                                             aria-valuenow="60" aria-valuemin="0" aria-valuemax="100">40%
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <hr class="my-1 mx-4"/>
-                                <div class="px-4 py-2">
-                                    <div class="text-95">
-                                        <span class="text-grey-d1">Customer support</span>
-                                    </div>
-                                    <div class="progress mt-2">
-                                        <div class="progress-bar bgc-danger" role="progressbar" style="width: 30%;"
-                                             aria-valuenow="60" aria-valuemin="0" aria-valuemax="100">30%
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <hr class="my-1 mx-4"/>
-                                <div class="px-4 py-2">
-                                    <div class="text-95">
-                                        <span class="text-grey-d1">Fixing bugs</span>
-                                    </div>
-                                    <div class="progress mt-2">
-                                        <div class="progress-bar bgc-success progress-bar-striped progress-bar-animated"
-                                             role="progressbar" style="width: 85%;" aria-valuenow="60" aria-valuemin="0"
-                                             aria-valuemax="100">85%
-                                        </div>
-                                    </div>
-                                </div>
-
-
-                                <hr class="my-1px mx-2 brc-info-l2 "/>
-                                <a href="#" class="d-block bgc-h-primary-l4 py-3 border-0 text-center text-blue-m2">
-                                    <span class="text-85 text-600 text-uppercase">See All Tasks</span>
-                                    <i class="ml-2 fa fa-arrow-right text-muted"></i>
-                                </a>
-                            </div>
-                        </li>
-
                         <li class="nav-item dropdown order-first order-lg-last">
                             <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button"
                                aria-haspopup="true" aria-expanded="false">
@@ -383,18 +311,18 @@
                                      class="d-none d-lg-inline-block radius-round border-2 brc-white-tp1 mr-2 w-6"
                                      src="assets/image/avatar/admin.jpg" alt="Admin 's photo">
                                 <span class="d-inline-block d-lg-none d-xl-inline-block">
-                              <span class="text-90" id="id-user-welcome">Welcome,</span>
-                    <span class="nav-user-name">Admin</span>
+                              <span class="text-90 text-white" id="id-user-welcome">Welcome,</span>
+                    <span class="nav-user-name"><?php //echo $_SESSION['userid']?></span>
                     </span>
 
-                                <i class="caret fa fa-angle-down d-none d-xl-block"></i>
+                                <i class="caret fa fa-angle-down text-white d-none d-xl-block"></i>
                                 <i class="caret fa fa-angle-left d-block d-lg-none"></i>
                             </a>
 
                             <div class="dropdown-menu dropdown-caret dropdown-menu-right dropdown-animated brc-primary-m3 py-1">
                                 <div class="d-none d-lg-block d-xl-none">
                                     <div class="dropdown-header">
-                                        Welcome, Admin
+                                        Welcome, <?php //echo$_SESSION['userid']?>
                                     </div>
                                     <div class="dropdown-divider"></div>
                                 </div>
@@ -437,43 +365,43 @@
 
                 <div class="ace-scroll flex-grow-1" data-ace-scroll="{}">
 
-                    <div class="sidebar-section my-2">
+<!--                    <div class="sidebar-section my-2">-->
                         <!-- the shortcut buttons -->
-                        <div class="sidebar-section-item fadeable-left">
-                            <div class="fadeinable sidebar-shortcuts-mini">
+<!--                        <div class="sidebar-section-item fadeable-left">-->
+<!--                            <div class="fadeinable sidebar-shortcuts-mini">-->
                                 <!-- show this small buttons when collapsed -->
-                                <span class="btn btn-success p-0 opacity-1"></span>
-                                <span class="btn btn-info p-0 opacity-1"></span>
-                                <span class="btn btn-orange p-0 opacity-1"></span>
-                                <span class="btn btn-danger p-0 opacity-1"></span>
-                            </div>
-
-                            <div class="fadeable">
+<!--                                <span class="btn btn-success p-0 opacity-1"></span>-->
+<!--                                <span class="btn btn-info p-0 opacity-1"></span>-->
+<!--                                <span class="btn btn-orange p-0 opacity-1"></span>-->
+<!--                                <span class="btn btn-danger p-0 opacity-1"></span>-->
+<!--                            </div>-->
+<!---->
+<!--                            <div class="fadeable">-->
                                 <!-- show this small buttons when not collapsed -->
-                                <div class="sub-arrow"></div>
-                                <div>
-                                    <button class="btn px-25 py-2 text-95 btn-success opacity-1">
-                                        <i class="fa fa-signal f-n-hover"></i>
-                                    </button>
-
-                                    <button class="btn px-25 py-2 text-95 btn-info opacity-1">
-                                        <i class="fa fa-edit f-n-hover"></i>
-                                    </button>
-
-                                    <button class="btn px-25 py-2 text-95 btn-orange opacity-1">
-                                        <i class="fa fa-users f-n-hover"></i>
-                                    </button>
-
-                                    <button class="btn px-25 py-2 text-95 btn-danger opacity-1">
-                                        <i class="fa fa-cogs f-n-hover"></i>
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-
-
+<!--                                <div class="sub-arrow"></div>-->
+<!--                                <div>-->
+<!--                                    <button class="btn px-25 py-2 text-95 btn-success opacity-1">-->
+<!--                                        <i class="fa fa-signal f-n-hover"></i>-->
+<!--                                    </button>-->
+<!---->
+<!--                                    <button class="btn px-25 py-2 text-95 btn-info opacity-1">-->
+<!--                                        <i class="fa fa-edit f-n-hover"></i>-->
+<!--                                    </button>-->
+<!---->
+<!--                                    <button class="btn px-25 py-2 text-95 btn-orange opacity-1">-->
+<!--                                        <i class="fa fa-users f-n-hover"></i>-->
+<!--                                    </button>-->
+<!---->
+<!--                                    <button class="btn px-25 py-2 text-95 btn-danger opacity-1">-->
+<!--                                        <i class="fa fa-cogs f-n-hover"></i>-->
+<!--                                    </button>-->
+<!--                                </div>-->
+<!--                            </div>-->
+<!--                        </div>-->
+<!---->
+<!---->
                         <!-- the search box -->
-                    </div>
+<!--                    </div>-->
 
                     <?php
                     $is_active = null;
@@ -708,22 +636,6 @@
                             <b class="sub-arrow"></b>
                         </li>
 
-                        <!--                        <li class="nav-item">-->
-                        <!---->
-                        <!--                            <a href="html/cards.html" class="nav-link">-->
-                        <!--                                <i class="nav-icon far fa-window-restore"></i>-->
-                        <!--                                <span class="nav-text fadeable">-->
-                        <!--               	  <span>สินค้า</span>-->
-                        <!--                    </span>-->
-                        <!---->
-                        <!---->
-                        <!--                            </a>-->
-                        <!---->
-                        <!--                            <b class="sub-arrow"></b>-->
-                        <!---->
-                        <!--                        </li>-->
-
-
                         <li class="nav-item-caption">
                             <span class="fadeable pl-3">ตั้งค่าคะแนน Point</span>
                             <span class="fadeinable mt-n2 text-125">&hellip;</span>
@@ -842,7 +754,8 @@
 
         <div role="main" class="main-content">
 
-            <div class="page-content container container-plus">
+<!--            <div class="page-content container container-plus">-->
+            <div class="page-content">
                 <!-- page header and toolbox -->
 
 

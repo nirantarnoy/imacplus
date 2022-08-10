@@ -54,7 +54,7 @@ if (count($checklist_data) > 0) {
 
 $noti_ok = '';
 $noti_error = '';
-$status_data = [['id' => 1, 'name' => 'Active'], ['id' => 0, 'name' => 'Inactive']];
+$status_data = [['id' => 0, 'name' => 'รับคำสั่งซ่อม'], ['id' => 1, 'name' => 'กำลังซ่อม'],['id'=>2,'name'=>'ซ่อมเสร็จ']];
 
 if (isset($_SESSION['msg-success'])) {
     $noti_ok = $_SESSION['msg-success'];
@@ -288,6 +288,14 @@ if (isset($_SESSION['msg-error'])) {
                         </div>
                     </div>
                     <br>
+                    <div class="row">
+                        <div class="col-lg-3">
+                            <label for="">วันที่ซ่อมเสร็จโดยประมาณ</label>
+                            <input type="text" class="form-control work-finish-date" name="work_finish_date" value="<?=date('d-m-Y')?>">
+                        </div>
+                    </div>
+                    <br />
+                    <br />
 
 
                 </div>
@@ -309,7 +317,7 @@ include "footer.php";
 ?>
 <script>
     notify();
-    //   $('.workorder-date').datetimepicker({dateFormat: 'dd-mm-yy'});
+       $('.work-finish-date').datetimepicker({format: "DD-MM-yyyy"});
     //        var TinyDatePicker = DateRangePicker.TinyDatePicker;
     //        TinyDatePicker('.workorder-date', {
     //            dateFormat: 'dd-mm-yy',
@@ -376,6 +384,7 @@ include "footer.php";
             var pre_pay = '';
             var note = '';
             var checklist = null;
+            var estimate_finish = '';
 
             var status = '';
             $.ajax({
@@ -388,7 +397,7 @@ include "footer.php";
 
                     if (data.length > 0) {
                         // alert(data[0]['display_name']);
-                        work_no = data[0]['work_date'];
+                        work_no = data[0]['work_no'];
                         work_date = data[0]['work_date'];
                         customer_name = data[0]['customer_name'];
                         phone = data[0]['phone'];
@@ -401,6 +410,7 @@ include "footer.php";
                         note = data[0]['note'];
                         status = data[0]['status'];
                         checklist = data[0]['check_list'];
+                        estimate_finish = data[0]['finish_date'];
                     }
                 },
                 'error': function (err) {
@@ -421,6 +431,7 @@ include "footer.php";
             $(".customer-pass").val(customer_pass);
             $(".pre-pay").val(pre_pay);
             $(".note").val(note);
+            $(".work-finish-date").val(estimate_finish);
 
 
             if (checklist.length > 0) {

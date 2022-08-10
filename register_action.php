@@ -17,12 +17,14 @@ if (isset($_POST['phone'])) {
 if (isset($_POST['email'])) {
     $email = $_POST['email'];
 }
-if (isset($_POST['username'])) {
-    $username = $_POST['username'];
-}
-if (isset($_POST['password'])) {
-    $password = $_POST['password'];
-}
+$username = $phone;
+$password = $phone;
+//if (isset($_POST['username'])) {
+//    $username = $_POST['username'];
+//}
+//if (isset($_POST['password'])) {
+//    $password = $_POST['password'];
+//}
 if (isset($_POST['member_ref_id'])) {
     $parent_id = $_POST['member_ref_id'];
 }
@@ -31,20 +33,22 @@ if (isset($_POST['url'])) {
 }
 
 
-if($phone!="" && $email != "" && $username !="" && $password != ""){
+if($phone!="" && $email != ""){
 
 
     $parent_id = findParentForRegister($connect, $parent_id);
 //    echo $phone;
     $bytes = openssl_random_pseudo_bytes(8);
-    $member_url = 'http://localhost/imacplus/register.php?ref='. bin2hex($bytes);
+    $member_url = 'https://www.imacplus.app/register.php?ref='. bin2hex($bytes);
+    $cdate = date("Y-m-d H:i:s");
+    $ctimestamp = time();
     //echo bin2hex($bytes);
-    $sql_member = "INSERT INTO member(phone_number,email,url,parent_id)VALUES('$phone','$email','$member_url','$parent_id')";
+    $sql_member = "INSERT INTO member(phone_number,email,url,parent_id,agree_read,agree_date,created_at)VALUES('$phone','$email','$member_url','$parent_id',1,'$cdate','$ctimestamp')";
     if ($rest = $connect->query($sql_member)) {
-        $newpass = md5($password);
+        $newpass = md5($email);
         $maxid = getMaxid($connect);
         $sql = "INSERT INTO user (username,password,status,member_ref_id)
-           VALUES ('$username','$newpass',1,'$maxid')";
+           VALUES ('$email','$newpass',1,'$maxid')";
 
         if ($result = $connect->query($sql)) {
             $_SESSION['msg-success'] = 'บันทึกข้อมูลเรียบร้อยแล้ว';

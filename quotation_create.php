@@ -42,7 +42,6 @@ if($update_id){
 $customer_data = getCustomermodel($connect);
 $status_data = getStatusData($connect);
 
-//print_r($sale_data_line);return;
 
 ?>
 <!-- Page Heading -->
@@ -70,20 +69,11 @@ $status_data = getStatusData($connect);
                 </div>
                 <div class="col-lg-3">
                     <label for="">วันที่</label>
-                    <input type="text" class="form-control quotation-date" name="quotation_date" value="<?= count($sale_data)>0?$sale_data[0]['quotation_date']:'' ?>" autocomplete="off">
+                    <input type="text" class="form-control quotation-date" name="quotation_date" value="<?= count($sale_data)>0?$sale_data[0]['quotation_date']: date('d-m-Y') ?>" autocomplete="off">
                 </div>
                 <div class="col-lg-3">
                     <label for="">ลูกค้า</label>
-                    <select name="customer_id" id="" class="form-control customer-id">
-                        <?php for ($i = 0; $i <= count($customer_data) - 1; $i++): ?>
-                            <?php $selected = '';
-                            if($sale_data[0]['customer_id']==$customer_data[$i]['id']){
-                                $selected = "selected";
-                            }
-                            ?>
-                            <option value="<?= $customer_data[$i]['id'] ?>" <?= $selected ?>><?= $customer_data[$i]['name'] ?></option>
-                        <?php endfor; ?>
-                    </select>
+                    <input type="text" class="form-control customer-name" value="<?= $sale_data[0]['customer_name']?>" name="customer_name">
                 </div>
                 <div class="col-lg-3">
                     <label for="">สถานะ</label>
@@ -126,7 +116,7 @@ $status_data = getStatusData($connect);
                                     <input type="number" class="form-control line-qty" name="line_qty[]" value="" onchange="calTotal($(this))">
                                 </td>
                                 <td>
-                                    <input type="number" class="form-control line-price" name="line_price[]" value="">
+                                    <input type="number" class="form-control line-price" name="line_price[]" value="" onchange="calTotal($(this))">
                                 </td>
                                 <td>
                                     <input type="hidden" class="form-control line-total" name="line_total[]" value="">
@@ -151,7 +141,7 @@ $status_data = getStatusData($connect);
                                             <input type="number" class="form-control line-qty" name="line_qty[]" value="<?= $sale_data_line[$i]['qty'] ?>" onchange="calTotal($(this))">
                                         </td>
                                         <td>
-                                            <input type="number" class="form-control line-price" name="line_price[]" value="<?= $sale_data_line[$i]['price'] ?>">
+                                            <input type="number" class="form-control line-price" name="line_price[]" value="<?= $sale_data_line[$i]['price'] ?>" onchange="calTotal($(this))">
                                         </td>
 
                                         <td>
@@ -174,7 +164,7 @@ $status_data = getStatusData($connect);
                                         <input type="number" class="form-control line-qty" name="line_qty[]" value="" onchange="calTotal($(this))">
                                     </td>
                                     <td>
-                                        <input type="number" class="form-control line-price" name="line_price[]" value="">
+                                        <input type="number" class="form-control line-price" name="line_price[]" value="" onchange="calTotal($(this))">
                                     </td>
                                     <td>
                                         <input type="hidden" class="form-control line-total" name="line_total[]" value="">
@@ -298,7 +288,8 @@ include "footer.php";
 <script>
     notify();
     alltotal();
-    // $('.quotation-date').datepicker({dateFormat: 'dd-mm-yy'});
+     // $('.quotation-date').datetimepicker({dateFormat: 'dd-mm-yy'});
+    $('.quotation-date').datetimepicker({format: "DD-MM-yyyy"});
     $(".btn-upload").click(function () {
         $("#myModal").modal("show");
     });

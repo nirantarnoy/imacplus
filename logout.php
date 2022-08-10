@@ -4,12 +4,7 @@ session_start();
 
 include("common/dbcon.php");
 
-if(isset($_SESSION['userid'])){
-    unset($_SESSION['userid']);
-}
-if(isset($_SESSION['branch'])){
-    unset($_SESSION['branch']);
-}
+session_destroy();
 
 header("location: loginpage.php");
 

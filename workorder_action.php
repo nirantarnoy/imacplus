@@ -18,6 +18,7 @@ $estimate_price = 0;
 $pre_pay = 0;
 $status = -1;
 $note = "";
+$work_finish_date = '';
 
 
 $recid = 0;
@@ -76,6 +77,10 @@ if (isset($_POST['check_list'])) {
     $check_list = $_POST['check_list'];
 }
 
+if (isset($_POST['work_finish_date'])) {
+    $work_finish_date = $_POST['work_finish_date'];
+}
+
 
 if (isset($_POST['delete_id'])) {
     $delete_id = $_POST['delete_id'];
@@ -92,12 +97,18 @@ if (isset($_POST['action_type'])) {
 
 if (count($check_list)) {
     if ($action == 'create') {
+        $finish_date = date('Y-m-d');
+        $xdate = explode('-',$work_finish_date);
+        if(count($xdate) > 0){
+            $t = $xdate[2].'/'.$xdate[1].'/'.$xdate[0];
+            $finish_date = date('Y-m-d', strtotime($t));
+        }
         $created_at = time();
         $created_by = $userid;
         $new_no = getOrderLastNo($connect);
         $new_order_date = date('Y-m-d H:i:s');
-        $sql = "INSERT INTO workorders(work_no,work_date,customer_name,phone,brand_id,phone_model_id,phone_color_id,estimate_price,customer_pass,pre_pay,status,note,created_at,created_by)
-            VALUES('$new_no','$new_order_date','$customer_name','$customer_phone','$brand','$phone_model','$phone_color','$estimate_price','$phone_pass','$pre_pay','$status','$note','$created_at','$created_by')";
+        $sql = "INSERT INTO workorders(work_no,work_date,customer_name,phone,brand_id,phone_model_id,phone_color_id,estimate_price,customer_pass,pre_pay,status,note,created_at,created_by,estimate_finish)
+            VALUES('$new_no','$new_order_date','$customer_name','$customer_phone','$brand','$phone_model','$phone_color','$estimate_price','$phone_pass','$pre_pay','$status','$note','$created_at','$created_by','$finish_date')";
         //echo $sql;
         if ($result = $connect->query($sql)) {
             $maxid = getMaxid($connect);
@@ -119,6 +130,13 @@ if (count($check_list)) {
         }
     }
     if ($action == 'update') {
+        $finish_date = date('Y-m-d');
+     //   echo $work_finish_date;return;
+        $xdate = explode('-',$work_finish_date);
+        if(count($xdate) > 0){
+            $t = $xdate[2].'/'.$xdate[1].'/'.$xdate[0];
+            $finish_date = date('Y-m-d', strtotime($t));
+        }
         $created_at = time();
         $created_by = $userid;
         $new_order_date = date('Y-m-d H:i:s');
@@ -133,12 +151,13 @@ if (count($check_list)) {
                       status='$status',
                       note='$note',
                       updated_at='$created_at',
-                      updated_by='$created_by'
-                      
+                      updated_by='$created_by',
+                      estimate_finish='$finish_date' 
+
                       WHERE id='$recid'";
 
         if ($result = $connect->query($sql)) {
-            $maxid = getMaxid($connect);
+           // $maxid = getMaxid($connect);
 
             for ($i = 0; $i <= count($check_list) - 1; $i++) {
 //                $sql_line = "INSERT INTO workorder_line(workorder_id,check_list_id,is_checked)VALUES('$maxid','$check_list[$i]',1)";

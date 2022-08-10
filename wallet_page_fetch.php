@@ -8,7 +8,8 @@ if(!isset($_SESSION['userid'])){
 include("common/dbcon.php");
 include("models/WalletStatus.php");
 $query_filter = '';
-$query = "SELECT * FROM wallet_trans where member_id=".$_SESSION['userid'];
+//$query = "SELECT * FROM wallet_trans where member_id=".$_SESSION['userid'];
+$query = "SELECT * FROM wallet_trans where id> 0";
 
 //if(isset($_POST["type_name"])){
 //    $query .= 'proj_type LIKE "%'.$_POST["type_name"].'%" AND ';
@@ -21,15 +22,15 @@ $query = "SELECT * FROM wallet_trans where member_id=".$_SESSION['userid'];
 //    $query .= '(name LIKE "%'.$_POST["search"]["value"].'%"';
 //    $query .= 'OR description LIKE "%'.$_POST["search"]["value"].'%") ';
 //}
-if(isset($_POST["order"]))
-{
-    $query .= ' ORDER BY '.$_POST['order']['0']['column'].' '.$_POST['order']['0']['dir'].' ';
-}
-else
-{
-    $query .= ' ORDER BY id ASC ';
-}
-
+//if(isset($_POST["order"]))
+//{
+//    $query .= ' ORDER BY '.$_POST['order']['0']['column'].' '.$_POST['order']['0']['dir'].' ';
+//}
+//else
+//{
+//    $query .= ' ORDER BY id DESC ';
+//}
+$query .= ' ORDER BY id DESC ';
 $query_filter = $query;
 
 if($_POST["length"] != -1)

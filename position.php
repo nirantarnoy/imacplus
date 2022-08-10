@@ -2,9 +2,9 @@
 ob_start();
 session_start();
 //date_default_timezone_set('Asia/Yangon');
-if (!isset($_SESSION['userid'])) {
-    header("location:loginpage.php");
-}
+//if (!isset($_SESSION['userid'])) {
+//    header("location:loginpage.php");
+//}
 //echo date('H:i');return;
 include "header.php";
 

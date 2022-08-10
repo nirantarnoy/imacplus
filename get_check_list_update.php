@@ -21,7 +21,14 @@ if ($id) {
 //           ,'is_tool'=>$row['is_tool'],'is_user'=>$row['is_user'],'is_all'=>$row['is_all']]);
 //    }
     foreach ($result as $row) {
-        array_push($data,['id'=>$row['id'],'chk_no'=>$row['check_no'],'chk_name'=>$row['check_name'],'description'=>$row['description'],'status'=>$row['status']]);
+        array_push($data,[
+            'id'=>$row['id'],
+            'chk_no'=>$row['check_no'],
+            'chk_name'=>$row['check_name'],
+            'description'=>$row['description'],
+            'status'=>$row['status'],
+            'device_type'=>$row['device_type'],
+        ]);
     }
 
     echo json_encode($data);

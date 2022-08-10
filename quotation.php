@@ -39,10 +39,10 @@ if (isset($_SESSION['msg-error'])) {
     <!--    </div>-->
     <div class="card-body">
         <div class="row">
-            <div class="col-lg-12">
+            <div class="col-lg-4">
                 <div class="input-group">
                     <input type="text" class="form-control search-name" id="search-name" name="search_name"
-                           placeholder="เลขทีเสนอราคา">
+                           placeholder="เลขทีเสนอราคา , ชื่อลูกค้า">
                     <!--                    <input type="text" class="form-control search-email" id="search-email" name="search_email"-->
                     <!--                           placeholder="email-โทรศัพท์">-->
                     <!--                    <input type="text" class="form-control search-index" id="search-index" name="search_index" placeholder="index">-->

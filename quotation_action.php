@@ -17,7 +17,8 @@ $delete_id = 0;
 $selected = null;
 $userid = 0;
 
-$customer_id = '';
+$customer_id = 0;
+$customer_name = '';
 $quotation_no = '';
 $quotation_date = '';
 $emp_person = '';
@@ -45,6 +46,9 @@ if (isset($_POST['selected_item'])) {
 }
 if(isset($_POST['customer_id'])){
     $customer_id = $_POST['customer_id'];
+}
+if(isset($_POST['customer_name'])){
+    $customer_name = $_POST['customer_name'];
 }
 if(isset($_POST['quotation_no'])){
     $quotation_no = $_POST['quotation_no'];
@@ -112,8 +116,8 @@ if($action == 'create'){
     $quotation_no = getOuotationLastNo($connect);
 //    echo $last_no; return;
     $new_quotation_date = date('Y-m-d');
-    $sql = "INSERT INTO quotation(quotation_no,quotation_date,customer_id,status,created_at,created_by)
-    VALUES('$quotation_no','$new_quotation_date','$customer_id','$status','$created_at','$created_by')";
+    $sql = "INSERT INTO quotation(quotation_no,quotation_date,customer_id,status,created_at,created_by,customer_name)
+    VALUES('$quotation_no','$new_quotation_date','$customer_id','$status','$created_at','$created_by','$customer_name')";
 
     if ($result = $connect->query($sql)) {
         $max_id = getMaxidQuotation($connect);
@@ -142,7 +146,7 @@ if($action == 'update'){
         //  echo $id;return;
         $created_at = time();
         $created_by = $userid;
-        $sql2 = "UPDATE quotation SET customer_id='$customer_id',status='$status', updated_at='$created_at' WHERE id='$id'";
+        $sql2 = "UPDATE quotation SET customer_id='$customer_id',status='$status', customer_name='$customer_name', updated_at='$created_at' WHERE id='$id'";
 
 //        echo $sql2;return;
         if ($result2 = $connect->query($sql2)) {

@@ -35,6 +35,7 @@ if ($id) {
             'note'=>$row['note'],
             'status'=>$row['status'],
             'check_list'=> findchecklist($row['id'],$connect),
+            'finish_date'=>date('d-m-Y', strtotime($row['estimate_finish'])),
         ]);
     }
 

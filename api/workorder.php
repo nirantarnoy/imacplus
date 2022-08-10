@@ -27,17 +27,22 @@ if($requestMethod == 'POST'){
     $user_data = [];
 
     $member_id = '';
-//    $work_date = '';
-    $customer_id = '';
+    $work_date = '';
+    $customer_id = 0;
     $customer_name = '';
+    $device_type = '';
     $phone = '';
-    $brand_id = '';
+    $brand_id = 0;
     $phone_model_id = '';
     $phone_color_id = '';
     $estimate_price = '';
     $customer_pass = '';
     $pre_pay = '';
     $note = '';
+    $work_finish_date = null;
+
+    $problemlist='';
+    $photolist ='';
 
 
     $jsonReqUrl  = "php://input";
@@ -45,17 +50,21 @@ if($requestMethod == 'POST'){
     $reqjsonDecode = json_decode($reqjson, true);
 
     $member_id = $reqjsonDecode['member_id'];
-//    $work_date = $reqjsonDecode['work_date'];
+    $work_date = $reqjsonDecode['work_date'];
     $customer_id = $reqjsonDecode['customer_id'];
     $customer_name = $reqjsonDecode['customer_name'];
-    $phone = $reqjsonDecode['phone'];
-    $brand_id = $reqjsonDecode['brand_id'];
-    $phone_model_id = $reqjsonDecode['phone_model_id'];
-    $phone_color_id = $reqjsonDecode['phone_color_id'];
+    $phone = $reqjsonDecode['customer_tel'];
+  //  $brand_id = $reqjsonDecode['brand_id'];
+    $device_type = $reqjsonDecode['device_type'];
+    $phone_model_id = $reqjsonDecode['device_model'];
+    $phone_color_id = $reqjsonDecode['device_color'];
     $estimate_price = $reqjsonDecode['estimate_price'];
     $customer_pass = $reqjsonDecode['customer_pass'];
-    $pre_pay = $reqjsonDecode['pre_pay'];
+    $pre_pay = $reqjsonDecode['prepay'];
     $note = $reqjsonDecode['note'];
+    $problemlist = $reqjsonDecode['probremlist'];
+    $photolist = $reqjsonDecode['photo'];
+    $work_finish_date = $reqjsonDecode['work_finish_date'];
 
     //  echo  $reqjsonDecode['username'];
 //   print_r($reqjsonDecode);
@@ -63,23 +72,56 @@ if($requestMethod == 'POST'){
 
     if($member_id != '' && $customer_name !=''){
 
-//        $sql2 = "UPDATE member SET member_type_id=5,check_name='$chk_name',description='$description',status='$status',updated_at='$created_at',updated_by='$created_by' WHERE id='$id'";
-//        if ($result2 = $connect->query($sql2)) {
-//            array_push($user_data,[
-//                'status'=>'success',
-//                'new_member_type_id'=>1,
-//                'new_member_type_name'=>'',
-//                ]);
-//        }
+        $finish_date = date('Y-m-d');
+        $xdate = explode('-',$work_finish_date);
+        if(count($xdate) > 0){
+            $t = $xdate[2].'/'.$xdate[1].'/'.$xdate[0];
+           $finish_date = date('Y-m-d', strtotime($t));
+        }
 
         $c_date = date('Y-m-d H:i:s');
         $created_at = time();
         $get_lastno = getOrderLastNo($connect);
-        $sql = "INSERT INTO workorders (work_no,work_date,customer_id,customer_name,phone,brand_id,phone_model_id,phone_color_id,estimate_price,customer_pass,pre_pay,note,created_at,created_by,status)
-           VALUES ('$get_lastno','$c_date','$customer_id','$customer_name','$phone','$brand_id','$phone_model_id','$phone_color_id','$estimate_price','$customer_pass','$pre_pay','$note','$created_at','$member_id', 0)";
+        $sql = "INSERT INTO workorders (work_no,work_date,customer_id,customer_name,device_type,phone,brand_id,phone_model_id,phone_color_id,estimate_price,customer_pass,pre_pay,note,created_at,created_by,status,estimate_finish)
+           VALUES ('$get_lastno','$c_date','$customer_id','$customer_name','$device_type','$phone','$brand_id','$phone_model_id','$phone_color_id','$estimate_price','$customer_pass','$pre_pay','$note','$created_at','$member_id', 0,'$finish_date')";
 
         if ($result = $connect->query($sql)) {
             $maxid = getOrderMaxid($connect,$member_id);
+
+            if(count($problemlist)){
+                for($i=0;$i<=count($problemlist)-1;$i++){
+                    $checklist_id = $problemlist[$i]['id'];
+                    $query_save_checklist = "INSERT INTO workorder_line (workorder_id,check_list_id,is_checked)
+                      VALUES ('$maxid','$checklist_id',1)";
+                    $connect->query($query_save_checklist);
+                }
+            }
+
+            if($photolist != ""){
+                for($i=0;$i<=count($photolist)-1;$i++){
+                    $loophoto = $photolist[$i];
+
+                    $newfile = time().$i.".jpg";
+
+                    $outputfile = '../uploads/workorder/' . $newfile;          //save as image.jpg in uploads/ folder
+
+                    $filehandler = fopen($outputfile, 'wb');
+                    //file open with "w" mode treat as text file
+                    //file open with "wb" mode treat as binary file
+
+                    fwrite($filehandler, base64_decode(trim($loophoto)));
+                    // we could add validation here with ensuring count($data)>1
+
+                    // clean up the file resource
+                    fclose($filehandler);
+
+                    $query_save_photo = "INSERT INTO workorder_photo (workorder_id,photo)
+                      VALUES ('$maxid','$newfile')";
+                    $connect->query($query_save_photo);
+                }
+            }
+
+
             $sql_trans = "INSERT INTO transactions (trans_date,trans_type,trans_ref_id,qty,amount,status,created_at,created_by)
                       VALUES ('$c_date',4,'$maxid',1,'$estimate_price',1,'$created_at','$member_id')";
             if ($result = $connect->query($sql_trans)) {
