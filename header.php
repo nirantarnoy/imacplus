@@ -493,8 +493,8 @@ include("models/UserModel.php");
                             </a>
                             <div class="hideable submenu collapse <?=checkShowMenu($current_url[4],'productcat.php')?>">
                                 <ul class="submenu-inner">
-                                    <li class="nav-item <?=checkActiveMenu($current_url[4],'itembrand.php')?>">
-                                        <a href="itembrand.php" class="nav-link">
+                                    <li class="nav-item <?=checkActiveMenu($current_url[4],'device_type.php')?>">
+                                        <a href="device_type.php" class="nav-link">
                                           <span class="nav-text">
                                               <span>ประเภทอุปกรณ์</span>
                                           </span>

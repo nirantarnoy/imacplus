@@ -9,7 +9,7 @@ include("common/dbcon.php");
 include("models/StatusModel.php");
 include("models/MemberModel.php");
 $query_filter = '';
-$query = "SELECT * FROM dropoff_trans";
+$query = "SELECT * FROM dropoff_trans WHERE id > 0 AND member_id=".$_SESSION['userid'];
 //if(isset($_POST["region_name"])){
 //    $query .= 'region_name LIKE "%'.$_POST["region_name"].'%" AND ';
 //}

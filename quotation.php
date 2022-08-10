@@ -27,9 +27,15 @@ if (isset($_SESSION['msg-error'])) {
 <div class="d-sm-flex align-items-center justify-content-between mb-4">
     <h1 class="h3 mb-0 text-gray-800">ใบเสนอราคา</h1>
     <div class="btn-group">
-        <a href="quotation_create.php" class="d-none d-sm-inline-block btn btn-sm btn-success shadow-sm"><i
-                    class="fas fa-plus fa-sm text-white-50"></i> สร้าง</a>
+<!--        <a href="quotation_create.php" class="d-none d-sm-inline-block btn btn-sm btn-success shadow-sm"><i-->
+<!--                    class="fas fa-plus fa-sm text-white-50"></i> สร้าง</a>-->
         <!--                <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm btn-upload"><i class="fas fa-upload fa-sm text-white-50"></i> Import Data</a>-->
+        <a href="quotation_create.php" class="btn btn-light-green btn-h-green btn-a-green border-0 radius-3 py-2 text-600 text-90">
+                  <span class="d-none d-sm-inline mr-1">
+                    สร้าง
+                  </span>
+            <i class="fa fa-save text-110 w-2 h-2"></i>
+        </a>
     </div>
 
 </div>

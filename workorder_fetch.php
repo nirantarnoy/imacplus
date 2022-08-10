@@ -8,7 +8,7 @@ if(!isset($_SESSION['userid'])){
 include("common/dbcon.php");
 include("models/WorkorderModel.php");
 $query_filter = '';
-$query = "SELECT * FROM workorders WHERE id > 0 ";
+$query = "SELECT * FROM workorders WHERE id > 0 AND created_by=".$_SESSION['userid'];
 //if(isset($_POST["region_name"])){
 //    $query .= 'region_name LIKE "%'.$_POST["region_name"].'%" AND ';
 //}
