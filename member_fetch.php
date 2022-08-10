@@ -10,9 +10,9 @@ include("models/StatusModel.php");
 include("models/MemberTypeModel.php");
 $query_filter = '';
 $query = "SELECT * FROM member ";
-//if(isset($_POST["region_name"])){
-//    $query .= 'region_name LIKE "%'.$_POST["region_name"].'%" AND ';
-//}
+if(isset($_POST["searchByType"])){
+    $query .= ' WHERE member_type_id = '.$_POST["searchByType"].' ';
+}
 //if(isset($_POST["type_name"])){
 //    $query .= 'proj_type LIKE "%'.$_POST["type_name"].'%" AND ';
 //}

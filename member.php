@@ -42,7 +42,7 @@ $selected = '';
 <div class="row">
     <div class="col-lg-7"><h1 class="h3 mb-0 text-gray-800">Members</h1></div>
     <div class="col-lg-3" style="text-align: right;">
-        <select name="member_type_filter" class="form-control member-type-filter" id="">
+        <select name="member_type_filter" class="form-control member-type-filter" id="" onchange="takefilter($(this))">
             <?php for ($x = 0; $x <= count($member_type_data) - 1; $x++): ?>
                 <?php if ($member_type_filter_selected == $x) {
                     $selected = "selected";
@@ -228,6 +228,7 @@ include "footer.php";
             data: function (data) {
                 // Read values
                 var member_type = $('.member-type-filter').val();
+                alert(member_type);
                 // var plate = $('#search-plate').val();
                 // var prod = $('#search-prod').val();
                 // var index = $('#search-index').val();
@@ -246,7 +247,52 @@ include "footer.php";
 
         ],
     });
-    dataTablex.draw();
+    // dataTablex.draw();
+
+
+    function takefilter(e){
+        // alert(e.val());
+
+        $("#dataTable").dataTable({
+            "processing": true,
+            "serverSide": true,
+            "order": [[1, "asc"]],
+            "language": {
+                "sSearch": "ค้นหา",
+                "sLengthMenu": "แสดง _MENU_ รายการ",
+                "sInfo": "กำลังแสดง _START_ ถึง _END_ จาก _TOTAL_ รายการ",
+                "oPaginate": {
+                    "sNext": "ถัดไป",
+                    "sPrevious": "ก่อนหน้า",
+                    "sInfoFiltered": "( ค้นหาจาก _MAX_ รายการ )"
+                }
+            },
+            "ajax": {
+                url: "member_fetch.php",
+                type: "POST",
+                data: function (data) {
+                    // Read values
+                    var member_type = $('.member-type-filter').val();
+                    alert(member_type);
+                    // var plate = $('#search-plate').val();
+                    // var prod = $('#search-prod').val();
+                    // var index = $('#search-index').val();
+                    // // Append to data
+                    data.searchByType = 1;
+                    // data.searchByPlate = plate;
+                    // data.searchByProd = prod;
+                    // data.searchByIndex = index;
+                }
+            },
+            "columnDefs": [
+                {
+                    "targets": [0],
+                    "orderable": false,
+                },
+
+            ],
+        });
+    }
 
     function showaddbank(e) {
         $(".description").val('');
