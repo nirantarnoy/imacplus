@@ -304,4 +304,20 @@ function checkHasRow($connect, $id)
 
 }
 
+//function getMemberByuserid($connect, $id)
+//{
+//    $name = '';
+//    $query = "SELECT * FROM member_account WHERE member_id='$id'";
+//    $statement = $connect->prepare($query);
+//    $statement->execute();
+//    $result = $statement->fetchAll();
+//    $filtered_rows = $statement->rowCount();
+//    if ($filtered_rows > 0) {
+//        foreach ($result as $row) {
+//            return $row['account_name'];
+//        }
+//    }
+//    return $name;
+//}
+
 ?>

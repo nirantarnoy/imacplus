@@ -1,6 +1,9 @@
 <?php
 ob_start();
 session_start();
+
+include("common/dbcon.php");
+include("models/UserModel.php");
 ?>
 <!doctype html>
 <html lang="en">
@@ -74,7 +77,6 @@ session_start();
 </head>
 
 <body>
-<?php include "common/dbcon.php" ?>
 <div class="body-container">
     <nav class="navbar navbar-expand-lg navbar-fixed" style="background-color: #363636">
         <div class="navbar-inner">
@@ -312,7 +314,7 @@ session_start();
                                      src="assets/image/avatar/admin.jpg" alt="Admin 's photo">
                                 <span class="d-inline-block d-lg-none d-xl-inline-block">
                               <span class="text-90 text-white" id="id-user-welcome">Welcome,</span>
-                    <span class="nav-user-name"><?php //echo $_SESSION['userid']?></span>
+                    <span class="nav-user-name"><?= getUserDisplayname($_SESSION['userid'],$connect)?></span>
                     </span>
 
                                 <i class="caret fa fa-angle-down text-white d-none d-xl-block"></i>

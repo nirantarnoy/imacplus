@@ -1,5 +1,5 @@
 <?php
-function getDisplayname($id ,$connect){
+function getUserDisplayname($id ,$connect){
     $query = "SELECT * FROM user WHERE id='$id'";
     $statement = $connect->prepare($query);
     $statement->execute();

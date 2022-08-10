@@ -3,7 +3,7 @@ ob_start();
 session_start();
 include "header.php";
 include "models/MemberModel.php";
-include "models/UserModel.php";
+//include "models/UserModel.php";
 include "models/MemberTypeModel.php";
 
 $member_id = getMemberFromUser($_SESSION['userid'], $connect);
@@ -31,7 +31,7 @@ $member_id = getMemberFromUser($_SESSION['userid'], $connect);
 
                         <div class="text-center mt-2">
                             <h3 class="text-130 text-dark-m3">
-                                <?=getDisplayname($_SESSION['userid'], $connect)?>
+                                <?= getUserDisplayname($_SESSION['userid'], $connect)?>
                             </h3>
 
                             <span class="text-100 text-primary text-600">
@@ -135,10 +135,10 @@ $member_id = getMemberFromUser($_SESSION['userid'], $connect);
 
                         <div class="row w-100">
                             <div class="col-lg-6">
-                                <a href="upgraderequest.php?element=1" class="btn btn-default btn-lg" style="width: 100%">แจ้งซ่อม</a>
+                                <a href="workorder.php?element=1" class="btn btn-default btn-lg" style="width: 100%">แจ้งซ่อม</a>
                             </div>
                             <div class="col-lg-6">
-                                <a href="walletlist.php?element=1" class="btn btn-success btn-lg" style="width: 100%">Drop Off</a>
+                                <a href="dropoff.php?element=1" class="btn btn-success btn-lg" style="width: 100%">Drop Off</a>
                             </div>
 
                         </div>
