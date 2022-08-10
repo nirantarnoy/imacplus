@@ -26,6 +26,16 @@ function getUserposition($id ,$connect){
     }
 }
 
+function checkhasuser($email,$connect){
+    $query = "SELECT * FROM member WHERE email='$email'";
+    $statement = $connect->prepare($query);
+    $statement->execute();
+    $result = $statement->fetchAll();
+    $filtered_rows = $statement->rowCount();
+
+    return $filtered_rows;
+}
+
 function getMemberFromUser($id ,$connect){
     $query = "SELECT * FROM user WHERE id='$id'";
     $statement = $connect->prepare($query);

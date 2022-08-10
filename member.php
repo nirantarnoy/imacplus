@@ -30,28 +30,48 @@ if (isset($_SESSION['msg-error'])) {
     unset($_SESSION['msg-error']);
 }
 
+$member_type_filter_selected = 0;
 $member_type_data = getMemberTypeData($connect);
+$selected = '';
 
 ?>
 <input type="hidden" class="msg-ok" value="<?= $noti_ok ?>">
 <input type="hidden" class="msg-error" value="<?= $noti_error ?>">
 
-<div class="d-sm-flex align-items-center justify-content-between mb-4">
-    <h1 class="h3 mb-0 text-gray-800">Members</h1>
-        <div class="btn-group">
-            <a href="#" class="btn btn-light-green btn-h-green btn-a-green border-0 radius-3 py-2 text-600 text-90" onclick="showaddbank($(this))">
+<!--<div class="d-sm-flex align-items-center justify-content-between mb-4">-->
+    <div class="row">
+        <div class="col-lg-7"><h1 class="h3 mb-0 text-gray-800">Members</h1></div>
+        <div class="col-lg-3" style="text-align: right;">
+            <select name="member_type_filter" class="form-control" id="">
+                <?php for ($x = 0; $x <= count($member_type_data) - 1; $x++): ?>
+                    <?php if ($member_type_filter_selected == $x) {
+                        $selected = "selected";
+                    } ?>
+                    <option value="<?= $member_type_data[$x]['id'] ?>" <?= $selected ?>><?= $member_type_data[$x]['name'] ?></option>
+                <?php endfor; ?>
+            </select>
+        </div>
+        <div class="col-lg-2" style="text-align: right;">
+            <div class="btn-group">
+
+                <a href="#" class="btn btn-light-green btn-h-green btn-a-green border-0 radius-3 py-2 text-600 text-90"
+                   onclick="showaddbank($(this))">
                       <span class="d-none d-sm-inline mr-1">
                         สร้าง
                       </span>
                     <i class="fa fa-save text-110 w-2 h-2"></i>
-            </a>
+                </a>
 
-<!--            <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-success shadow-sm" onclick="showaddbank($(this))"><i-->
-<!--                    class="fas fa-plus-circle fa-sm text-white-50"></i> สร้างใหม่</a>-->
-<!--            <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i class="fas fa-download fa-sm text-white-50"></i> Export Data</a>-->
+                <!--            <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-success shadow-sm" onclick="showaddbank($(this))"><i-->
+                <!--                    class="fas fa-plus-circle fa-sm text-white-50"></i> สร้างใหม่</a>-->
+                <!--            <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i class="fas fa-download fa-sm text-white-50"></i> Export Data</a>-->
+            </div>
+
         </div>
+    </div>
 
-</div>
+<div style="height: 20px;"></div>
+<!--</div>-->
 <div class="card shadow mb-4">
     <!--    <div class="card-header py-3">-->
     <!--        <h6 class="m-0 font-weight-bold text-primary">DataTables Example</h6>-->
@@ -67,12 +87,12 @@ $member_type_data = getMemberTypeData($connect);
                 <tr>
                     <th>#</th>
                     <th>Name</th>
-<!--                    <th>Zone</th>-->
-<!--                    <th>Parent</th>-->
+                    <!--                    <th>Zone</th>-->
+                    <!--                    <th>Parent</th>-->
                     <th>ประเภทสมาชิก</th>
                     <th>Phone</th>
                     <th>Email</th>
-<!--                    <th>Line id</th>-->
+                    <!--                    <th>Line id</th>-->
                     <th>Point</th>
                     <th>Status</th>
                 </tr>
