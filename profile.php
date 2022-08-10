@@ -85,7 +85,6 @@ $member_id = getMemberFromUser($_SESSION['userid'], $connect);
                         </div>
                     </div>
 
-
                     <hr class="w-90 mx-auto mb-1 brc-secondary-l3"/>
 
                     <div class="row w-100 text-center">
@@ -181,7 +180,7 @@ $member_id = getMemberFromUser($_SESSION['userid'], $connect);
                                     <span class="d-inline-block bgc-white-tp9 shadow-sm radius-2px h-4 px-25 pt-1 mr-1 border-1">
                                         <i class="fa fa-arrow-right text-white-tp2 text-110 mt-3px"></i>
                                     </span>
-                                  </span><span style="font-size: 18px;">ถอน mPoint</span>
+                                  </span><span style="font-size: 18px;">แจ้งซ่อม</span>
                                 <!-- there should be no `space` between text and icon , for better results -->
                             </a>
                         </div>
@@ -195,7 +194,7 @@ $member_id = getMemberFromUser($_SESSION['userid'], $connect);
                                     <span class="d-inline-block bgc-white-tp9 shadow-sm radius-2px h-4 px-25 pt-1 mr-1 border-1">
                                         <i class="fa fa-arrow-right text-white-tp2 text-110 mt-3px"></i>
                                     </span>
-                                  </span><span style="font-size: 18px;">ถอน mPoint</span>
+                                  </span><span style="font-size: 18px;">Drop off</span>
                                 <!-- there should be no `space` between text and icon , for better results -->
                             </a>
                         </div>
