@@ -2,6 +2,10 @@
 ob_start();
 session_start();
 
+if (!isset($_SESSION['userid'])) {
+    header("location:loginpage.php");
+}
+
 include("common/dbcon.php");
 include("models/UserModel.php");
 ?>
