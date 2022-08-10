@@ -42,7 +42,11 @@ $selected = '';
 <div class="row">
     <div class="col-lg-7"><h1 class="h3 mb-0 text-gray-800">Members</h1></div>
     <div class="col-lg-3" style="text-align: right;">
+<<<<<<< HEAD
         <select name="member_type_filter" class="form-control member-type-filter" id="" onchange="takefilter($(this))">
+=======
+        <select name="member_type_filter" class="form-control member-type-filter" id="" onchange="takeFilter($(this))">
+>>>>>>> b16eea6810bef8b7cc291979c7909c03d10c1651
             <?php for ($x = 0; $x <= count($member_type_data) - 1; $x++): ?>
                 <?php if ($member_type_filter_selected == $x) {
                     $selected = "selected";
@@ -292,6 +296,10 @@ include "footer.php";
 
             ],
         });
+    }
+
+    function takeFilter(e){
+        alert(e.val());
     }
 
     function showaddbank(e) {
