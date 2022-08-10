@@ -39,36 +39,36 @@ $selected = '';
 <input type="hidden" class="msg-error" value="<?= $noti_error ?>">
 
 <!--<div class="d-sm-flex align-items-center justify-content-between mb-4">-->
-    <div class="row">
-        <div class="col-lg-7"><h1 class="h3 mb-0 text-gray-800">Members</h1></div>
-        <div class="col-lg-3" style="text-align: right;">
-            <select name="member_type_filter" class="form-control" id="">
-                <?php for ($x = 0; $x <= count($member_type_data) - 1; $x++): ?>
-                    <?php if ($member_type_filter_selected == $x) {
-                        $selected = "selected";
-                    } ?>
-                    <option value="<?= $member_type_data[$x]['id'] ?>" <?= $selected ?>><?= $member_type_data[$x]['name'] ?></option>
-                <?php endfor; ?>
-            </select>
-        </div>
-        <div class="col-lg-2" style="text-align: right;">
-            <div class="btn-group">
+<div class="row">
+    <div class="col-lg-7"><h1 class="h3 mb-0 text-gray-800">Members</h1></div>
+    <div class="col-lg-3" style="text-align: right;">
+        <select name="member_type_filter" class="form-control member-type-filter" id="">
+            <?php for ($x = 0; $x <= count($member_type_data) - 1; $x++): ?>
+                <?php if ($member_type_filter_selected == $x) {
+                    $selected = "selected";
+                } ?>
+                <option value="<?= $member_type_data[$x]['id'] ?>" <?= $selected ?>><?= $member_type_data[$x]['name'] ?></option>
+            <?php endfor; ?>
+        </select>
+    </div>
+    <div class="col-lg-2" style="text-align: right;">
+        <div class="btn-group">
 
-                <a href="#" class="btn btn-light-green btn-h-green btn-a-green border-0 radius-3 py-2 text-600 text-90"
-                   onclick="showaddbank($(this))">
+            <a href="#" class="btn btn-light-green btn-h-green btn-a-green border-0 radius-3 py-2 text-600 text-90"
+               onclick="showaddbank($(this))">
                       <span class="d-none d-sm-inline mr-1">
                         สร้าง
                       </span>
-                    <i class="fa fa-save text-110 w-2 h-2"></i>
-                </a>
+                <i class="fa fa-save text-110 w-2 h-2"></i>
+            </a>
 
-                <!--            <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-success shadow-sm" onclick="showaddbank($(this))"><i-->
-                <!--                    class="fas fa-plus-circle fa-sm text-white-50"></i> สร้างใหม่</a>-->
-                <!--            <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i class="fas fa-download fa-sm text-white-50"></i> Export Data</a>-->
-            </div>
-
+            <!--            <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-success shadow-sm" onclick="showaddbank($(this))"><i-->
+            <!--                    class="fas fa-plus-circle fa-sm text-white-50"></i> สร้างใหม่</a>-->
+            <!--            <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i class="fas fa-download fa-sm text-white-50"></i> Export Data</a>-->
         </div>
+
     </div>
+</div>
 
 <div style="height: 20px;"></div>
 <!--</div>-->
@@ -208,6 +208,45 @@ include "footer.php";
 ?>
 <script>
     notify();
+    var dataTablex = $("#dataTable").dataTable({
+        "processing": true,
+        "serverSide": true,
+        "order": [[1, "asc"]],
+        "language": {
+            "sSearch": "ค้นหา",
+            "sLengthMenu": "แสดง _MENU_ รายการ",
+            "sInfo": "กำลังแสดง _START_ ถึง _END_ จาก _TOTAL_ รายการ",
+            "oPaginate": {
+                "sNext": "ถัดไป",
+                "sPrevious": "ก่อนหน้า",
+                "sInfoFiltered": "( ค้นหาจาก _MAX_ รายการ )"
+            }
+        },
+        "ajax": {
+            url: "member_fetch.php",
+            type: "POST",
+            data: function (data) {
+                // Read values
+                var member_type = $('.member-type-filter').val();
+                // var plate = $('#search-plate').val();
+                // var prod = $('#search-prod').val();
+                // var index = $('#search-index').val();
+                // // Append to data
+                data.searchByType = member_type;
+                // data.searchByPlate = plate;
+                // data.searchByProd = prod;
+                // data.searchByIndex = index;
+            }
+        },
+        "columnDefs": [
+            {
+                "targets": [0],
+                "orderable": false,
+            },
+
+        ],
+    });
+    dataTablex.draw();
 
     function showaddbank(e) {
         $(".description").val('');
@@ -226,32 +265,6 @@ include "footer.php";
         $("#myModal").modal("show");
     }
 
-    $("#dataTable").dataTable({
-        "processing": true,
-        "serverSide": true,
-        "order": [[1, "asc"]],
-        "language": {
-            "sSearch": "ค้นหา",
-            "sLengthMenu": "แสดง _MENU_ รายการ",
-            "sInfo": "กำลังแสดง _START_ ถึง _END_ จาก _TOTAL_ รายการ",
-            "oPaginate": {
-                "sNext": "ถัดไป",
-                "sPrevious": "ก่อนหน้า",
-                "sInfoFiltered": "( ค้นหาจาก _MAX_ รายการ )"
-            }
-        },
-        "ajax": {
-            url: "member_fetch.php",
-            type: "POST"
-        },
-        "columnDefs": [
-            {
-                "targets": [0],
-                "orderable": false,
-            },
-
-        ],
-    });
 
     function showupdate(e) {
         var recid = e.attr("data-id");
