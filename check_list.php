@@ -8,6 +8,7 @@ session_start();
 //echo date('H:i');return;
 include "header.php";
 include("models/StatusModel.php");
+include("models/ItemModel.php");
 
 //$position_data = getPositionmodel($connect);
 //$per_check = checkPer($user_position,"is_product_cat", $connect);
@@ -18,6 +19,7 @@ include("models/StatusModel.php");
 $noti_ok = '';
 $noti_error = '';
 $status_data = [['id'=>1,'name'=>'Active'],['id'=>0,'name'=>'Inactive']];
+$device_type_data = getDeviceTypeDataModel($connect);
 
 if(isset($_SESSION['msg-success'])){
     $noti_ok = $_SESSION['msg-success'];
@@ -63,10 +65,11 @@ if(isset($_SESSION['msg-error'])){
                 <thead>
                     <tr>
                         <th>#</th>
-                        <th>Check No</th>
-                        <th>Check Name</th>
-                        <th>Description</th>
-                        <th>Status</th>
+                        <th>รหัส</th>
+                        <th>ชื่อ</th>
+                        <th>รายละเอียด</th>
+                        <th>อุปกรณ์</th>
+                        <th>สถานะ</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -94,12 +97,12 @@ if(isset($_SESSION['msg-error'])){
                         <div class="col-lg-6">
                             <label for="">Check no</label>
                             <input type="text" class="form-control chk-no" name="chk_no" value=""
-                                   placeholder="Item brand name">
+                                   placeholder="Checking no">
                         </div>
                         <div class="col-lg-6">
                             <label for="">ชื่อ</label>
                             <input type="text" class="form-control chk-name" name="chk_name" value=""
-                                   placeholder="Item brand name">
+                                   placeholder="Checnking name">
                         </div>
                     </div>
                     <br>
@@ -107,6 +110,17 @@ if(isset($_SESSION['msg-error'])){
                         <div class="col-lg-12">
                             <label for="">รายละเอียด</label>
                             <textarea name="description" class="form-control description" id="" cols="30" rows="5"></textarea>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <label for="">ประเภทอุปกรณ์</label>
+                            <select name="device_type" id="" class="form-control device-type">
+                                <?php for ($i = 0; $i <= count($device_type_data) - 1; $i++): ?>
+                                    <option value="<?= $device_type_data[$i]['id'] ?>"><?= $device_type_data[$i]['name'] ?></option>
+                                <?php endfor; ?>
+                            </select>
                         </div>
                     </div>
                     <br>
@@ -121,7 +135,6 @@ if(isset($_SESSION['msg-error'])){
                         </div>
                     </div>
                     <br>
-
 
 
                 </div>
@@ -141,8 +154,8 @@ include "footer.php";
 <script>
     notify();
     function showaddbank(e) {
-        $(".user-recid").val(0);
-        $(".bank-name").val('');
+        $(".chk-no").val('');
+        $(".chk-name").val('');
         $(".description").val('');
         $("#myModal").modal("show");
     }
@@ -177,9 +190,11 @@ include "footer.php";
     function showupdate(e) {
         var recid = e.attr("data-id");
         if (recid != '') {
+            //alert(recid);
             var chk_no = '';
             var name = '';
             var description = '';
+            var device_type = '';
             var status = '';
             $.ajax({
                 'type': 'post',
@@ -189,17 +204,22 @@ include "footer.php";
                 'data': {'id': recid},
                 'success': function (data) {
                     if (data.length > 0) {
-                        // alert(data[0]['display_name']);
+                       //  alert(data[0]['chk_name']);
                         chk_no = data[0]['chk_no'];
                         name = data[0]['chk_name'];
                         description = data[0]['description'];
+                        device_type = data[0]['device_type'];
                         status = data[0]['status'];
                     }
-                }
+                },
+                'error': function(err){
+                    alert('error');
+            }
             });
 
             $(".user-recid").val(recid);
-            $(".status").val(status);
+            $(".device-type").val(device_type).change();
+            $(".status").val(status).change();
             $(".chk-no").val(chk_no);
             $(".chk-name").val(name);
             $(".description").val(description);

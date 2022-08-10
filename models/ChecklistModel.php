@@ -13,21 +13,21 @@ function getChecklistmodel($connect){
     }
     return $data;
 }
-//function getProductname($connect,$code){
-//    $query = "SELECT * FROM product WHERE id='$code'";
-//    $statement = $connect->prepare($query);
-//    $statement->execute();
-//    $result = $statement->fetchAll();
-//    $filtered_rows = $statement->rowCount();
-//    if($filtered_rows > 0){
-//        foreach($result as $row){
-//            return $row['name'];
-//        }
-//    }else{
-//        return '';
-//    }
-//
-//}
+function getChecklistname($connect,$code){
+    $query = "SELECT * FROM check_list WHERE id='$code'";
+    $statement = $connect->prepare($query);
+    $statement->execute();
+    $result = $statement->fetchAll();
+    $filtered_rows = $statement->rowCount();
+    if($filtered_rows > 0){
+        foreach($result as $row){
+            return $row['check_name'];
+        }
+    }else{
+        return '';
+    }
+
+}
 //function getProductcode($connect,$code){
 //    $query = "SELECT * FROM product WHERE id='$code'";
 //    $statement = $connect->prepare($query);

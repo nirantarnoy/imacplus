@@ -67,12 +67,18 @@ $member_id = getMemberFromUser($_SESSION['userid'], $connect);
                                 <i class="fa fa-copy w-4 text-120"></i>
                             </a>
 
-
                         </div>
                         <div class="mt-12">
                             <br />
                             <p>กดปุ่มเพื่อแนะนำเพื่อน</p>
                         </div>
+                        <br>
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <b>Link:</b> <span> </span> <?=getMemberurl($connect,$member_id)?>
+                            </div>
+                        </div>
+
 
                         <hr class="w-90 mx-auto mb-1 brc-secondary-l3" />
 
@@ -116,14 +122,25 @@ $member_id = getMemberFromUser($_SESSION['userid'], $connect);
 
                         <div class="row w-100">
                             <div class="col-lg-4">
-                                <a href="upgraderequest.php?element=1" class="btn btn-primary btn-lg" style="width: 100%">อัพเกรดสมาชิก</a>
+                                <a href="upgraderequest.php?element=1" class="btn btn-warning btn-lg" style="width: 100%">อัพเกรดสมาชิก</a>
                             </div>
                             <div class="col-lg-4">
                                 <a href="walletlist.php?element=1" class="btn btn-primary btn-lg" style="width: 100%">เติมวอลเล็ท</a>
                             </div>
                             <div class="col-lg-4">
-                                <a href="witdrawlist.php?element=1" class="btn btn-primary btn-lg" style="width: 100%">ถอน mPoint</a>
+                                <a href="witdrawlist.php?element=1" class="btn btn-info btn-lg" style="width: 100%">ถอน mPoint</a>
                             </div>
+                        </div>
+                        <br>
+
+                        <div class="row w-100">
+                            <div class="col-lg-6">
+                                <a href="upgraderequest.php?element=1" class="btn btn-default btn-lg" style="width: 100%">แจ้งซ่อม</a>
+                            </div>
+                            <div class="col-lg-6">
+                                <a href="walletlist.php?element=1" class="btn btn-success btn-lg" style="width: 100%">Drop Off</a>
+                            </div>
+
                         </div>
 
 

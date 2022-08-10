@@ -17,24 +17,25 @@ if (isset($_POST['action_type'])) {
 if ($id > 0) {
     if ($action == 'accept') {
         $res = 0;
-        $member_id = getMemberFromUser($_SESSION['userid'], $connect);
+        $member_id = getMemberIdFromWitdraw($connect, $id);
 
-        $old_wallet_amount = getOldWallet($connect, $member_id);
-        $accept_wallet_amount = getAcceptWallet($connect, $id);
-        $new_wallet_amount = ($old_wallet_amount + $accept_wallet_amount);
+        $old_point = getOldPoint($connect, $member_id);
+        $member_witdraw_point = getWitdrawPoint($connect, $id);
+        $new_point = ($old_point - $member_witdraw_point);
         //  echo $new_wallet_amount;return;
-        if (updateMemberWallet($connect, $member_id, $new_wallet_amount)) {
-            if (updateWalletStatus($connect, $id)) {
+        if (updateMemberPoint($connect, $member_id, $new_point)) {
+            if (updateWitdrawStatus($connect, $id)) {
+                createMemberNotify($connect, $id, $member_id);
                 $res += 1;
             }
         }
 
         if ($res > 0) {
             $_SESSION['msg-success'] = 'Saved data successfully';
-            header('location:walletpage.php');
+            header('location:witdrawpage.php');
         } else {
             $_SESSION['msg-error'] = 'Save data error';
-            header('location:walletpage.php');
+            header('location:witdrawpage.php');
         }
     } else if ($action == 'decline') {
         $res = 0;
@@ -46,14 +47,14 @@ if ($id > 0) {
 
         if ($res > 0) {
             $_SESSION['msg-success'] = 'Saved data successfully';
-            header('location:walletpage.php');
+            header('location:witdrawpage.php');
         } else {
             $_SESSION['msg-error'] = 'Save data error';
-            header('location:walletpage.php');
+            header('location:witdrawpage.php');
         }
     }
 }
-function getOldWallet($connect, $member_id)
+function getOldPoint($connect, $member_id)
 {
     $amount = 0;
 
@@ -65,35 +66,52 @@ function getOldWallet($connect, $member_id)
         $filtered_rows = $statement->rowCount();
         if ($filtered_rows > 0) {
             foreach ($result as $row) {
-                $amount = $row['wallet_amount'];
+                $amount = $row['point'];
             }
         }
     }
     return $amount;
 }
-
-function getAcceptWallet($connect, $id)
+function getMemberIdFromWitdraw($connect, $id)
 {
-    $amount = 0;
+    $member_id = 0;
 
     if ($id > 0) {
-        $query = "SELECT * FROM wallet_trans WHERE id='$id'";
+        $query = "SELECT * FROM witdraw_trans WHERE id='$id'";
         $statement = $connect->prepare($query);
         $statement->execute();
         $result = $statement->fetchAll();
         $filtered_rows = $statement->rowCount();
         if ($filtered_rows > 0) {
             foreach ($result as $row) {
-                $amount = $row['wallet_in_amount'];
+                $member_id = $row['member_id'];
+            }
+        }
+    }
+    return $member_id;
+}
+function getWitdrawPoint($connect, $id)
+{
+    $amount = 0;
+
+    if ($id > 0) {
+        $query = "SELECT * FROM witdraw_trans WHERE id='$id'";
+        $statement = $connect->prepare($query);
+        $statement->execute();
+        $result = $statement->fetchAll();
+        $filtered_rows = $statement->rowCount();
+        if ($filtered_rows > 0) {
+            foreach ($result as $row) {
+                $amount = $row['witdraw_amount'];
             }
         }
     }
     return $amount;
 }
 
-function updateMemberWallet($connect, $member_id, $new_wallet_amount)
+function updateMemberPoint($connect, $member_id, $new_point)
 {
-    $sql = "UPDATE member SET wallet_amount='$new_wallet_amount' WHERE id='$member_id'";
+    $sql = "UPDATE member SET point='$new_point' WHERE id='$member_id'";
     if ($connect->query($sql)) {
         return 1;
     } else {
@@ -102,9 +120,9 @@ function updateMemberWallet($connect, $member_id, $new_wallet_amount)
 
 }
 
-function updateWalletStatus($connect, $id)
+function updateWitdrawStatus($connect, $id)
 {
-    $sql = "UPDATE wallet_trans SET status=1 WHERE id='$id'";
+    $sql = "UPDATE witdraw_trans SET status=1 WHERE id='$id'";
     if ($connect->query($sql)) {
         return 1;
     } else {
@@ -122,6 +140,20 @@ function declineWallet($connect, $id)
         return 0;
     }
 
+}
+
+function createMemberNotify($connect, $ref_id ,$member_id){
+    $c_date = date('Y-m-d H:i:s');
+    $created_at = time();
+    $title ="แจ้งการโอนถอน mPoint";
+    $message = "ระบบได้ทำการถอน mPoint ให้คุณเรียบร้อยแล้ว";
+    $sql = "INSERT INTO member_notify(trans_ref_id,member_id,message_type_id,title,detail,read_status,message_date,created_at,created_by)
+            VALUES('$ref_id','$member_id',3,'$title','$message',0,'$c_date','$created_at',0)";
+    if ($connect->query($sql)) {
+        return 1;
+    } else {
+        return 0;
+    }
 }
 
 ?>

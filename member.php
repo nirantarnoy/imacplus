@@ -8,6 +8,7 @@ session_start();
 //echo date('H:i');return;
 include "header.php";
 include("models/StatusModel.php");
+include("models/MemberTypeModel.php");
 
 //$position_data = getPositionmodel($connect);
 //$per_check = checkPer($user_position,"is_product_cat", $connect);
@@ -29,24 +30,26 @@ if (isset($_SESSION['msg-error'])) {
     unset($_SESSION['msg-error']);
 }
 
+$member_type_data = getMemberTypeData($connect);
+
 ?>
 <input type="hidden" class="msg-ok" value="<?= $noti_ok ?>">
 <input type="hidden" class="msg-error" value="<?= $noti_error ?>">
 
 <div class="d-sm-flex align-items-center justify-content-between mb-4">
     <h1 class="h3 mb-0 text-gray-800">Members</h1>
-    <!--    <div class="btn-group">-->
-    <!--        <a href="#" class="btn btn-light-green btn-h-green btn-a-green border-0 radius-3 py-2 text-600 text-90" onclick="showaddbank($(this))">-->
-    <!--                  <span class="d-none d-sm-inline mr-1">-->
-    <!--                    สร้าง-->
-    <!--                  </span>-->
-    <!--                <i class="fa fa-save text-110 w-2 h-2"></i>-->
-    <!--        </a>-->
+        <div class="btn-group">
+            <a href="#" class="btn btn-light-green btn-h-green btn-a-green border-0 radius-3 py-2 text-600 text-90" onclick="showaddbank($(this))">
+                      <span class="d-none d-sm-inline mr-1">
+                        สร้าง
+                      </span>
+                    <i class="fa fa-save text-110 w-2 h-2"></i>
+            </a>
 
-    <!--        <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-success shadow-sm" onclick="showaddbank($(this))"><i-->
-    <!--                class="fas fa-plus-circle fa-sm text-white-50"></i> สร้างใหม่</a>-->
-    <!--        <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i class="fas fa-download fa-sm text-white-50"></i> Export Data</a>-->
-    <!--    </div>-->
+<!--            <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-success shadow-sm" onclick="showaddbank($(this))"><i-->
+<!--                    class="fas fa-plus-circle fa-sm text-white-50"></i> สร้างใหม่</a>-->
+<!--            <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i class="fas fa-download fa-sm text-white-50"></i> Export Data</a>-->
+        </div>
 
 </div>
 <div class="card shadow mb-4">
@@ -64,12 +67,12 @@ if (isset($_SESSION['msg-error'])) {
                 <tr>
                     <th>#</th>
                     <th>Name</th>
-                    <th>Zone</th>
-                    <th>Parent</th>
+<!--                    <th>Zone</th>-->
+<!--                    <th>Parent</th>-->
                     <th>ประเภทสมาชิก</th>
                     <th>Phone</th>
                     <th>Email</th>
-                    <th>Line id</th>
+<!--                    <th>Line id</th>-->
                     <th>Point</th>
                     <th>Status</th>
                 </tr>
@@ -81,7 +84,7 @@ if (isset($_SESSION['msg-error'])) {
     </div>
 </div>
 
-<div class="modal" id="myModal">
+<div class="modal modal-lg" id="myModal">
     <div class="modal-dialog">
         <div class="modal-content">
             <form action="member_action.php" id="form-user" method="post">
@@ -119,7 +122,11 @@ if (isset($_SESSION['msg-error'])) {
                         </div>
                         <div class="col-lg-4">
                             <label for="">ประเภทสมาชิก</label>
-                            <input type="text" name="member_type_id" class="form-control member-type-id" value="">
+                            <select name="member_type_id" id="" class="form-control member-type-id">
+                                <?php for ($i = 0; $i <= count($member_type_data) - 1; $i++): ?>
+                                    <option value="<?= $member_type_data[$i]['id'] ?>"><?= $member_type_data[$i]['name'] ?></option>
+                                <?php endfor; ?>
+                            </select>
                         </div>
                     </div>
                     <br>
@@ -182,12 +189,22 @@ include "footer.php";
 <script>
     notify();
 
-    // function showaddbank(e) {
-    //     $(".user-recid").val(0);
-    //     $(".bank-name").val('');
-    //     $(".description").val('');
-    //     $("#myModal").modal("show");
-    // }
+    function showaddbank(e) {
+        $(".description").val('');
+        $(".user-recid").val('');
+        $(".status").val(0).change();
+        $(".f-name").val('');
+        $(".l-name").val('');
+        $(".zone-id").val(0).change();
+        $(".parent-id").val(0).change();
+        $(".member-type-id").val(0).change();
+        $(".phone-number").val('');
+        $(".member-email").val('');
+        $(".line-id").val('');
+        $(".member-url").val('');
+        $(".member-point").val(0);
+        $("#myModal").modal("show");
+    }
 
     $("#dataTable").dataTable({
         "processing": true,

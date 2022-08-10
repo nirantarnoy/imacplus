@@ -4,6 +4,9 @@ date_default_timezone_set('Asia/Bangkok');
 include("common/dbcon.php");
 include("models/ProdModel.php");
 include("models/CustomerModel.php");
+include("models/MemberModel.php");
+include("models/ChecklistModel.php");
+include("models/ItemModel.php");
 //include("vendor/mpdf/mpdf/src/Mpdf.php");
 // Require composer autoload
 require_once __DIR__ . '/vendor/autoload.php';
@@ -52,8 +55,17 @@ $work_date = '';
 $customer_id = '';
 $customer_name = '';
 $created_by = 0;
+$item_id = 0;
+$item_type_id = 0;
+$item_name = "";
+$item_color = '';
+$estimate_price = 0;
+$prepay = 0;
 
-$query = "SELECT * FROM workorders WHERE id =3";
+$problem_list = [];
+
+
+$query = "SELECT * FROM workorders WHERE id ='$id'";
 //$query .= ' GROUP BY product_picking.tracking_no';
 $query .= ' ORDER BY id ASC ';
 
@@ -68,6 +80,12 @@ foreach ($result as $row) {
     $customer_id = $row['customer_id'];
     $customer_name = $row['customer_name'];
     $created_by = $row['created_by'];
+    $item_id = $row['phone_model_id'];
+    $item_type_id = $row['device_type'];
+    $item_name = getItemName($row['phone_model_id'], $connect);
+    $item_color = $row['phone_color_id'];
+    $estimate_price = $row['estimate_price'];
+    $prepay = $row['pre_pay'];
 //    array_push($trans_data, [
 //        'customer_id' => $row['customer_id'],
 //        'loan_no' => $row['loan_no'],
@@ -76,6 +94,18 @@ foreach ($result as $row) {
 //    ]);
 }
 
+$query2 = "SELECT * FROM workorder_line WHERE workorder_id ='$id'";
+//$query .= ' GROUP BY product_picking.tracking_no';
+$query2 .= ' ORDER BY id ASC ';
+
+$statement2 = $connect->prepare($query2);
+$statement2->execute();
+$result2 = $statement2->fetchAll();
+$data = array();
+//$filtered_rows = $statement->rowCount();
+foreach ($result2 as $row) {
+    array_push($problem_list,['name'=>getChecklistname($connect,$row['check_list_id'])]);
+}
 
 $total = 0;
 $total_discount = 0;
@@ -137,17 +167,17 @@ $total_all = 0;
     </tr>
     <tr>
         <td colspan="3">
-            ใบเสร็จรับเงิน <small> <?=$work_no?></small>
+            เลขที่สั่งซ่อม <small> <?= $work_no ?></small>
         </td>
     </tr>
     <tr>
         <td colspan="3">
-            ผู้รับเงิน <small> <?=$created_by ?></small>
+            ผู้รับเงิน <small> <?= getMembername($connect, $created_by) ?></small>
         </td>
     </tr>
 
     <tr>
-        <td colspan="3" style="border-top: 1px solid black;">
+        <td colspan="3" style="border-top: 1px solid grey;">
 
         </td>
     </tr>
@@ -155,47 +185,91 @@ $total_all = 0;
 
     </tr>
 </table>
-<table class="table-header">
+<br />
+<table class="table-header" style="width: 100%">
     <tr>
-        <td colspan="3">
-            ยอดรวม <small> <?php //echo ?></small>
+        <td>
+            <b>รายการบริการซ่อม</b>
         </td>
     </tr>
     <tr>
-        <td colspan="3">
-            ยอดรวมส่วนลด <small> <?php //echo ?></small>
+        <td>
+            <?=$item_name. ' '.$item_color?>
         </td>
     </tr>
     <tr>
-        <td colspan="3">
-            ยอดเงิน <small> <?php //echo ?></small>
+        <td>
+            <b>อาการเบื้องต้น</b>
         </td>
     </tr>
     <tr>
-        <td colspan="3">
-            รับ <small> <?php //echo ?></small>
+        <td>
+           <?php
+           $problem_text = '';
+           for($i =0 ;$i <=count($problem_list)-1;$i++){
+               if($i< count($problem_list) -1){
+                   $problem_text = $problem_text . $problem_list[$i]['name'].',';
+               }else{
+                   $problem_text = $problem_text . $problem_list[$i]['name'];
+               }
+           }
+
+           ?>
+            <p><?=$problem_text?></p>
+        </td>
+    </tr>
+</table>
+<br />
+<table class="table-header" style="width: 100%">
+    <tr>
+        <td colspan="2">
+            <b>ยอดรวม</b>
+        </td>
+        <td style="text-align: right;padding-right: 10px;">
+            <?php echo number_format($estimate_price,2) ?>
         </td>
     </tr>
     <tr>
-        <td colspan="3">
-            เงินทอน <small> <?php //echo ?></small>
+        <td colspan="2">
+            <b>ยอดรวมส่วนลด</b>
+        </td>
+        <td style="text-align: right;padding-right: 10px;">
+          <?php echo number_format(0) ?>
         </td>
     </tr>
     <tr>
-        <td colspan="3">
-            คะแนนสะสม <small> <?php //echo ?></small>
+        <td colspan="2">
+            <b>ยอดเงิน</b>
+        </td>
+        <td style="text-align: right;padding-right: 10px;border-bottom: 1px solid black;">
+            <?php echo number_format($estimate_price,2) ?>
         </td>
     </tr>
+<!--    <tr>-->
+<!--        <td colspan="3">-->
+<!--            รับ <small> --><?php //echo number_format($estimate_price,2)?><!--</small>-->
+<!--        </td>-->
+<!--    </tr>-->
+<!--    <tr>-->
+<!--        <td colspan="3">-->
+<!--            เงินทอน <small> --><?php //number_format($estimate_price,2) ?><!--</small>-->
+<!--        </td>-->
+<!--    </tr>-->
+<!--    <tr>-->
+<!--        <td colspan="3">-->
+<!--            คะแนนสะสม <small> --><?php ////echo ?><!--</small>-->
+<!--        </td>-->
+<!--    </tr>-->
 
 </table>
 <br>
-<table class="table-header">
-    <tr>
-        <td width="100%">
-            โอนพร้อมเพย์ 0635897999
-        </td>
-    </tr>
-</table>
+<!--<table class="table-header">-->
+<!--    <tr>-->
+<!--        <td width="100%">-->
+<!--            โอนพร้อมเพย์ 0635897999-->
+<!--        </td>-->
+<!--    </tr>-->
+<!--</table>-->
 
 <script>
     // $(function(){

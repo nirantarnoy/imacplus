@@ -25,6 +25,7 @@ if ($id > 0) {
       //  echo $new_wallet_amount;return;
         if (updateMemberWallet($connect, $member_id, $new_wallet_amount)) {
             if (updateWalletStatus($connect, $id)) {
+                createMemberNotify($connect, $id, $member_id);
                 $res += 1;
             }
         }
@@ -139,6 +140,20 @@ function declineWallet($connect, $id)
         return 0;
     }
 
+}
+
+function createMemberNotify($connect, $ref_id ,$member_id){
+    $c_date = date('Y-m-d H:i:s');
+    $created_at = time();
+    $title ="แจ้งยืนยันการเติมวอลเล็ท";
+    $message = "ระบบได้ตรวจสอบยอดของคุณเรียบร้อยแล้ว";
+    $sql = "INSERT INTO member_notify(trans_ref_id,member_id,message_type_id,title,detail,read_status,message_date,created_at,created_by)
+            VALUES('$ref_id','$member_id',2,'$title','$message',0,'$c_date','$created_at',0)";
+    if ($connect->query($sql)) {
+        return 1;
+    } else {
+        return 0;
+    }
 }
 
 ?>

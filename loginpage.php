@@ -1,6 +1,13 @@
 <?php
 ob_start();
-session_start();
+if(!session_id()) {
+    session_start();
+}
+
+require_once __DIR__ . '/vendor/php-graph-sdk-5.x/src/Facebook/autoload.php';
+
+include("common/dbcon.php");
+include("models/MemberModel.php");
 
 $mes_error = '';
 if (isset($_SESSION['msg_err'])) {
@@ -13,6 +20,26 @@ if (isset($_GET['ref'])) {
     $member_ref_id = $_GET['ref'];
 };
 //echo $member_ref_id;
+
+$fb = new \Facebook\Facebook([
+    'app_id' => '5164069763715357', //828260794001696
+    'app_secret' => '0d7b1e93385cd8f48a98385217983bf2', //5dd3b30d1b7da7738bf8f6f38a440da2
+    'default_graph_version' => 'v2.10',
+     'persistent_data_handler' => 'session',
+    'default_access_token' => 'EABJYsaZCckR0BAFR1unZBz3JXeTHL24XV4ds6iJyqzs36RChA9S0KMkr5IsYk6Pm1ScNHDU4W3ZBueYn9oFGwMmEdvkisvkiPu80pPl2GmkAzxKJzMXubo4jXqIaIZAP9j4caQnKtm7afbhEw4OoBGdjwmF8tncy1XHbZBDASDZBCsVcrCP3KVcbHDMV0ZAnqbhi6Chh3TQG8YaeUr3MCYf', // optional
+]);
+
+// Use one of the helper classes to get a Facebook\Authentication\AccessToken entity.
+//   $helper = $fb->getRedirectLoginHelper();
+//   $helper = $fb->getJavaScriptHelper();
+//   $helper = $fb->getCanvasHelper();
+//   $helper = $fb->getPageTabHelper();
+$helper = $fb->getRedirectLoginHelper();
+
+$permissions = ['email', 'user_likes']; // optional
+$loginUrl = $helper->getLoginUrl('https://www.imacplus.app/login-callback.php', $permissions);
+$registerUrl = $helper->getLoginUrl('https://www.imacplus.app/register-callback.php', $permissions);
+
 ?>
 <!doctype html>
 <html lang="en">
@@ -45,8 +72,8 @@ if (isset($_GET['ref'])) {
 
 
     <!-- favicon -->
-    <link rel="icon" type="image/png" href="assets/favicon.png"/>
-
+    <!--    <link rel="icon" type="image/png" href="assets/favicon.png"/>-->
+    <link rel="icon" type="image/png" href="uploads/icon/imaclogonew.ico"/>
     <!-- "Login" page styles, specific to this page for demo only -->
     <link rel="stylesheet" type="text/css" href="views/pages/page-login/@page-style.css">
 
@@ -73,7 +100,7 @@ if (isset($_GET['ref'])) {
 </head>
 
 <body>
-<div class="body-container">
+<div class="body-container" style="background-color: white;">
 
     <div class="main-container container bgc-transparent">
 
@@ -100,11 +127,12 @@ if (isset($_GET['ref'])) {
                                             <!-- default carousel section that you see when you open login page -->
                                             <div style="background-image: url(assets/image/login-bg-1.svg);"
                                                  class="px-3 bgc-blue-l4 d-flex flex-column align-items-center justify-content-center">
-                                                <a class="mt-5 mb-2" href="loginpage.php">
-                                                    <i class="fa fa-backward text-secondary-m2 fa-3x"></i>
+                                                <a class="mt-5 mb-2" href="loginpage.php" style="text-align: center;">
+                                                    <!--                                                    <i class="fa fa-backward text-secondary-m2 fa-3x"></i>-->
+                                                    <img src="uploads/logo/imaclogonew.png" style="width: 25%" alt="">
                                                 </a>
 
-                                                <h2 class="text-primary-d1">
+                                                <h2 class="text-secondary-d1">
                                                     iMac Plus <span class="text-80 text-dark-l1"></span>
                                                 </h2>
 
@@ -145,7 +173,8 @@ if (isset($_GET['ref'])) {
                                             <div style="background-image: url(assets/image/login-bg-2.svg);"
                                                  class="d-flex flex-column align-items-center justify-content-start">
                                                 <a class="mt-5 mb-2" href="html/dashboard.html">
-                                                    <i class="fa fa-backward text-secondary-m2 fa-3x"></i>
+                                                    <!--                                                    <i class="fa fa-backward text-secondary-m2 fa-3x"></i>-->
+                                                    <img src="uploads/logo/imaclogonew.png" style="width: 25%" alt="">
                                                 </a>
 
                                                 <h2 class="text-blue-l1">
@@ -160,7 +189,9 @@ if (isset($_GET['ref'])) {
                                                  class="d-flex flex-column align-items-center justify-content-start">
                                                 <div class="bgc-black-tp4 radius-1 p-3 w-90 text-center my-3 h-100">
                                                     <a class="mt-5 mb-2" href="html/dashboard.html">
-                                                        <i class="fa fa-backward text-secondary-m2 fa-3x"></i>
+                                                        <!--                                                        <i class="fa fa-backward text-secondary-m2 fa-3x"></i>-->
+                                                        <img src="uploads/logo/imaclogonew.png" style="width: 25%"
+                                                             alt="">
                                                     </a>
 
                                                     <h2 class="text-blue-l1">
@@ -175,7 +206,8 @@ if (isset($_GET['ref'])) {
                                             <div style="background-image: url(assets/image/login-bg-4.jpg);"
                                                  class="d-flex flex-column align-items-center justify-content-start">
                                                 <a class="mt-5 mb-2" href="html/dashboard.html">
-                                                    <i class="fa fa-backward text-secondary-m2 fa-3x"></i>
+                                                    <!--                                                    <i class="fa fa-backward text-secondary-m2 fa-3x"></i>-->
+                                                    <img src="uploads/logo/imaclogonew.png" style="width: 25%" alt="">
                                                 </a>
 
                                                 <h2 class="text-blue-d1">
@@ -214,23 +246,23 @@ if (isset($_GET['ref'])) {
                                         <!-- show this in desktop -->
                                         <div class="d-none d-lg-block col-md-6 offset-md-3 mt-lg-4 px-0">
                                             <h4 class="text-dark-tp4 border-b-1 brc-secondary-l2 pb-1 text-130">
-                                                <i class="fa fa-coffee text-orange-m1 mr-1"></i>
-                                                Welcome Back
+                                                <!--                                                <i class="fa fa-coffee text-orange-m1 mr-1"></i>-->
+                                                ลงชื่อเข้าใช้งานระบบ
                                             </h4>
                                         </div>
 
                                         <!-- show this in mobile device -->
                                         <div class="d-lg-none text-secondary-m1 my-4 text-center">
                                             <a href="html/dashboard.html">
-                                                <i class="fa fa-backward text-secondary-m2 text-200 mb-4"></i>
+                                                <!--                                                <i class="fa fa-backward text-secondary-m2 text-200 mb-4"></i>-->
+                                                <img src="uploads/logo/imaclogonew.png" style="width: 25%" alt="">
                                             </a>
                                             <h1 class="text-170">
-                            <span class="text-blue-d1">
+                            <span class="text-secondary-d1">
                                 iMac <span class="text-80 text-dark-tp3">Plus</span>
                             </span>
                                             </h1>
 
-                                            Welcome back
                                         </div>
 
                                         <input type="hidden" class="message" value="<?= $mes_error ?>">
@@ -282,7 +314,7 @@ if (isset($_GET['ref'])) {
                                                 </label>
 
                                                 <button type="button"
-                                                        class="btn btn-primary btn-block px-4 btn-bold mt-2 mb-4 btn-submit">
+                                                        class="btn btn-dark btn-block px-4 btn-bold mt-2 mb-4 btn-submit">
                                                     Sign In
                                                 </button>
                                                 <!--                                                <input type="submit" value="Sign In" class="btn btn-primary btn-block px-4 btn-bold mt-2 mb-4 btn-submit">-->
@@ -296,7 +328,7 @@ if (isset($_GET['ref'])) {
                                                 <hr class="brc-default-l2 mt-0 mb-2 w-100"/>
 
                                                 <div class="p-0 px-md-2 text-dark-tp3 my-3">
-                                                    ยังไม่เป็นสมาชิกกับทางเราหรือเปล่า?
+                                                    ยังไม่เป็นสมาชิกหรือเปล่า?
                                                     <a class="text-success-m1 text-600 mx-1 btn-to-register"
                                                        data-toggle="tab"
                                                        data-target="#id-tab-signup" href="#">
@@ -310,10 +342,11 @@ if (isset($_GET['ref'])) {
                                                 </div>
 
                                                 <div class="my-2">
-                                                    <button type="button"
-                                                            class="btn btn-bgc-white btn-lighter-primary btn-h-primary btn-a-primary border-2 radius-round btn-lg mx-1">
+                                                    <a href="<?= $loginUrl ?>"
+                                                       class="btn btn-bgc-white btn-lighter-primary btn-h-primary btn-a-primary border-2 radius-round btn-lg mx-1">
                                                         <i class="fab fa-facebook-f text-110"></i>
-                                                    </button>
+                                                    </a>
+
 
                                                     <button type="button"
                                                             class="btn btn-bgc-white btn-lighter-red btn-h-red btn-a-red border-2 radius-round btn-lg px-25 mx-1">
@@ -336,33 +369,57 @@ if (isset($_GET['ref'])) {
                                             </a>
                                         </div>
 
-                                        <!-- show this in desktop -->
-                                        <div class="d-none d-lg-block col-sm-10 offset-sm-1 col-md-8 offset-md-2 col-lg-6 offset-lg-3 mt-lg-4 px-0">
-                                            <h4 class="text-dark-tp4 border-b-1 brc-grey-l1 pb-1 text-130">
-                                                <i class="fa fa-user text-purple mr-1"></i>
-                                                สมัครสมาชิก
-                                            </h4>
-                                        </div>
-
                                         <!-- show this in mobile device -->
-                                        <div class="d-lg-none text-secondary-m1 my-4 text-center">
-                                            <i class="fa fa-backward text-secondary-m2 text-200 mb-4"></i>
-                                            <h1 class="text-170">
-                                                <span class="text-blue-d1">iMac <span
-                                                            class="text-80 text-dark-tp4">Plus</span></span>
-                                            </h1>
-
-                                            สมัครสมาชิก
-                                        </div>
-                                        <input type="hidden" class="message2" value="<?= $mes_error ?>">
-                                        <div class="alert alert-danger alert-msg2"
-                                             style="display: none;text-align: center;"><?= $mes_error ?></div>
-
                                         <form id="form-register" autocomplete="off" class="form-row mt-4"
                                               action="register_action.php" method="post">
                                             <input type="hidden" class="member-ref-id" name="member_ref_id"
                                                    value="<?= $member_ref_id ?>">
+                                            <?php  if( $member_ref_id != '' ||  $member_ref_id!=null):?>
+                                            <?php //if (1 > 0): ?>
+                                                <?php
+                                                $member_data = getMemberIntroduceData($connect, 5);
+                                                ?>
+                                                <div class="form-group col-sm-10 offset-sm-1 col-md-8 offset-md-2 col-lg-6 offset-lg-3"
+                                                     style="text-align: center;">
+                                                    <p class="text-primary">สมาชิกแนะนำ</p>
+                                                    <?php if ($member_data[0]['photo'] != null): ?>
+                                                        <img id="id-navbar-user-image"
+                                                             class="d-none d-lg-inline-block radius-round border-2 brc-white-tp1 mr-2 w-6"
+                                                             src="assets/image/avatar/<?= $member_data[0]['photo'] ?>"
+                                                             alt="Member 's photo">
+
+                                                    <?php else: ?>
+                                                        <i class="fa fa-user-circle fa-5x text-info"></i>
+                                                    <?php endif; ?>
+                                                    <p><b><?= $member_data[0]['name'] ?></b></p>
+                                                </div>
+                                                <br>
+                                            <?php endif; ?>
+                                            <!-- show this in desktop -->
+
+                                            <div class="d-none d-lg-block col-sm-10 offset-sm-1 col-md-8 offset-md-2 col-lg-6 offset-lg-3 mt-lg-4 px-0">
+                                                <h4 class="text-dark-tp4 border-b-1 brc-grey-l1 pb-1 text-130">
+                                                    <!--                                                <i class="fa fa-user text-purple mr-1"></i>-->
+                                                    สมัครสมาชิก
+                                                </h4>
+                                            </div>
+
+                                            <div class="d-lg-none text-secondary-m1 my-4 text-center">
+                                                <i class="fa fa-backward text-secondary-m2 text-200 mb-4"></i>
+                                                <h1 class="text-170">
+                                                <span class="text-blue-d1">iMac <span
+                                                            class="text-80 text-dark-tp4">Plus</span></span>
+                                                </h1>
+
+                                                สมัครสมาชิก
+                                            </div>
+
+
                                             <div class="form-group col-sm-10 offset-sm-1 col-md-8 offset-md-2 col-lg-6 offset-lg-3">
+                                                <input type="hidden" class="message2" value="<?= $mes_error ?>">
+                                                <div class="alert alert-danger alert-msg2"
+                                                     style="display: none;text-align: center;"><?= $mes_error ?></div>
+
                                                 <div class="d-flex align-items-center input-floating-label text-success brc-success-m2">
                                                     <input type="text"
                                                            class="form-control form-control-lg pr-4 shadow-none phone-regis"
@@ -389,57 +446,60 @@ if (isset($_GET['ref'])) {
                                             </div>
 
 
-                                            <div class="form-group col-sm-10 offset-sm-1 col-md-8 offset-md-2 col-lg-6 offset-lg-3 mt-1">
-                                                <div class="d-flex align-items-center input-floating-label text-success brc-success-m2">
-                                                    <input type="text"
-                                                           class="form-control form-control-lg pr-4 shadow-none username-regis"
-                                                           id="id-signup-username" name="username" value=""/>
-                                                    <i class="fa fa-user text-grey-m2 ml-n4"></i>
-                                                    <label class="floating-label text-grey-l1 text-100 ml-n3"
-                                                           for="id-signup-username">
-                                                        Username
-                                                    </label>
-                                                </div>
-                                            </div>
-
-
-                                            <div class="form-group col-sm-10 offset-sm-1 col-md-8 offset-md-2 col-lg-6 offset-lg-3 mt-1">
-                                                <div class="d-flex align-items-center input-floating-label text-success brc-success-m2">
-                                                    <input type="password"
-                                                           class="form-control form-control-lg pr-4 shadow-none password-regis"
-                                                           id="id-signup-password" name="password" value=""/>
-                                                    <i class="fa fa-key text-grey-m2 ml-n4"></i>
-                                                    <label class="floating-label text-grey-l1 text-100 ml-n3"
-                                                           for="id-signup-password">
-                                                        Password
-                                                    </label>
-                                                </div>
-                                            </div>
-
-
-                                            <div class="form-group col-sm-10 offset-sm-1 col-md-8 offset-md-2 col-lg-6 offset-lg-3 mt-1">
-                                                <div class="d-flex align-items-center input-floating-label text-success brc-success-m2">
-                                                    <input type="password"
-                                                           class="form-control form-control-lg pr-4 shadow-none confirm-password"
-                                                           id="id-signup-password2" name="confirmpassword" value=""/>
-                                                    <i class="fas fa-sync-alt text-grey-m2 ml-n4"></i>
-                                                    <label class="floating-label text-grey-l1 text-100 ml-n3"
-                                                           for="id-signup-password2">
-                                                        Confirm Password
-                                                    </label>
-                                                </div>
-                                            </div>
+                                            <!--                                            <div class="form-group col-sm-10 offset-sm-1 col-md-8 offset-md-2 col-lg-6 offset-lg-3 mt-1">-->
+                                            <!--                                                <div class="d-flex align-items-center input-floating-label text-success brc-success-m2">-->
+                                            <!--                                                    <input type="text"-->
+                                            <!--                                                           class="form-control form-control-lg pr-4 shadow-none username-regis"-->
+                                            <!--                                                           id="id-signup-username" name="username" value=""/>-->
+                                            <!--                                                    <i class="fa fa-user text-grey-m2 ml-n4"></i>-->
+                                            <!--                                                    <label class="floating-label text-grey-l1 text-100 ml-n3"-->
+                                            <!--                                                           for="id-signup-username">-->
+                                            <!--                                                        Username-->
+                                            <!--                                                    </label>-->
+                                            <!--                                                </div>-->
+                                            <!--                                            </div>-->
+                                            <!---->
+                                            <!---->
+                                            <!--                                            <div class="form-group col-sm-10 offset-sm-1 col-md-8 offset-md-2 col-lg-6 offset-lg-3 mt-1">-->
+                                            <!--                                                <div class="d-flex align-items-center input-floating-label text-success brc-success-m2">-->
+                                            <!--                                                    <input type="password"-->
+                                            <!--                                                           class="form-control form-control-lg pr-4 shadow-none password-regis"-->
+                                            <!--                                                           id="id-signup-password" name="password" value=""/>-->
+                                            <!--                                                    <i class="fa fa-key text-grey-m2 ml-n4"></i>-->
+                                            <!--                                                    <label class="floating-label text-grey-l1 text-100 ml-n3"-->
+                                            <!--                                                           for="id-signup-password">-->
+                                            <!--                                                        Password-->
+                                            <!--                                                    </label>-->
+                                            <!--                                                </div>-->
+                                            <!--                                            </div>-->
+                                            <!---->
+                                            <!---->
+                                            <!--                                            <div class="form-group col-sm-10 offset-sm-1 col-md-8 offset-md-2 col-lg-6 offset-lg-3 mt-1">-->
+                                            <!--                                                <div class="d-flex align-items-center input-floating-label text-success brc-success-m2">-->
+                                            <!--                                                    <input type="password"-->
+                                            <!--                                                           class="form-control form-control-lg pr-4 shadow-none confirm-password"-->
+                                            <!--                                                           id="id-signup-password2" name="confirmpassword" value=""/>-->
+                                            <!--                                                    <i class="fas fa-sync-alt text-grey-m2 ml-n4"></i>-->
+                                            <!--                                                    <label class="floating-label text-grey-l1 text-100 ml-n3"-->
+                                            <!--                                                           for="id-signup-password2">-->
+                                            <!--                                                        Confirm Password-->
+                                            <!--                                                    </label>-->
+                                            <!--                                                </div>-->
+                                            <!--                                            </div>-->
 
 
                                             <div class="form-group col-sm-10 offset-sm-1 col-md-8 offset-md-2 col-lg-6 offset-lg-3 mt-2">
                                                 <label class="d-inline-block mt-3 mb-0 text-secondary-d2">
-                                                    <input type="checkbox" class="mr-1" id="id-agree"/>
+                                                    <input type="checkbox" name="check_read_ok" class="mr-1"
+                                                           id="id-agree" onclick="readok($(this))"/>
                                                     <span class="text-dark-m3">ฉันอ่านและยอมรับ <a href="#"
-                                                                                                   class="text-blue-d2">ข้อตกลงการใช้งาน</a></span>
+                                                                                                   class="text-blue-d2"
+                                                                                                   onclick="showcondition()">ข้อตกลงการใช้งาน</a></span>
                                                 </label>
 
                                                 <button type="button"
-                                                        class="btn btn-success btn-block px-4 btn-bold mt-2 mb-3 btn-register-submit">
+                                                        class="btn btn-success btn-block px-4 btn-bold mt-2 mb-3 btn-register-submit"
+                                                        disabled>
                                                     สมัครสมาชิก
                                                 </button>
                                                 <!--                                                <input type="submit" class="btn btn-success btn-block px-4 btn-bold mt-2 mb-3" value="สมัครสมาชิก">-->
@@ -466,10 +526,10 @@ if (isset($_GET['ref'])) {
                                                 </div>
 
                                                 <div class="mt-2 mb-3">
-                                                    <button type="button"
-                                                            class="btn btn-primary border-2 radius-round btn-lg mx-1">
+                                                    <a href="<?= $registerUrl ?>"
+                                                       class="btn btn-bgc-white btn-lighter-primary btn-h-primary btn-a-primary border-2 radius-round btn-lg mx-1">
                                                         <i class="fab fa-facebook-f text-110"></i>
-                                                    </button>
+                                                    </a>
 
                                                     <button type="button"
                                                             class="btn btn-danger border-2 radius-round btn-lg px-25 mx-1">
@@ -558,6 +618,145 @@ if (isset($_GET['ref'])) {
 
 </div>
 
+<div class="modal modal-xl" id="myModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form action="item_action.php" id="form-user" method="post">
+                <!-- Modal Header -->
+                <!--                <div class="modal-header">-->
+                <!--                    <h4 class="modal-title" style="color: #1c606a">เพิ่มข้อมูล Item</h4>-->
+                <!--                    <button type="button" class="close" data-dismiss="modal">&times;</button>-->
+                <!--                </div>-->
+
+                <!-- Modal body -->
+                <div class="modal-body">
+                    <input type="hidden" name="recid" class="user-recid" value="">
+                    <input type="hidden" name="action_type" class="action-type" value="create">
+                    <div class="row">
+                        <div class="col-lg-12" style="padding: 30px;">
+                            <table style="width: 100%">
+                                <tr>
+                                    <td style="text-align: center;">
+                                        <h3>โปรดอ่านข้อตกลงและเงื่อนไขการให้บริการ</h3><br/>
+                                    </td>
+                                </tr>
+                            </table>
+                            <table style="width: 100%">
+                                <tr>
+                                    <td style="text-align: left;">
+                                        <p style="text-indent: 10px;">กรุณาอ่านข้อตกลงและเงื่อนไขการให้บริการ
+                                            (“ข้อตกลงและเงื่อนไข”)
+                                            โดยละเอียดก่อนรับบริการซ่อมหรือบริการอื่นที่เกี่ยวข้อง
+                                            ข้อตกลงและเงื่อนไขฉบับนี้เป็นข้อตกลงที่มีผลผูกพันตามกฎหมายระหว่างผู้ขอรับบริการ
+                                            (“ลูกค้า”) กับบริษัท ไทยออล จำกัด (“ไทยออล”) ซึ่งเป็นผู้ให้บริการแพลตฟอร์ม
+                                            iMac Plus (“ไอแมค พลัส” ) รวมเรียกว่า (“ศูนย์บริการ” )
+                                            การให้บริการซ่อมหรือบริการอื่นที่เกี่ยวข้องสำหรับอุปกรณ์
+                                            หรือการอัพเกรดซอฟต์แวร์ที่ดำเนินการผ่าน แพลตฟอร์ม iMac Plus
+                                            หรือศูนย์บริการที่ได้รับอนุญาต (รวมเรียก “บริการ”)</p>
+                                    </td>
+                                </tr>
+                            </table>
+
+
+                            1) ศูนย์บริการจะคืนเครื่องให้แก่ลูกค้าที่ลงนามในเอกสารขอรับบริการฉบับนี้ (เอกสารฯ)
+                            และนำเอกสารฯ มาแสดง ณ วันขอรับเครื่องคืนเท่านั้น
+                            ศูนย์บริการขอสงวนสิทธิไม่คืนเครื่องให้ในกรณีที่ลูกค้าไม่สามารถแสดงเอกสารฯ แก่ศูนย์บริการได้
+                            หากเอกสารฯ
+                            สูญหายลูกค้าต้องนำหลักฐานการแจ้งความต่อเจ้าหน้าที่ตำรวจพร้อมบัตรประชาชนมาแสดงเพื่อรับเครื่องคืน
+                            ในกรณีมอบหมายให้ผู้อื่นมารับเครื่องแทนจะต้องมีหนังสือมอบอำนาจและสำเนาบัตรประชาชนของลูกค้าพร้อมลงนาม
+                            เว้นแต่ในกรณีที่มีการใช้งานออนไลน์
+                            ทางศูนย์บริการจะจัดส่งและมีการเซ็นต์รับเรียบร้อยให้ถือว่าลูกค้าได้รับเรียบร้อยแล้ว
+                            <br/><br/>
+
+                            2) ลูกค้าจะต้องชำระสินค้าและบริการทั้งหมด ภายใน 3 วัน และรับเครื่องภายใน 7 วัน
+                            นับจากวันที่ศูนย์บริการได้กำหนดว่าเครื่องจะซ่อมเสร็จ
+                            เว้นแต่กรณีที่ศูนย์บริการจะแจ้งกำหนดเวลาไว้เป็นอย่างอื่น
+                            หากลูกค้าไม่มารับเครื่องคืนภายในกำหนดเวลาดังกล่าว ศูนย์บริการจะไม่รับผิดชอบต่อความเสียหายใด
+                            ๆ และให้เครื่องหรืออุปกรณ์ตกเป็นกรรมสิทธิ์บริษัทโดยทันที <br/><br/>
+
+                            3) ศูนย์บริการรับประกันงานซ่อมภายใน 30 วัน
+                            หรือตามที่บริษัทกำหนดไว้บนผลิตภัณฑ์หรืออุปกรณ์นั้น
+                            วันนับจากวันที่ลูกค้าหรือผู้รับมอบอำนาจจากลูกค้าได้รับเครื่องคืน
+                            หากเครื่องขัดข้องในเวลาดังกล่าวลูกค้าสามารถนำเครื่องมาขอรับบริการโดยศูนย์บริการจะไม่คิดค่าบริการเพิ่มเติม
+                            เว้นแต่หากมีการเปลี่ยนอะไหล่อื่นเพิ่มเติมที่ไม่เกี่ยวข้องกับงานซ่อมเดิม
+                            ลูกค้าจะต้องชำระค่าอะไหล่ดังกล่าว <br/><br/>
+
+
+                            4) ลูกค้ายอมรับเงื่อนไขเกี่ยวกับการสำรองและการลบข้อมูล ดังนี้ <br/>
+
+                            4.1) ลูกค้ามีหน้าที่ต้องทำการโอนย้ายหรือสำรองข้อมูล ซอฟต์แวร์ โปรแกรม
+                            และทำการลบข้อมูลทั้งหมดที่บันทึกอยู่ในเครื่องของลูกค้าทุกครั้งก่อนการเข้ารับบริการ
+                            ศูนย์บริการจะไม่รับผิดชอบในกรณีที่ข้อมูลเสียหาย ข้อมูลถูกกู้คืน ข้อมูลถูกละเมิด
+                            หรือการทำงานของเครื่องได้รับผลกระทบจากการสูญหายของข้อมูล
+                            อันเนื่องมาจากการให้บริการโดยศูนย์บริการ
+                            นอกจากนี้ลูกค้ารับรองว่าเครื่องของลูกค้าไม่มีข้อมูลใด ๆ ที่ไม่ชอบด้วยกฎหมาย <br/>
+
+                            4.2) การตั้งค่าของเครื่องอาจจะกลับไปเป็นการตั้งค่าจากโรงงานหลังการให้บริการ
+                            ในการให้บริการศูนย์บริการอาจจำเป็นต้องลบข้อมูลบนเครื่องของลูกค้า
+                            ศูนย์บริการแนะนำให้ลูกค้าทำการโอนย้ายและสำรองข้อมูลในเครื่องของลูกค้าไว้ที่หน่วยความจำอื่นนอกตัวเครื่อง
+                            รวมถึงข้อมูลที่เกี่ยวกับข้อมูลรายชื่อผู้ติดต่อ รูปภาพ ข้อความ เพลง เสียงเรียกเข้า
+                            หรือแอพพลิเคชัน
+                            และทำการลบข้อมูลส่วนบุคคลของลูกค้าออกจากตัวเครื่องของลูกค้าทั้งหมดก่อนเริ่มการเข้ารับบริการ
+                            ในระหว่างการรับบริการข้อมูลในเครื่องของลูกค้าอาจสูญหาย เสียหาย หรือได้รับผลกระทบ
+                            ในกรณีดังกล่าวศูนย์บริการจะไม่รับผิดชอบต่อความเสียหาย สูญหายใด ๆ ที่อาจเกิดขึ้นกับข้อมูล
+                            ซอฟต์แวร์ โปรแกรมใด ๆ ที่บันทึกอยู่ในตัวเครื่องของลูกค้า <br/>
+
+                            4.3)
+                            ลูกค้ายินยอมให้เจ้าหน้าที่เทคนิคของศูนย์บริการตรวจสอบและเข้าถึงตัวเครื่องของท่านเพื่อวัตถุประสงค์ในการให้บริการ
+                            โดยในระหว่างการให้บริการนั้นเจ้าหน้าที่เทคนิคอาจเข้าถึงข้อมูลส่วนบุคคลของลูกค้าที่เก็บไว้ในตัวเครื่องโดยบังเอิญ
+                            หรือต้องเข้าตรวจสอบในบางส่วนของตัวเครื่องที่มีข้อมูลจัดเก็บอยู่เพื่อทดสอบประสิทธิภาพของการให้บริการ
+                            ศูนย์บริการจะไม่ทำการเปิดเผยข้อมูลของลูกค้าที่บันทึกไว้ในตัวเครื่อง
+                            ยกเว้นกรณีที่มีกฎหมายหรือกฎระเบียบที่เกี่ยวข้องกำหนด
+                            หากลูกค้าไม่ประสงค์ให้ศูนย์บริการสามารถเข้าถึงข้อมูลของท่าน
+                            ลูกค้าจะต้องทำการลบข้อมูลดังกล่าวหรือทำการรีเซ็ทตัวเครื่องของท่านก่อนเข้ารับบริการ
+                            ทั้งนี้ในขั้นตอนการทดสอบประสิทธิภาพของการให้บริการ
+                            ศูนย์บริการอาจจำเป็นต้องใช้เครื่องของท่านถ่ายภาพ
+                            ซึ่งอาจส่งผลให้ภาพดังกล่าวยังคงอยู่ในเครื่องของท่านหลังการให้บริการ <br/><br/>
+
+                            5) ศูนย์บริการจะถ่ายรูปหรือวีดีโอให้ลูกค้าเมื่อสินค้าเสร็จสิ้นแล้ว พร้อมทั้งถ่ายรูปสินค้า
+                            ตอนจัดส่งสินค้าให้ลูกค้าด้วย <br/>
+
+                            6) ก่อนการส่งซ่อมสินค้าในรูปแบบออนไลน์
+                            ลูกค้าต้องถ่ายรูปตัวเครื่องของลูกค้าเพื่ออัพโหลดเข้าในระบบตามที่บริษัทกำหนด <br/>
+                            7)ลูกค้าต้องชำระค่าบริการ 50% ก่อนตกลงใช้บริการหรือตามที่ศูนย์บริการกำหนดเบื้องต้น <br/>
+                            เว้นแต่ว่ามีบริการใส่ส่วนอื่นเพิ่มเติมหลังจากศูนย์บริการแจ้งลูกค้าภายหลัง
+                            8) ความรับผิดในค่าเสียหายพื้นฐานของเราที่เกิดขึ้นกับสินค้าใด ๆ
+                            นั้นจะจำกัดเพียงการสูญเสียและความเสียหายโดยตรงและรวมมูลค่าสูงสุดไม่เกิน 1,000 บาทต่อ 1
+                            ใบนำส่งสินค้า
+                            เว้นเสียแต่ว่ามีการระบุไว้เป็นอย่างอื่นในข้อตกลงร่วมกันเป็นลายลักษณ์อักษรระหว่างบริษัทผู้ส่งสินค้าและลูกค้า<br/>
+                            9)ข้อตกลงและเงื่อนไขจะอยู่ภายใต้กฎหมายแห่งราชอาณาจักรไทยและคู่สัญญาทั้งสองฝ่ายอยู่ใต้เขตอำนาจศาลแห่งราชอาณาจักรไทยโดยไม่อาจเพิกถอนได้
+                            <br/>
+                            10) ค่าบริการตรวจเช็ค 150 – 500 บาท หรือตามที่บริษัทกำหนด <br/>
+                            11) ลูกค้ายินยอมให้ บริษัท ไทยออล จำกัด และศูนย์บริการในเครือเก็บ รวบรวม ใช้
+                            ข้อมูลของท่านที่เกี่ยวข้องกับการเข้ารับบริการเพื่อวัตถุประสงค์ที่ระบุไว้ในนโยบายความเป็นส่วนตัวของศูนย์บริการ
+                            <br/>
+                            <table style="width: 100%">
+                                <tr>
+                                    <td style="text-align: center;">
+                                        ลูกค้าได้อ่านและยอมรับนโยบายความเป็นส่วนตัวของบริษัทที่ระบุไว้
+                                    </td>
+                                </tr>
+                            </table>
+
+
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- Modal footer -->
+                <div class="modal-footer">
+                    <!--                    <button type="submit" class="btn btn-success btn-save" data-dismiss="modalx"><i-->
+                    <!--                                class="fa fa-save"></i> ยอมรับ-->
+                    <!--                    </button>-->
+                    <button type="button" class="btn btn-danger" data-dismiss="modal"> ปิด
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
 <!-- include common vendor scripts used in demo pages -->
 <script src="node_modules/jquery/dist/jquery.js"></script>
 <script src="node_modules/popper.js/dist/umd/popper.js"></script>
@@ -579,6 +778,20 @@ if (isset($_GET['ref'])) {
 <script src="views/pages/page-login/@page-script.js"></script>
 
 <script>
+    function readok(e) {
+        if ($('input[name=check_read_ok]').is(':checked')) {
+            $(".btn-register-submit").prop("disabled", false);
+        } else {
+
+            $(".btn-register-submit").prop("disabled", true);
+        }
+
+    }
+
+    function showcondition() {
+        $("#myModal").modal("show");
+    }
+
     $(function () {
         err_message();
         if ($(".member-ref-id").val() != '') {

@@ -1,7 +1,7 @@
 <footer class="footer d-none d-sm-block">
     <div class="footer-inner bgc-white-tp1">
         <div class="pt-3 border-none border-t-3 brc-grey-l2">
-            <span class="text-primary-m1 font-bolder text-120">iMac Plus</span>
+            <span class="text-secondary-m1 font-bolder text-120">iMac Plus</span>
             <span class="text-grey">Application &copy; <?=date('Y')?></span>
 
             <span class="mx-3 action-buttons">

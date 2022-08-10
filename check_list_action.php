@@ -12,6 +12,7 @@ $id = 0;
 $chk_no = '';
 $chk_name = '';
 $description = '';
+$device_type = 0;
 $status = '';
 $recid = 0;
 $delete_id = '';
@@ -34,6 +35,9 @@ if (isset($_POST['description'])) {
 if (isset($_POST['status'])) {
     $status = $_POST['status'];
 }
+if (isset($_POST['device_type'])) {
+    $device_type = $_POST['device_type'];
+}
 if (isset($_POST['delete_id'])) {
     $delete_id = $_POST['delete_id'];
 }
@@ -49,8 +53,8 @@ if (isset($_POST['action_type'])) {
 if ($action == 'create') {
     $created_at = time();
     $created_by = $userid;
-    $sql = "INSERT INTO check_list(check_no,check_name,description,status,created_at,created_by)
-            VALUES('$chk_no','$chk_name','$description','$status','$created_at','$created_by')";
+    $sql = "INSERT INTO check_list(check_no,check_name,description,status,created_at,created_by,device_type)
+            VALUES('$chk_no','$chk_name','$description','$status','$created_at','$created_by','$device_type')";
     if ($result = $connect->query($sql)) {
         $_SESSION['msg-success'] = 'บันทึกข้อมูลเรียบร้อยแล้ว';
         header('location:check_list.php');
@@ -64,7 +68,7 @@ if ($action == 'update') {
 //        echo $status;return;
         $created_at = time();
         $created_by = $userid;
-        $sql2 = "UPDATE check_list SET check_no='$chk_no',check_name='$chk_name',description='$description',status='$status',updated_at='$created_at',updated_by='$created_by' WHERE id='$id'";
+        $sql2 = "UPDATE check_list SET check_no='$chk_no',check_name='$chk_name',description='$description',status='$status',updated_at='$created_at',updated_by='$created_by',device_type='$device_type' WHERE id='$id'";
         if ($result2 = $connect->query($sql2)) {
             $_SESSION['msg-success'] = 'บันทึกข้อมูลเรียบร้อยแล้ว';
             header('location:check_list.php');

@@ -38,6 +38,7 @@ function getQuotationDataupdate($id, $connect)
             'quotation_no' => $row['quotation_no'],
             'quotation_date' => $row['quotation_date'],
             'customer_id' => $row['customer_id'],
+            'customer_name' => $row['customer_name'],
             'status' => $row['status'],
         ]);
     }

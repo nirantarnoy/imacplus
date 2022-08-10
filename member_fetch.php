@@ -7,6 +7,7 @@ if(!isset($_SESSION['userid'])){
 }
 include("common/dbcon.php");
 include("models/StatusModel.php");
+include("models/MemberTypeModel.php");
 $query_filter = '';
 $query = "SELECT * FROM member ";
 //if(isset($_POST["region_name"])){
@@ -49,16 +50,17 @@ $filtered_rows = $statement->rowCount();
 foreach ($result as $row){
 
     //$branch_name = $row['branch'];
+    $member_type = getMembertypeName($row['member_type_id'], $connect);
     $i++;
     $sub_array = array();
 //    $sub_array[] = '<p style="font-weight: ;text-align: left">'.$i.'</p>';
     $sub_array[] = '<p style="font-weight: ;text-align: left">'.$row['first_name'].' '.$row['last_name'].'</p>';
-    $sub_array[] = '<p style="font-weight: ;text-align: left">'.$row['zone_id'].'</p>';
-    $sub_array[] = '<p style="font-weight: ;text-align: left">'.$row['parent_id'].'</p>';
-    $sub_array[] = '<p style="font-weight: ;text-align: left">'.$row['member_type_id'].'</p>';
+//    $sub_array[] = '<p style="font-weight: ;text-align: left">'.$row['zone_id'].'</p>';
+//    $sub_array[] = '<p style="font-weight: ;text-align: left">'.$row['parent_id'].'</p>';
+    $sub_array[] = '<p style="font-weight: ;text-align: left">'.$member_type.'</p>';
     $sub_array[] = '<p style="font-weight: ;text-align: left">'.$row['phone_number'].'</p>';
     $sub_array[] = '<p style="font-weight: ;text-align: left">'.$row['email'].'</p>';
-    $sub_array[] = '<p style="font-weight: ;text-align: left">'.$row['line_id'].'</p>';
+//    $sub_array[] = '<p style="font-weight: ;text-align: left">'.$row['line_id'].'</p>';
     $sub_array[] = '<p style="font-weight: ;text-align: left">'.$row['point'].'</p>';
     $sub_array[] = '<p style="font-weight: ;text-align: left">'.getStatus($row['status']).'</p>';
     $sub_array[] = '<div class="btn btn-secondary btn-sm" data-id="'.$row['id'].'" onclick="showupdate($(this))"><i class="fas fa-edit"></i> Edit</div><span> </span><div class="btn btn-danger btn-sm" data-id="'.$row['id'].'" onclick="recDelete($(this))"><i class="fas fa-trash-alt"></i> Delete</div>';

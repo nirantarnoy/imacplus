@@ -45,4 +45,39 @@ function getOrderLastNo($connect){
     }
 }
 
+function loopcheckworkstatus($data, $findid)
+{
+    for ($i = 0; $i <= count($data) - 1; $i++) {
+        if ($findid == $data[$i]['id']) {
+            return $data[$i]['name'];
+        }
+    }
+}
+
+function getWOrkStatus($id)
+{ //ชื่อฟังก์ชั่น
+    $data = [
+        ['id' => 0, 'name' => 'รับคำสั่งซ่อม'],
+        ['id' => 1, 'name' => 'กำลังซ่อม'],
+        ['id' => 2, 'name'=>'ซ่อมเสร็จ']
+
+    ];
+    $name = '';
+    if ($id >= 0) {
+        $name = loopcheckworkstatus($data, $id);
+    }
+    return $name;
+}
+
+function getWorkStatusData()
+{
+    $data = [
+        ['id' => 0, 'name' => 'รับคำสั่งซ่อม'],
+        ['id' => 1, 'name' => 'กำลังซ่อม'],
+        ['id' => 2, 'name'=>'ซ่อมเสร็จ']
+    ];
+    return $data;
+}
+
+
 ?>

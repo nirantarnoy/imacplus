@@ -89,6 +89,12 @@ if($requestMethod == 'POST'){
                 'point' => getMemberPoint($connect, $member_id),
                 'wallet_amount' => getMemberWalletAmount($connect, $member_id),
                 'member_count' => getMemberChildCount($connect, $member_id),
+                'member_url' => getMemberurl($connect, $member_id),
+                'member_phone' => getMemberPhone($connect, $member_id),
+                'member_email' => getMemberEmail($connect, $member_id),
+                'bank_id' => getMemberBankId($connect, $member_id),
+                'account_no' => getMemberAccountNo($connect, $member_id),
+                'account_name' => getMemberAccountName($connect, $member_id),
             ]);
         }
 

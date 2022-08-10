@@ -27,7 +27,7 @@ if(isset($_POST["order"]))
 }
 else
 {
-    $query .= ' ORDER BY id ASC ';
+    $query .= ' ORDER BY id DESC ';
 }
 
 $query_filter = $query;

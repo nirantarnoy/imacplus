@@ -111,6 +111,7 @@ if (isset($_SESSION['msg-error'])) {
                     <?php
                     $line_price = 0;
                     $line_price_vat = 0;
+                    $line_price_for_cal = $models_data[$i]['cal_price'];
 
                     $line_data = getLineData($models_data[$i]['id'], $sparpart_type, $connect);
                     if ($line_data) {
@@ -126,6 +127,7 @@ if (isset($_SESSION['msg-error'])) {
                             <p><?= $models_data[$i]['name'] ?></p>
                         </td>
                         <td>
+                            <input type="hidden" class="price-for-cal" value="<?=$line_price_for_cal?>">
                             <input type="text" class="form-control line-item-price" name="line_item_pirce[]"
                                    value="<?= $line_price ?>"
                                    onchange="calline($(this))" autocomplete="off">
@@ -181,7 +183,9 @@ include "footer.php";
     refreshupdate();
 
     function calline(e) {
-        var line_price = e.val();
+      //  var line_price = e.val();
+        var line_price = e.closest("tr").find(".price-for-cal").val();
+
         var line_price_vat = parseFloat(parseFloat(line_price) + parseFloat(line_price * 7) / 100).toFixed(1);
         var item_id = e.closest("tr").find(".line-item-id").val();
         //alert(item_id);

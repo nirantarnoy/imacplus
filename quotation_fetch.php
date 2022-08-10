@@ -21,7 +21,7 @@ $stock_type = 0;
 $query_filter = '';
 $query = "SELECT * FROM quotation WHERE id > 0 ";
 if(isset($_POST["searchByName"])){
-    $query .= ' AND (quotation_no LIKE "%'.$_POST["searchByName"].'%")';
+    $query .= ' AND (quotation_no LIKE "%'.$_POST["searchByName"].'%" OR customer_name LIKE "%'.$_POST["searchByName"].'%")';
 }
 //if(isset($_POST["searchByDescription"])){
 //    $query .= ' AND (description LIKE "%'.$_POST["searchByDescription"].'%" OR description LIKE "%'.$_POST["searchByEmail"].'%")';
@@ -111,7 +111,8 @@ foreach ($result as $row){
 //    $sub_array[] = '<p style="font-weight: ;text-align: center">'.$i.'</p>';
     $sub_array[] = '<p style="font-weight: ;text-align: left">'.$row['quotation_no'].'</p>';
     $sub_array[] = '<p style="font-weight: ;text-align: left">'.$row['quotation_date'].'</p>';
-    $sub_array[] = '<p style="font-weight: ;text-align: left">'.getCustomerName($connect,$row['customer_id']).'</p>';
+   // $sub_array[] = '<p style="font-weight: ;text-align: left">'.getCustomerName($connect,$row['customer_id']).'</p>';
+    $sub_array[] = '<p style="font-weight: ;text-align: left">'.$row['customer_name'].'</p>';
     $sub_array[] = '<p style="font-weight: ;text-align: left">'.getStatus($row['status']).'</p>';
     $sub_array[] = '<p style="font-weight: ;text-align: left">'.getDisplayname($row['created_by'],$connect).'</p>';
 
