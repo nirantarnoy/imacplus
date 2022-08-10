@@ -545,7 +545,7 @@ include("models/UserModel.php");
                                     <b class="caret d-collapsed fa fa-plus text-80"></b>
                                 -->
                             </a>
-
+                            <?php if($_SESSION['userid'] == 1):?>
                             <div class="hideable submenu collapse">
                                 <ul class="submenu-inner">
 
@@ -566,6 +566,7 @@ include("models/UserModel.php");
                                     </li>
                                 </ul>
                             </div>
+                            <?php endif;?>
                             <b class="sub-arrow"></b>
                         </li>
                         <li class="nav-item">

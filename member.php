@@ -42,7 +42,7 @@ $selected = '';
 <div class="row">
     <div class="col-lg-7"><h1 class="h3 mb-0 text-gray-800">Members</h1></div>
     <div class="col-lg-3" style="text-align: right;">
-        <select name="member_type_filter" class="form-control member-type-filter" id="">
+        <select name="member_type_filter" class="form-control member-type-filter" id="" onchange="takeFilter($(this))">
             <?php for ($x = 0; $x <= count($member_type_data) - 1; $x++): ?>
                 <?php if ($member_type_filter_selected == $x) {
                     $selected = "selected";
@@ -247,6 +247,10 @@ include "footer.php";
         ],
     });
     dataTablex.draw();
+
+    function takeFilter(e){
+        alert(e.val());
+    }
 
     function showaddbank(e) {
         $(".description").val('');
