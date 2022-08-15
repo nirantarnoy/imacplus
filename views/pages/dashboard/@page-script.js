@@ -9,37 +9,37 @@ jQuery(function($) {
   if (displayed < 2) {
       localStorage.setItem('welcome.classic.ace', displayed + 1)
 
-      $.aceToaster.add({
-        placement: 'tc',
-        body: "<div class='py-2 pl-1 pr-3 d-flex '>\
-              <span class='d-inline-block mr-2 text-center py-3 px-1'>\
-                <i class='pos-abs fa fa-leaf fa-2x w-6 text-dark-m3 mt-2px'></i>\
-                <i class='pos-rel fa fa-leaf fa-2x w-6 text-success-m3 mr-1'></i>\
-              </span>\
-              <div>\
-                <h3 class='text-125 text-success'>Welcome to Ace!</h3>\
-                <p class='mb-1'>A lightweight, feature-rich, customizable and easy to use admin template!</p>\
-              </div>\
-              <button data-dismiss='toast' class='btn btn-sm btn-brc-tp btn-lighter-grey btn-h-lighter-danger btn-a-lighter-danger radius-round position-tr mt-1 mr-2px'>\
-                <i class='fa fa-times px-1px'></i>\
-              </button>\
-            </div>",
-          
-        width: 500,
-        delay: 10,
-        //sticky: true,
-
-        progress: 'position-tl bgc-success-tp1 pt-3px',
-        progressReverse: true,
-
-        close: false,
-        //belowNav: true,
-
-        className: 'bgc-white overflow-hidden border-0 p-0 radius-0',
-
-        bodyClass: 'border-1 border-t-0 brc-secondary-l2 text-dark-tp3 text-120 p-2',
-        headerClass: 'd-none'
-      })
+      // $.aceToaster.add({
+      //   placement: 'tc',
+      //   body: "<div class='py-2 pl-1 pr-3 d-flex '>\
+      //         <span class='d-inline-block mr-2 text-center py-3 px-1'>\
+      //           <i class='pos-abs fa fa-leaf fa-2x w-6 text-dark-m3 mt-2px'></i>\
+      //           <i class='pos-rel fa fa-leaf fa-2x w-6 text-success-m3 mr-1'></i>\
+      //         </span>\
+      //         <div>\
+      //           <h3 class='text-125 text-success'>Welcome to Ace!</h3>\
+      //           <p class='mb-1'>A lightweight, feature-rich, customizable and easy to use admin template!</p>\
+      //         </div>\
+      //         <button data-dismiss='toast' class='btn btn-sm btn-brc-tp btn-lighter-grey btn-h-lighter-danger btn-a-lighter-danger radius-round position-tr mt-1 mr-2px'>\
+      //           <i class='fa fa-times px-1px'></i>\
+      //         </button>\
+      //       </div>",
+      //
+      //   width: 500,
+      //   delay: 10,
+      //   //sticky: true,
+      //
+      //   progress: 'position-tl bgc-success-tp1 pt-3px',
+      //   progressReverse: true,
+      //
+      //   close: false,
+      //   //belowNav: true,
+      //
+      //   className: 'bgc-white overflow-hidden border-0 p-0 radius-0',
+      //
+      //   bodyClass: 'border-1 border-t-0 brc-secondary-l2 text-dark-tp3 text-120 p-2',
+      //   headerClass: 'd-none'
+      // })
   }
 
 

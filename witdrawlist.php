@@ -1,7 +1,12 @@
 <?php
 ob_start();
 session_start();
+
+if (!isset($_SESSION['userid'])) {
+    header("location:loginpage.php");
+}
 include "header.php";
+include("models/MemberModel.php");
 
 $noti_ok = '';
 $noti_error = '';
@@ -85,23 +90,30 @@ if (isset($_SESSION['msg-error'])) {
                 <div class="modal-body">
                     <input type="hidden" name="member_id" class="user-recid" value="5">
                     <input type="hidden" name="action_type" class="action-type" value="create">
+                    <input type="hidden" class="member-point-balance" value="<?=getMemberPoint($connect, isset($_SESSION['userid']))?>">
                     <div class="row">
                         <div class="col-lg-6">
-                            <label for="">จำนวน mPoint คงเหลือ</label>
+                            <label for=""><b>จำนวน mPoint คงเหลือ</b></label>
 
                         </div>
-                        <div class="col-lg-6">
-                            <b>500</b>
+                        <div class="col-lg-6" style="text-align: right;font-size: 20px;">
+                            <b><?=getMemberPoint($connect, isset($_SESSION['userid']))?></b>
                         </div>
                     </div>
-                    <br>
+
                     <div class="row">
                         <div class="col-lg-12">
-                            <label for="">จำนวนถอน</label>
+                            <label for=""><b>จำนวนถอน</b></label>
                             <input type="text" class="form-control witdraw-amount" name="witdraw_amount" value=""
-                                   placeholder="จำนวนเงิน">
+                                   placeholder="จำนวนเงิน" required onchange="checkamount($(this))">
                         </div>
 
+                    </div>
+                    <div style="height: 10px;"></div>
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <p style="color: red;font-size: 14px;">*ยอดสำหรับถอนขั้นต่ำคือ 500</p>
+                        </div>
                     </div>
                     <!--                    <div class="row">-->
                     <!--                        <div class="col-lg-12">-->
@@ -159,6 +171,15 @@ include "footer.php";
 
     function showaddWallet(e) {
         $("#myModal").modal("show");
+    }
+
+    function checkamount(e){
+        var balance_amt = $(".member-point-balance").val();
+        if(parseFloat(e.val()) > parseFloat(balance_amt)){
+            alert("จำนวนที่ต้องการถอนมากกว่ายอดคงเหลือ");
+            e.val(0);
+            return false;
+        }
     }
 
     function notify() {

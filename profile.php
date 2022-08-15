@@ -1,11 +1,11 @@
 <?php
-ob_start();
-session_start();
+
+include "header.php";
+
 if (!isset($_SESSION['userid'])) {
     header("location:loginpage.php");
 }
-include "header.php";
-include "models/MemberModel.php";
+//include "models/MemberModel.php";
 //include "models/UserModel.php";
 include "models/MemberTypeModel.php";
 
@@ -28,9 +28,12 @@ $member_id = getMemberFromUser($_SESSION['userid'], $connect);
                 <div class="d-flex flex-column py-3 px-lg-3 justify-content-center align-items-center">
 
                     <div class="pos-rel">
-                        <img alt="Profile image" src="assets/image/avatar/avatar1.jpg"
-                             class="radius-round bord1er-2 brc-warning-m1"/>
-                        <span class=" position-tr bgc-success p-1 radius-round border-2 brc-white mt-2px mr-2px"></span>
+                        <img alt="Profile image" src="uploads/member_photo/<?=getMemberPhoto($connect, $member_id)?>"
+                             class="radius-round bord1er-2 brc-warning-m1" style="width: 64px;height: 65px;"/>
+
+                                                <span class="position-tr bgc-success p-1 radius-round border-2 brc-white mt-2px mr-2px"></span>
+<!--                                                <span class="position-tr bgc-success p-1 radius-round border-2 brc-white mt-3px mr-3px"><i class="fa fa-edit"></i></span>-->
+
                     </div>
 
                     <div class="text-center mt-2">
@@ -48,7 +51,7 @@ $member_id = getMemberFromUser($_SESSION['userid'], $connect);
                     </div>
 
                     <div class="mx-auto mt-25 text-center">
-                        <i class="fa fa-trophy" style="size: 25px;color: #e0a800;"></i>
+                        <div class="btn btn-secondary btn-edit-profile">แก้ไขรูปโปรไฟล์</div>
                     </div>
 
                     <hr class="w-90 mx-auto brc-secondary-l3"/>
@@ -90,7 +93,7 @@ $member_id = getMemberFromUser($_SESSION['userid'], $connect);
                     <div class="row w-100 text-center">
                         <div class="col-4">
                             <div class="px-1 pt-2">
-                                <span class="text-170 text-primary-m3"><b><?= number_format(getMemberPoint($connect, $member_id), 2) ?></b></span>
+                                <span class="text-140 text-primary-m3"><b><?= number_format(getMemberPoint($connect, $member_id), 0) ?></b></span>
                                 <br/>
                                 <span class="text-grey-m1 text-90"><b>คะแนน mPoint</b></span>
                             </div>
@@ -101,7 +104,7 @@ $member_id = getMemberFromUser($_SESSION['userid'], $connect);
 
                         <div class="col-4">
                             <div class="px-1 pt-2">
-                                <span class="text-170 text-primary-m3"><b><?= number_format(getMemberWalletAmount($connect, $member_id), 2) ?></b></span>
+                                <span class="text-140 text-primary-m3"><b><?= number_format(getMemberWalletAmount($connect, $member_id), 0) ?></b></span>
                                 <br/>
                                 <span class="text-grey-m1 text-90"><b>จำนวนวอลเล็ท</b></span>
                             </div>
@@ -111,7 +114,7 @@ $member_id = getMemberFromUser($_SESSION['userid'], $connect);
 
                         <div class="col-4">
                             <div class="px-1 pt-2">
-                                <span class="text-170 text-primary-m3"><b><?= number_format(getMemberChildCount($connect, $member_id)) ?></b></span>
+                                <span class="text-140 text-primary-m3"><b><?= number_format(getMemberChildCount($connect, $member_id)) ?></b></span>
                                 <br/>
                                 <span class="text-grey-m1 text-90"><b>สมาชิกแนะนำ</b></span>
                             </div>
@@ -124,6 +127,66 @@ $member_id = getMemberFromUser($_SESSION['userid'], $connect);
 
 
                     <hr class="w-90 mx-auto mb-1 border-dotted"/>
+                    <br/>
+
+                    <div class="row w-100">
+                        <div class="col-lg-6">
+                            <a href="workorder.php?element=1" role="button" class="d-style btn btn-lighter-secondary btn-h-outline-purple btn-a-outline-purple btn-a-bgc-white w-100 border-t-3 my-1 py-3">
+                                <input type="radio" name="transportation" value="train" class="invisible pos-abs" />
+
+                                <div class="d-flex flex-column align-items-center">
+
+                                    <div class="position-tr m-1 mr-2">
+                                <span class="d-active">
+										<i class="fa fa-check text-success-m1 text-125"></i>
+									</span>
+                                    </div>
+
+                                    <div class="mb-2">
+                                        <i class="v-n-active fas fa-wrench text-160 text-grey-m3 mr-n35"></i>
+                                        <i class="v-active fas fa-wrench text-200 text-purple ml-n2"></i>
+                                    </div>
+
+                                    <div class="font-bolder text-150 text-secondary flex-grow-1">
+                                        แจ้งซ่อม
+                                        <div class="text-grey-d2 font-light">
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                            </a>
+                        </div>
+                        <div class="col-lg-6">
+
+                            <a href="dropoff.php?element=1" role="button" class="d-style btn btn-lighter-secondary btn-h-outline-purple btn-a-outline-purple btn-a-bgc-white w-100 border-t-3 my-1 py-3">
+                                <input type="radio" name="transportation" value="train" class="invisible pos-abs" />
+
+                                <div class="d-flex flex-column align-items-center">
+
+                                    <div class="position-tr m-1 mr-2">
+                                <span class="d-active">
+										<i class="fa fa-check text-success-m1 text-125"></i>
+									</span>
+                                    </div>
+
+                                    <div class="mb-2">
+                                        <i class="v-n-active fas fa-box-open text-160 text-grey-m3 mr-n35"></i>
+                                        <i class="v-active fas fa-wrench text-200 text-purple ml-n2"></i>
+                                    </div>
+
+                                    <div class="font-bolder text-150 text-secondary flex-grow-1">
+                                        Drop Off
+                                        <div class="text-grey-d2 font-light">
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                            </a>
+                        </div>
+
+                    </div>
                     <br/>
 
                     <div class="row w-100">
@@ -170,36 +233,6 @@ $member_id = getMemberFromUser($_SESSION['userid'], $connect);
                     </div>
                     <br>
 
-                    <div class="row w-100">
-                        <div class="col-lg-6">
-<!--                            <a href="workorder.php?element=1" class="btn btn-default btn-lg" style="width: 100%">แจ้งซ่อม</a>-->
-                            <a href="workorder.php?element=1" class="btn btn-info radius-3 border-b-8 py-25 btn-bold btn-text-slide-x mb-2"
-                               style="width: 100%;">
-                                <!-- width should be fixed -->
-                                <span class="btn-text-2 move-right">
-                                    <span class="d-inline-block bgc-white-tp9 shadow-sm radius-2px h-4 px-25 pt-1 mr-1 border-1">
-                                        <i class="fa fa-arrow-right text-white-tp2 text-110 mt-3px"></i>
-                                    </span>
-                                  </span><span style="font-size: 18px;">แจ้งซ่อม</span>
-                                <!-- there should be no `space` between text and icon , for better results -->
-                            </a>
-                        </div>
-                        <div class="col-lg-6">
-<!--                            <a href="dropoff.php?element=1" class="btn btn-success btn-lg" style="width: 100%">Drop-->
-<!--                                Off</a>-->
-                            <a href="dropoff.php?element=1" class="btn btn-success radius-3 border-b-8 py-25 btn-bold btn-text-slide-x mb-2"
-                               style="width: 100%;">
-                                <!-- width should be fixed -->
-                                <span class="btn-text-2 move-right">
-                                    <span class="d-inline-block bgc-white-tp9 shadow-sm radius-2px h-4 px-25 pt-1 mr-1 border-1">
-                                        <i class="fa fa-arrow-right text-white-tp2 text-110 mt-3px"></i>
-                                    </span>
-                                  </span><span style="font-size: 18px;">Drop off</span>
-                                <!-- there should be no `space` between text and icon , for better results -->
-                            </a>
-                        </div>
-
-                    </div>
 
 
                     <div class="mt-2 w-100 text-90 text-secondary radius-1 px-25 py-3">
@@ -217,97 +250,27 @@ $member_id = getMemberFromUser($_SESSION['userid'], $connect);
 
 </div>
 <div class="modal" id="myModal">
-    <div class="modal-dialog modal-xl">
+    <div class="modal-dialog modal-md">
         <div class="modal-content">
-            <form action="customer_action.php" id="form-user" method="post">
+            <form action="update_photo_profile.php" id="form-user" method="post" enctype="multipart/form-data">
                 <!-- Modal Header -->
                 <div class="modal-header">
-                    <h4 class="modal-title" style="color: #1c606a"><i class="fa fa-pencil"></i> เพิ่มข้อมูลลูกค้า</h4>
+                    <h4 class="modal-title" style="color: #1c606a"><i class="fa fa-pencil"></i> แกไขรูปโปรไฟล์</h4>
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
                 </div>
 
                 <!-- Modal body -->
                 <div class="modal-body">
-                    <input type="hidden" name="recid" class="user-recid" value="">
-                    <input type="hidden" name="action_type" class="action-type" value="create">
+                    <input type="hidden" name="recid" class="user-recid" value="<?=$member_id?>">
                     <div class="row">
-                        <div class="col-lg-3">
-                            <label for="">รหัสลูกค้า <span style="color: red"><b>*</b></span></label>
-                            <input type="text" class="form-control cust-code" name="cust_code" value=""
-                                   placeholder="รหัส" required>
-                        </div>
-                        <div class="col-lg-3">
-                            <label for="">กลุ่มลูกค้า <span style="color: red"><b>*</b></span></label>
-                            <!--                            <input type="text" class="form-control cust-group-id" name="cust_group_id" value=""-->
-                            <!--                                   placeholder="กลุ่มลูกค้า" required>-->
-                            <select name="customer_group_id" class="form-control customer-group-id" id="">
-                                <?php for ($i = 0; $i <= count($cusgroup_data) - 1; $i++): ?>
-                                    <!--                                    --><?php //$selected = '';
-//                                    if ( == $cusgroup_data[$i]['id']) {
-//                                        $selected = "selected";
-//                                    }
-//                                    ?>
-                                    <option value="<?= $cusgroup_data[$i]['id'] ?>"><?= $cusgroup_data[$i]['group_name'] ?></option>
-                                <?php endfor; ?>
-                            </select>
-                        </div>
-                        <div class="col-lg-3">
-                            <label for="">ชื่อ-นามสกุล</label>
-                            <input type="text" class="form-control cust-name" name="cust_name" value=""
-                                   placeholder="ชื่อ-นามสกุล">
-                        </div>
-                        <div class="col-lg-3">
-                            <label for="">เบอร์โทร</label>
-                            <input type="text" class="form-control phone" name="phone" value=""
-                                   placeholder="เบอร์">
+                        <div class="col-lg-12">
+                            <label for="">อัพโหลดรูปโปรไฟล์</label>
+                            <input type="file" name="photo_profile" accept="image/png, image/gif, image/jpeg" >
                         </div>
 
-                    </div>
-                    <br>
-                    <div class="row">
-                        <div class="col-lg-3">
-                            <label for="">Email</label>
-                            <input type="text" class="form-control email" name="email" value=""
-                                   placeholder="Email">
-                        </div>
-                        <div class="col-lg-3">
-                            <label for="">Line Id</label>
-                            <input type="text" class="form-control line-id" name="line_id" value=""
-                                   placeholder="Line ID">
-                        </div>
-                        <div class="col-lg-3">
-                            <label for="">Facebook</label>
-                            <input type="text" class="form-control facebook" name="facebook" value=""
-                                   placeholder="facebook">
-                        </div>
-                        <div class="col-lg-3">
-                            <label for="">ที่อยู่</label>
-                            <textarea class="form-control cust-address" name="cust_address"
-                                      placeholder="Address"> </textarea>
-                        </div>
-                    </div>
-                    <br>
 
-                    <div class="row">
-                        <div class="col-lg-4">
-                            <label for="">Description</label>
-                            <textarea class="form-control cust-description" name="cust_description"
-                                      placeholder="Description"> </textarea>
-                        </div>
-                        <div class="col-lg-4">
-                            <label for="">Note</label>
-                            <textarea class="form-control cust-note" name="cust_note"
-                                      placeholder="Note"> </textarea>
-                        </div>
-                        <div class="col-lg-4">
-                            <label for="">สถานะ</label>
-                            <select name="status" id="" class="form-control status">
-                                <?php for ($i = 0; $i <= count($status_data) - 1; $i++): ?>
-                                    <option value="<?= $status_data[$i]['id'] ?>"><?= $status_data[$i]['name'] ?></option>
-                                <?php endfor; ?>
-                            </select>
-                        </div>
                     </div>
+
 
                 </div>
 
@@ -327,6 +290,9 @@ $member_id = getMemberFromUser($_SESSION['userid'], $connect);
 include "footer.php";
 ?>
 <script>
+    $(".btn-edit-profile").click(function(){
+        $("#myModal").modal("show");
+    });
     function copyclipboard() {
         var copyText = document.getElementById("member-url");
 

@@ -63,7 +63,7 @@
 <script src="./node_modules/eonasdan-bootstrap-datetimepicker/src/js/bootstrap-datetimepicker.js"></script>
 
 <!-- include vendor scripts used in "Dashboard" page. see "/views//pages/partials/dashboard/@vendor-scripts.hbs" -->
-<script src="node_modules/chart.js/dist/Chart.js"></script>
+<!--<script src="node_modules/chart.js/dist/Chart.js"></script>-->
 
 
 <script src="node_modules/sortablejs/dist/sortable.umd.js"></script>
@@ -97,7 +97,7 @@
 <script src="node_modules/inputmask/dist/jquery.inputmask.js"></script>
 
 <!-- "Dashboard" page script to enable its demo functionality -->
-<script src="views/pages/dashboard/@page-script.js"></script>
+<!--<script src="views/pages/dashboard/@page-script.js"></script>-->
 <script src="views/pages/page-profile/@page-script.js"></script>
 <script src="views/pages/form-wizard/@page-script.js"></script>
 </body>

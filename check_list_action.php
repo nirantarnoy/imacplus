@@ -65,7 +65,7 @@ if ($action == 'update') {
     $created_at = time();
     $created_by = $userid;
     if($id > 0){
-//        echo $status;return;
+       //echo $device_type;return;
         $created_at = time();
         $created_by = $userid;
         $sql2 = "UPDATE check_list SET check_no='$chk_no',check_name='$chk_name',description='$description',status='$status',updated_at='$created_at',updated_by='$created_by',device_type='$device_type' WHERE id='$id'";
@@ -73,7 +73,7 @@ if ($action == 'update') {
             $_SESSION['msg-success'] = 'บันทึกข้อมูลเรียบร้อยแล้ว';
             header('location:check_list.php');
         }else{
-            echo "no";return;
+            echo "no update";return;
         }
     }
 }

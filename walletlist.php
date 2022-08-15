@@ -87,20 +87,54 @@ if (isset($_SESSION['msg-error'])) {
                     <input type="hidden" name="action_type" class="action-type" value="create">
                     <div class="row">
                         <div class="col-lg-12">
-                            <label for="">จำนวนเติม</label>
-                            <input type="text" class="form-control wallet-pay" name="wallet_pay" value=""
-                                   placeholder="จำนวนเงิน">
+                            <label for=""><b>เลือกจำนวน</b></label>
+                            <div class="row">
+                                <div class="col-lg-3" style="padding: 2px;">
+                                    <div class="btn btn-secondary" style="width: 100%;" data-value="300" onclick="fillamount($(this))">
+                                        <b>300</b>
+                                    </div>
+                                </div>
+                                <div class="col-lg-3" style="padding: 2px;">
+                                    <div class="btn btn-secondary" style="width: 100%;" data-value="500" onclick="fillamount($(this))">
+                                        <b>500</b>
+                                    </div>
+                                </div>
+                                <div class="col-lg-3" style="padding: 2px;">
+                                    <div class="btn btn-secondary" style="width: 100%;" data-value="1000" onclick="fillamount($(this))">
+                                        <b>1,000</b>
+                                    </div>
+                                </div>
+                                <div class="col-lg-3" style="padding: 2px;">
+                                    <div class="btn btn-secondary"  style="width: 100%;" data-value="1500" onclick="fillamount($(this))">
+                                        <b>1,500</b>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
 
                     </div>
                     <br>
                     <div class="row">
                         <div class="col-lg-12">
-                            <label for="">แนบหลักฐาน</label>
-                            <input type="file" class="form-control" name="file_slip">
+                            <label for=""><b>จำนวนที่ต้องการเติม</b></label>
+                            <input type="text" class="form-control wallet-pay" style="font-size: 25px;" name="wallet_pay" value=""
+                                   placeholder="จำนวนเงิน" required>
+                        </div>
+
+                    </div>
+                    <br>
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <label for=""><b>แนบหลักฐาน</b></label>
+                            <input type="file" class="form-control" name="file_slip" required>
                         </div>
                     </div>
-
+                    <div style="height: 10px;"></div>
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <p style="color: red;font-size: 14px;">*ต้องทำการแนบหลักฐานการโอนเงินทุกครั้ง</p>
+                        </div>
+                    </div>
                 </div>
 
                 <!-- Modal footer -->
@@ -150,6 +184,15 @@ include "footer.php";
 
     function showaddWallet(e) {
         $("#myModal").modal("show");
+    }
+
+    function fillamount(e){
+        var click_amount = e.attr("data-value");
+        if(parseFloat(click_amount) >0){
+            $(".wallet-pay").val(click_amount);
+        }else{
+            $(".wallet-pay").val(0);
+        }
     }
 
     function notify() {

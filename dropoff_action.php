@@ -3,6 +3,7 @@ ob_start();
 session_start();
 date_default_timezone_set('Asia/Bangkok');
 include("common/dbcon.php");
+include("models/WorkorderModel.php");
 
 if (!isset($_SESSION['userid'])) {
     header("location:loginpage.php");
@@ -46,8 +47,9 @@ if ($action == 'create') {
     $created_at = time();
     $created_by = $userid;
     $new_order_date = date('Y-m-d H:i:s');
+    $new_workorder_id = getOrderIdByNo($connect, $workorder_ref_id);
     $sql = "INSERT INTO dropoff_trans(trans_date,member_id,workorder_ref_id,status,created_at,created_by)
-            VALUES('$new_order_date','$member_id','$workorder_ref_id','$status','$created_at','$created_by')";
+            VALUES('$new_order_date','$member_id','$new_workorder_id','$status','$created_at','$created_by')";
     if ($result = $connect->query($sql)) {
         $_SESSION['msg-success'] = 'บันทึกข้อมูลเรียบร้อยแล้ว';
         header('location:dropoff.php');
@@ -61,7 +63,8 @@ if ($action == 'update') {
 //        echo $status;return;
         $created_at = time();
         $created_by = $userid;
-        $sql2 = "UPDATE dropoff_trans SET member_id='$member_id',workorder_ref_id='$workorder_ref_id',status='$status',updated_at='$created_at',updated_by='$created_by' WHERE id='$id'";
+        $new_workorder_id = getOrderIdByNo($connect, $workorder_ref_id);
+        $sql2 = "UPDATE dropoff_trans SET member_id='$member_id',workorder_ref_id='$new_workorder_id',status='$status',updated_at='$created_at',updated_by='$created_by' WHERE id='$id'";
         if ($result2 = $connect->query($sql2)) {
             $_SESSION['msg-success'] = 'บันทึกข้อมูลเรียบร้อยแล้ว';
             header('location:dropoff.php');

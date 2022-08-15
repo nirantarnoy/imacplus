@@ -405,7 +405,7 @@ $registerUrl = $helper->getLoginUrl('https://www.imacplus.app/register-callback.
                                             </div>
 
                                             <div class="d-lg-none text-secondary-m1 my-4 text-center">
-                                                <i class="fa fa-backward text-secondary-m2 text-200 mb-4"></i>
+<!--                                                <i class="fa fa-backward text-secondary-m2 text-200 mb-4"></i>-->
                                                 <h1 class="text-170">
                                                 <span class="text-blue-d1">iMac <span
                                                             class="text-80 text-dark-tp4">Plus</span></span>
@@ -527,7 +527,7 @@ $registerUrl = $helper->getLoginUrl('https://www.imacplus.app/register-callback.
 
                                                 <div class="mt-2 mb-3">
                                                     <a href="<?= $registerUrl ?>"
-                                                       class="btn btn-bgc-white btn-lighter-primary btn-h-primary btn-a-primary border-2 radius-round btn-lg mx-1">
+                                                       class="btn btn-bgc-white btn-lighter-primary btn-h-primary btn-a-primary border-2 radius-round btn-lg mx-1" disabled>
                                                         <i class="fab fa-facebook-f text-110"></i>
                                                     </a>
 
@@ -609,7 +609,7 @@ $registerUrl = $helper->getLoginUrl('https://www.imacplus.app/register-callback.
                 </div><!-- /.row -->
 
                 <div class="d-lg-none my-3 text-white-tp1 text-center">
-                    <i class="fa fa-backward text-secondary-l3 mr-1 text-110"></i> iMac Plus &copy; <?= date('Y') ?>
+                   iMac Plus &copy; <?= date('Y') ?>
                 </div>
             </div>
         </div>

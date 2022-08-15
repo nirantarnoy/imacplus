@@ -18,6 +18,22 @@ function getOrderMaxid($connect,$member_id){
         return 0;
     }
 }
+function getOrderIdByNo($connect,$work_no){
+    $query = "SELECT * FROM workorders WHERE work_no = '$work_no' ";
+    $statement = $connect->prepare($query);
+    $statement->execute();
+    $result = $statement->fetchAll();
+    $filtered_rows = $statement->rowCount();
+    $num = '';
+    if($filtered_rows > 0){
+        foreach($result as $row){
+            $num = $row['id'];
+        }
+        return $num;
+    }else{
+        return 0;
+    }
+}
 function getOrderLastNo($connect){
     $query = "SELECT MAX(work_no) as code FROM workorders WHERE work_no <>''";
     $statement = $connect->prepare($query);

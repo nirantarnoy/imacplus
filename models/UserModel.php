@@ -63,4 +63,17 @@ function checkPer($uid,$menu,$connect){
     //return false;
 }
 
+function getCurrenUserId($connect, $member_id){
+    $query = "SELECT * FROM user WHERE member_ref_id='$member_id'";
+    $statement = $connect->prepare($query);
+    $statement->execute();
+    $result = $statement->fetchAll();
+    $filtered_rows = $statement->rowCount();
+    if($filtered_rows > 0){
+        foreach($result as $row){
+            return $row['id'];
+        }
+    }
+}
+
 ?>

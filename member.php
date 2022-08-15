@@ -42,16 +42,13 @@ $selected = '';
 <div class="row">
     <div class="col-lg-7"><h1 class="h3 mb-0 text-gray-800">Members</h1></div>
     <div class="col-lg-3" style="text-align: right;">
-<<<<<<< HEAD
-        <select name="member_type_filter" class="form-control member-type-filter" id="" onchange="takefilter($(this))">
-=======
         <select name="member_type_filter" class="form-control member-type-filter" id="" onchange="takeFilter($(this))">
->>>>>>> b16eea6810bef8b7cc291979c7909c03d10c1651
+            <option value="">-- ทั้งหมด --</option>
             <?php for ($x = 0; $x <= count($member_type_data) - 1; $x++): ?>
-                <?php if ($member_type_filter_selected == $x) {
-                    $selected = "selected";
-                } ?>
-                <option value="<?= $member_type_data[$x]['id'] ?>" <?= $selected ?>><?= $member_type_data[$x]['name'] ?></option>
+<!--                --><?php //if ($member_type_filter_selected == $x) {
+//                    $selected = "selected";
+//                } ?>
+                <option value="<?= $member_type_data[$x]['id'] ?>"><?= $member_type_data[$x]['name'] ?></option>
             <?php endfor; ?>
         </select>
     </div>
@@ -212,7 +209,7 @@ include "footer.php";
 ?>
 <script>
     notify();
-    var dataTablex = $("#dataTable").dataTable({
+    var dataTablex = $("#dataTable").DataTable({
         "processing": true,
         "serverSide": true,
         "order": [[1, "asc"]],
@@ -232,7 +229,7 @@ include "footer.php";
             data: function (data) {
                 // Read values
                 var member_type = $('.member-type-filter').val();
-                alert(member_type);
+               // alert(member_type);
                 // var plate = $('#search-plate').val();
                 // var prod = $('#search-prod').val();
                 // var index = $('#search-index').val();
@@ -251,56 +248,58 @@ include "footer.php";
 
         ],
     });
-    // dataTablex.draw();
+     //dataTablex.draw();
 
+    function takeFilter(e){
 
+        dataTablex.draw();
+
+    }
     function takefilter(e){
         // alert(e.val());
 
-        $("#dataTable").dataTable({
-            "processing": true,
-            "serverSide": true,
-            "order": [[1, "asc"]],
-            "language": {
-                "sSearch": "ค้นหา",
-                "sLengthMenu": "แสดง _MENU_ รายการ",
-                "sInfo": "กำลังแสดง _START_ ถึง _END_ จาก _TOTAL_ รายการ",
-                "oPaginate": {
-                    "sNext": "ถัดไป",
-                    "sPrevious": "ก่อนหน้า",
-                    "sInfoFiltered": "( ค้นหาจาก _MAX_ รายการ )"
-                }
-            },
-            "ajax": {
-                url: "member_fetch.php",
-                type: "POST",
-                data: function (data) {
-                    // Read values
-                    var member_type = $('.member-type-filter').val();
-                    alert(member_type);
-                    // var plate = $('#search-plate').val();
-                    // var prod = $('#search-prod').val();
-                    // var index = $('#search-index').val();
-                    // // Append to data
-                    data.searchByType = 1;
-                    // data.searchByPlate = plate;
-                    // data.searchByProd = prod;
-                    // data.searchByIndex = index;
-                }
-            },
-            "columnDefs": [
-                {
-                    "targets": [0],
-                    "orderable": false,
-                },
-
-            ],
-        });
+        // $("#dataTable").dataTable({
+        //     "processing": true,
+        //     "serverSide": true,
+        //     "order": [[1, "asc"]],
+        //     "language": {
+        //         "sSearch": "ค้นหา",
+        //         "sLengthMenu": "แสดง _MENU_ รายการ",
+        //         "sInfo": "กำลังแสดง _START_ ถึง _END_ จาก _TOTAL_ รายการ",
+        //         "oPaginate": {
+        //             "sNext": "ถัดไป",
+        //             "sPrevious": "ก่อนหน้า",
+        //             "sInfoFiltered": "( ค้นหาจาก _MAX_ รายการ )"
+        //         }
+        //     },
+        //     "ajax": {
+        //         url: "member_fetch.php",
+        //         type: "POST",
+        //         data: function (data) {
+        //             // Read values
+        //             var member_type = $('.member-type-filter').val();
+        //             alert(member_type);
+        //             // var plate = $('#search-plate').val();
+        //             // var prod = $('#search-prod').val();
+        //             // var index = $('#search-index').val();
+        //             // // Append to data
+        //             data.searchByType = 1;
+        //             // data.searchByPlate = plate;
+        //             // data.searchByProd = prod;
+        //             // data.searchByIndex = index;
+        //         }
+        //     },
+        //     "columnDefs": [
+        //         {
+        //             "targets": [0],
+        //             "orderable": false,
+        //         },
+        //
+        //     ],
+        // });
     }
 
-    function takeFilter(e){
-        alert(e.val());
-    }
+
 
     function showaddbank(e) {
         $(".description").val('');

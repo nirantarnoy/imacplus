@@ -1,7 +1,12 @@
 <?php
 include("header.php");
 ?>
-
+<style>
+    .error-form-validate {
+        color: red;
+        /*background-color: #acf;*/
+    }
+</style>
 <div class="mt-5">
 <!--    <div class="d-style btn border-2 bgc-white btn-outline-lightgrey btn-h-outline-blue btn-a-outline-blue w-100 my-2 py-3 shadow-sm">-->
         <!-- Basic Plan -->
@@ -64,7 +69,7 @@ include("header.php");
 <!--                            <span class="d-block rotate-45 position-l mt-n475 ml-35 fa-2x text-400 border-l-2 h-5 brc-dark-m1"></span>-->
 <!--                        </span>-->
 <!--                    </div>-->
-                    <span class="align-text-bottom"></span><span class="text-180">500</span> บาท
+                    <span class="align-text-bottom"></span><span class="text-180">2,500</span> บาท
                 </div>
             </div>
 
@@ -179,7 +184,7 @@ include("header.php");
         <div class="row">
             <div class="col-lg-3">
                 แนบสลิปหลักฐานการโอนเงิน<br /><br />
-                <input type="file" name="file_slip">
+                <input type="file" name="file_slip" required>
             </div>
         </div>
         <br />
@@ -226,8 +231,9 @@ include "footer.php";
             reverseButtons: true
         }).then(function (result) {
             if (result.value) {
-                $(".package-selected-amount").val(500);
+                $(".package-selected-amount").val(2500);
                 $(".package-selected-name").val("VIP-SHOP");
+                $("#form-upgrade").validate({errorClass: 'error-form-validate' });
                 $("#form-upgrade").submit();
             }
         })

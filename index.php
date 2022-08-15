@@ -57,7 +57,7 @@ include "models/OverviewModel.php";
             <div class="col-12 mt-35">
                 <div class="row h-100 mx-n425">
 
-                    <div class="col-12 col-md-4 px-0 mb-2 mb-md-0">
+                    <a href="member.php" class="col-12 col-md-4 px-0 mb-2 mb-md-0">
                         <div class="ccard h-100 pt-2 pb-25 px-25 d-flex mx-2 overflow-hidden">
                             <!-- the colored circles on bottom right -->
                             <div class="position-br	mb-n5 mr-n5 radius-round bgc-purple-l3 opacity-3" style="width: 5.25rem; height: 5.25rem;"></div>
@@ -68,7 +68,11 @@ include "models/OverviewModel.php";
                             <div class="flex-grow-1 pl-25 pos-rel d-flex flex-column">
                                 <div class="text-secondary-d4">
                               <span class="text-200">
-                					<?=getMemberCountAll($connect)?>
+                                  <?php if($_SESSION['userid'] != 1):?>
+                					<?=getMemberCountAll($connect, $_SESSION['userid'])?>
+                					<?php else:?>
+                                      <?=getMemberCountAllAdmin($connect)?>
+                					<?php endif;?>
                 				</span>
                                 </div>
 
@@ -82,11 +86,11 @@ include "models/OverviewModel.php";
                                 <i class="fa fa-users text-purple opacity-1 fa-2x mr-25"></i>
                             </div>
                         </div><!-- /.ccard -->
-                    </div><!-- /.col -->
+                    </a><!-- /.col -->
 
 
 
-                    <div class="col-12 col-md-4 px-0 mb-2 mb-md-0">
+                    <a href="workorder.php" class="col-12 col-md-4 px-0 mb-2 mb-md-0">
                         <div class="ccard h-100 pt-2 pb-25 px-25 d-flex mx-2 overflow-hidden">
                             <!-- the colored circles on bottom right -->
                             <div class="position-br	mb-n5 mr-n5 radius-round bgc-blue-l3 opacity-3" style="width: 5.25rem; height: 5.25rem;"></div>
@@ -97,7 +101,12 @@ include "models/OverviewModel.php";
                             <div class="flex-grow-1 pl-25 pos-rel d-flex flex-column">
                                 <div class="text-secondary-d4">
                               <span class="text-200">
-                					<?=getWorkCountAll($connect)?>
+
+                                    <?php if($_SESSION['userid'] != 1):?>
+                                        <?=getWorkCountAll($connect, $_SESSION['userid'])?>
+                                    <?php else:?>
+                                        <?=getWorkCountAllAdmin($connect)?>
+                                    <?php endif;?>
                 				</span>
 
                                 </div>
@@ -112,7 +121,7 @@ include "models/OverviewModel.php";
                                 <i class="fa fa-wrench text-blue opacity-1 fa-2x mr-25"></i>
                             </div>
                         </div><!-- /.ccard -->
-                    </div><!-- /.col -->
+                    </a><!-- /.col -->
 
 
 
@@ -127,7 +136,11 @@ include "models/OverviewModel.php";
                             <div class="flex-grow-1 pl-25 pos-rel d-flex flex-column">
                                 <div class="text-secondary-d4">
                               <span class="text-200">
-                					<?=getWorkCountComplete($connect)?>
+                                    <?php if($_SESSION['userid'] != 1):?>
+                                        <?=getWorkCountComplete($connect, $_SESSION['userid'])?>
+                                    <?php else:?>
+                                        <?=getWorkCountCompleteAdmin($connect)?>
+                                    <?php endif;?>
                 				</span>
 
 

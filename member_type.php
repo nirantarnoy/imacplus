@@ -114,7 +114,7 @@ if(isset($_SESSION['msg-error'])){
                             <label for="">ประเภท</label>
                             <select name="status" id="" class="form-control status">
                                 <?php for ($i = 0; $i <= count($platform_type_date) - 1; $i++): ?>
-                                    <option value="<?= $platform_type_date[$i]['id'] ?>"><?= $status_data[$i]['name'] ?></option>
+                                    <option value="<?= $platform_type_date[$i]['id'] ?>"><?= $platform_type_date[$i]['name'] ?></option>
                                 <?php endfor; ?>
                             </select>
                         </div>

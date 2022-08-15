@@ -8,6 +8,7 @@ session_start();
 //echo date('H:i');return;
 include "header.php";
 include("models/StatusModel.php");
+include("models/MemberModel.php");
 
 //$position_data = getPositionmodel($connect);
 //$per_check = checkPer($user_position,"is_product_cat", $connect);
@@ -34,7 +35,7 @@ if(isset($_SESSION['msg-error'])){
 <input type="hidden" class="msg-error" value="<?=$noti_error?>">
 
 <div class="d-sm-flex align-items-center justify-content-between mb-4">
-    <h1 class="h3 mb-0 text-gray-800">Drop-off Trans</h1>
+    <h1 class="h3 mb-0 text-gray-800">รายการ Drop-off</h1>
     <div class="btn-group">
         <a href="#" class="btn btn-light-green btn-h-green btn-a-green border-0 radius-3 py-2 text-600 text-90" onclick="showaddbank($(this))">
                   <span class="d-none d-sm-inline mr-1">
@@ -90,21 +91,22 @@ if(isset($_SESSION['msg-error'])){
                 <div class="modal-body">
                     <input type="hidden" name="recid" class="user-recid" value="">
                     <input type="hidden" name="action_type" class="action-type" value="create">
+                    <input type="hidden" name="member_id" class="member-id" value="<?=getMemberIDFromUser($connect, $_SESSION['userid'])?>">
                     <div class="row">
                         <div class="col-lg-12">
                             <label for="">วันที่</label>
-                            <input type="text" class="form-control dropoff-date" name="dropoff_date" value=""
+                            <input type="text" class="form-control dropoff-date" name="dropoff_date" value="<?=date('d/m/Y H:i:s')?>"
                                    readonly>
                         </div>
                     </div>
                     <br>
-                    <div class="row">
-                        <div class="col-lg-12">
-                            <label for="">สมาชิก</label>
-                            <input type="text" name="member_id" class="form-control member-id" value="">
-                        </div>
-                    </div>
-                    <br>
+<!--                    <div class="row">-->
+<!--                        <div class="col-lg-12">-->
+<!--                            <label for="">สมาชิก</label>-->
+<!--                            <input type="text" name="member_id" class="form-control member-id" value="" readonly>-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                    <br>-->
                     <div class="row">
                         <div class="col-lg-12">
                             <label for="">คำสั่งซ่อม</label>
@@ -142,6 +144,7 @@ include "footer.php";
 ?>
 <script>
     notify();
+   $('.dropoff-date').datetimepicker({format: "DD-MM-yyyy"});
     function showaddbank(e) {
         $(".user-recid").val(0);
         $(".bank-name").val('');

@@ -131,7 +131,48 @@ function getMemberEmail($connect, $id)
     }
 
 }
+function getMemberPhoto($connect, $id)
+{
+    $query = "SELECT * FROM member WHERE id='$id'";
+    $statement = $connect->prepare($query);
+    $statement->execute();
+    $result = $statement->fetchAll();
+    $filtered_rows = $statement->rowCount();
+    if ($filtered_rows > 0) {
+        foreach ($result as $row) {
+            return $row['photo'];
+        }
+    }
 
+}
+function getMemberNotify($connect, $id)
+{
+   $data = [];
+   $member_id = getMemberIDFromUser($connect, $id);
+    $query = "SELECT * FROM member_notify WHERE member_id='$member_id'";
+    $statement = $connect->prepare($query);
+    $statement->execute();
+    $result = $statement->fetchAll();
+    $filtered_rows = $statement->rowCount();
+    if ($filtered_rows > 0) {
+        foreach ($result as $row) {
+           array_push($data,['id'=>$row['id'],'notify_type_id'=>$row['message_type_id'],'title'=>$row['title'],'detail'=>$row['detail'],'message_date'=>$row['message_date']]);
+        }
+    }
+    return $data;
+}
+function getMemberIDFromUser($connect, $id){
+    $query = "SELECT * FROM user WHERE id='$id'";
+    $statement = $connect->prepare($query);
+    $statement->execute();
+    $result = $statement->fetchAll();
+    $filtered_rows = $statement->rowCount();
+    if($filtered_rows > 0){
+        foreach($result as $row){
+            return $row['member_ref_id'];
+        }
+    }
+}
 function getMemberBankId($connect, $id)
 {
     $bank_id = 1;

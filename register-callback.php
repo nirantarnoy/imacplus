@@ -67,7 +67,7 @@ if (isset($accessToken)) {
 //
 //    echo $strPicture;
 
-    if ($user['email'] != '' && checkhasuser($user['email']) <= 0) {
+    if ($user['email'] != '' && checkhasuser($user['email'], $connect) <= 0) {
 
         $user_regis_email = $user['email'];
         $parent_id = findParentForRegister($connect, $parent_id);
@@ -77,14 +77,23 @@ if (isset($accessToken)) {
         $cdate = date("Y-m-d H:i:s");
         $ctimestamp = time();
         //echo bin2hex($bytes);
-        $sql_member = "INSERT INTO member(phone_number,email,url,parent_id,agree_read,agree_date,created_at)VALUES('','$user_regis_email','$member_url','$parent_id',1,'$cdate','$ctimestamp')";
-        if ($rest = $connect->query($sql_member)) {
+        $sql_member = "INSERT INTO member(phone_number,email,url,parent_id,agree_read,agree_date,created_at,member_type_id)VALUES('','$user_regis_email','$member_url','$parent_id',1,'$cdate','$ctimestamp',7)";
+        if ($connect->query($sql_member)) {
             $newpass = md5($user_regis_email);
             $maxid = getMaxid($connect);
             $sql = "INSERT INTO user (username,password,status,member_ref_id)
            VALUES ('$user_regis_email','$newpass',1,'$maxid')";
 
             if ($result = $connect->query($sql)) {
+                $_SESSION['userid'] = getCurrenUserId($connect,$maxid);
+
+                if (!empty($_POST["remember"])) {
+                    setcookie("member_login", $_POST["username"], time() + (10 * 365 * 24 * 60 * 60));
+                } else {
+                    if (isset($_COOKIE["member_login"])) {
+                        setcookie("member_login", "");
+                    }
+                }
                 $_SESSION['msg-success'] = 'บันทึกข้อมูลเรียบร้อยแล้ว';
                 // header('location:registersuccess.php');
                 header('location:index.php');
@@ -92,6 +101,8 @@ if (isset($accessToken)) {
                 $_SESSION['msg-error'] = 'พบข้อผิดพลาด';
                 header('location:loginpage.php');
             }
+        }else{
+            echo "พบข้อผิดพลาด";
         }
 
 
