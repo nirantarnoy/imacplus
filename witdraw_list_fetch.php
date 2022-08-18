@@ -7,8 +7,20 @@ if(!isset($_SESSION['userid'])){
 }
 include("common/dbcon.php");
 include("models/WalletStatus.php");
+include("models/MemberModel.php");
+include("models/UserModel.php");
+
+$userid = $_SESSION['userid'];
+$member_id = getMemberIDFromUser($connect, $userid);
 $query_filter = '';
-$query = "SELECT * FROM witdraw_trans where member_id=".$_SESSION['userid'];
+$query = '';
+
+if(checkUserAdmin($connect , $userid) == 1){
+    $query = "SELECT * FROM witdraw_trans WHERE id > 0";
+}else{
+    $query = "SELECT * FROM witdraw_trans where member_id=".$member_id;
+}
+
 
 //if(isset($_POST["type_name"])){
 //    $query .= 'proj_type LIKE "%'.$_POST["type_name"].'%" AND ';

@@ -35,7 +35,20 @@ function checkhasuser($email,$connect){
 
     return $filtered_rows;
 }
-
+function checkUserAdmin($connect, $user_id){
+    $query = "SELECT * FROM user WHERE id='$user_id'";
+    $statement = $connect->prepare($query);
+    $statement->execute();
+    $result = $statement->fetchAll();
+    $filtered_rows = $statement->rowCount();
+    if($filtered_rows > 0){
+        foreach($result as $row){
+            return $row['group_id'];
+        }
+    }else{
+        return 0;
+    }
+}
 function getMemberFromUser($id ,$connect){
     $query = "SELECT * FROM user WHERE id='$id'";
     $statement = $connect->prepare($query);

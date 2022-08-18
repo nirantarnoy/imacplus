@@ -3,10 +3,12 @@ ob_start();
 session_start();
 include("common/dbcon.php");
 include("models/MemberUpgradeModel.php");
+include("models/MemberModel.php");
 include("models/WitdrawModel.php");
 
 
-$member_id = $_SESSION['userid'];
+$userid = $_SESSION['userid'];
+$member_id = getMemberIDFromUser($connect, $userid);
 $upgrade_amount = 0;
 $package_name = "";
 $slip = 0;
@@ -53,11 +55,11 @@ if ($member_id != null && $upgrade_amount != '') {
                       VALUES ('$c_date',1,'$maxid',1,'$upgrade_amount',1,'$created_at','$member_id')";
         if ($result = $connect->query($sql_trans)) {
             $_SESSION['msg-success'] = 'Saved data successfully';
-            header('location:memberupgradelist.php');
+            header('location:profile.php');
         }
     } else {
         $_SESSION['msg-error'] = 'Save data error';
-        header('location:memberupgradelist.php');
+        header('location:profile.php');
     }
 }else{
     echo "EEE";

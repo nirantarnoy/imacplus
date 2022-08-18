@@ -108,7 +108,7 @@ if (isset($accessToken)) {
                     $_SESSION['msg_err'] = 'Usernam หรือ Password ไม่ถูกต้อง';
                     header("location:loginpage.php");
                 }
-                header('location: https://www.imacplus.app/index.php');
+                header('location: https://www.imacplus.app/profile.php');
             }
         }else{
             $_SESSION['msg_err'] = 'Usernam หรือ Password ไม่ถูกต้อง';

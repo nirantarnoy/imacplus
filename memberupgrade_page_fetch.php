@@ -7,6 +7,7 @@ if(!isset($_SESSION['userid'])){
 }
 include("common/dbcon.php");
 include("models/WalletStatus.php");
+include("models/MemberModel.php");
 $query_filter = '';
 $query = "SELECT * FROM member_upgrade where id > 0";
 
@@ -62,14 +63,14 @@ foreach ($result as $row){
 					</span>';
     }
 
-    $doc_ref = '<a href="uploads/wallet_slip/'.$row['transfer_doc'].'" target="_blank"><i class="fa fa-paperclip"></i> ไฟล์แนบ</a>';
+    $doc_ref = '<a href="uploads/memberupgrade/'.$row['transfer_doc'].'" target="_blank"><i class="fa fa-paperclip"></i> ไฟล์แนบ</a>';
     $i++;
     $sub_array = array();
 
     $sub_array[] = '<p style="text-align: center;">'.$i.'</p>';
     $sub_array[] = '<p style="font-weight: ;text-align: left">'.$row['trans_no'].'</p>';
     $sub_array[] = '<p style="font-weight: ;text-align: left">'.$row['trans_date'].'</p>';
-    $sub_array[] = '<p style="font-weight: ;text-align: left">'.$row['member_id'].'</p>';
+    $sub_array[] = '<p style="font-weight: ;text-align: left">'.getMembername($connect,$row['member_id']).'</p>';
     $sub_array[] = '<p style="font-weight: ;text-align: left">VIP-SHOP</p>';
     $sub_array[] = '<p style="font-weight: ;text-align: left">'.$row['upgrade_amount'].'</p>';
     $sub_array[] = '<p style="font-weight: ;text-align: left">'.$doc_ref.'</p>';

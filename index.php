@@ -2,6 +2,7 @@
 include "header.php";
 include "models/OverviewModel.php";
 
+$member_id = getMemberIDFromUser($connect, $_SESSION['userid']);
 //$bytes = random_bytes(16);
 //echo bin2hex($bytes);
 
@@ -51,7 +52,7 @@ include "models/OverviewModel.php";
     <div class="col-xl-12">
         <div class="row px-3 px-lg-4">
             <div class="col-12">
-
+<?//=$_SESSION['userid'];?>
             </div>
 
             <div class="col-12 mt-35">
@@ -69,7 +70,7 @@ include "models/OverviewModel.php";
                                 <div class="text-secondary-d4">
                               <span class="text-200">
                                   <?php if($_SESSION['userid'] != 1):?>
-                					<?=getMemberCountAll($connect, $_SESSION['userid'])?>
+                					<?=getMemberCountAll($connect, $member_id)?>
                 					<?php else:?>
                                       <?=getMemberCountAllAdmin($connect)?>
                 					<?php endif;?>
@@ -103,7 +104,7 @@ include "models/OverviewModel.php";
                               <span class="text-200">
 
                                     <?php if($_SESSION['userid'] != 1):?>
-                                        <?=getWorkCountAll($connect, $_SESSION['userid'])?>
+                                        <?=getWorkCountAll($connect, $member_id)?>
                                     <?php else:?>
                                         <?=getWorkCountAllAdmin($connect)?>
                                     <?php endif;?>
@@ -137,7 +138,7 @@ include "models/OverviewModel.php";
                                 <div class="text-secondary-d4">
                               <span class="text-200">
                                     <?php if($_SESSION['userid'] != 1):?>
-                                        <?=getWorkCountComplete($connect, $_SESSION['userid'])?>
+                                        <?=getWorkCountComplete($connect, $member_id)?>
                                     <?php else:?>
                                         <?=getWorkCountCompleteAdmin($connect)?>
                                     <?php endif;?>

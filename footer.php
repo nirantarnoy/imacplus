@@ -96,6 +96,11 @@
 
 <script src="node_modules/inputmask/dist/jquery.inputmask.js"></script>
 
+
+<!-- Cookie Consent by https://www.cookiewow.com -->
+<script type="text/javascript" src="https://cookiecdn.com/cwc.js"></script>
+<script id="cookieWow" type="text/javascript" src="https://cookiecdn.com/configs/Jym9Mew5dSqHUru8AVmSbTHX" data-cwcid="Jym9Mew5dSqHUru8AVmSbTHX"></script>
+
 <!-- "Dashboard" page script to enable its demo functionality -->
 <!--<script src="views/pages/dashboard/@page-script.js"></script>-->
 <script src="views/pages/page-profile/@page-script.js"></script>

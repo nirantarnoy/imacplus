@@ -1,6 +1,6 @@
 <?php
 ob_start();
-if(!session_id()) {
+if (!session_id()) {
     session_start();
 }
 
@@ -14,18 +14,36 @@ if (isset($_SESSION['msg_err'])) {
     $mes_error = $_SESSION['msg_err'];
     unset($_SESSION['msg_err']);
 }
+$mes_register_error = '';
+if (isset($_SESSION['msg_register_err'])) {
+    if($_SESSION['msg_register_err'] != '' || $_SESSION['msg_register_err'] != null){
+        $mes_register_error = $_SESSION['msg_register_err'];
+        unset($_SESSION['msg_register_err']);
+    }
+
+}
+
+//echo "has error". $mes_register_error;
 
 $member_ref_id = null;
 if (isset($_GET['ref'])) {
+////    $xdata = explode('=',$_GET['ref']);
+////    if(count($xdata)>0){
+////        $member_ref_id = $xdata[1];
+////    }
+//    echo $_GET['ref'];return;
     $member_ref_id = $_GET['ref'];
-};
-//echo $member_ref_id;
+}
+
+$parent_member_id = findParentForRegister($connect, $member_ref_id);
+$_SESSION['parent_member_id'] = $parent_member_id;
+//echo $member_ref_id;return;
 
 $fb = new \Facebook\Facebook([
     'app_id' => '5164069763715357', //828260794001696
     'app_secret' => '0d7b1e93385cd8f48a98385217983bf2', //5dd3b30d1b7da7738bf8f6f38a440da2
     'default_graph_version' => 'v2.10',
-     'persistent_data_handler' => 'session',
+    'persistent_data_handler' => 'session',
     'default_access_token' => 'EABJYsaZCckR0BAFR1unZBz3JXeTHL24XV4ds6iJyqzs36RChA9S0KMkr5IsYk6Pm1ScNHDU4W3ZBueYn9oFGwMmEdvkisvkiPu80pPl2GmkAzxKJzMXubo4jXqIaIZAP9j4caQnKtm7afbhEw4OoBGdjwmF8tncy1XHbZBDASDZBCsVcrCP3KVcbHDMV0ZAnqbhi6Chh3TQG8YaeUr3MCYf', // optional
 ]);
 
@@ -96,6 +114,47 @@ $registerUrl = $helper->getLoginUrl('https://www.imacplus.app/register-callback.
             font-family: "SukhumvitSet-Light";
             font-size: 16px;
         }
+
+        .dot {
+            margin: 5px;
+            height: 25px;
+            width: 25px;
+            background-color: #bbb;
+            border-radius: 50%;
+            display: inline-block;
+        }
+
+        .dot-button {
+            margin: 10px;
+            height: 75px;
+            width: 75px;
+            background-color: dimgrey;
+            border-radius: 50%;
+            text-align: center;
+            display: inline-block;
+            line-height: 75px;
+            color: #ffffff;
+        }
+
+        .dot-active {
+            margin: 5px;
+            height: 25px;
+            width: 25px;
+            background-color: #0e0f10;
+            border-radius: 50%;
+            display: inline-block;
+        }
+
+        /*.dot-button {*/
+        /*    width: 100px;*/
+        /*    height: 100px;*/
+        /*    !*line-height: 100px;*!*/
+        /*    border-radius: 50%;*/
+        /*    font-size: 20px;*/
+        /*    color: #fff;*/
+        /*    text-align: center;*/
+        /*    background: #000*/
+        /*}*/
     </style>
 </head>
 
@@ -372,12 +431,14 @@ $registerUrl = $helper->getLoginUrl('https://www.imacplus.app/register-callback.
                                         <!-- show this in mobile device -->
                                         <form id="form-register" autocomplete="off" class="form-row mt-4"
                                               action="register_action.php" method="post">
+                                            <input type="hidden" class="pin-pass" name="pin_pass" value="">
                                             <input type="hidden" class="member-ref-id" name="member_ref_id"
-                                                   value="<?= $member_ref_id ?>">
-                                            <?php  if( $member_ref_id != '' ||  $member_ref_id!=null):?>
-                                            <?php //if (1 > 0): ?>
+                                                   value="<?= $parent_member_id ?>">
+                                            <?php if ($parent_member_id != '' || $parent_member_id != null): ?>
+                                                <?php //if (1 > 0): ?>
                                                 <?php
-                                                $member_data = getMemberIntroduceData($connect, 5);
+
+                                                $member_data = getMemberIntroduceData($connect, $parent_member_id);
                                                 ?>
                                                 <div class="form-group col-sm-10 offset-sm-1 col-md-8 offset-md-2 col-lg-6 offset-lg-3"
                                                      style="text-align: center;">
@@ -385,13 +446,13 @@ $registerUrl = $helper->getLoginUrl('https://www.imacplus.app/register-callback.
                                                     <?php if ($member_data[0]['photo'] != null): ?>
                                                         <img id="id-navbar-user-image"
                                                              class="d-none d-lg-inline-block radius-round border-2 brc-white-tp1 mr-2 w-6"
-                                                             src="assets/image/avatar/<?= $member_data[0]['photo'] ?>"
+                                                             src="uploads/member_photo/<?= $member_data[0]['photo'] == ''?'demo.png':$member_data[0]['photo'] ?>"
                                                              alt="Member 's photo">
 
                                                     <?php else: ?>
                                                         <i class="fa fa-user-circle fa-5x text-info"></i>
                                                     <?php endif; ?>
-                                                    <p><b><?= $member_data[0]['name'] ?></b></p>
+                                                    <p><b><?= $member_data[0]['name'].' '.$member_data[0]['lname'] ?></b></p>
                                                 </div>
                                                 <br>
                                             <?php endif; ?>
@@ -405,7 +466,7 @@ $registerUrl = $helper->getLoginUrl('https://www.imacplus.app/register-callback.
                                             </div>
 
                                             <div class="d-lg-none text-secondary-m1 my-4 text-center">
-<!--                                                <i class="fa fa-backward text-secondary-m2 text-200 mb-4"></i>-->
+                                                <!--                                                <i class="fa fa-backward text-secondary-m2 text-200 mb-4"></i>-->
                                                 <h1 class="text-170">
                                                 <span class="text-blue-d1">iMac <span
                                                             class="text-80 text-dark-tp4">Plus</span></span>
@@ -416,17 +477,18 @@ $registerUrl = $helper->getLoginUrl('https://www.imacplus.app/register-callback.
 
 
                                             <div class="form-group col-sm-10 offset-sm-1 col-md-8 offset-md-2 col-lg-6 offset-lg-3">
-                                                <input type="hidden" class="message2" value="<?= $mes_error ?>">
+                                                <input type="hidden" class="message2"
+                                                       value="<?= $mes_register_error ?>">
                                                 <div class="alert alert-danger alert-msg2"
-                                                     style="display: none;text-align: center;"><?= $mes_error ?></div>
+                                                     style="display: none;text-align: center;"><?= $mes_register_error ?></div>
 
                                                 <div class="d-flex align-items-center input-floating-label text-success brc-success-m2">
                                                     <input type="text"
                                                            class="form-control form-control-lg pr-4 shadow-none phone-regis"
-                                                           id="id-signup-email" name="phone" value=""/>
+                                                           id="id-signup-phone" name="phone" value=""/>
                                                     <i class="fa fa-mobile text-grey-m2 ml-n4"></i>
                                                     <label class="floating-label text-grey-l1 text-100 ml-n3"
-                                                           for="id-signup-email">
+                                                           for="id-signup-phone">
                                                         เบอร์โทร
                                                     </label>
                                                 </div>
@@ -436,7 +498,8 @@ $registerUrl = $helper->getLoginUrl('https://www.imacplus.app/register-callback.
                                                 <div class="d-flex align-items-center input-floating-label text-success brc-success-m2">
                                                     <input type="email"
                                                            class="form-control form-control-lg pr-4 shadow-none email-regis"
-                                                           id="id-signup-email" name="email" value=""/>
+                                                           id="id-signup-email" name="email" value=""
+                                                           pattern="[^@]+@[^@]+\.[a-zA-Z]{2,6}"/>
                                                     <i class="fa fa-envelope text-grey-m2 ml-n4"></i>
                                                     <label class="floating-label text-grey-l1 text-100 ml-n3"
                                                            for="id-signup-email">
@@ -527,7 +590,8 @@ $registerUrl = $helper->getLoginUrl('https://www.imacplus.app/register-callback.
 
                                                 <div class="mt-2 mb-3">
                                                     <a href="<?= $registerUrl ?>"
-                                                       class="btn btn-bgc-white btn-lighter-primary btn-h-primary btn-a-primary border-2 radius-round btn-lg mx-1" disabled>
+                                                       class="btn btn-bgc-white btn-lighter-primary btn-h-primary btn-a-primary border-2 radius-round btn-lg mx-1"
+                                                       disabled>
                                                         <i class="fab fa-facebook-f text-110"></i>
                                                     </a>
 
@@ -609,7 +673,7 @@ $registerUrl = $helper->getLoginUrl('https://www.imacplus.app/register-callback.
                 </div><!-- /.row -->
 
                 <div class="d-lg-none my-3 text-white-tp1 text-center">
-                   iMac Plus &copy; <?= date('Y') ?>
+                    iMac Plus &copy; <?= date('Y') ?>
                 </div>
             </div>
         </div>
@@ -757,6 +821,87 @@ $registerUrl = $helper->getLoginUrl('https://www.imacplus.app/register-callback.
     </div>
 </div>
 
+<div class="modal" id="myModalPass">
+    <div class="modal-dialog">
+        <div class="modal-content">
+
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <!--                    <h4 class="modal-title" style="color: #1c606a">เพิ่มข้อมูลประเภทร้านค้า</h4>-->
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+
+            <!-- Modal body -->
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-lg-12" style="text-align: center">
+                        <img src="uploads/logo/imaclogonew.png" style="width: 15%" alt="">
+                    </div>
+                </div>
+                <br/>
+                <div class="row">
+                    <div class="col-lg-12" style="text-align: center">
+                        <h5>ใช้รหัสผ่านเพื่อเข้าสู่ระบบ</h5>
+                    </div>
+                </div>
+                <br/>
+                <div class="row">
+                    <div class="col-lg-12" style="text-align: center;">
+                        <span class="dot" data-var=""></span>
+                        <span class="dot" data-var=""></span>
+                        <span class="dot" data-var=""></span>
+                        <span class="dot" data-var=""></span>
+                        <span class="dot" data-var=""></span>
+                        <span class="dot" data-var=""></span>
+                    </div>
+                </div>
+
+                <br/>
+                <div class="row">
+                    <div class="col-lg-12" style="text-align: center;">
+                        <span class="dot-button" data-var="1" onclick="keypin($(this))"><b>1</b></span>
+                        <span class="dot-button" data-var="2" onclick="keypin($(this))"><b>2</b></span>
+                        <span class="dot-button" data-var="3" onclick="keypin($(this))"><b>3</b></span>
+                    </div>
+                </div>
+                <br/>
+                <div class="row">
+                    <div class="col-lg-12" style="text-align: center;">
+                        <span class="dot-button" data-var="4" onclick="keypin($(this))"><b>4</b></span>
+                        <span class="dot-button" data-var="5" onclick="keypin($(this))"><b>5</b></span>
+                        <span class="dot-button" data-var="6" onclick="keypin($(this))"><b>6</b></span>
+                    </div>
+                </div>
+                <br/>
+                <div class="row">
+                    <div class="col-lg-12" style="text-align: center;">
+                        <span class="dot-button" data-var="7" onclick="keypin($(this))"><b>7</b></span>
+                        <span class="dot-button" data-var="8" onclick="keypin($(this))"><b>8</b></span>
+                        <span class="dot-button" data-var="9" onclick="keypin($(this))"><b>9</b></span>
+                    </div>
+                </div>
+                <br/>
+                <div class="row">
+                    <div class="col-lg-12" style="text-align: center;">
+                        <span class="dot-button" data-var="clear" onclick="keypinclear($(this))"><i
+                                    class="fa fa-trash"></i></span>
+                        <span class="dot-button" data-var="0" onclick="keypin($(this))"><b>0</b></span>
+                        <span class="dot-button" data-var="delete" onclick="keypindelete($(this))"><i
+                                    class="fa fa-arrow-left"></i></span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Modal footer -->
+            <div class="modal-footer">
+                <div class="btn btn-success btn-pin-save" style="display: none" data-dismiss="modalx">ดำเนินการต่อ</div>
+                <!--                    <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fa fa-ban"></i> Cancel</button>-->
+            </div>
+
+        </div>
+    </div>
+</div>
+
 <!-- include common vendor scripts used in demo pages -->
 <script src="node_modules/jquery/dist/jquery.js"></script>
 <script src="node_modules/popper.js/dist/umd/popper.js"></script>
@@ -765,6 +910,8 @@ $registerUrl = $helper->getLoginUrl('https://www.imacplus.app/register-callback.
 
 <!-- include vendor scripts used in "Login" page. see "/views//pages/partials/page-login/@vendor-scripts.hbs" -->
 
+<script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>
+<script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/additional-methods.min.js"></script>
 
 <!-- include ace.js -->
 <script src="dist/js/ace.js"></script>
@@ -792,9 +939,56 @@ $registerUrl = $helper->getLoginUrl('https://www.imacplus.app/register-callback.
         $("#myModal").modal("show");
     }
 
+    function keypin(e) {
+        var data = e.attr("data-var");
+        $(".dot").each(function () {
+            if ($(this).hasClass("dot-active")) {
+                checknumberOk();
+            } else {
+                $(this).addClass("dot-active");
+                $(this).attr("data-var", data);
+                checknumberOk();
+                return false;
+            }
+        });
+    }
+
+    function checknumberOk() {
+        var pin_count = 0;
+        $(".dot").each(function () {
+            if ($(this).hasClass("dot-active")) {
+                pin_count = parseFloat(pin_count) + 1;
+            }
+        });
+        if (parseFloat(pin_count) == 6) {
+            $(".btn-pin-save").show();
+        } else {
+            $(".btn-pin-save").hide();
+        }
+    }
+
+    function keypindelete(e) {
+
+        $(".dot-active:last").removeClass("dot-active");
+        checknumberOk();
+    }
+
+    function keypinclear(e) {
+        $(".dot").attr("data-var", "");
+        $(".dot").removeClass("dot-active");
+        checknumberOk();
+    }
+
     $(function () {
+        var msg2 = $(".message2").val();
+        if (msg2 != "") {
+           // alert(msg2);
+           $(".btn-to-register").trigger("click");
+        }
         err_message();
-        if ($(".member-ref-id").val() != '') {
+        err_message2();
+        if ($(".member-ref-id").val() > 0) {
+
             $(".btn-to-register").trigger("click");
         }
         $(".btn-submit").click(function (e) {
@@ -820,6 +1014,14 @@ $registerUrl = $helper->getLoginUrl('https://www.imacplus.app/register-callback.
 
         $(".btn-register-submit").click(function (e) {
 
+            $("form#form-register").validate({
+                rules: {
+                    field: {
+                        required: true,
+                        email: true
+                    }
+                }
+            });
             e.preventDefault();
             var username = $(".username-regis").val();
             var pwd = $(".password-regis").val();
@@ -858,13 +1060,21 @@ $registerUrl = $helper->getLoginUrl('https://www.imacplus.app/register-callback.
                 err_message2();
                 return false;
             }
-
-            $("form#form-register").submit();
+            $('#myModalPass').modal("show");
+            // return false;
         });
-
+        $(".btn-pin-save").click(function(){
+            var xpass = '';
+            $(".dot").each(function(){
+                xpass = xpass + $(this).attr("data-var");
+            });
+            $(".pin-pass").val(xpass);
+             $("form#form-register").submit();
+        });
         function err_message() {
             var e_msg = $(".message").val();
             if (e_msg != '') {
+
                 $(".alert-msg").html(e_msg).show();
             } else {
                 $(".alert-msg").hide();

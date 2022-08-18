@@ -52,7 +52,7 @@ include("header.php");
 <!---->
 <!--    </div>-->
 
-
+<?php if(getMemberTypeVIP($connect, $member_id) == 0):?>
 
     <div class="d-style bgc-white btn btn-outline-lightgrey btn-h-outline-green btn-a-outline-green w-100 my-2 py-3 shadow-sm border-2">
         <!-- Pro Plan -->
@@ -103,7 +103,7 @@ include("header.php");
 
     </div>
 
-
+<?php endif;?>
 
 <!--    <div class="d-style btn border-2 bgc-white btn-outline-lightgrey btn-h-outline-purple btn-a-outline-purple w-100 my-2 py-3 shadow-sm">-->
 <!--      -->

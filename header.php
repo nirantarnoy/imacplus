@@ -11,6 +11,9 @@ include("models/UserModel.php");
 include("models/MemberModel.php");
 
 $member_id = getMemberFromUser($_SESSION['userid'], $connect);
+$isadmin = checkUserAdmin($connect, $_SESSION['userid']);
+
+echo $_SESSION['userid'];
 ?>
 <!doctype html>
 <html lang="en">
@@ -80,6 +83,15 @@ $member_id = getMemberFromUser($_SESSION['userid'], $connect);
             font-family: "SukhumvitSet-Medium";
             font-size: 16px;
         }
+        @media print {
+            body { font-size: 10pt ; font-family: "SukhumvitSet-Medium"; }
+        }
+        @media screen {
+            body { font-size: 13px ;  font-family: "SukhumvitSet-Medium";}
+        }
+        @media screen, print {
+            body { line-height: 1.2 ;  font-family: "SukhumvitSet-Medium"; }
+        }
     </style>
 </head>
 
@@ -133,7 +145,7 @@ $member_id = getMemberFromUser($_SESSION['userid'], $connect);
             <button class="navbar-toggler ml-1 mr-2 px-1" type="button" data-toggle="collapse" data-target="#navbarMenu"
                     aria-controls="navbarMenu" aria-expanded="false" aria-label="Toggle navbar menu">
             <span class="pos-rel">
-                  <img class="border-2 brc-white-tp1 radius-round" width="36" src="uploads/member_photo/<?=getMemberPhoto($connect, $member_id)?>"
+                  <img class="border-2 brc-white-tp1 radius-round" width="36" src="uploads/member_photo/<?=getMemberPhoto($connect, $member_id)==''?'demo.png':getMemberPhoto($connect, $member_id)?>"
                        alt="Jason's Photo">
                   <span class="bgc-warning radius-round border-2 brc-white p-1 position-tr mr-n1px mt-n1px"></span>
             </span>
@@ -164,7 +176,7 @@ $member_id = getMemberFromUser($_SESSION['userid'], $connect);
                                aria-haspopup="true" aria-expanded="false">
                                 <img id="id-navbar-user-image"
                                      class="d-none d-lg-inline-block radius-round border-2 brc-white-tp1 mr-2 w-6"
-                                     src="uploads/member_photo/<?=getMemberPhoto($connect, $member_id)?>" alt="Admin 's photo">
+                                     src="uploads/member_photo/<?=getMemberPhoto($connect, $member_id) == ''?'demo.png':getMemberPhoto($connect, $member_id)?>" alt="Admin 's photo">
                                 <span class="d-inline-block d-lg-none d-xl-inline-block">
                               <span class="text-90 text-white" id="id-user-welcome">Welcome,</span>
                     <span class="nav-user-name text-white"><?= getUserDisplayname($_SESSION['userid'],$connect)?></span>
@@ -330,7 +342,7 @@ $member_id = getMemberFromUser($_SESSION['userid'], $connect);
                             </a>
                             <b class="sub-arrow"></b>
                         </li>
-                        <?php if($_SESSION['userid'] == 1):?>
+                        <?php if($isadmin == 1):?>
                         <li class="nav-item">
                             <a href="#" class="nav-link dropdown-toggle collapsed">
                                 <i class="nav-icon fa fa-cube"></i>
@@ -388,7 +400,7 @@ $member_id = getMemberFromUser($_SESSION['userid'], $connect);
                         </li>
                         <?php endif;?>
 
-                        <?php if($_SESSION['userid'] == 1):?>
+                        <?php if($isadmin == 1):?>
                         <li class="nav-item">
                             <a href="#" class="nav-link dropdown-toggle collapsed">
                                 <i class="nav-icon fa fa-user-cog"></i>
@@ -426,7 +438,7 @@ $member_id = getMemberFromUser($_SESSION['userid'], $connect);
                         </li>
                         <?php endif;?>
 
-                        <?php if($_SESSION['userid'] == 1):?>
+                        <?php if($isadmin == 1):?>
                         <li class="nav-item">
                             <a href="#" class="nav-link dropdown-toggle collapsed">
                                 <i class="nav-icon fa fa-wrench"></i>
@@ -471,7 +483,7 @@ $member_id = getMemberFromUser($_SESSION['userid'], $connect);
                         </li>
                         <?php endif;?>
 
-                        <?php if($_SESSION['userid'] == 1):?>
+                        <?php if($isadmin == 1):?>
                         <li class="nav-item">
                             <a href="memberupgradepage.php" class="nav-link">
                                 <i class="nav-icon fa fa-wallet"></i>
@@ -483,7 +495,7 @@ $member_id = getMemberFromUser($_SESSION['userid'], $connect);
                         </li>
                         <?php endif;?>
 
-                        <?php if($_SESSION['userid'] == 1):?>
+                        <?php if($isadmin == 1):?>
                         <li class="nav-item">
                             <a href="walletpage.php" class="nav-link">
                                 <i class="nav-icon fa fa-wallet"></i>
@@ -495,7 +507,7 @@ $member_id = getMemberFromUser($_SESSION['userid'], $connect);
                         </li>
                         <?php endif;?>
 
-                        <?php if($_SESSION['userid'] == 1):?>
+                        <?php if($isadmin == 1):?>
                         <li class="nav-item">
                             <a href="witdrawpage.php" class="nav-link">
                                 <i class="nav-icon fa fa-wallet"></i>
@@ -507,7 +519,7 @@ $member_id = getMemberFromUser($_SESSION['userid'], $connect);
                         </li>
                         <?php endif;?>
 
-                        <?php if($_SESSION['userid'] == 1):?>
+                        <?php if($isadmin == 1):?>
                         <li class="nav-item-caption">
                             <span class="fadeable pl-3">ตั้งค่าคะแนน Point</span>
                             <span class="fadeinable mt-n2 text-125">&hellip;</span>
@@ -523,7 +535,7 @@ $member_id = getMemberFromUser($_SESSION['userid'], $connect);
                         </li>
                         <?php endif;?>
 
-                        <?php if($_SESSION['userid'] == 1):?>
+                        <?php if($isadmin== 1):?>
                         <li class="nav-item">
                             <a href="#" class="nav-link dropdown-toggle collapsed">
                                 <i class="nav-icon fa fa-trophy"></i>
@@ -567,7 +579,7 @@ $member_id = getMemberFromUser($_SESSION['userid'], $connect);
                         </li>
                         <?php endif;?>
 
-                        <?php if($_SESSION['userid'] == 1):?>
+                        <?php if($isadmin == 1):?>
                         <li class="nav-item-caption">
                             <span class="fadeable pl-3">สิทธิ์การใช้งาน</span>
                             <span class="fadeinable mt-n2 text-125">&hellip;</span>
@@ -583,7 +595,7 @@ $member_id = getMemberFromUser($_SESSION['userid'], $connect);
                         </li>
                         <?php endif;?>
 
-                        <?php if($_SESSION['userid'] == 1):?>
+                        <?php if($isadmin == 1):?>
                         <li class="nav-item">
                             <a href="#" class="nav-link dropdown-toggle collapsed">
                                 <i class="nav-icon fa fa-lock-open"></i>

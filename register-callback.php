@@ -24,8 +24,8 @@ $fb = new \Facebook\Facebook([
     //'default_access_token' => 'EAALxTH5oaSABACSTjEkKoHWG9MmngRUNZAtCAjHzq9UH0AlWWXyDTePgWOKtcYvopbfy0wLQfVx6aFy5HGOdWNFZBfovguf1Fs0aFwje7ZBfyxZBQj41hKoJzGx6V20VIIZB816rAj0zlxo7Xc76IUSReFelpMIAl9MpOZCakXBIjj2H0uFqdQnhp9taWRm5h68RmX9dj1zbMZBCVzszuQdbsZC1bnQH3ZAebjcE8txpZA1BHkCo9hatnh', // optional
 ]);
 $parent_id = '';
-if (isset($_GET['member_ref_id'])) {
-    $parent_id = $_GET['member_ref_id'];
+if (isset($_SESSION['parent_member_id'])) {
+    $parent_id = $_SESSION['parent_member_id'];
 }
 
 try {
@@ -70,14 +70,14 @@ if (isset($accessToken)) {
     if ($user['email'] != '' && checkhasuser($user['email'], $connect) <= 0) {
 
         $user_regis_email = $user['email'];
-        $parent_id = findParentForRegister($connect, $parent_id);
+       // $parent_id = findParentForRegister($connect, $parent_id);
 //    echo $phone;
         $bytes = openssl_random_pseudo_bytes(8);
-        $member_url = 'https://www.imacplus.app/register.php?ref='. bin2hex($bytes);
+        $member_url = 'https://www.imacplus.app/loginpage.php?ref='. bin2hex($bytes);
         $cdate = date("Y-m-d H:i:s");
         $ctimestamp = time();
         //echo bin2hex($bytes);
-        $sql_member = "INSERT INTO member(phone_number,email,url,parent_id,agree_read,agree_date,created_at,member_type_id)VALUES('','$user_regis_email','$member_url','$parent_id',1,'$cdate','$ctimestamp',7)";
+        $sql_member = "INSERT INTO member(phone_number,email,url,parent_id,agree_read,agree_date,created_at,member_type_id)VALUES('','$user_regis_email','$member_url','$parent_id',1,'$cdate','$ctimestamp',30)";
         if ($connect->query($sql_member)) {
             $newpass = md5($user_regis_email);
             $maxid = getMaxid($connect);
@@ -96,7 +96,7 @@ if (isset($accessToken)) {
                 }
                 $_SESSION['msg-success'] = 'บันทึกข้อมูลเรียบร้อยแล้ว';
                 // header('location:registersuccess.php');
-                header('location:index.php');
+                header('location:profile.php');
             } else {
                 $_SESSION['msg-error'] = 'พบข้อผิดพลาด';
                 header('location:loginpage.php');

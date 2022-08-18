@@ -117,7 +117,7 @@ if (isset($_SESSION['msg-error'])) {
 <div class="modal" id="myModal">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
-            <form action="workorder_action.php" id="form-workorder" method="post">
+            <form action="workorder_action.php" id="form-workorder" method="post" enctype="multipart/form-data">
                 <!-- Modal Header -->
                 <div class="modal-header">
                     <h4 class="modal-title" style="color: #1c606a">สร้างคำสั่งซ่อม</h4>
@@ -292,6 +292,23 @@ if (isset($_SESSION['msg-error'])) {
                         <div class="col-lg-3">
                             <label for="">วันที่ซ่อมเสร็จโดยประมาณ</label>
                             <input type="text" class="form-control work-finish-date" name="work_finish_date" value="<?=date('d-m-Y')?>">
+                        </div>
+                    </div>
+                    <br />
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <input type="file" name="upload_file[]" multiple accept="image/jpeg">
+                        </div>
+                    </div>
+                    <br />
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <h6><b>รูปภาพก่อนซ่อม</b></h6>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-12">
+
                         </div>
                     </div>
                     <br />

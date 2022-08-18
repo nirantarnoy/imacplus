@@ -6,7 +6,7 @@ if (!isset($_SESSION['userid'])) {
     header("location:loginpage.php");
 }
 include "header.php";
-include("models/MemberModel.php");
+//include("models/MemberModel.php");
 
 $noti_ok = '';
 $noti_error = '';
@@ -21,6 +21,13 @@ if (isset($_SESSION['msg-error'])) {
     $noti_error = $_SESSION['msg-error'];
     unset($_SESSION['msg-error']);
 }
+
+$user_id = 0;
+if(isset($_SESSION['userid'])){
+    $user_id = isset($_SESSION['userid']);
+}
+
+$member_id = getMemberIDFromUser($connect, $user_id);
 
 ?>
 
@@ -90,14 +97,15 @@ if (isset($_SESSION['msg-error'])) {
                 <div class="modal-body">
                     <input type="hidden" name="member_id" class="user-recid" value="5">
                     <input type="hidden" name="action_type" class="action-type" value="create">
-                    <input type="hidden" class="member-point-balance" value="<?=getMemberPoint($connect, isset($_SESSION['userid']))?>">
+<!--                    <input type="hidden" class="member-point-balance" value="--><?php ////echo getMemberPoint($connect, $member_id)?><!--">-->
+                    <input type="hidden" class="member-point-balance" value="<?=500?>">
                     <div class="row">
                         <div class="col-lg-6">
                             <label for=""><b>จำนวน mPoint คงเหลือ</b></label>
 
                         </div>
                         <div class="col-lg-6" style="text-align: right;font-size: 20px;">
-                            <b><?=getMemberPoint($connect, isset($_SESSION['userid']))?></b>
+                            <b><?php echo '500'; //echo getMemberPoint($connect, $member_id)?></b>
                         </div>
                     </div>
 

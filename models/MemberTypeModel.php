@@ -9,6 +9,8 @@ function getMembertypeName($id,$connect){
         foreach($result as $row){
             return $row['name'];
         }
+    }else{
+        return "blank";
     }
 }
 

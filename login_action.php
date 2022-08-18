@@ -35,7 +35,7 @@ if ($username != '' && $password != '') {
             }
         }
         // if(checktime($_SESSION['userid'] , $connect)){
-        header('location: index.php');
+        header('location: profile.php');
         // }else{
         //   $_SESSION['msg_err'] = 'ไม่ได้อยู่ในเวลาทำการ';
         //    header("location:loginpage.php");

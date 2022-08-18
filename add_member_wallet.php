@@ -3,8 +3,9 @@ ob_start();
 session_start();
 include("common/dbcon.php");
 include("models/WalletModel.php");
+include("models/MemberModel.php");
 
-$member_id = $_SESSION['userid'];
+$user_id = $_SESSION['userid'];
 $wallet_pay = 0;
 $slip = 0;
 
@@ -24,6 +25,7 @@ if (isset($_POST['recid'])) {
     $recid = $_POST['recid'];
 }
 
+$member_id = getMemberIDFromUser($connect, $user_id);
 
 if ($member_id != null && $wallet_pay != '') {
 

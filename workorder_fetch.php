@@ -7,8 +7,21 @@ if(!isset($_SESSION['userid'])){
 }
 include("common/dbcon.php");
 include("models/WorkorderModel.php");
+include("models/MemberModel.php");
+include("models/UserModel.php");
+
+$userid = $_SESSION['userid'];
+$member_id = getMemberIDFromUser($connect, $userid);
 $query_filter = '';
-$query = "SELECT * FROM workorders WHERE id > 0 AND created_by=".$_SESSION['userid'];
+$query = '';
+
+if(checkUserAdmin($connect , $userid) == 1){
+    $query = "SELECT * FROM workorders WHERE id > 0";
+}else{
+    $query = "SELECT * FROM workorders WHERE id > 0 AND created_by=".$member_id;
+}
+
+
 //if(isset($_POST["region_name"])){
 //    $query .= 'region_name LIKE "%'.$_POST["region_name"].'%" AND ';
 //}
