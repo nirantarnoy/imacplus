@@ -22,6 +22,7 @@ $checklist_data = getChecklistmodel($connect);
 $item_brand_data = getItembrandData($connect);
 $item_model_data = getItemModelData($connect);
 $item_type_data = getDeviceTypeData($connect);
+$item_center_data = getMemberCenterData($connect);
 
 
 $col_1 = [];
@@ -293,6 +294,14 @@ if (isset($_SESSION['msg-error'])) {
                             <label for="">วันที่ซ่อมเสร็จโดยประมาณ</label>
                             <input type="text" class="form-control work-finish-date" name="work_finish_date" value="<?=date('d-m-Y')?>">
                         </div>
+                        <div class="col-lg-3">
+                            <label for="">Center</label>
+                            <select name="status" id="" class="form-control status">
+                                <?php for ($i = 0; $i <= count($item_center_data) - 1; $i++): ?>
+                                    <option value="<?= $item_center_data[$i]['id'] ?>"><?= $item_center_data[$i]['name'] ?></option>
+                                <?php endfor; ?>
+                            </select>
+                        </div>
                     </div>
                     <br />
                     <div class="row">
@@ -351,8 +360,26 @@ include "footer.php";
 
     function showaddbank(e) {
         $(".user-recid").val(0);
-        $(".bank-name").val('');
-        $(".description").val('');
+        $(".workorder-no").val('');
+        $(".work-date").val('');
+        $(".customer-name").val('');
+        $(".customer-pass").val('');
+        $(".phone-brand").val(-1).change();
+        $(".phone-color").val('');
+        $(".phone-model").val(-1).change();
+        $(".device-type").val(-1).change();
+        $(".estimate-price").val('');
+        $(".pre-pay").val('');
+        $(".status").val(-1).change();
+
+        $("input[type=checkbox]").each(function(){
+            $(this).prop('checked','');
+        });
+
+        $(".modal-title").html('สร้างข้อมูลใบสั่งซ่อม');
+        $(".action-type").val('create');
+
+
         $("#myModal").modal("show");
     }
 

@@ -77,7 +77,7 @@ if (isset($accessToken)) {
         $cdate = date("Y-m-d H:i:s");
         $ctimestamp = time();
         //echo bin2hex($bytes);
-        $sql_member = "INSERT INTO member(phone_number,email,url,parent_id,agree_read,agree_date,created_at,member_type_id)VALUES('','$user_regis_email','$member_url','$parent_id',1,'$cdate','$ctimestamp',30)";
+        $sql_member = "INSERT INTO member(phone_number,email,url,parent_id,agree_read,agree_date,created_at,member_type_id,status)VALUES('','$user_regis_email','$member_url','$parent_id',1,'$cdate','$ctimestamp',30,1)";
         if ($connect->query($sql_member)) {
             $newpass = md5($user_regis_email);
             $maxid = getMaxid($connect);

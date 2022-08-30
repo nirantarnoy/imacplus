@@ -35,6 +35,7 @@ if($filtered_rows){
     if($res){
         header('location:logout.php');
     }else{
+        $_SESSION['msgerr'] = 'พบข้อผิดพลาด';
         header('location:changepwdpage.php');
     }
 }else{

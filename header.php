@@ -65,32 +65,52 @@ echo $_SESSION['userid'];
 
 
     <style>
+        /*@font-face {*/
+        /*    font-family: 'SukhumvitSet-Medium';*/
+        /*    src: url('dist/font/SukhumvitSet-Medium.ttf') format('truetype');*/
+        /*    font-weight: normal;*/
+        /*    font-style: normal;*/
+        /*}*/
+
+        /*@font-face {*/
+        /*    font-family: 'SukhumvitSet-Bold';*/
+        /*    src: url('dist/font/SukhumvitSet-Bold.ttf') format('truetype');*/
+        /*    font-weight: normal;*/
+        /*    font-style: normal;*/
+        /*}*/
+
         @font-face {
-            font-family: 'SukhumvitSet-Medium';
-            src: url('dist/font/SukhumvitSet-Medium.ttf') format('truetype');
+            font-family: 'THSarabunNew';
+            src: url('dist/font/THSarabunNew/THSarabunNew.ttf') format('truetype');
             font-weight: normal;
             font-style: normal;
         }
-
         @font-face {
-            font-family: 'SukhumvitSet-Bold';
-            src: url('dist/font/SukhumvitSet-Bold.ttf') format('truetype');
+            font-family: 'Prompt-Regular';
+            src: url('dist/font/Prompt/Prompt-Regular.ttf') format('truetype');
+            font-weight: normal;
+            font-style: normal;
+        }
+        @font-face {
+            font-family: 'Prompt-Italic';
+            src: url('dist/font/Prompt/Prompt-Italic.ttf') format('truetype');
             font-weight: normal;
             font-style: normal;
         }
 
         body {
-            font-family: "SukhumvitSet-Medium";
+            /*font-family: "SukhumvitSet-Medium";*/
+            font-family: "Prompt-Regular";
             font-size: 16px;
         }
         @media print {
-            body { font-size: 10pt ; font-family: "SukhumvitSet-Medium"; }
+            body { font-size: 10pt ; font-family: "Prompt-Regular"; }
         }
         @media screen {
-            body { font-size: 13px ;  font-family: "SukhumvitSet-Medium";}
+            body { font-size: 13px ;  font-family: "Prompt-Regular";}
         }
         @media screen, print {
-            body { line-height: 1.2 ;  font-family: "SukhumvitSet-Medium"; }
+            body { line-height: 1.2 ;  font-family: "Prompt-Regular"; }
         }
     </style>
 </head>
@@ -338,6 +358,106 @@ echo $_SESSION['userid'];
                                 <i class="nav-icon fa fa-tachometer-alt"></i>
                                 <span class="nav-text fadeable">
                                   <span>Dashboard</span>
+                                </span>
+                            </a>
+                            <b class="sub-arrow"></b>
+                        </li>
+                        <li class="nav-item">
+                            <a href="index.php" class="nav-link">
+                                <img src="assets/iCOn/iCOn/home.png" class="nav-icon" style="width: 10%" alt="">
+                                <span class="nav-text fadeable">
+
+                                  <span>หน้าหลัก</span>
+                                </span>
+                            </a>
+                            <b class="sub-arrow"></b>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#" class="nav-link">
+                                <img src="assets/iCOn/iCOn/member.png" class="nav-icon" style="width: 10%" alt="">
+                                <span class="nav-text fadeable">
+                                  <span>ทีมงานของฉัน</span>
+                                </span>
+                            </a>
+                            <b class="sub-arrow"></b>
+                        </li>
+                        <li class="nav-item">
+                            <a href="workorder.php" class="nav-link">
+                                <img src="assets/iCOn/iCOn/work_photo.png" class="nav-icon" style="width: 10%" alt="">
+                                <span class="nav-text fadeable">
+                                  <span>ข้อมูลการซ่อม</span>
+                                </span>
+                            </a>
+                            <b class="sub-arrow"></b>
+                        </li>
+                        <li class="nav-item">
+                            <a href="index.php" class="nav-link">
+                                <img src="assets/iCOn/iCOn/DropOff.png" class="nav-icon" style="width: 10%" alt="">
+                                <span class="nav-text fadeable">
+                                  <span>Drop Off</span>
+                                </span>
+                            </a>
+                            <b class="sub-arrow"></b>
+                        </li>
+                        <li class="nav-item">
+                            <a href="walletlist.php" class="nav-link">
+                                <img src="assets/iCOn/iCOn/wallet.png" class="nav-icon" style="width: 10%" alt="">
+                                <span class="nav-text fadeable">
+                                  <span>My Wallet</span>
+                                </span>
+                            </a>
+                            <b class="sub-arrow"></b>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#" class="nav-link">
+                                <img src="assets/iCOn/iCOn/mPoint.png" class="nav-icon" style="width: 10%" alt="">
+                                <span class="nav-text fadeable">
+                                  <span>My mPoint</span>
+                                </span>
+                            </a>
+                            <b class="sub-arrow"></b>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#" class="nav-link">
+                                <img src="assets/iCOn/iCOn/review.png" class="nav-icon" style="width: 10%" alt="">
+                                <span class="nav-text fadeable">
+                                  <span>รีวิวผู้ใช้งาน</span>
+                                </span>
+                            </a>
+                            <b class="sub-arrow"></b>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#" class="nav-link">
+                                <img src="assets/iCOn/iCOn/knowledge.png" class="nav-icon" style="width: 10%" alt="">
+                                <span class="nav-text fadeable">
+                                  <span>แหล่งเรียนรู้</span>
+                                </span>
+                            </a>
+                            <b class="sub-arrow"></b>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#" class="nav-link">
+                                <img src="assets/iCOn/iCOn/Market.png" class="nav-icon" style="width: 10%" alt="">
+                                <span class="nav-text fadeable">
+                                  <span>Market</span>
+                                </span>
+                            </a>
+                            <b class="sub-arrow"></b>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#" class="nav-link">
+                                <img src="assets/iCOn/iCOn/return.png" class="nav-icon" style="width: 10%" alt="">
+                                <span class="nav-text fadeable">
+                                  <span>คืนเงิน/คืนสินค้า</span>
+                                </span>
+                            </a>
+                            <b class="sub-arrow"></b>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#" class="nav-link">
+                                <img src="assets/iCOn/iCOn/qa.png" class="nav-icon" style="width: 10%" alt="">
+                                <span class="nav-text fadeable">
+                                  <span>คำถามที่พบบ่อย</span>
                                 </span>
                             </a>
                             <b class="sub-arrow"></b>

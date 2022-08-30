@@ -96,26 +96,53 @@ $registerUrl = $helper->getLoginUrl('https://www.imacplus.app/register-callback.
     <link rel="stylesheet" type="text/css" href="views/pages/page-login/@page-style.css">
 
     <style>
+        /*@font-face {*/
+        /*    font-family: 'SukhumvitSet-Light';*/
+        /*    src: url('dist/font/SukhumvitSet-Light.ttf') format('truetype');*/
+        /*    font-weight: normal;*/
+        /*    font-style: normal;*/
+        /*}*/
+
+        /*@font-face {*/
+        /*    font-family: 'SukhumvitSet-Bold';*/
+        /*    src: url('dist/font/SukhumvitSet-Bold.ttf') format('truetype');*/
+        /*    font-weight: normal;*/
+        /*    font-style: normal;*/
+        /*}*/
         @font-face {
-            font-family: 'SukhumvitSet-Light';
-            src: url('dist/font/SukhumvitSet-Light.ttf') format('truetype');
+            font-family: 'THSarabunNew';
+            src: url('dist/font/THSarabunNew/THSarabunNew.ttf') format('truetype');
             font-weight: normal;
             font-style: normal;
         }
-
         @font-face {
-            font-family: 'SukhumvitSet-Bold';
-            src: url('dist/font/SukhumvitSet-Bold.ttf') format('truetype');
+            font-family: 'Prompt-Regular';
+            src: url('dist/font/Prompt/Prompt-Regular.ttf') format('truetype');
+            font-weight: normal;
+            font-style: normal;
+        }
+        @font-face {
+            font-family: 'Prompt-Italic';
+            src: url('dist/font/Prompt/Prompt-Italic.ttf') format('truetype');
             font-weight: normal;
             font-style: normal;
         }
 
         body {
-            font-family: "SukhumvitSet-Light";
-            font-size: 16px;
+            /*font-family: "SukhumvitSet-Medium";*/
+            font-family: "Prompt-Regular";
+            font-size: 14px;
         }
 
         .dot {
+            margin: 5px;
+            height: 25px;
+            width: 25px;
+            background-color: #bbb;
+            border-radius: 50%;
+            display: inline-block;
+        }
+        .dot-login {
             margin: 5px;
             height: 25px;
             width: 25px;
@@ -341,20 +368,21 @@ $registerUrl = $helper->getLoginUrl('https://www.imacplus.app/register-callback.
                                                     </label>
                                                 </div>
                                             </div>
+                                            <input type="hidden" class="password" name="password" value="">
 
 
-                                            <div class="form-group col-sm-10 offset-sm-1 col-md-8 offset-md-2 col-lg-6 offset-lg-3 mt-2 mt-md-1">
-                                                <div class="d-flex align-items-center input-floating-label text-blue brc-blue-m2">
-                                                    <input type="password"
-                                                           class="form-control form-control-lg pr-4 shadow-none password"
-                                                           id="id-login-password" name="password"/>
-                                                    <i class="fa fa-key text-grey-m2 ml-n4"></i>
-                                                    <label class="floating-label text-grey-l1 ml-n3"
-                                                           for="id-login-password">
-                                                        Password
-                                                    </label>
-                                                </div>
-                                            </div>
+<!--                                            <div class="form-group col-sm-10 offset-sm-1 col-md-8 offset-md-2 col-lg-6 offset-lg-3 mt-2 mt-md-1">-->
+<!--                                                <div class="d-flex align-items-center input-floating-label text-blue brc-blue-m2">-->
+<!--                                                    <input type="password"-->
+<!--                                                           class="form-control form-control-lg pr-4 shadow-none password"-->
+<!--                                                           id="id-login-password" name="password"/>-->
+<!--                                                    <i class="fa fa-key text-grey-m2 ml-n4"></i>-->
+<!--                                                    <label class="floating-label text-grey-l1 ml-n3"-->
+<!--                                                           for="id-login-password">-->
+<!--                                                        Password-->
+<!--                                                    </label>-->
+<!--                                                </div>-->
+<!--                                            </div>-->
 
 
                                             <div class="col-sm-10 offset-sm-1 col-md-8 offset-md-2 col-lg-6 offset-lg-3 text-right text-md-right mt-n2 mb-2">
@@ -560,6 +588,14 @@ $registerUrl = $helper->getLoginUrl('https://www.imacplus.app/register-callback.
                                                                                                    onclick="showcondition()">ข้อตกลงการใช้งาน</a></span>
                                                 </label>
 
+                                                <label class="d-inline-block mt-3 mb-0 text-secondary-d2">
+                                                    <input type="checkbox" name="check_pdpa_ok" class="mr-1"
+                                                           id="id-pdpa-agree" onclick="readpdpaok($(this))"/>
+                                                    <span class="text-dark-m3">ฉันอ่านและยินยอม <a href="#"
+                                                                                                   class="text-blue-d2"
+                                                                                                   onclick="showPdpa()">ข้อมูลส่วนบุคคล (PDPA)</a></span>
+                                                </label>
+
                                                 <button type="button"
                                                         class="btn btn-success btn-block px-4 btn-bold mt-2 mb-3 btn-register-submit"
                                                         disabled>
@@ -693,7 +729,7 @@ $registerUrl = $helper->getLoginUrl('https://www.imacplus.app/register-callback.
                 <!--                </div>-->
 
                 <!-- Modal body -->
-                <div class="modal-body">
+                <div class="modal-body" style="font-family: 'THSarabunNew';font-size: 20px;color: black;">
                     <input type="hidden" name="recid" class="user-recid" value="">
                     <input type="hidden" name="action_type" class="action-type" value="create">
                     <div class="row">
@@ -782,13 +818,13 @@ $registerUrl = $helper->getLoginUrl('https://www.imacplus.app/register-callback.
 
                             6) ก่อนการส่งซ่อมสินค้าในรูปแบบออนไลน์
                             ลูกค้าต้องถ่ายรูปตัวเครื่องของลูกค้าเพื่ออัพโหลดเข้าในระบบตามที่บริษัทกำหนด <br/>
-                            7)ลูกค้าต้องชำระค่าบริการ 50% ก่อนตกลงใช้บริการหรือตามที่ศูนย์บริการกำหนดเบื้องต้น <br/>
-                            เว้นแต่ว่ามีบริการใส่ส่วนอื่นเพิ่มเติมหลังจากศูนย์บริการแจ้งลูกค้าภายหลัง
+                            7) ลูกค้าต้องชำระค่าบริการ 50% ก่อนตกลงใช้บริการหรือตามที่ศูนย์บริการกำหนดเบื้องต้น <br/>
+                            เว้นแต่ว่ามีบริการใส่ส่วนอื่นเพิ่มเติมหลังจากศูนย์บริการแจ้งลูกค้าภายหลัง <br />
                             8) ความรับผิดในค่าเสียหายพื้นฐานของเราที่เกิดขึ้นกับสินค้าใด ๆ
                             นั้นจะจำกัดเพียงการสูญเสียและความเสียหายโดยตรงและรวมมูลค่าสูงสุดไม่เกิน 1,000 บาทต่อ 1
                             ใบนำส่งสินค้า
-                            เว้นเสียแต่ว่ามีการระบุไว้เป็นอย่างอื่นในข้อตกลงร่วมกันเป็นลายลักษณ์อักษรระหว่างบริษัทผู้ส่งสินค้าและลูกค้า<br/>
-                            9)ข้อตกลงและเงื่อนไขจะอยู่ภายใต้กฎหมายแห่งราชอาณาจักรไทยและคู่สัญญาทั้งสองฝ่ายอยู่ใต้เขตอำนาจศาลแห่งราชอาณาจักรไทยโดยไม่อาจเพิกถอนได้
+                            เว้นเสียแต่ว่ามีการระบุไว้เป็นอย่างอื่นในข้อตกลงร่วมกันเป็นลายลักษณ์อักษรระหว่างบริษัทผู้ส่งสินค้าและลูกค้า <br/>
+                            9) ข้อตกลงและเงื่อนไขจะอยู่ภายใต้กฎหมายแห่งราชอาณาจักรไทยและคู่สัญญาทั้งสองฝ่ายอยู่ใต้เขตอำนาจศาลแห่งราชอาณาจักรไทยโดยไม่อาจเพิกถอนได้
                             <br/>
                             10) ค่าบริการตรวจเช็ค 150 – 500 บาท หรือตามที่บริษัทกำหนด <br/>
                             11) ลูกค้ายินยอมให้ บริษัท ไทยออล จำกัด และศูนย์บริการในเครือเก็บ รวบรวม ใช้
@@ -901,6 +937,164 @@ $registerUrl = $helper->getLoginUrl('https://www.imacplus.app/register-callback.
         </div>
     </div>
 </div>
+<div class="modal" id="myModalPassLogin">
+    <div class="modal-dialog">
+        <div class="modal-content">
+
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <!--                    <h4 class="modal-title" style="color: #1c606a">เพิ่มข้อมูลประเภทร้านค้า</h4>-->
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+
+            <!-- Modal body -->
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-lg-12" style="text-align: center">
+                        <img src="uploads/logo/imaclogonew.png" style="width: 15%" alt="">
+                    </div>
+                </div>
+                <br/>
+                <div class="row">
+                    <div class="col-lg-12" style="text-align: center">
+                        <h5>ใช้รหัสผ่านเพื่อเข้าสู่ระบบ</h5>
+                    </div>
+                </div>
+                <br/>
+                <div class="row">
+                    <div class="col-lg-12" style="text-align: center;">
+                        <span class="dot-login" data-var=""></span>
+                        <span class="dot-login" data-var=""></span>
+                        <span class="dot-login" data-var=""></span>
+                        <span class="dot-login" data-var=""></span>
+                        <span class="dot-login" data-var=""></span>
+                        <span class="dot-login" data-var=""></span>
+                    </div>
+                </div>
+
+                <br/>
+                <div class="row">
+                    <div class="col-lg-12" style="text-align: center;">
+                        <span class="dot-button" data-var="1" onclick="keypinlogin($(this))"><b>1</b></span>
+                        <span class="dot-button" data-var="2" onclick="keypinlogin($(this))"><b>2</b></span>
+                        <span class="dot-button" data-var="3" onclick="keypinlogin($(this))"><b>3</b></span>
+                    </div>
+                </div>
+                <br/>
+                <div class="row">
+                    <div class="col-lg-12" style="text-align: center;">
+                        <span class="dot-button" data-var="4" onclick="keypinlogin($(this))"><b>4</b></span>
+                        <span class="dot-button" data-var="5" onclick="keypinlogin($(this))"><b>5</b></span>
+                        <span class="dot-button" data-var="6" onclick="keypinlogin($(this))"><b>6</b></span>
+                    </div>
+                </div>
+                <br/>
+                <div class="row">
+                    <div class="col-lg-12" style="text-align: center;">
+                        <span class="dot-button" data-var="7" onclick="keypinlogin($(this))"><b>7</b></span>
+                        <span class="dot-button" data-var="8" onclick="keypinlogin($(this))"><b>8</b></span>
+                        <span class="dot-button" data-var="9" onclick="keypinlogin($(this))"><b>9</b></span>
+                    </div>
+                </div>
+                <br/>
+                <div class="row">
+                    <div class="col-lg-12" style="text-align: center;">
+                        <span class="dot-button" data-var="clear" onclick="keypinclear($(this))"><i
+                                    class="fa fa-trash"></i></span>
+                        <span class="dot-button" data-var="0" onclick="keypinlogin($(this))"><b>0</b></span>
+                        <span class="dot-button" data-var="delete" onclick="keypindelete($(this))"><i
+                                    class="fa fa-arrow-left"></i></span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Modal footer -->
+            <div class="modal-footer">
+                <div class="btn btn-success btn-pin-login-save" style="display: none" data-dismiss="modalx">ดำเนินการต่อ</div>
+                <!--                    <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fa fa-ban"></i> Cancel</button>-->
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<div class="modal modal-xl" id="myPdpaModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form action="item_action.php" id="form-user" method="post">
+                <!-- Modal Header -->
+                <!--                <div class="modal-header">-->
+                <!--                    <h4 class="modal-title" style="color: #1c606a">เพิ่มข้อมูล Item</h4>-->
+                <!--                    <button type="button" class="close" data-dismiss="modal">&times;</button>-->
+                <!--                </div>-->
+
+                <!-- Modal body -->
+                <div class="modal-body" style="font-family: 'THSarabunNew';font-size: 20px;color: black;">
+                    <input type="hidden" name="recid" class="user-recid" value="">
+                    <input type="hidden" name="action_type" class="action-type" value="create">
+                    <div class="row">
+                        <div class="col-lg-12" style="padding: 30px;">
+                            <table style="width: 100%">
+                                <tr>
+                                    <td style="text-align: center;">
+                                        <h3>หนังสือให้ความยินยอม</h3><br/>
+                                    </td>
+                                </tr>
+                            </table>
+                            <table style="width: 100%">
+                                <tr>
+                                    <td style="text-align: left;">
+                                        <p style="text-indent: 10px;">ตามที่บริษัทในกลุ่มบริษัท ไทยออล จํากัด หรือเรียกอีกชื่อหนึ่ง “iMacPlus”(ไอแมคพลัส) “iMacPost” (ไอแมคโพส) ได้มุ่งมั่น พัฒนาคุณภาพสินค้าและบริการ ตลอดจนสร้างประสบการณ์ใหม่ ๆ ให้ผู้ใช้บริการ และเพื่อให้ผู้ใช้บริการ ได้ใช้บริการที่ดีที่สุดและได้รับสิทธิประโยชน์ที่หลากหลายตรงต่อตามความต้องการมากที่สุด จึงได้ขอให้ ผู้ใช้บริการให้ความยินยอมในการเก็บ รวมรวม ประมวลผล ใช้ และเปิดเผยข้อมูลส่วนบุคคล ตาม พระราชบัญญัติคุ้มครองข้อมูลส่วนบุคคล พ.ศ. 2562 (“พ.ร.บ. คุ้มครองข้อมูลส่วนบุคคล”) โดยการ ดําเนินการดังกล่าวนั้น บริษัทในกลุ่มไทยออล ได้ให้ความสําคัญต่อความเป็นส่วนตัวของผู้ใช้บริการ และ จัดเก็บข้อมูลส่วนบุคคลของผู้ใช้บริการอย่างปลอดภัยและเป็นไปตามมาตรฐานที่กฎหมายกําหนด ดังนั้น ข้าพเจ้าในฐานะผู้ใช้บริการตกลงให้ความยินยอม ดังนี้</p>
+                                    </td>
+                                </tr>
+                            </table>
+
+
+                            <p style="text-indent: 10px;">ข้าพเจ้าตกลงและให้ความยินยอมแก่บริษัทในกลุ่มไทยออล (ดังรายชื่อที่ปรากฏท้ายหนังสือให้ความ ยินยอมนี้ และที่อาจเปลี่ยนแปลงในอนาคตซึ่งจะได้ประกาศในช่องทางอื่นของบริษัทต่อไป ซึ่งข้าพเจ้าได้ อ่านและเข้าใจดีแล้ว) ซึ่งข้าพเจ้าตกลงใช้บริการหรือผลิตภัณฑ์และบริษัทในกลุ่มไทยออลอื่น ๆ ณ วันที่ให้ ความยินยอมนี้และต่อเนื่องไปถึงวันและภายหลังวันที่ พ.ร.บ. คุ้มครองข้อมูลส่วนบุคคลมีผลใช้บังคับต่อไป ด้วย ในการเก็บรวบรวม ประมวลผล ใช้ และ/หรือ เปิดเผยข้อมูลส่วนบุคคลที่อ่อนไหว (sensitive data) (เช่น เชื้อชาติ สัญชาติ ศาสนา กรุ๊ปเลือด เป็นต้น) ที่มีข้อมูลปรากฏอยู่บนเอกสารระบุตัวตนของข้าพเจ้า (เช่น บัตรประชาชน หนังสือเดินทาง หรือเอกสารอื่นใดที่ออกโดยหน่วยงานราชการ) รวมถึงข้อมูลชีวภาพ ของข้าพเจ้า (เช่น ข้อมูล จําลองลายนิ้วมือ ข้อมูลชีวมิติ ข้อมูลภาพถ่ายจําลองใบหน้า เป็นต้น) ตลอดจน ข้อมูลภาพหรือเสียงที่มีการบันทึก (ต่อไปนี้รวมเรียกว่า “ข้อมูลส่วนบุคคลของข้าพเจ้า”) เพื่อ วัตถุประสงค์ในการยืนยันและระบุตัวตนของข้าพเจ้าในการขอใช้บริการหรือผลิตภัณฑ์ขอดังกล่าว และ หรือ ตามที่กฎหมายกําหนด</p>
+                            <br/><br/>
+
+                            <p style="text-indent: 10px;">ข้าพเจ้าให้ความยินยอม ณ วันที่ให้ความยินยอมนี้ และให้การให้ความยินยอมนี้มีผลสมบูรณ์ทางกฎหมาย ต่อเนื่องไป ณ วันและภายหลังวันที่ พ.ร.บ. คุ้มครองข้อมูลส่วนบุคคลมีผล </p><br/><br/>
+
+                            <p style="text-indent: 10px;">ใช้บังคับด้วย แก่บริษัทในกลุ่ม ไทยออล ธุรกิจในเครือ และ/หรือ พันธมิตรทางธุรกิจ ดังปรากฏรายชื่อแนบท้ายนี้ และที่อาจเปลี่ยนแปลงในอนาคตซึ่งจะได้ ประกาศในช่องทางอื่นของบริษัทต่อไป ในการเก็บรวบรวม ประมวลผล ใช้ และ/หรือ เปิดเผยข้อมูลส่วน บุคคลของข้าพเจ้า และ/หรือ ข้อมูลใด ๆ เกี่ยวกับการใช้สินค้า และ/หรือ บริการของข้าพเจ้า เพื่อวัตถุประสงค์ทางการตลาด เพื่อนําเสนอสินค้าและบริการ สิทธิประโยชน์ รายการส่งเสริมการขาย และ ข้อเสนอต่าง ๆ ของบริษัทในกลุ่มไทยออล หรือพันธมิตรทางธุรกิจ เพื่อวัตถุประสงค์ในการวิเคราะห์ หรือคาดการณ์เกี่ยวกับความชื่นชอบหรือพฤติกรรมของข้าพเจ้า วิจัย พัฒนา ปรับปรุงผลิตภัณฑ์ และวางแผนการตลาด เพื่อให้ บริษัทในกลุ่มไทยออล และ/หรือ พันธมิตรทาง ธุรกิจ สามารถวิเคราะห์และคัดสรรสินค้าและบริการอย่างเหมาะสมกับข้าพเจ้า รวมถึงยินยอมให้มีการ เปิดเผยข้อมูลส่วนบุคคลของข้าพเจ้าระหว่าง และ/หรือให้แก่ บริษัทในกลุ่มไทยออล ธุรกิจในเครือ และ/หรือ พันธมิตรทางธุรกิจ เพื่อวัตถุประสงค์ดังกล่าวด้วย</p><br/><br/>
+
+
+                            <p style="text-indent: 10px;">ทั้งนี้ ในกรณีที่ข้าพเจ้าเป็นผู้เยาว์ ข้าพเจ้ารับรองว่า ผู้ใช้อํานาจปกครองได้รับทราบและเข้าใจใน บริการและผลิตภัณฑ์ที่ข้าพเจ้าจะใช้ ตลอดจนหนังสือให้ความยินยอมนี้แล้ว และข้าพเจ้าและผู้ใช้อํานาจ ปกครองได้ให้ความยินยอมตามหนังสือให้ความยินยอมนี้แล้ว<br/>
+
+                            ข้าพเจ้าได้อ่านและรับทราบนโยบายคุ้มครองข้อมูลส่วนบุคคลของบริษัทในกลุ่มไทยออลแล้วเป็น อย่างดีแล้วบนแพลตฟอร์ม/แอพพลิเคชั่น/ระบบการใช้งาน ทั้งหมด <br/>
+
+                            ข้าพเจ้าให้ความยินยอม ด้วยความสมัครใจ ปราศจากการบังคับหรือชักจูง และข้าพเจ้าทราบว่า ข้าพเจ้าสามารถถอนความยินยอมนี้เสียเมื่อไรก็ได้ เว้นแต่ในกรณีที่มีข้อจํากัดสิทธิตามกฎหมาย หรือเป็น การรักษาสิทธิตามกฎหมายของข้าพเจ้ากับบริษัทฯ บริษัทในกลุ่มไทยออล หรือพันธมิตรทางธุรกิจแล้วแต่ กรณี ทั้งนี้การถอนความยินยอมดังกล่าวไม่กระทบต่อการใช้ เปิดเผย รวมถึงการประมวลผลข้อมูลที่ได้ ดําเนินการเสร็จสิ้นไปแล้ว โดยข้าพเจ้าสามารถขอถอนความยินยอมได้ตามช่องทางที่บริษัทระบุไว้  <br/>
+
+                                การให้ความยินยอมนี้เป็นการให้ความยินยอมตามที่ระบุเอาไว้ใน สัญญาธุรกิจภายใต้บริษัทไทยออล ธุรกิจในเครือและ/หรือ พันธมิตรทางธุรกิจทั้งหหมด และ และขอเปิดใช้ระบบทั้งหมด ฉบับลงวันที่..........................................</p><br/><br/>
+
+                            <u><b>การถอนความยินยอม</b></u><br/>
+
+                            <p style="text-indent: 10px;">ท่านมีสิทธิขอถอนคํายินยอมเมื่อใดก็ได้ ผ่านบริษัทโดยตรงตาม Email ที่ได้ระบุไว้ และช่องทางที่กลุ่มบริษัทกําหนดในภายหน้า โดยสามารถดูรายละเอียดช่องทางการยกเลิกการ ให้คํายินยอมได้ที่ประกาศนโยบายความเป็นส่วนตัวของกลุ่มบริษัท ทั้งนี้ บริษัทจะพิจารณาดําเนินการ ภายใน 7 วัน นับแต่วันที่ได้รับการแจ้งถอนคํายินยอม </p> <br/>
+                            <u><b>การสอบถามสิทธิอื่น ๆ ของข้อมูล </b></u> <br/><br/>
+                            1. ผ่านบริษัทหรือติดต่อ Call Center และ Page Facebook เปิดให้บริการ 09.00-17.00 <br/>
+                            2.ขอแบบฟอร์มคําขอใช้สิทธิ ของเจ้าของข้อมูลที่เกี่ยวกับข้อมูลส่วนบุคคลทาง กรอกรายละเอียดส่ง Email มาที่ thaiallofficial@gmail.com
+                            <br/>
+                            รายชื่อกลุ่มบริษัทในกลุ่มไทยออลและพันธมิตรทางธุรกิจ  <br/><br/>
+                            (ก) บริษัทในกลุ่มไทยออล ได้แก่ (1) บริษัท ไทยออล จํากัด (ผู้ให้บริการแพลตฟอร์ม “ไอแมคพลัส” “ไอแมคโพส”) และพันธมิตรหรือบริษัทที่เกิดขึ้นในอนาคตหรือบริษัทที่เกิดขึ้นในอนาคต (ข) พันธมิตรทางธุรกิจ บริษัท  (1)บริษัท เดอะ เลตเตอร์ โพสต์ เซอร์วิส (2)บริษัท เอ็มพ้อยท์เอ็กซ์เพรส จํากัด และพันธมิตรหรือบริษัทที่เกิดขึ้นในอนาคต
+                            <br/>
+
+
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- Modal footer -->
+                <div class="modal-footer">
+                    <!--                    <button type="submit" class="btn btn-success btn-save" data-dismiss="modalx"><i-->
+                    <!--                                class="fa fa-save"></i> ยอมรับ-->
+                    <!--                    </button>-->
+                    <button type="button" class="btn btn-danger" data-dismiss="modal"> ปิด
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
 
 <!-- include common vendor scripts used in demo pages -->
 <script src="node_modules/jquery/dist/jquery.js"></script>
@@ -926,7 +1120,16 @@ $registerUrl = $helper->getLoginUrl('https://www.imacplus.app/register-callback.
 
 <script>
     function readok(e) {
-        if ($('input[name=check_read_ok]').is(':checked')) {
+        if ($('input[name=check_read_ok]').is(':checked') && $('input[name=check_pdpa_ok]').is(':checked')) {
+            $(".btn-register-submit").prop("disabled", false);
+        } else {
+
+            $(".btn-register-submit").prop("disabled", true);
+        }
+
+    }
+    function readpdpaok(e) {
+        if ($('input[name=check_pdpa_ok]').is(':checked') && $('input[name=check_read_ok]').is(':checked')) {
             $(".btn-register-submit").prop("disabled", false);
         } else {
 
@@ -938,6 +1141,9 @@ $registerUrl = $helper->getLoginUrl('https://www.imacplus.app/register-callback.
     function showcondition() {
         $("#myModal").modal("show");
     }
+    function showPdpa() {
+        $("#myPdpaModal").modal("show");
+    }
 
     function keypin(e) {
         var data = e.attr("data-var");
@@ -948,6 +1154,19 @@ $registerUrl = $helper->getLoginUrl('https://www.imacplus.app/register-callback.
                 $(this).addClass("dot-active");
                 $(this).attr("data-var", data);
                 checknumberOk();
+                return false;
+            }
+        });
+    }
+    function keypinlogin(e) {
+        var data = e.attr("data-var");
+        $(".dot-login").each(function () {
+            if ($(this).hasClass("dot-active")) {
+                checknumberOk2();
+            } else {
+                $(this).addClass("dot-active");
+                $(this).attr("data-var", data);
+                checknumberOk2();
                 return false;
             }
         });
@@ -966,6 +1185,19 @@ $registerUrl = $helper->getLoginUrl('https://www.imacplus.app/register-callback.
             $(".btn-pin-save").hide();
         }
     }
+    function checknumberOk2() {
+        var pin_count = 0;
+        $(".dot-login").each(function () {
+            if ($(this).hasClass("dot-active")) {
+                pin_count = parseFloat(pin_count) + 1;
+            }
+        });
+        if (parseFloat(pin_count) == 6) {
+            $(".btn-pin-login-save").show();
+        } else {
+            $(".btn-pin-login-save").hide();
+        }
+    }
 
     function keypindelete(e) {
 
@@ -977,6 +1209,9 @@ $registerUrl = $helper->getLoginUrl('https://www.imacplus.app/register-callback.
         $(".dot").attr("data-var", "");
         $(".dot").removeClass("dot-active");
         checknumberOk();
+        $(".dot-login").attr("data-var", "");
+        $(".dot-login").removeClass("dot-active");
+        checknumberOk2();
     }
 
     $(function () {
@@ -995,7 +1230,24 @@ $registerUrl = $helper->getLoginUrl('https://www.imacplus.app/register-callback.
 
             e.preventDefault();
             var username = $(".username").val();
-            var pwd = $(".password").val();
+            if (username == '') {
+                $(".message").val("กรุณากรอกข้อมูล Username");
+                $(".username").focus();
+                err_message();
+                return false;
+            }
+            $("#myModalPassLogin").modal("show");
+        });
+        $(".btn-pin-login-save").click(function (e) {
+
+            e.preventDefault();
+            var username = $(".username").val();
+            var pwd = '';
+            $(".dot-login").each(function(){
+                pwd = pwd + $(this).attr("data-var");
+            });
+
+           // alert(pwd);return;
 
             if (username == '') {
                 $(".message").val("กรุณากรอกข้อมูล Username");
@@ -1009,6 +1261,7 @@ $registerUrl = $helper->getLoginUrl('https://www.imacplus.app/register-callback.
                 err_message();
                 return false;
             }
+            $(".password").val(pwd);
             $("form#form-login").submit();
         });
 

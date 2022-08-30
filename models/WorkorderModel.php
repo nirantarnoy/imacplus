@@ -41,23 +41,25 @@ function getOrderLastNo($connect){
     $result = $statement->fetchAll();
     $filtered_rows = $statement->rowCount();
     $num = '';
-    $runno = substr(date('Y'),2,2);
+   // $runno = substr(date('Y'),2,2);
+    $runno = '';
     $new = 0;
     //return $filtered_rows;
+    $prefix = 'iMPO-';
     if($filtered_rows > 0){
         foreach($result as $row){
             if($row['code'] == ''){
-                return $runno.'00001';
+                return $prefix.$runno.'000001';
             }
-            $new = (int)substr($row['code'],2,5) +1;
+            $new = (int)substr($row['code'],5,6) +1;
             $diff = 5-strlen($new);
             for($i=0;$i<=$diff-1;$i++){
                 $runno = $runno.'0';
             }
         }
-        return $num = $runno.$new;
+        return $prefix.$runno.$new;
     }else{
-        return $runno.'00001';
+        return $prefix.$runno.'000001';
     }
 }
 

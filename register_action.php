@@ -51,7 +51,7 @@ if($phone!="" && $email != ""){
         $cdate = date("Y-m-d H:i:s");
         $ctimestamp = time();
         //echo bin2hex($bytes);
-        $sql_member = "INSERT INTO member(phone_number,email,url,parent_id,agree_read,agree_date,created_at,member_type_id)VALUES('$phone','$email','$member_url','$parent_id',1,'$cdate','$ctimestamp',30)";
+        $sql_member = "INSERT INTO member(phone_number,email,url,parent_id,agree_read,agree_date,created_at,member_type_id,status)VALUES('$phone','$email','$member_url','$parent_id',1,'$cdate','$ctimestamp',30,1)";
         if ($rest = $connect->query($sql_member)) {
             $newpass = md5($password);
             $maxid = getMaxid($connect);

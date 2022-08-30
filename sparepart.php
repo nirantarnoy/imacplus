@@ -8,7 +8,6 @@ session_start();
 //echo date('H:i');return;
 include "header.php";
 include("models/StatusModel.php");
-include("models/ItemModel.php");
 
 //$position_data = getPositionmodel($connect);
 //$per_check = checkPer($user_position,"is_product_cat", $connect);
@@ -19,7 +18,6 @@ include("models/ItemModel.php");
 $noti_ok = '';
 $noti_error = '';
 $status_data = [['id'=>1,'name'=>'Active'],['id'=>0,'name'=>'Inactive']];
-$device_type_data = getDeviceTypeDataModel($connect);
 
 if(isset($_SESSION['msg-success'])){
     $noti_ok = $_SESSION['msg-success'];
@@ -36,17 +34,17 @@ if(isset($_SESSION['msg-error'])){
 <input type="hidden" class="msg-error" value="<?=$noti_error?>">
 
 <div class="d-sm-flex align-items-center justify-content-between mb-4">
-    <h1 class="h3 mb-0 text-gray-800">อาการแจ้งซ่อม</h1>
+    <h1 class="h3 mb-0 text-gray-800">Sparepart</h1>
     <div class="btn-group">
         <a href="#" class="btn btn-light-green btn-h-green btn-a-green border-0 radius-3 py-2 text-600 text-90" onclick="showaddbank($(this))">
                   <span class="d-none d-sm-inline mr-1">
                     สร้าง
                   </span>
-                <i class="fa fa-save text-110 w-2 h-2"></i>
+            <i class="fa fa-save text-110 w-2 h-2"></i>
         </a>
 
-<!--        <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-success shadow-sm" onclick="showaddbank($(this))"><i-->
-<!--                class="fas fa-plus-circle fa-sm text-white-50"></i> สร้างใหม่</a>-->
+        <!--        <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-success shadow-sm" onclick="showaddbank($(this))"><i-->
+        <!--                class="fas fa-plus-circle fa-sm text-white-50"></i> สร้างใหม่</a>-->
         <!--        <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i class="fas fa-download fa-sm text-white-50"></i> Export Data</a>-->
     </div>
 
@@ -56,21 +54,22 @@ if(isset($_SESSION['msg-error'])){
     <!--        <h6 class="m-0 font-weight-bold text-primary">DataTables Example</h6>-->
     <!--    </div>-->
     <div class="card-body">
-        <form action="check_list_action.php" id="form-delete" method="post">
+        <form action="sparepart_action.php" id="form-delete" method="post">
             <input type="hidden" name="delete_id" class="delete-id" value="">
             <input type="hidden" name="action_type" value="delete">
         </form>
         <div class="table-responsive">
             <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                 <thead>
-                    <tr>
-                        <th>#</th>
-                        <th>รหัส</th>
-                        <th>ชื่อ</th>
-                        <th>รายละเอียด</th>
-                        <th>อุปกรณ์</th>
-                        <th>สถานะ</th>
-                    </tr>
+                <tr>
+                    <th>#</th>
+                    <th>Code</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                    <th>Cost Price</th>
+                    <th>Status</th>
+                    <th>-</th>
+                </tr>
                 </thead>
                 <tbody>
                 </tbody>
@@ -82,10 +81,10 @@ if(isset($_SESSION['msg-error'])){
 <div class="modal" id="myModal">
     <div class="modal-dialog">
         <div class="modal-content">
-            <form action="check_list_action.php" id="form-user" method="post">
+            <form action="sparepart_action.php" id="form-user" method="post">
                 <!-- Modal Header -->
                 <div class="modal-header">
-                    <h4 class="modal-title" style="color: #1c606a">เพิ่มข้อมูลยี่ห้อสินค้า</h4>
+                    <h4 class="modal-title" style="color: #1c606a">เพิ่มข้อมูล Sparepart</h4>
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
                 </div>
 
@@ -94,15 +93,18 @@ if(isset($_SESSION['msg-error'])){
                     <input type="hidden" name="recid" class="user-recid" value="">
                     <input type="hidden" name="action_type" class="action-type" value="create">
                     <div class="row">
-                        <div class="col-lg-6">
-                            <label for="">Check no</label>
-                            <input type="text" class="form-control chk-no" name="chk_no" value=""
-                                   placeholder="Checking no">
+                        <div class="col-lg-12">
+                            <label for="">รหัส</label>
+                            <input type="text" class="form-control sparepart-code" name="sparepart_code" value=""
+                                   placeholder="รหัส">
                         </div>
-                        <div class="col-lg-6">
+                    </div>
+                    <br>
+                    <div class="row">
+                        <div class="col-lg-12">
                             <label for="">ชื่อ</label>
-                            <input type="text" class="form-control chk-name" name="chk_name" value=""
-                                   placeholder="Checnking name">
+                            <input type="text" class="form-control sparepart-name" name="sparepart_name" value=""
+                                   placeholder="ชื่อ Sparepart">
                         </div>
                     </div>
                     <br>
@@ -115,12 +117,8 @@ if(isset($_SESSION['msg-error'])){
                     <br>
                     <div class="row">
                         <div class="col-lg-12">
-                            <label for="">ประเภทอุปกรณ์</label>
-                            <select name="device_type" id="" class="form-control device-type">
-                                <?php for ($i = 0; $i <= count($device_type_data) - 1; $i++): ?>
-                                    <option value="<?= $device_type_data[$i]['id'] ?>"><?= $device_type_data[$i]['name'] ?></option>
-                                <?php endfor; ?>
-                            </select>
+                            <label for="">Cost Price</label>
+                            <input type="input" name="cost_price" class="form-control cost-price" id="">
                         </div>
                     </div>
                     <br>
@@ -135,7 +133,6 @@ if(isset($_SESSION['msg-error'])){
                         </div>
                     </div>
                     <br>
-
 
                 </div>
 
@@ -154,16 +151,16 @@ include "footer.php";
 <script>
     notify();
     function showaddbank(e) {
-        $(".chk-no").val('');
-        $(".chk-name").val('');
+        $(".user-recid").val(0);
+        $(".bank-name").val('');
         $(".description").val('');
         $("#myModal").modal("show");
     }
 
-    $("#dataTable").dataTable({
+    $("#dataTable").DataTable({
         "processing": true,
         "serverSide": true,
-        "order": [[1, "asc"]],
+    //    "order": [[1, "asc"]],
         "language": {
             "sSearch": "ค้นหา",
             "sLengthMenu": "แสดง _MENU_ รายการ",
@@ -175,14 +172,18 @@ include "footer.php";
             }
         },
         "ajax": {
-            url: "check_list_fetch.php",
+            url: "sparepart_fetch.php",
             type: "POST"
         },
         "columnDefs": [
             {
-                "targets": [0],
+                "targets": [6],
                 "orderable": false,
             },
+            {
+                "targets": [0],
+                "visible": true,
+            }
 
         ],
     });
@@ -190,41 +191,36 @@ include "footer.php";
     function showupdate(e) {
         var recid = e.attr("data-id");
         if (recid != '') {
-            //alert(recid);
-            var chk_no = '';
+            var code = '';
             var name = '';
             var description = '';
-            var device_type = '';
             var status = '';
+            var cost_price = '';
             $.ajax({
                 'type': 'post',
                 'dataType': 'json',
                 'async': false,
-                'url': 'get_check_list_update.php',
+                'url': 'get_sparepart_update.php',
                 'data': {'id': recid},
                 'success': function (data) {
                     if (data.length > 0) {
-                       //  alert(data[0]['chk_name']);
-                        chk_no = data[0]['chk_no'];
-                        name = data[0]['chk_name'];
+                        // alert(data[0]['display_name']);
+                        code = data[0]['code'];
+                        name = data[0]['name'];
                         description = data[0]['description'];
-                        device_type = data[0]['device_type'];
                         status = data[0]['status'];
+                        cost_price = data[0]['cost_price'];
                     }
-                },
-                'error': function(err){
-                    alert('error');
-            }
+                }
             });
 
             $(".user-recid").val(recid);
-            $(".device-type").val(device_type).change();
-            $(".status").val(status).change();
-            $(".chk-no").val(chk_no);
-            $(".chk-name").val(name);
+            $(".status").val(status);
+            $(".sparepart-code").val(code);
+            $(".sparepart-name").val(name);
             $(".description").val(description);
-
-            $(".modal-title").html('แก้ไขข้อมูล Check List');
+            $(".cost-price").val(cost_price);
+            $(".modal-title").html('แก้ไขข้อมูลร Sparepart');
             $(".action-type").val('update');
             $("#myModal").modal("show");
         }
