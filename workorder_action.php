@@ -19,6 +19,8 @@ $pre_pay = 0;
 $status = -1;
 $note = "";
 $work_finish_date = '';
+$center_id = 0;
+$delivery_type_id = 0;
 
 
 $recid = 0;
@@ -82,6 +84,12 @@ if (isset($_POST['work_finish_date'])) {
     $work_finish_date = $_POST['work_finish_date'];
 }
 
+if (isset($_POST['center_id'])) {
+    $center_id = $_POST['center_id'];
+}
+if (isset($_POST['delivery_type_id'])) {
+    $delivery_type_id = $_POST['delivery_type_id'];
+}
 
 if (isset($_POST['delete_id'])) {
     $delete_id = $_POST['delete_id'];
@@ -94,12 +102,12 @@ if (isset($_POST['action_type'])) {
     $action = $_POST['action_type'];
 }
 
-if(isset($_SESSION['userid'])){
+if (isset($_SESSION['userid'])) {
     $userid = $_SESSION['userid'];
 }
 
 //echo $action;return;
-if($userid != null || $userid > 0){
+if ($userid != null || $userid > 0) {
     $member_id = getMemberIDFromUser($connect, $userid);
     if (count($check_list)) {
         if ($action == 'create') {
@@ -113,8 +121,8 @@ if($userid != null || $userid > 0){
             $created_by = $member_id;
             $new_no = getOrderLastNo($connect);
             $new_order_date = date('Y-m-d H:i:s');
-            $sql = "INSERT INTO workorders(work_no,work_date,customer_name,phone,brand_id,phone_model_id,phone_color_id,estimate_price,customer_pass,pre_pay,status,note,created_at,created_by,estimate_finish)
-            VALUES('$new_no','$new_order_date','$customer_name','$customer_phone','$brand','$phone_model','$phone_color','$estimate_price','$phone_pass','$pre_pay','$status','$note','$created_at','$created_by','$finish_date')";
+            $sql = "INSERT INTO workorders(work_no,work_date,customer_name,phone,brand_id,phone_model_id,phone_color_id,estimate_price,customer_pass,pre_pay,status,note,created_at,created_by,estimate_finish,center_id,delivery_type_id)
+            VALUES('$new_no','$new_order_date','$customer_name','$customer_phone','$brand','$phone_model','$phone_color','$estimate_price','$phone_pass','$pre_pay','$status','$note','$created_at','$created_by','$finish_date','$center_id','$delivery_type_id')";
             //echo $sql;
             if ($result = $connect->query($sql)) {
                 $maxid = getOrderMaxid($connect, $member_id);
@@ -135,8 +143,8 @@ if($userid != null || $userid > 0){
                     // echo count($_FILES['upload_file']['name']);return;
 
                     $countfiles = count($_FILES['upload_file']['name']);
-                    for ($x = 0; $x <= $countfiles -1; $x++) {
-                        $filename = time() + ($x + 1).".jpg";//$_FILES['upload_file']['name'][$x];
+                    for ($x = 0; $x <= $countfiles - 1; $x++) {
+                        $filename = time() + ($x + 1) . ".jpg";//$_FILES['upload_file']['name'][$x];
                         //echo $filename; return;
                         $file_tmp = $_FILES['upload_file']['tmp_name'][$x];
                         $sql_photo = "INSERT INTO workorder_photo(workorder_id,photo) VALUES ('$maxid','$filename')";
@@ -179,7 +187,9 @@ if($userid != null || $userid > 0){
                       note='$note',
                       updated_at='$created_at',
                       updated_by='$created_by',
-                      estimate_finish='$finish_date' 
+                      estimate_finish='$finish_date' ,
+                      center_id ='$center_id' ,
+                      delivery_type_id='$delivery_type_id' 
 
                       WHERE id='$recid'";
 

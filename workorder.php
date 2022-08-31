@@ -10,6 +10,8 @@ include "header.php";
 include("models/StatusModel.php");
 include("models/ChecklistModel.php");
 include("models/ItembrandModel.php");
+include("models/ProvinceModel.php");
+include("models/work_delivery_type.php");
 
 
 //$position_data = getPositionmodel($connect);
@@ -23,6 +25,8 @@ $item_brand_data = getItembrandData($connect);
 $item_model_data = getItemModelData($connect);
 $item_type_data = getDeviceTypeData($connect);
 $item_center_data = getMemberCenterData($connect);
+$provice_data = getProvincemodel($connect);
+$delivery_type_data = getDeliveryTypeData($connect);
 
 
 $col_1 = [];
@@ -296,9 +300,18 @@ if (isset($_SESSION['msg-error'])) {
                         </div>
                         <div class="col-lg-3">
                             <label for="">Center</label>
-                            <select name="status" id="" class="form-control status">
-                                <?php for ($i = 0; $i <= count($item_center_data) - 1; $i++): ?>
-                                    <option value="<?= $item_center_data[$i]['id'] ?>"><?= $item_center_data[$i]['name'] ?></option>
+                            <div class="input-group">
+                                <input type="text" class="form-control center-name" value="" name="center_name">
+                                <div class="btn btn-secondary" onclick="showfindcenter()">เลือก</div>
+                            </div>
+
+                            <input type="hidden" class="center-id" value="" name="center_id">
+                        </div>
+                        <div class="col-lg-3">
+                            <label for="">ประเภทการส่งซ่อม</label>
+                            <select name="delivery_type_id" id="" class="form-control delivery-type-id">
+                                <?php for ($i = 0; $i <= count($delivery_type_data) - 1; $i++): ?>
+                                    <option value="<?= $delivery_type_data[$i]['id'] ?>"><?= $delivery_type_data[$i]['name'] ?></option>
                                 <?php endfor; ?>
                             </select>
                         </div>
@@ -335,6 +348,43 @@ if (isset($_SESSION['msg-error'])) {
                     </button>
                 </div>
             </form>
+        </div>
+    </div>
+</div>
+<div class="modal" id="findCenterModal">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content">
+            <div style="padding: 10px;">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <label for="">เลือกจังหวัด</label>
+                        <select name="province_id" id="" class="form-control province-id" onchange="findCenterByProvince($(this))">
+                            <?php for ($i = 0; $i <= count($provice_data) - 1; $i++): ?>
+                                <option value="<?= $provice_data[$i]['id'] ?>"><?= $provice_data[$i]['name'] ?></option>
+                            <?php endfor; ?>
+                        </select>
+                    </div>
+                </div>
+                <br />
+                <div class="row">
+                    <div class="col-lg-12">
+                        <table class="table table-bordered" id="table-find-center">
+                            <thead>
+                            <tr>
+                                <th>เลือก</th>
+                                <th>ชื่อศูนย์บริการ</th>
+                            </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fa fa-ban"></i> ยกเลิก
+            </button>
         </div>
     </div>
 </div>
@@ -578,6 +628,38 @@ include "footer.php";
         }
     }
 
+    function showfindcenter(){
+        // $.ajax({
+        //     'type': 'post',
+        //     'dataType': 'html',
+        //     'async': false,
+        //     'url': 'find_center_data.php',
+        //     'data': {},
+        //     'success': function (data) {
+        //
+        //     }
+        // });
+        $("#findCenterModal").modal("show");
+    }
+
+    function findCenterByProvince(e){
+        var id = e.val();
+        if(id !=''){
+            alert(id);
+            $.ajax({
+                'type': 'post',
+                'dataType': 'html',
+                'async': false,
+                'url': 'find_center_data.php',
+                'data': {'province_id': id},
+                'success': function (data) {
+                   $("#table-find-center tbody").html(data);
+                }
+            });
+        }
+
+    }
+
     function notify() {
         // $.toast({
         //     title: 'Message Notify',
@@ -671,5 +753,29 @@ include "footer.php";
             // });
         }
 
+    }
+    function addselecteditem(e) {
+        // alert('hi');return;
+        var id = e.attr('data-var');
+        var name = e.closest('tr').find('.line-find-name').val();
+
+        if (id) {
+           $(".center-id").val(id);
+           $(".center-name").val(name);
+        }
+
+        $("#findCenterModal").modal("hide");
+    }
+
+    function disableselectitem() {
+        if (selecteditem.length > 0) {
+            $(".btn-product-selected").prop("disabled", "");
+            $(".btn-product-selected").removeClass('btn-outline-success');
+            $(".btn-product-selected").addClass('btn-success');
+        } else {
+            $(".btn-product-selected").prop("disabled", "disabled");
+            $(".btn-product-selected").removeClass('btn-success');
+            $(".btn-product-selected").addClass('btn-outline-success');
+        }
     }
 </script>
