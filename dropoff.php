@@ -8,7 +8,7 @@ session_start();
 //echo date('H:i');return;
 include "header.php";
 include("models/StatusModel.php");
-include("models/MemberModel.php");
+//include("models/MemberModel.php");
 
 //$position_data = getPositionmodel($connect);
 //$per_check = checkPer($user_position,"is_product_cat", $connect);
