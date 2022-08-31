@@ -244,34 +244,45 @@ $member_id = getMemberFromUser($_SESSION['userid'], $connect);
                 </div>
                 <div style="height: 10px;"></div>
                 <div class="row">
-                    <div class="col-lg-4">
+                    <div class="col-lg-3">
                         <a class="btn" href="#"
                            style="background-color: white;border-color: #5bb15b;width: 100%;border-width: 2px;border-radius: 10px;margin: 5px;">
                             <div class="row">
                                 <div class="col-lg-12" style="text-align: center;">
-                                    <b>รายได้สัปดาห์นี้</b>
+                                    <b>รายได้วันนี้</b>
                                     <h2>100</h2>
                                 </div>
                             </div>
                         </a>
                     </div>
-                    <div class="col-lg-4">
+                    <div class="col-lg-3">
                         <a class="btn" href="#"
                            style="background-color: white;border-color: #5bb15b;width: 100%;border-width: 2px;border-radius: 10px;margin: 5px;">
                             <div class="row">
                                 <div class="col-lg-12" style="text-align: center;">
-                                    <b>รายได้เดือนนี้</b>
+                                    <b>รายได้ 7 วันที่ผ่านมา</b>
                                     <h2>100</h2>
                                 </div>
                             </div>
                         </a>
                     </div>
-                    <div class="col-lg-4">
+                    <div class="col-lg-3">
                         <a class="btn" href="#"
                            style="background-color: white;border-color: #5bb15b;width: 100%;border-width: 2px;border-radius: 10px;margin: 5px;">
                             <div class="row">
                                 <div class="col-lg-12" style="text-align: center;">
-                                    <b>รายได้ปีนี้</b>
+                                    <b>รายได้สะสมเดือนนี้</b>
+                                    <h2>100</h2>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="col-lg-3">
+                        <a class="btn" href="#"
+                           style="background-color: white;border-color: #5bb15b;width: 100%;border-width: 2px;border-radius: 10px;margin: 5px;">
+                            <div class="row">
+                                <div class="col-lg-12" style="text-align: center;">
+                                    <b>รายได้สะสมคงเหลือ</b>
                                     <h2>100</h2>
                                 </div>
                             </div>
@@ -279,6 +290,39 @@ $member_id = getMemberFromUser($_SESSION['userid'], $connect);
                     </div>
                 </div>
 
+                <br />
+                <br />
+                <div class="row">
+                    <div class="col-lg-12" style="text-align: center;">
+                        <h4><b>รีวิวผู้ใช้งาน ImacPlus</b></h4>
+                    </div>
+                </div>
+                <br />
+                <br />
+                <div class="row">
+                    <div class="col-lg-6">
+                        <a class="btn" href="#"
+                           style="background-color: #5bb15b;border-color: #5bb15b;width: 100%;border-width: 2px;border-radius: 10px;margin: 5px;">
+                            <div class="row">
+                                <div class="col-lg-12" style="text-align: center;color: white;">
+                                    <b>จำนวนผู้ใช้งานออนไลน์ขณะนี้</b>
+                                    <h2>999</h2>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="col-lg-6">
+                        <a class="btn" href="#"
+                           style="background-color: #5bb15b;border-color: #5bb15b;width: 100%;border-width: 2px;border-radius: 10px;margin: 5px;">
+                            <div class="row">
+                                <div class="col-lg-12" style="text-align: center;color: white;">
+                                    <b>ส่งซ่อมเสร็จแล้ว</b>
+                                    <h2>1099</h2>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
 
             </div><!-- /.card-body -->
         </div><!-- /.card -->
