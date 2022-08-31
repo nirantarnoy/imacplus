@@ -388,7 +388,7 @@ $member_id = getMemberFromUser($_SESSION['userid'], $connect);
     <div class="col-lg-3">
         <div class="row">
             <div class="col-lg-12">
-                <div class="btn" style="border-radius: 10px;background-color: #5bb15b;width: 100%">
+                <a href="worktrack.php" class="btn" style="border-radius: 10px;background-color: #5bb15b;width: 100%">
                     <table style="width: 100%">
                         <tr>
                             <td style="text-align: center">
@@ -399,7 +399,7 @@ $member_id = getMemberFromUser($_SESSION['userid'], $connect);
                             <td style="text-align: center;color: white;">สถานะงานซ่อม</td>
                         </tr>
                     </table>
-                </div>
+                </a>
             </div>
         </div>
         <div class="row">
