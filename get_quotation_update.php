@@ -1,5 +1,7 @@
 <?php
 include("common/dbcon.php");
+//include("models/WorkorderModel.php");
+
 $id = '';
 $data = [];
 
@@ -41,6 +43,7 @@ function getQuotationDataupdate($id, $connect)
             'customer_name' => $row['customer_name'],
             'status' => $row['status'],
             'workorder_id' =>$row['workorder_id'],
+//            'workorder_no' =>getOrderNobyId($connect,$row['workorder_id']),
         ]);
     }
 
