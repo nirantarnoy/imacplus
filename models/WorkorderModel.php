@@ -1,5 +1,6 @@
 <?php
 include "models/ItemModel.php";
+include "models/PointCalculator.php";
 
 function getOrderMaxid($connect,$member_id){
     $query = "SELECT MAX(id) as id FROM workorders WHERE created_by = '$member_id' ";
@@ -218,4 +219,33 @@ function getCustomerfromOrderId($connect,$workorder_id){
         return '';
     }
 }
+
+function getPointthismonth($connect, $member_id){
+    $total = 0;
+    $c_month = date('m');
+    $query = "SELECT * FROM workorders WHERE created_by = '$member_id' and month(work_date) ='$c_month' ";
+    $statement = $connect->prepare($query);
+    $statement->execute();
+    $result = $statement->fetchAll();
+    $filtered_rows = $statement->rowCount();
+
+    if($filtered_rows > 0){
+        foreach($result as $row){
+           $total = ($total + calmpointtrans($connect, $row['id']));
+        }
+    }
+    return $total;
+}
+
+function getPointthisday($connect, $member_id){
+
+}
+
+function getPointsevenday($connect, $member_id){
+
+}
+function getPointbalance($connect, $member_id){
+
+}
+
 ?>

@@ -5,6 +5,7 @@ date_default_timezone_set('Asia/Bangkok');
 include("common/dbcon.php");
 include("models/WorkorderModel.php");
 include("models/MemberModel.php");
+include("models/PointCalculator.php");
 $check_list = [];
 $customer_id = null;
 $customer_name = '';
@@ -208,12 +209,30 @@ if ($userid != null || $userid > 0) {
 
     }
     if ($action == 'delete') {
-        echo "ok";
+
         if ($delete_id > 0) {
             $sql3 = "DELETE FROM workorders WHERE id='$delete_id'";
             if ($result3 = $connect->query($sql3)) {
                 $_SESSION['msg-success'] = 'ลบข้อมูลเรียบร้อยแล้ว';
                 header('location:workorder.php');
+            } else {
+                echo "no";
+                return;
+            }
+        }
+    }
+    if ($action == 'complete') {
+//echo "ok complete".$recid;
+        if ($recid > 0) {
+            $sql3 = "UPDATE workorders SET status=6 WHERE id='$recid'";
+            if ($result3 = $connect->query($sql3)) {
+                $cal_res = calmpoint($connect, $recid);
+               // echo $cal_res;return;
+                if($cal_res){
+                    $_SESSION['msg-success'] = 'บันทึกข้อมูลเรียบร้อยแล้ว';
+                    header('location:workorder.php');
+                }
+
             } else {
                 echo "no";
                 return;

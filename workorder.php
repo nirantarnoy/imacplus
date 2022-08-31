@@ -360,6 +360,11 @@ if (isset($_SESSION['msg-error'])) {
                         <i
                                 class="fa fa-check-circle"></i> เสนอราคา
                     </div>
+                    <div class="btn btn-primary btn-close-final" onclick="createworkfinal($(this))">
+
+                        <i
+                                class="fa fa-trophy"></i> ยืนยันการซ่อมสำเร็จ
+                    </div>
 
                     <div class="btn btn-secondary btn-close-work" onclick="closeworkorder($(this))">
 
@@ -387,6 +392,10 @@ if (isset($_SESSION['msg-error'])) {
 </form>
 <form id="form-close-work" action="workorderclose.php" method="post">
     <input type="hidden" class="user-recid" value="" name="ref_id">
+</form>
+<form id="form-close-work-final" action="workorder_action.php" method="post">
+    <input type="hidden" class="user-recid" value="" name="recid">
+    <input type="hidden" name="action_type" value="complete">
 </form>
 <div class="modal" id="findCenterModal">
     <div class="modal-dialog modal-md">
@@ -454,6 +463,10 @@ include "footer.php";
         //alert();
         $("#form-close-work").submit();
     }
+    function createworkfinal(e) {
+        //alert();
+        $("#form-close-work-final").submit();
+    }
 
     function showaddbank(e) {
         $(".user-recid").val(0);
@@ -475,9 +488,6 @@ include "footer.php";
 
         $(".modal-title").html('สร้างข้อมูลใบสั่งซ่อม');
         $(".action-type").val('create');
-
-
-
 
         $("#myModal").modal("show");
     }
@@ -580,22 +590,27 @@ include "footer.php";
                 $(".btn-receive").show();
                 $(".btn-create-quotation").hide();
                 $(".btn-close-work").hide();
+                $(".btn-close-final").hide();
             }else if(status >1 && status <2){
                 $(".btn-receive").hide();
                 $(".btn-create-quotation").show();
                 $(".btn-close-work").hide();
+                $(".btn-close-final").hide();
             }else if(status >2 && status <3){
                 $(".btn-receive").hide();
                 $(".btn-create-quotation").hide();
                 $(".btn-close-work").show();
+                $(".btn-close-final").hide();
             }else if(status >=3 && status <4){
                 $(".btn-receive").hide();
                 $(".btn-create-quotation").hide();
                 $(".btn-close-work").show();
+                $(".btn-close-final").hide();
             }else{
                 $(".btn-receive").hide();
                 $(".btn-create-quotation").hide();
                 $(".btn-close-work").hide();
+                $(".btn-close-final").show();
             }
 
 

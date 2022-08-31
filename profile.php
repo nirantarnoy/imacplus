@@ -8,6 +8,7 @@ if (!isset($_SESSION['userid'])) {
 //include "models/MemberModel.php";
 //include "models/UserModel.php";
 include "models/MemberTypeModel.php";
+include "models/WorkorderModel.php";
 
 $noti_ok = '';
 $noti_error = '';
@@ -291,7 +292,7 @@ $member_id = getMemberFromUser($_SESSION['userid'], $connect);
                             <div style="height: 10px;"></div>
                             <div class="row">
                                 <div class="col-lg-12" style="text-align: center;color: white">
-                                    <h1>100</h1>
+                                    <h1><?=number_format(getPointthismonth($connect,$member_id))?></h1>
                                 </div>
                             </div>
 
@@ -306,7 +307,7 @@ $member_id = getMemberFromUser($_SESSION['userid'], $connect);
                             <div class="row">
                                 <div class="col-lg-12" style="text-align: center;">
                                     <b>รายได้วันนี้ <?= date('d-m-Y'); ?></b>
-                                    <h2>100</h2>
+                                    <h2>0</h2>
                                 </div>
                             </div>
                         </a>
@@ -317,7 +318,7 @@ $member_id = getMemberFromUser($_SESSION['userid'], $connect);
                             <div class="row">
                                 <div class="col-lg-12" style="text-align: center;">
                                     <b>รายได้ 7 วันที่ผ่านมา</b>
-                                    <h2>100</h2>
+                                    <h2>0</h2>
                                 </div>
                             </div>
                         </a>
@@ -328,7 +329,7 @@ $member_id = getMemberFromUser($_SESSION['userid'], $connect);
                             <div class="row">
                                 <div class="col-lg-12" style="text-align: center;">
                                     <b>รายได้สะสมเดือนนี้</b>
-                                    <h2>100</h2>
+                                    <h2><?=number_format(getPointthismonth($connect, $member_id))?></h2>
                                 </div>
                             </div>
                         </a>
@@ -339,7 +340,7 @@ $member_id = getMemberFromUser($_SESSION['userid'], $connect);
                             <div class="row">
                                 <div class="col-lg-12" style="text-align: center;">
                                     <b>รายได้สะสมคงเหลือ</b>
-                                    <h2>100</h2>
+                                    <h2>0</h2>
                                 </div>
                             </div>
                         </a>
@@ -362,7 +363,7 @@ $member_id = getMemberFromUser($_SESSION['userid'], $connect);
                             <div class="row">
                                 <div class="col-lg-12" style="text-align: center;color: white;">
                                     <b>จำนวนผู้ใช้งานออนไลน์ขณะนี้</b>
-                                    <h2>999</h2>
+                                    <h2>1</h2>
                                 </div>
                             </div>
                         </a>
@@ -373,7 +374,7 @@ $member_id = getMemberFromUser($_SESSION['userid'], $connect);
                             <div class="row">
                                 <div class="col-lg-12" style="text-align: center;color: white;">
                                     <b>ส่งซ่อมเสร็จแล้ว</b>
-                                    <h2>1099</h2>
+                                    <h2>0</h2>
                                 </div>
                             </div>
                         </a>
