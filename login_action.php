@@ -42,7 +42,7 @@ if ($username != '' && $password != '') {
         //}
     } else {
      //   echo "no";return;
-        $_SESSION['msg_err'] = 'Usernam หรือ Password ไม่ถูกต้อง';
+        $_SESSION['msg_err'] = 'Username หรือ Password ไม่ถูกต้อง';
         header("location:loginpage.php");
     }
 
