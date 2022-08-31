@@ -123,7 +123,7 @@ if ($userid != null || $userid > 0) {
             $new_order_date = date('Y-m-d H:i:s');
             $sql = "INSERT INTO workorders(work_no,work_date,customer_name,phone,brand_id,phone_model_id,phone_color_id,estimate_price,customer_pass,pre_pay,status,note,created_at,created_by,estimate_finish,center_id,delivery_type_id)
             VALUES('$new_no','$new_order_date','$customer_name','$customer_phone','$brand','$phone_model','$phone_color','$estimate_price','$phone_pass','$pre_pay','$status','$note','$created_at','$created_by','$finish_date','$center_id','$delivery_type_id')";
-            //echo $sql;
+//            echo $sql;
             if ($result = $connect->query($sql)) {
                 $maxid = getOrderMaxid($connect, $member_id);
 

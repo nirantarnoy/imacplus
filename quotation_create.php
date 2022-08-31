@@ -82,7 +82,8 @@ $status_data = getQuotationStatusData();
                 </div>
                 <div class="col-lg-3">
                     <label for="">ลูกค้า</label>
-                    <input type="text" class="form-control customer-name" value="<?= $sale_data[0]['customer_name']?>" name="customer_name">
+<!--                    <input type="text" class="form-control customer-name" value="--><?//= $sale_data[0]['customer_name']?><!--" name="customer_name">-->
+                    <input type="text" class="form-control customer-name" value="<?= count($sale_data)>0?getCustomerfromOrderId($connect,$sale_data[0]['workorder_id']): getCustomerfromOrderId($connect,$workorder_id)?>" name="customer_name">
                 </div>
                 <div class="col-lg-3">
                     <label for="">เลขที่ใบแจ้งซ่อม</label>
