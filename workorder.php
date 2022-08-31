@@ -297,7 +297,8 @@ if (isset($_SESSION['msg-error'])) {
                     <div class="row">
                         <div class="col-lg-3">
                             <label for="">วันที่ซ่อมเสร็จโดยประมาณ</label>
-                            <input type="text" class="form-control work-finish-date" name="work_finish_date" value="<?=date('d-m-Y')?>">
+                            <input type="text" class="form-control work-finish-date" name="work_finish_date"
+                                   value="<?= date('d-m-Y') ?>">
                         </div>
                         <div class="col-lg-3">
                             <label for="">Center</label>
@@ -317,13 +318,13 @@ if (isset($_SESSION['msg-error'])) {
                             </select>
                         </div>
                     </div>
-                    <br />
+                    <br/>
                     <div class="row">
                         <div class="col-lg-6">
                             <input type="file" name="upload_file[]" multiple accept="image/jpeg">
                         </div>
                     </div>
-                    <br />
+                    <br/>
                     <div class="row">
                         <div class="col-lg-6">
                             <h6><b>รูปภาพก่อนซ่อม</b></h6>
@@ -334,32 +335,39 @@ if (isset($_SESSION['msg-error'])) {
 
                         </div>
                     </div>
-                    <br />
-                    <br />
+                    <br/>
+                    <br/>
 
 
                 </div>
 
                 <!-- Modal footer -->
                 <div class="modal-footer">
-                    <a href="quotation_create.php" method="post" class="btn btn-secondary btn-create-quotation" data-dismiss="modalx">
-                        <input type="hidden" class="user-recid" value="">
-                        <i
-                                class="fa fa-check-circle"></i> เสนอราคา
-                    </a>
+
+                        <div class="btn btn-secondary" onclick="createQuotation($(this))">
+
+                            <i
+                                    class="fa fa-check-circle"></i> เสนอราคา
+                        </div>
+
+                    
                     <button type="submit" class="btn btn-info btn-receive" data-dismiss="modalx"><i
                                 class="fa fa-check-circle"></i> ตรวจรับเครื่อง
                     </button>
                     <button type="submit" class="btn btn-success btn-save" data-dismiss="modalx"><i
                                 class="fa fa-save"></i> บันทึก
                     </button>
-                    <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fa fa-ban"></i> ปิดหน้าต่าง
+                    <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fa fa-ban"></i>
+                        ปิดหน้าต่าง
                     </button>
                 </div>
             </form>
         </div>
     </div>
 </div>
+<form id="form-create-quotation" action="quotation_create.php" method="post">
+    <input type="hidden" class="user-recid" value="" name="ref_id">
+</form>
 <div class="modal" id="findCenterModal">
     <div class="modal-dialog modal-md">
         <div class="modal-content">
@@ -367,14 +375,15 @@ if (isset($_SESSION['msg-error'])) {
                 <div class="row">
                     <div class="col-lg-12">
                         <label for="">เลือกจังหวัด</label>
-                        <select name="province_id" id="" class="form-control province-id" onchange="findCenterByProvince($(this))">
+                        <select name="province_id" id="" class="form-control province-id"
+                                onchange="findCenterByProvince($(this))">
                             <?php for ($i = 0; $i <= count($provice_data) - 1; $i++): ?>
                                 <option value="<?= $provice_data[$i]['id'] ?>"><?= $provice_data[$i]['name'] ?></option>
                             <?php endfor; ?>
                         </select>
                     </div>
                 </div>
-                <br />
+                <br/>
                 <div class="row">
                     <div class="col-lg-12">
                         <table class="table table-bordered" id="table-find-center">
@@ -402,7 +411,7 @@ include "footer.php";
 ?>
 <script>
     notify();
-       $('.work-finish-date').datetimepicker({format: "DD-MM-yyyy"});
+    $('.work-finish-date').datetimepicker({format: "DD-MM-yyyy"});
     //        var TinyDatePicker = DateRangePicker.TinyDatePicker;
     //        TinyDatePicker('.workorder-date', {
     //            dateFormat: 'dd-mm-yy',
@@ -415,6 +424,11 @@ include "footer.php";
     function checkselected(e) {
         // var c_value = e.attr('checked');
         // alert(c_value);
+    }
+
+    function createQuotation(e) {
+        alert();
+        $("#form-create-quotation").submit();
     }
 
     function showaddbank(e) {
@@ -431,8 +445,8 @@ include "footer.php";
         $(".pre-pay").val('');
         $(".status").val(-1).change();
 
-        $("input[type=checkbox]").each(function(){
-            $(this).prop('checked','');
+        $("input[type=checkbox]").each(function () {
+            $(this).prop('checked', '');
         });
 
         $(".modal-title").html('สร้างข้อมูลใบสั่งซ่อม');
@@ -637,7 +651,7 @@ include "footer.php";
         }
     }
 
-    function showfindcenter(){
+    function showfindcenter() {
         // $.ajax({
         //     'type': 'post',
         //     'dataType': 'html',
@@ -651,10 +665,10 @@ include "footer.php";
         $("#findCenterModal").modal("show");
     }
 
-    function findCenterByProvince(e){
+    function findCenterByProvince(e) {
         var id = e.val();
-        if(id !=''){
-           // alert(id);
+        if (id != '') {
+            // alert(id);
             $.ajax({
                 'type': 'post',
                 'dataType': 'html',
@@ -662,7 +676,7 @@ include "footer.php";
                 'url': 'find_center_data.php',
                 'data': {'province_id': id},
                 'success': function (data) {
-                   $("#table-find-center tbody").html(data);
+                    $("#table-find-center tbody").html(data);
                 }
             });
         }
@@ -763,14 +777,15 @@ include "footer.php";
         }
 
     }
+
     function addselecteditem(e) {
         // alert('hi');return;
         var id = e.attr('data-var');
         var name = e.closest('tr').find('.line-find-name').val();
 
         if (id) {
-           $(".center-id").val(id);
-           $(".center-name").val(name);
+            $(".center-id").val(id);
+            $(".center-name").val(name);
         }
 
         $("#findCenterModal").modal("hide");

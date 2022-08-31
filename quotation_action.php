@@ -157,6 +157,9 @@ if($action == 'create'){
                 }
             }
         }
+
+
+
         $_SESSION['msg-success'] = 'บันทึกข้อมูลเรียบร้อยแล้ว';
         header('location:quotation.php');
     }
@@ -197,7 +200,6 @@ if($action == 'update'){
                     if ($result7 = $connect->query($sql7)) {}
                 }
             }
-
 
 
             $_SESSION['msg-success'] = 'บันทึกข้อมูลเรียบร้อยแล้ว';

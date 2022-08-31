@@ -260,7 +260,7 @@ $member_id = getMemberFromUser($_SESSION['userid'], $connect);
                                 </div>
                             </div>
                             <div class="col-lg-6">
-                                <div class="btn"
+                                <a class="btn" href="member_team.php"
                                      style="background-color: white;border-color: #5bb15b;width: 100%;border-width: 2px;border-radius: 10px;margin: 5px;">
                                     <div class="row">
                                         <div class="col-lg-4">
@@ -274,7 +274,7 @@ $member_id = getMemberFromUser($_SESSION['userid'], $connect);
                                             <h3>ของฉัน</h3>
                                         </div>
                                     </div>
-                                </div>
+                                </a>
                             </div>
                         </div>
                     </div>

@@ -29,6 +29,7 @@ include("get_quotation_update.php");
 //include("models/ItemModel.php");
 include("models/CustomerModel.php");
 include("models/WorkorderModel.php");
+include("models/QuotationStatus.php");
 $cus_data = getCustomermodel($connect); //เรียกใช้งานด้วยชื่อฟังก์ชั่นนี้เพื่อเอาข้อมูลลูกค้าออกมา loop
 
 $sale_data = null;
@@ -46,7 +47,7 @@ if($update_id){
     $rec_id = $update_id;
 }
 $customer_data = getCustomermodel($connect);
-$status_data = getStatusData($connect);
+$status_data = getQuotationStatusData();
 
 
 ?>

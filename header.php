@@ -353,17 +353,17 @@ echo $_SESSION['userid'];
                         </li>
 
 
-                        <li class="nav-item  <?=checkActiveMenu($current_url[4],'index.php')?>">
-                            <a href="index.php" class="nav-link">
-                                <i class="nav-icon fa fa-tachometer-alt"></i>
-                                <span class="nav-text fadeable">
-                                  <span>Dashboard</span>
-                                </span>
-                            </a>
-                            <b class="sub-arrow"></b>
-                        </li>
+<!--                        <li class="nav-item  --><?//=checkActiveMenu($current_url[4],'index.php')?><!--">-->
+<!--                            <a href="profile.php" class="nav-link">-->
+<!--                                <i class="nav-icon fa fa-tachometer-alt"></i>-->
+<!--                                <span class="nav-text fadeable">-->
+<!--                                  <span>Dashboard</span>-->
+<!--                                </span>-->
+<!--                            </a>-->
+<!--                            <b class="sub-arrow"></b>-->
+<!--                        </li>-->
                         <li class="nav-item">
-                            <a href="index.php" class="nav-link">
+                            <a href="profile.php" class="nav-link">
                                 <img src="assets/iCOn/iCOn/home.png" class="nav-icon" style="width: 10%" alt="">
                                 <span class="nav-text fadeable">
 
@@ -373,7 +373,7 @@ echo $_SESSION['userid'];
                             <b class="sub-arrow"></b>
                         </li>
                         <li class="nav-item">
-                            <a href="#" class="nav-link">
+                            <a href="member_team.php" class="nav-link">
                                 <img src="assets/iCOn/iCOn/member.png" class="nav-icon" style="width: 10%" alt="">
                                 <span class="nav-text fadeable">
                                   <span>ทีมงานของฉัน</span>
@@ -391,7 +391,7 @@ echo $_SESSION['userid'];
                             <b class="sub-arrow"></b>
                         </li>
                         <li class="nav-item">
-                            <a href="index.php" class="nav-link">
+                            <a href="dropoff.php" class="nav-link">
                                 <img src="assets/iCOn/iCOn/DropOff.png" class="nav-icon" style="width: 10%" alt="">
                                 <span class="nav-text fadeable">
                                   <span>Drop Off</span>
@@ -409,7 +409,7 @@ echo $_SESSION['userid'];
                             <b class="sub-arrow"></b>
                         </li>
                         <li class="nav-item">
-                            <a href="#" class="nav-link">
+                            <a href="witdrawlist.php" class="nav-link">
                                 <img src="assets/iCOn/iCOn/mPoint.png" class="nav-icon" style="width: 10%" alt="">
                                 <span class="nav-text fadeable">
                                   <span>My mPoint</span>

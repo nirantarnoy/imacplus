@@ -1,5 +1,5 @@
 <?php
-function loopcheckquotationstatus($data,$findid){
+function loopcheckquotationStatus($data,$findid){
     for($i=0;$i<=count($data)-1;$i++){
         if($findid == $data[$i]['id']){
             return $data[$i]['name'];
@@ -15,7 +15,7 @@ function getQuotationStatus($id){ //ชื่อฟังก์ชั่น
     ];
     $name = '';
     if($id >= 0 ){
-        $name = loopcheckquotationstatus($data,$id);
+        $name = loopcheckquotationStatus($data,$id);
     }
     return $name;
 }
