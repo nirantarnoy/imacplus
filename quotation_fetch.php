@@ -21,9 +21,9 @@ include("models/UserModel.php");
 $stock_type = 0;
 $query_filter = '';
 $query = "SELECT * FROM quotation ";
-if(isset($_POST["searchByName"])){
-    $query .= ' AND (quotation_no LIKE "%'.$_POST["searchByName"].'%" OR customer_name LIKE "%'.$_POST["searchByName"].'%")';
-}
+//if(isset($_POST["searchByName"])){
+//    $query .= ' AND (quotation_no LIKE "%'.$_POST["searchByName"].'%" OR customer_name LIKE "%'.$_POST["searchByName"].'%")';
+//}
 
 
 

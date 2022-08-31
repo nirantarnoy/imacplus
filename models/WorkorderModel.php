@@ -86,7 +86,7 @@ function getOrderLastNo($connect){
                 return $prefix.$runno.'000001';
             }
             $new = (int)substr($row['code'],5,6) +1;
-            $diff = 5-strlen($new);
+            $diff = 6-strlen($new);
             for($i=0;$i<=$diff-1;$i++){
                 $runno = $runno.'0';
             }
@@ -199,6 +199,23 @@ function getOrderNobyId($connect,$id){
         return $num;
     }else{
         return 0;
+    }
+}
+
+function getCustomerfromOrderId($connect,$workorder_id){
+    $query = "SELECT * FROM workorders WHERE id = '$workorder_id' ";
+    $statement = $connect->prepare($query);
+    $statement->execute();
+    $result = $statement->fetchAll();
+    $filtered_rows = $statement->rowCount();
+    $data = '';
+    if($filtered_rows > 0){
+        foreach($result as $row){
+            $data = $row['customer_name'];
+        }
+        return $data;
+    }else{
+        return '';
     }
 }
 ?>

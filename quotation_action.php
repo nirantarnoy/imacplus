@@ -127,7 +127,7 @@ if(isset($_POST['recid'])){
 if(isset($_POST['delete_id'])){
     $delete_id = $_POST['delete_id'];
 }
-//print_r($line_item_name);return;
+//print_r($workorder_id);return;
 //echo $status; return;
 
 
