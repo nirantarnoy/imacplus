@@ -1,7 +1,7 @@
 <?php
 
 include("header.php");
-include("models/MemberModel.php");
+//include("models/MemberModel.php");
 $notify_data = getMemberNotify($connect, $_SESSION['userid']);
 ?>
 <div class="d-sm-flex align-items-center justify-content-between mb-4">
