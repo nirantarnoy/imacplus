@@ -21,7 +21,7 @@ if (isset($_SESSION['msg-error'])) {
     $noti_error = $_SESSION['msg-error'];
     unset($_SESSION['msg-error']);
 }
-
+//echo date('d:m:Y H:i');return;
 $member_id = getMemberFromUser($_SESSION['userid'], $connect);
 ?>
 
@@ -60,7 +60,7 @@ $member_id = getMemberFromUser($_SESSION['userid'], $connect);
         <br />
 
         <div class="row">
-            <div class="col-lg-12" style="text-align: center;background-color: #DBF9DB;border-color: #99C68E;width: 100%;border-width: 2px;border-radius: 5px;margin: 5px;">
+            <div class="col-lg-12 bg-danger" style="text-align: center;border-color: #99C68E;width: 100%;border-width: 2px;border-radius: 5px;margin: 5px;">
                 <br />
                 <div class="row">
                     <div class="col-lg-6 d-flex flex-column py-3 px-lg-5 justify-content-lg-between align-items-lg-end" style="text-align: right">
@@ -71,8 +71,8 @@ $member_id = getMemberFromUser($_SESSION['userid'], $connect);
                     </div>
                     <div class="col-lg-6 " style="text-align: left;margin-top: 5px">
                         <br />
-                        <h4 style="color: #5bb15b">ยืนยันตัวตนไม่สำเร็จ</h4>
-                        <h6 style="color: black">คุณไม่สามารถถอน mPoint และไม่สามารคส่งซ่อมได้</h6>
+                        <h4 style="color: white">ยืนยันตัวตนไม่สำเร็จ</h4>
+                        <h6 style="color: white">คุณไม่สามารถถอน mPoint และไม่สามารคส่งซ่อมได้</h6>
                     </div>
                 </div>
                 <br />
@@ -305,7 +305,7 @@ $member_id = getMemberFromUser($_SESSION['userid'], $connect);
                            style="background-color: white;border-color: #5bb15b;width: 100%;border-width: 2px;border-radius: 10px;margin: 5px;">
                             <div class="row">
                                 <div class="col-lg-12" style="text-align: center;">
-                                    <b>รายได้วันนี้</b>
+                                    <b>รายได้วันนี้ <?= date('d-m-Y'); ?></b>
                                     <h2>100</h2>
                                 </div>
                             </div>
