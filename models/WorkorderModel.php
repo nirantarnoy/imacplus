@@ -184,4 +184,21 @@ function findchecklist($id, $connect){
     }
     return $data;
 }
+
+function getOrderNobyId($connect,$id){
+    $query = "SELECT * FROM workorders WHERE id = '$id' ";
+    $statement = $connect->prepare($query);
+    $statement->execute();
+    $result = $statement->fetchAll();
+    $filtered_rows = $statement->rowCount();
+    $num = '';
+    if($filtered_rows > 0){
+        foreach($result as $row){
+            $num = $row['work_no'];
+        }
+        return $num;
+    }else{
+        return 0;
+    }
+}
 ?>

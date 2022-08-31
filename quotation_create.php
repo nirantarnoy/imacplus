@@ -7,6 +7,7 @@ include "header.php";
 
 $noti_ok = '';
 $noti_error = '';
+$workorder_id = 0;
 if (isset($_SESSION['msg-success'])) {
     $noti_ok = $_SESSION['msg-success'];
     unset($_SESSION['msg-success']);
@@ -17,12 +18,17 @@ if (isset($_SESSION['msg-error'])) {
     unset($_SESSION['msg-error']);
 }
 
+if (isset($_POST['ref_id'])){
+    $workorder_id = $_POST['ref_id'];
+}
+
 
 include("get_position_update.php");
 include("models/StatusModel.php");
 include("get_quotation_update.php");
-include("models/ItemModel.php");
+//include("models/ItemModel.php");
 include("models/CustomerModel.php");
+include("models/WorkorderModel.php");
 $cus_data = getCustomermodel($connect); //เรียกใช้งานด้วยชื่อฟังก์ชั่นนี้เพื่อเอาข้อมูลลูกค้าออกมา loop
 
 $sale_data = null;
@@ -75,6 +81,14 @@ $status_data = getStatusData($connect);
                     <label for="">ลูกค้า</label>
                     <input type="text" class="form-control customer-name" value="<?= $sale_data[0]['customer_name']?>" name="customer_name">
                 </div>
+                <div class="col-lg-3">
+                    <label for="">เลขที่ใบแจ้งซ่อม</label>
+                    <input type="hidden" name="workorder_id" value="<?= $workorder_id ?>">
+                    <input type="text" class="form-control workoder-id" value="<?= getOrderNobyId($connect,$workorder_id) ?>" name="workorder_id" readonly>
+                </div>
+            </div>
+            <br />
+            <div class="row">
                 <div class="col-lg-3">
                     <label for="">สถานะ</label>
                     <select name="status" id="" class="form-control">
@@ -256,10 +270,11 @@ $status_data = getStatusData($connect);
                     <thead>
                     <tr>
                         <th style="text-align: center">เลือก</th>
-                        <th>สินค้า/บริการ</th>
+                        <th>อะไหล่</th>
                         <th>รายละเอียด</th>
-                        <th>ประเภทอุปกรณ์</th>
-                        <th>ยี่ห้อ</th>
+                        <th>ประเภท</th>
+                        <th>คลัง</th>
+                        <th>ราคา</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -359,7 +374,7 @@ include "footer.php";
             'type': 'post',
             'dataType': 'html',
             'async': false,
-            'url': "find_product.php",
+            'url': "find_sparepart_data.php",
             'data': {},
             'success': function (data) {
                 //   alert(data);
@@ -518,10 +533,11 @@ include "footer.php";
     function addselecteditem(e) {
         // alert('hi');return;
         var id = e.attr('data-var');
-        var model = e.closest('tr').find('.line-find-model').val();
         var name = e.closest('tr').find('.line-find-name').val();
-        var type = e.closest('tr').find('.line-find-type').val();
-        var brand = e.closest('tr').find('.line-find-brand').val();
+        var description = e.closest('tr').find('.line-find-description').val();
+        var type = e.closest('tr').find('.line-find-part-type').val();
+        var qty = e.closest('tr').find('.line-find-qty').val();
+        var price = e.closest('tr').find('.line-find-price').val();
         //alert(onhand);
         //  var qty = e.closest('tr').find('.line-qty').val();
         //  var total = e.closest('tr').find('.line-total').val();
@@ -529,10 +545,11 @@ include "footer.php";
             if (e.hasClass('btn-outline-success')) {
                 var obj = {};
                 obj['id'] = id;
-                obj['model'] = model;
                 obj['name'] = name;
+                obj['description'] = description;
                 obj['type'] = type;
-                obj['brand'] = brand;
+                obj['qty'] = qty;
+                obj['price'] = price;
                 //  obj['total'] = total;
                 selecteditem.push(obj);
                 // alert(selecteditem);
@@ -575,7 +592,7 @@ include "footer.php";
             // alert(product_per);
             for (var i = 0; i <= selecteditem.length - 1; i++) {
                 var line_product_id = selecteditem[i]['id'];
-                var line_product_code = selecteditem[i]['code'];
+                // var line_product_code = selecteditem[i]['code'];
                 var line_product_name = selecteditem[i]['name'];
                 var line_price = selecteditem[i]['price'];
                 //  var line_qty = selecteditem[i]['qty'];

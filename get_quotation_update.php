@@ -40,6 +40,7 @@ function getQuotationDataupdate($id, $connect)
             'customer_id' => $row['customer_id'],
             'customer_name' => $row['customer_name'],
             'status' => $row['status'],
+            'workorder_id' =>$row['workorder_id'],
         ]);
     }
 

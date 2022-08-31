@@ -8,6 +8,7 @@ session_start();
 //echo date('H:i');return;
 include "header.php";
 include("models/StatusModel.php");
+include("models/SparepartTypeModel.php");
 
 //$position_data = getPositionmodel($connect);
 //$per_check = checkPer($user_position,"is_product_cat", $connect);
@@ -28,6 +29,11 @@ if(isset($_SESSION['msg-error'])){
     $noti_error = $_SESSION['msg-error'];
     unset($_SESSION['msg-error']);
 }
+
+$sparepart_type_data = '';
+$sparepart_type_data = getSparepartTypeData($connect);
+
+//print_r($sparepart_type_data);
 
 ?>
 <input type="hidden" class="msg-ok" value="<?=$noti_ok?>">
@@ -64,11 +70,12 @@ if(isset($_SESSION['msg-error'])){
                 <tr>
                     <th>#</th>
                     <th>Code</th>
+                    <th>Sparepart Type</th>
                     <th>Name</th>
                     <th>Description</th>
                     <th>Cost Price</th>
                     <th>Status</th>
-                    <th>-</th>
+<!--                    <th>-</th>-->
                 </tr>
                 </thead>
                 <tbody>
@@ -97,6 +104,19 @@ if(isset($_SESSION['msg-error'])){
                             <label for="">รหัส</label>
                             <input type="text" class="form-control sparepart-code" name="sparepart_code" value=""
                                    placeholder="รหัส">
+                        </div>
+                    </div>
+                    <br>
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <label for="">ประเภท</label>
+                            <select name="sparepart_type_name" class="form-control sparepart-type-name" id="">
+                                <?php for ($i = 0; $i <= count($sparepart_type_data) - 1; $i++): ?>
+                                    <option value="<?= $sparepart_type_data[$i]['id'] ?>" ><?= $sparepart_type_data[$i]['name'] ?></option>
+                                <?php endfor; ?>
+                            </select>
+<!--                            <input type="text" class="form-control sparepart-type-name" name="sparepart_type_name" value=""-->
+<!--                                   placeholder="ชื่อประเภท Sparepart">-->
                         </div>
                     </div>
                     <br>
@@ -192,6 +212,7 @@ include "footer.php";
         var recid = e.attr("data-id");
         if (recid != '') {
             var code = '';
+            var part_type = '';
             var name = '';
             var description = '';
             var status = '';
@@ -206,6 +227,7 @@ include "footer.php";
                     if (data.length > 0) {
                         // alert(data[0]['display_name']);
                         code = data[0]['code'];
+                        part_type = data[0]['part_type_id'];
                         name = data[0]['name'];
                         description = data[0]['description'];
                         status = data[0]['status'];
@@ -217,6 +239,7 @@ include "footer.php";
             $(".user-recid").val(recid);
             $(".status").val(status);
             $(".sparepart-code").val(code);
+            $(".sparepart-type-name").val(part_type);
             $(".sparepart-name").val(name);
             $(".description").val(description);
             $(".cost-price").val(cost_price);
@@ -228,6 +251,7 @@ include "footer.php";
 
     function recDelete(e) {
         var recid = e.attr('data-id');
+        // alert(recid);
         $(".delete-id").val(recid);
         var swalWithBootstrapButtons = Swal.mixin({
             customClass: {

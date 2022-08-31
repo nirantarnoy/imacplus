@@ -7,6 +7,8 @@ if(!isset($_SESSION['userid'])){
 }
 include("common/dbcon.php");
 include("models/StatusModel.php");
+include("models/SparepartTypeModel.php");
+
 $query_filter = '';
 $query = "SELECT * FROM sparepart  ";
 //if(isset($_POST["region_name"])){
@@ -50,9 +52,10 @@ foreach ($result as $row){
 
     //$branch_name = $row['branch'];
     $i++;
-   // $sub_array = array();
-    $sub_array[] = '';
+    $sub_array = array();
+//    $sub_array[] = '';
     $sub_array[] = '<p style="font-weight: ;text-align: left">'.$row['part_no'].'</p>';
+    $sub_array[] = '<p style="font-weight: ;text-align: left">'.getSparepartTypename($connect,$row['part_type_id']).'</p>';
     $sub_array[] = '<p style="font-weight: ;text-align: left">'.$row['part_name'].'</p>';
     $sub_array[] = '<p style="font-weight: ;text-align: left">'.$row['description'].'</p>';
     $sub_array[] = '<p style="font-weight: ;text-align: left">'.$row['cost_price'].'</p>';

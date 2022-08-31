@@ -3,6 +3,7 @@ ob_start();
 session_start();
 date_default_timezone_set('Asia/Bangkok');
 
+
 if (!isset($_SESSION['userid'])) {
     header("location:loginpage.php");
 }
@@ -26,6 +27,7 @@ $emp_helper = '';
 $order_status = '';
 
 $line_item_id = '';
+$line_item_name = '';
 $line_qty = 0;
 $line_price = 0;
 $line_total = 0;
@@ -37,6 +39,8 @@ $line_rec_id = null;
 $remove_list = null;
 $status = '';
 $action = '';
+
+$workorder_id = '0';
 
 if (isset($_SESSION['userid'])) {
     $userid = $_SESSION['userid'];
@@ -69,11 +73,18 @@ if(isset($_POST['status'])){
 if(isset($_POST['line_product_id'])){
     $line_item_id = $_POST['line_product_id'];
 }
+if(isset($_POST['line_product_name'])){
+    $line_item_name = $_POST['line_product_name'];
+}
 if(isset($_POST['line_qty'])){
     $line_qty = $_POST['line_qty'];
 }
 if(isset($_POST['line_price'])){
     $line_price = $_POST['line_price'];
+}
+
+if(isset($_POST['workorder_id'])){
+    $workorder_id = $_POST['workorder_id'];
 }
 //if(isset($_POST['line_total'])){
 //    $line_total = $_POST['line_total'];
@@ -106,7 +117,7 @@ if(isset($_POST['recid'])){
 if(isset($_POST['delete_id'])){
     $delete_id = $_POST['delete_id'];
 }
-//print_r($line_rec_id);return;
+//print_r($line_item_name);return;
 //echo $status; return;
 
 
@@ -116,8 +127,8 @@ if($action == 'create'){
     $quotation_no = getOuotationLastNo($connect);
 //    echo $last_no; return;
     $new_quotation_date = date('Y-m-d');
-    $sql = "INSERT INTO quotation(quotation_no,quotation_date,customer_id,status,created_at,created_by,customer_name)
-    VALUES('$quotation_no','$new_quotation_date','$customer_id','$status','$created_at','$created_by','$customer_name')";
+    $sql = "INSERT INTO quotation(quotation_no,quotation_date,customer_id,status,created_at,created_by,customer_name,workorder_id)
+    VALUES('$quotation_no','$new_quotation_date','$customer_id','$status','$created_at','$created_by','$customer_name','$workorder_id')";
 
     if ($result = $connect->query($sql)) {
         $max_id = getMaxidQuotation($connect);
@@ -129,7 +140,7 @@ if($action == 'create'){
                     $line_total = $line_price[$i] * $line_qty[$i];
                     $item_name = getItemName($line_item_id[$i],$connect);
                     $sql4 = "INSERT INTO quotation_line(quotation_id,item_id,item_name,qty,price,line_total,status)";
-                    $sql4 .= " VALUES('$max_id','$line_item_id[$i]','$item_name','$line_qty[$i]','$line_price[$i]','$line_total',$status)";
+                    $sql4 .= " VALUES('$max_id','$line_item_id[$i]','$line_item_name[$i]','$line_qty[$i]','$line_price[$i]','$line_total',$status)";
                     if ($result4 = $connect->query($sql4)) {
                         echo 'hello';
                     }
@@ -161,7 +172,7 @@ if($action == 'update'){
                     }else{
                         $item_name = getItemName($line_item_id[$i],$connect);
                         $sql5 = "INSERT INTO quotation_line(quotation_id,item_id,item_name,qty,price,line_total)";
-                        $sql5 .= " VALUES('$id','$line_item_id[$i]','$item_name','$line_qty[$i]','$line_price[$i]','$line_total') ";
+                        $sql5 .= " VALUES('$id','$line_item_id[$i]','$line_item_name[$i]','$line_qty[$i]','$line_price[$i]','$line_total') ";
                         if ($result5 = $connect->query($sql5)) {
 //                            echo $sql5; return;
                         }

@@ -15,7 +15,7 @@ if ($id) {
 
     $filtered_rows = $statement->rowCount();
     foreach ($result as $row) {
-        array_push($data,['id'=>$row['id'],'code'=>$row['part_no'],'name'=>$row['part_name'],'description'=>$row['description'],'cost_price'=>$row['cost_price'],'status'=>$row['status']]);
+        array_push($data,['id'=>$row['id'],'code'=>$row['part_no'],'part_type_id'=>$row['part_type_id'],'name'=>$row['part_name'],'description'=>$row['description'],'cost_price'=>$row['cost_price'],'status'=>$row['status']]);
     }
 
     echo json_encode($data);

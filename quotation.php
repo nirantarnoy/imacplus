@@ -1,5 +1,6 @@
 <?php
-//session_start();
+ob_start();
+session_start();
 include "header.php";
 //if (!isset($_SESSION['userid'])) {
 //    header("location:loginpage.php");
@@ -68,6 +69,7 @@ if (isset($_SESSION['msg-error'])) {
                     <th>ลูกค้า</th>
                     <th>สถานะ</th>
                     <th>ผู้บันทึก</th>
+<!--                    <th>-</th>-->
                 </tr>
                 </thead>
                 <tbody>
@@ -114,8 +116,8 @@ include "footer.php";
         },
         "columnDefs": [
             {
-                //  "targets": [7],
-                //  "orderable": false,
+                 // "targets": [6],
+                 // "orderable": false,
             },
 
         ],

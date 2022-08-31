@@ -10,6 +10,7 @@ if (!isset($_SESSION['userid'])) {
 
 $id = 0;
 $code = '';
+$part_type = '';
 $name = '';
 $description = '';
 $status = '';
@@ -25,6 +26,9 @@ if (isset($_SESSION['userid'])) {
 if (isset($_POST['sparepart_code'])) {
     $code = $_POST['sparepart_code'];
 }
+if (isset($_POST['sparepart_type_name'])) {
+    $part_type = $_POST['sparepart_type_name'];
+}
 if (isset($_POST['sparepart_name'])) {
     $name = $_POST['sparepart_name'];
 }
@@ -38,7 +42,7 @@ if (isset($_POST['cost_price'])) {
     $cost_price = $_POST['cost_price'];
 }
 if (isset($_POST['delete_id'])) {
-    $cost_price = $_POST['delete_id'];
+    $delete_id = $_POST['delete_id'];
 }
 
 if (isset($_POST['recid'])) {
@@ -47,13 +51,13 @@ if (isset($_POST['recid'])) {
 if (isset($_POST['action_type'])) {
     $action = $_POST['action_type'];
 }
-//print_r($userid);return;
+//print_r($delete_id);return;
 
 if ($action == 'create') {
     $created_at = time();
     $created_by = $userid;
-    $sql = "INSERT INTO sparepart(part_no,part_name,description,cost_price,status,created_at,created_by)
-            VALUES('$code','$name','$description','$cost_price','$status','$created_at','$created_by')";
+    $sql = "INSERT INTO sparepart(part_no,part_type_id,part_name,description,cost_price,status,created_at,created_by)
+            VALUES('$code','$part_type','$name','$description','$cost_price','$status','$created_at','$created_by')";
     if ($result = $connect->query($sql)) {
         $_SESSION['msg-success'] = 'บันทึกข้อมูลเรียบร้อยแล้ว';
         header('location:sparepart.php');
@@ -67,7 +71,7 @@ if ($action == 'update') {
 //        echo $status;return;
         $created_at = time();
         $created_by = $userid;
-        $sql2 = "UPDATE sparepart SET part_no='$code', part_name='$name',description='$description',cost_price='$cost_price',status='$status',updated_at='$created_at',updated_by='$created_by' WHERE id='$id'";
+        $sql2 = "UPDATE sparepart SET part_no='$code',part_type_id='$part_type', part_name='$name',description='$description',cost_price='$cost_price',status='$status',updated_at='$created_at',updated_by='$created_by' WHERE id='$id'";
         if ($result2 = $connect->query($sql2)) {
             $_SESSION['msg-success'] = 'บันทึกข้อมูลเรียบร้อยแล้ว';
             header('location:sparepart.php');
