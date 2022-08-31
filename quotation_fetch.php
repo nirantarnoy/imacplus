@@ -21,12 +21,12 @@ include("models/UserModel.php");
 $stock_type = 0;
 $query_filter = '';
 $query = "SELECT * FROM quotation ";
-//if(isset($_POST["searchByName"])){
-//    $query .= ' AND (quotation_no LIKE "%'.$_POST["searchByName"].'%" OR customer_name LIKE "%'.$_POST["searchByName"].'%")';
-//}
+if(isset($_POST["searchByName"])){
+    $query .= ' AND (quotation_no LIKE "%'.$_POST["searchByName"].'%" OR customer_name LIKE "%'.$_POST["searchByName"].'%")';
+}
 
 
-<<<<<<< HEAD
+
 if(isset($_POST["order"]))
 {
 //    if($_POST['order']['0']['column'] == 1){
@@ -57,38 +57,7 @@ else
 {
     $query .= ' ORDER BY id ASC ';
 }
-=======
-//if(isset($_POST["order"]))
-//{
-//    if($_POST['order']['0']['column'] == 1){
-//        $query .= ' ORDER BY quotation_no '.$_POST['order']['0']['dir'].' ';
-//    }
-////    if($_POST['order']['2']['column'] == 2){
-////        $query .= ' ORDER BY quotation_date '.$_POST['order']['0']['dir'].' ';
-////    }
-////    if($_POST['order']['0']['column'] == 3){
-////        $query .= ' ORDER BY status '.$_POST['order']['0']['dir'].' ';
-////    }
-////    if($_POST['order']['0']['column'] == 4){
-////        $query .= ' ORDER BY created_by '.$_POST['order']['0']['dir'].' ';
-////    }
-////    if($_POST['order']['0']['column'] == 4){
-////        $query .= ' ORDER BY index2 '.$_POST['order']['0']['dir'].' ';
-////    }
-////    if($_POST['order']['0']['column'] == 5){
-////        $query .= ' ORDER BY index3 '.$_POST['order']['0']['dir'].' ';
-////    }
-////    if($_POST['order']['0']['column'] == 6){
-////        $query .= ' ORDER BY grandtotal '.$_POST['order']['0']['dir'].' ';
-////    }
-//
-//    //   $query .= ' '.$_POST['order']['0']['column'].' '.$_POST['order']['0']['dir'].' ';
-//}
-//else
-//{
-//    $query .= ' ORDER BY id ASC ';
-//}
->>>>>>> aa6d31e029902df5937aaf9bf3e790ed52f64348
+
 
 $query_filter = $query;
 

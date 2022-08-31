@@ -40,11 +40,11 @@ $remove_list = null;
 $status = '';
 $action = '';
 
-<<<<<<< HEAD
+
 $workorder_id = '0';
-=======
+
 $quotation_confirm_id = 1;
->>>>>>> aa6d31e029902df5937aaf9bf3e790ed52f64348
+
 
 if (isset($_SESSION['userid'])) {
     $userid = $_SESSION['userid'];
@@ -87,18 +87,18 @@ if(isset($_POST['line_price'])){
     $line_price = $_POST['line_price'];
 }
 
-<<<<<<< HEAD
+
 if(isset($_POST['workorder_id'])){
     $workorder_id = $_POST['workorder_id'];
 }
 //if(isset($_POST['line_total'])){
 //    $line_total = $_POST['line_total'];
 //}
-=======
+
 if(isset($_POST['quotation_confirm_id'])){
     $quotation_confirm_id = $_POST['quotation_confirm_id'];
 }
->>>>>>> aa6d31e029902df5937aaf9bf3e790ed52f64348
+
 //if(isset($_POST['line_promotion_id'])){
 //    $line_promotion_id = $_POST['line_promotion_id'];
 //}
