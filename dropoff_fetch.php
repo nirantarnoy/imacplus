@@ -8,6 +8,7 @@ if(!isset($_SESSION['userid'])){
 include("common/dbcon.php");
 include("models/StatusModel.php");
 include("models/MemberModel.php");
+include("models/WorkorderModel.php");
 $query_filter = '';
 $member_id = getMemberIDFromUser($connect, $_SESSION['userid']);
 $query = "SELECT * FROM dropoff_trans WHERE id > 0 AND member_id=".$member_id;
@@ -56,7 +57,7 @@ foreach ($result as $row){
 //    $sub_array[] = '<p style="font-weight: ;text-align: left">'.$i.'</p>';
     $sub_array[] = '<p style="font-weight: ;text-align: left">'.$row['trans_date'].'</p>';
     $sub_array[] = '<p style="font-weight: ;text-align: left">'.getMembername($connect,$row['member_id']).'</p>';
-    $sub_array[] = '<p style="font-weight: ;text-align: left">'.$row['workorder_ref_id'].'</p>';
+    $sub_array[] = '<p style="font-weight: ;text-align: left">'.getOrderNobyId($connect,$row['workorder_ref_id']).'</p>';
     $sub_array[] = '<p style="font-weight: ;text-align: left">'.getStatus($row['status']).'</p>';
     $sub_array[] = '<div class="btn btn-secondary btn-sm" data-id="'.$row['id'].'" onclick="showupdate($(this))"><i class="fas fa-edit"></i> Edit</div><span> </span><div class="btn btn-danger btn-sm" data-id="'.$row['id'].'" onclick="recDelete($(this))"><i class="fas fa-trash-alt"></i> Delete</div>';
 
