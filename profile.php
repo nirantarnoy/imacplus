@@ -31,6 +31,62 @@ $member_id = getMemberFromUser($_SESSION['userid'], $connect);
     <input type="hidden" class="msg-error" value="<?= $noti_error ?>">
     <!-- the left side profile picture and other info -->
     <div class="col-lg-9">
+        <div class="row">
+            <div class="col-lg-12" style="text-align: center;background-color: #DBF9DB;border-color: #99C68E;width: 100%;border-width: 2px;border-radius: 5px;margin: 5px;">
+                <br />
+                <div class="row">
+                    <div class="col-lg-6 d-flex flex-column py-3 px-lg-5 justify-content-lg-between align-items-lg-end" style="text-align: right">
+                        <div style=" width: 20%;height: 20%;">
+                            <img alt="Profile image"
+                                 src="assets/iCOn/iCOn/success_logo.png" style="width: 90%;"/>
+                        </div>
+                    </div>
+                    <div class="col-lg-6 " style="text-align: left;margin-top: 5px">
+                        <br />
+                        <h4 style="color: #5bb15b">ยืนยันตัวตนสำเร็จ</h4>
+                        <h6 style="color: black">คุณสามารถถอน mPoint และส่งซ่อมได้แล้ว</h6>
+                    </div>
+                </div>
+                <br />
+<!--                <div style="text-align: center;width: 5%;height: 5%;margin-top: 5px;">-->
+<!--                    <img alt="Profile image"-->
+<!--                         src="assets/iCOn/iCOn/wallet.png" style="width: 70%;"/>-->
+<!--                </div>-->
+<!--                <h4 style="color: #5bb15b">ยืนยันตัวตนสำเร็จ</h4>-->
+<!--                <h6 style="color: black">คุณสามารถถอน mPoint และส่งซ่อมได้แล้ว</h6>-->
+            </div>
+        </div>
+
+        <br />
+
+        <div class="row">
+            <div class="col-lg-12" style="text-align: center;background-color: #DBF9DB;border-color: #99C68E;width: 100%;border-width: 2px;border-radius: 5px;margin: 5px;">
+                <br />
+                <div class="row">
+                    <div class="col-lg-6 d-flex flex-column py-3 px-lg-5 justify-content-lg-between align-items-lg-end" style="text-align: right">
+                        <div style=" width: 20%;height: 20%;">
+                            <img alt="Profile image"
+                                 src="assets/iCOn/iCOn/unsuccess_logo.png" style="width: 90%;"/>
+                        </div>
+                    </div>
+                    <div class="col-lg-6 " style="text-align: left;margin-top: 5px">
+                        <br />
+                        <h4 style="color: #5bb15b">ยืนยันตัวตนไม่สำเร็จ</h4>
+                        <h6 style="color: black">คุณไม่สามารถถอน mPoint และไม่สามารคส่งซ่อมได้</h6>
+                    </div>
+                </div>
+                <br />
+                <!--                <div style="text-align: center;width: 5%;height: 5%;margin-top: 5px;">-->
+                <!--                    <img alt="Profile image"-->
+                <!--                         src="assets/iCOn/iCOn/wallet.png" style="width: 70%;"/>-->
+                <!--                </div>-->
+                <!--                <h4 style="color: #5bb15b">ยืนยันตัวตนสำเร็จ</h4>-->
+                <!--                <h6 style="color: black">คุณสามารถถอน mPoint และส่งซ่อมได้แล้ว</h6>-->
+            </div>
+        </div>
+
+        <br />
+
         <div class="card" style="border-color: #5bb15b;border-width: 3px;background-color: #f0efef">
             <div class="card-body">
                     <span class="d-none position-tl mt-2 pt-3px">
