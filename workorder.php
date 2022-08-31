@@ -336,6 +336,17 @@ if (isset($_SESSION['msg-error'])) {
                         </div>
                     </div>
                     <br/>
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <h6><b>รูปภาพ/วีดีโอ หลังซ่อม</b></h6>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-12">
+
+                        </div>
+                    </div>
+                    <br/>
                     <br/>
 
 
@@ -344,13 +355,19 @@ if (isset($_SESSION['msg-error'])) {
                 <!-- Modal footer -->
                 <div class="modal-footer">
 
-                        <div class="btn btn-secondary" onclick="createQuotation($(this))">
+                    <div class="btn btn-secondary btn-create-quotation" onclick="createQuotation($(this))">
 
-                            <i
-                                    class="fa fa-check-circle"></i> เสนอราคา
-                        </div>
+                        <i
+                                class="fa fa-check-circle"></i> เสนอราคา
+                    </div>
 
-                    
+                    <div class="btn btn-secondary btn-close-work" onclick="closeworkorder($(this))">
+
+                        <i
+                                class="fa fa-check-circle"></i> ปิดใบแจ้งซ่อม
+                    </div>
+
+
                     <button type="submit" class="btn btn-info btn-receive" data-dismiss="modalx"><i
                                 class="fa fa-check-circle"></i> ตรวจรับเครื่อง
                     </button>
@@ -366,6 +383,9 @@ if (isset($_SESSION['msg-error'])) {
     </div>
 </div>
 <form id="form-create-quotation" action="quotation_create.php" method="post">
+    <input type="hidden" class="user-recid" value="" name="ref_id">
+</form>
+<form id="form-close-work" action="workorderclose.php" method="post">
     <input type="hidden" class="user-recid" value="" name="ref_id">
 </form>
 <div class="modal" id="findCenterModal">
@@ -427,8 +447,12 @@ include "footer.php";
     }
 
     function createQuotation(e) {
-        alert();
+        //alert();
         $("#form-create-quotation").submit();
+    }
+    function closeworkorder(e) {
+        //alert();
+        $("#form-close-work").submit();
     }
 
     function showaddbank(e) {
@@ -451,6 +475,8 @@ include "footer.php";
 
         $(".modal-title").html('สร้างข้อมูลใบสั่งซ่อม');
         $(".action-type").val('create');
+
+
 
 
         $("#myModal").modal("show");
@@ -549,6 +575,28 @@ include "footer.php";
             $(".pre-pay").val(pre_pay);
             $(".note").val(note);
             $(".work-finish-date").val(estimate_finish);
+// alert(status);
+            if(status < 1){
+                $(".btn-receive").show();
+                $(".btn-create-quotation").hide();
+                $(".btn-close-work").hide();
+            }else if(status >1 && status <2){
+                $(".btn-receive").hide();
+                $(".btn-create-quotation").show();
+                $(".btn-close-work").hide();
+            }else if(status >2 && status <3){
+                $(".btn-receive").hide();
+                $(".btn-create-quotation").hide();
+                $(".btn-close-work").show();
+            }else if(status >=3 && status <4){
+                $(".btn-receive").hide();
+                $(".btn-create-quotation").hide();
+                $(".btn-close-work").show();
+            }else{
+                $(".btn-receive").hide();
+                $(".btn-create-quotation").hide();
+                $(".btn-close-work").hide();
+            }
 
 
             if (checklist.length > 0) {
