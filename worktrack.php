@@ -1,5 +1,16 @@
 <?php
 include "header.php";
+include "models/WorkorderModel.php";
+
+$id = '';
+if (isset($_GET['id'])) {
+    $id = $_GET['id'];
+}
+
+//echo $_GET['id'];
+$workorder_data = getWorkorder($connect,$id);
+//print_r($workorder_data);
+
 ?>
 <input type="hidden" class="msg-ok" value="<?= $noti_ok ?>">
 <input type="hidden" class="msg-error" value="<?= $noti_error ?>">
@@ -24,10 +35,10 @@ include "header.php";
 </div>
 <br/>
 <div class="row">
-    <div class="col-lg-12" style="text-align: center;"><h3>เลขที่ใบสั่งซ่อม 220707-000000001</h3></div>
+    <div class="col-lg-12" style="text-align: center;"><h3>เลขที่ใบสั่งซ่อม <?= $workorder_data[0]['work_no'] ?></h3></div>
 </div>
 <div class="row">
-    <div class="col-lg-12" style="text-align: center;"><h3 style="color: #0f64a9">iPhone SE3</h3></div>
+    <div class="col-lg-12" style="text-align: center;"><h3 style="color: #0f64a9"><?= $workorder_data[0]['phone_model_id'] ?></h3></div>
 </div>
 <br />
 <div id="smartwizard-1" class="d-none mx-n3 mx-sm-auto">

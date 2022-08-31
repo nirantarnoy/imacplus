@@ -1,4 +1,6 @@
 <?php
+include "models/ItemModel.php";
+
 function getOrderMaxid($connect,$member_id){
     $query = "SELECT MAX(id) as id FROM workorders WHERE created_by = '$member_id' ";
     $statement = $connect->prepare($query);
@@ -97,5 +99,43 @@ function getWorkStatusData()
     return $data;
 }
 
+function getWorkorderData($connect, $id)
+{
+    $data = [];
+    $member_id = getMemberIDFromUser($connect, $id);
+    $query = "SELECT * FROM workorders WHERE created_by='$member_id'";
+    $statement = $connect->prepare($query);
+    $statement->execute();
+    $result = $statement->fetchAll();
+    $filtered_rows = $statement->rowCount();
+    if ($filtered_rows > 0) {
+        foreach ($result as $row) {
+            array_push($data, ['id' => $row['id'], 'work_no' => $row['work_no'], 'work_date' => $row['work_date'], 'status' => $row['status']]);
+        }
+    }
+    return $data;
+}
+
+function getWorkorder($connect, $id)
+{
+    $data = [];
+    $query = "SELECT * FROM workorders WHERE id='$id'";
+    $statement = $connect->prepare($query);
+    $statement->execute();
+    $result = $statement->fetchAll();
+    $filtered_rows = $statement->rowCount();
+    if ($filtered_rows > 0) {
+        foreach ($result as $row) {
+            array_push($data, [
+                'id' => $row['id'],
+                'work_no' => $row['work_no'],
+                'work_date' => $row['work_date'],
+                'phone_model_id' => getItemName($row['phone_model_id'],$connect),
+                'status' => $row['status'],
+            ]);
+        }
+    }
+    return $data;
+}
 
 ?>
