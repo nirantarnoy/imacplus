@@ -5,7 +5,7 @@ date_default_timezone_set('Asia/Bangkok');
 include("common/dbcon.php");
 include("models/WorkorderModel.php");
 include("models/MemberModel.php");
-include("models/PointCalculator.php");
+//include("models/PointCalculator.php");
 $check_list = [];
 $customer_id = null;
 $customer_name = '';
