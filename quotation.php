@@ -114,6 +114,7 @@ include "footer.php";
                 // data.searchByIndex = index;
             }
         },
+<<<<<<< HEAD
         "columnDefs": [
             {
                  // "targets": [6],
@@ -121,6 +122,15 @@ include "footer.php";
             },
 
         ],
+=======
+        // "columnDefs": [
+        //     {
+        //           "targets": [6],
+        //           "orderable": false,
+        //     },
+        //
+        // ],
+>>>>>>> aa6d31e029902df5937aaf9bf3e790ed52f64348
     });
 
     $('#search-name').change(function () {
