@@ -12,6 +12,7 @@ include("models/ChecklistModel.php");
 include("models/ItembrandModel.php");
 include("models/ProvinceModel.php");
 include("models/work_delivery_type.php");
+include("models/WorkorderStatus.php");
 
 
 //$position_data = getPositionmodel($connect);
@@ -59,8 +60,8 @@ if (count($checklist_data) > 0) {
 
 $noti_ok = '';
 $noti_error = '';
-$status_data = [['id' => 0, 'name' => 'รับคำสั่งซ่อม'], ['id' => 1, 'name' => 'กำลังซ่อม'],['id'=>2,'name'=>'ซ่อมเสร็จ']];
-
+//$status_data = [['id' => 0, 'name' => 'รับคำสั่งซ่อม'], ['id' => 1, 'name' => 'กำลังซ่อม'],['id'=>2,'name'=>'ซ่อมเสร็จ']];
+$status_data = getWorkorderStatusData();
 if (isset($_SESSION['msg-success'])) {
     $noti_ok = $_SESSION['msg-success'];
     unset($_SESSION['msg-success']);
@@ -341,10 +342,18 @@ if (isset($_SESSION['msg-error'])) {
 
                 <!-- Modal footer -->
                 <div class="modal-footer">
-                    <button type="submit" class="btn btn-success btn-save" data-dismiss="modalx"><i
-                                class="fa fa-save"></i> Save
+                    <a href="quotation_create.php" method="post" class="btn btn-secondary btn-create-quotation" data-dismiss="modalx">
+                        <input type="hidden" class="user-recid" value="">
+                        <i
+                                class="fa fa-check-circle"></i> เสนอราคา
+                    </a>
+                    <button type="submit" class="btn btn-info btn-receive" data-dismiss="modalx"><i
+                                class="fa fa-check-circle"></i> ตรวจรับเครื่อง
                     </button>
-                    <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fa fa-ban"></i> Cancel
+                    <button type="submit" class="btn btn-success btn-save" data-dismiss="modalx"><i
+                                class="fa fa-save"></i> บันทึก
+                    </button>
+                    <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fa fa-ban"></i> ปิดหน้าต่าง
                     </button>
                 </div>
             </form>
@@ -645,7 +654,7 @@ include "footer.php";
     function findCenterByProvince(e){
         var id = e.val();
         if(id !=''){
-            alert(id);
+           // alert(id);
             $.ajax({
                 'type': 'post',
                 'dataType': 'html',

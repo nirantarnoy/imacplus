@@ -112,13 +112,13 @@ include "footer.php";
                 // data.searchByIndex = index;
             }
         },
-        "columnDefs": [
-            {
-                //  "targets": [7],
-                //  "orderable": false,
-            },
-
-        ],
+        // "columnDefs": [
+        //     {
+        //           "targets": [6],
+        //           "orderable": false,
+        //     },
+        //
+        // ],
     });
 
     $('#search-name').change(function () {

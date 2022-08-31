@@ -38,6 +38,8 @@ $remove_list = null;
 $status = '';
 $action = '';
 
+$quotation_confirm_id = 1;
+
 if (isset($_SESSION['userid'])) {
     $userid = $_SESSION['userid'];
 }
@@ -75,9 +77,10 @@ if(isset($_POST['line_qty'])){
 if(isset($_POST['line_price'])){
     $line_price = $_POST['line_price'];
 }
-//if(isset($_POST['line_total'])){
-//    $line_total = $_POST['line_total'];
-//}
+
+if(isset($_POST['quotation_confirm_id'])){
+    $quotation_confirm_id = $_POST['quotation_confirm_id'];
+}
 //if(isset($_POST['line_promotion_id'])){
 //    $line_promotion_id = $_POST['line_promotion_id'];
 //}
@@ -197,6 +200,72 @@ if($action == 'delete'){
             header('location:quotation.php');
         }else{
             echo "no";return;
+        }
+    }
+}
+if($action == 'confirm') {
+    if ($quotation_confirm_id > 0) {
+        $sql_confirm = "UPDATE quotation SET status=1 WHERE id='$quotation_confirm_id' ";
+        if ($result_confirm = $connect->query($sql_confirm)) {
+            if(deductStock($connect, $quotation_confirm_id)){
+                updateWorkorder($connect, $quotation_confirm_id);
+            }
+            $_SESSION['msg-success'] = 'ทำรายการสำเร็จ';
+            header('location:quotation.php');
+        }
+    }
+
+}
+
+function deductStock($connect,$quotation_id){
+    $res = 0;
+    if($quotation_id){
+        $query = "SELECT * FROM quotation_line WHERE quotation_id='$quotation_id'";
+            if ($result2 = $connect->query($query)) {
+                foreach ($result2 as $row) {
+                    $res = deductStockItem($connect,$row['item_id'],$row['qty']);
+                }
+            }
+    }
+    return $res;
+}
+function deductStockItem($connect,$item_id,$qty){
+    if($item_id){
+        $old_qty = getSparepartOldQty($connect,$item_id);
+        $new_qty = ($old_qty - $qty);
+        $sql_confirm = "UPDATE sparepart_stock SET qty='$new_qty' WHERE sparepart_id='$item_id' ";
+        if ($connect->query($sql_confirm)) {
+         return 1;
+        }
+    }else{
+        return 0;
+    }
+}
+
+function getSparepartOldQty($connect,$item_id){
+    if($item_id){
+        $query = "SELECT * FROM sparepart_stock WHERE sparepart_id='$item_id'";
+        if ($result2 = $connect->query($query)) {
+            foreach ($result2 as $row) {
+               return $row['qty'];
+            }
+        }
+    }
+}
+
+function updateWorkorder($connect, $quotation_id){
+    if($quotation_id){
+        $query = "SELECT * FROM quotation WHERE id='$quotation_id'";
+        if ($result2 = $connect->query($query)) {
+            foreach ($result2 as $row) {
+                $work_id = $row['workorder_id'];
+                if($work_id != null){
+                    $sql_confirm = "UPDATE workorders SET status=3 WHERE id='$work_id' ";
+                    if ($connect->query($sql_confirm)) {
+                        return 1;
+                    }
+                }
+            }
         }
     }
 }
