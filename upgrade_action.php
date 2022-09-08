@@ -7,6 +7,7 @@ include "models/MemberModel.php";
 
 $id = 0;
 $action = "";
+$upgrade_to_member_type = 0;
 
 if (isset($_POST['delete_id'])) {
     $id = $_POST['delete_id'];
@@ -14,25 +15,29 @@ if (isset($_POST['delete_id'])) {
 if (isset($_POST['action_type'])) {
     $action = $_POST['action_type'];
 }
-
+if (isset($_POST['member_type_id'])) {
+    $upgrade_to_member_type = $_POST['member_type_id'];
+}
 if ($id > 0) {
     if ($action == 'accept') {
         $res = 0;
         $member_id = getMemberFromUpgradeId($id, $connect);
-        $parent_id = findCurrentParentId($connect, $member_id);
+
+        // find parent
+        $parent_id = findParent($connect, $member_id);
+        $parent_2_id = findParent($connect, $parent_id);
 
         $old_point = getOldParentPoint($connect, $parent_id);
 
         $new_point = ($old_point + 500);
-        //  echo $new_wallet_amount;return;
-//        if (updateMemberPoint($connect, $member_id, $new_point)) {
-//            if (updateMemberUpgradeStatus($connect, $id)) {
-//                $res += 1;
-//            }
-//        }
-        //echo $member_id;return;
-        if (updateMemberType($connect, $member_id)) {
+
+        if (updateMemberType($connect, $member_id, $upgrade_to_member_type)) {
             if (updateMemberUpgradeStatus($connect, $id)) {
+
+
+
+
+
                 if (updateParentMemberPoint($connect, $parent_id, $new_point)) {
                     $res += 1;
                 }
@@ -147,9 +152,9 @@ function updateParentMemberPoint($connect, $parentid, $new_point)
 
 }
 
-function updateMemberType($connect, $member_id)
+function updateMemberType($connect, $member_id, $upgrade_to_member_type)
 {
-    $sql = "UPDATE member SET member_type_id=28 WHERE id='$member_id'";
+    $sql = "UPDATE member SET member_type_id='$upgrade_to_member_type' WHERE id='$member_id'";
     if ($connect->query($sql)) {
         return 1;
     } else {
@@ -178,6 +183,45 @@ function declineWallet($connect, $id)
         return 0;
     }
 
+}
+
+
+/// upgrade cal
+function findParent($connect, $member_id)
+{
+    $parent_id = 0;
+    if ($member_id) {
+        $query = "SELECT * FROM member WHERE id='$member_id'";
+        $statement = $connect->prepare($query);
+
+        $statement->execute();
+        $result = $statement->fetchAll();
+
+        foreach ($result as $row) {
+            $parent_id = $row['parent_id'];
+        }
+
+    }
+    return $parent_id;
+}
+function findIntroducePercent($connect, $member_id, $member_type_id)
+{
+    $per = 0;
+    $member_type = getMemberType($connect, $member_id);
+    $query = "SELECT * FROM member_type WHERE id = '$member_type'";
+    $statement = $connect->prepare($query);
+
+    $statement->execute();
+    $result = $statement->fetchAll();
+
+    //$cus_data = array();
+    //$filtered_rows = $statement->rowCount();
+    foreach ($result as $row) {
+        if($member_type_id == $member_type)
+        $per = $row['introduce_percent'];
+        //  array_push($cus_data,['id'=>$row['id'],'name'=>$row['name'],'percent_rate'=>$row['percent_rate']]);
+    }
+    return $per;
 }
 
 ?>

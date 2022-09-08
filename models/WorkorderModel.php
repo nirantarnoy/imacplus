@@ -237,6 +237,38 @@ function getPointthismonth($connect, $member_id){
     return $total;
 }
 
+function getPointall($connect, $member_id){
+    $total = 0;
+    $query = "SELECT * FROM workorders WHERE created_by = '$member_id' ";
+    $statement = $connect->prepare($query);
+    $statement->execute();
+    $result = $statement->fetchAll();
+    $filtered_rows = $statement->rowCount();
+
+    if($filtered_rows > 0){
+        foreach($result as $row){
+            $total = ($total + calmpointtrans($connect, $row['id']));
+        }
+    }
+    return $total;
+}
+
+function getCurrentPoint($connect, $member_id){
+    $balance = 0;
+    $query = "SELECT point FROM member WHERE created_by = '$member_id' ";
+    $statement = $connect->prepare($query);
+    $statement->execute();
+    $result = $statement->fetchAll();
+    $filtered_rows = $statement->rowCount();
+
+    if($filtered_rows > 0){
+        foreach($result as $row){
+            $balance = $row['point'];
+        }
+    }
+    return $balance;
+}
+
 function getPointthisday($connect, $member_id){
 
 }

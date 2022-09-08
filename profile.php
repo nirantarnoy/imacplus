@@ -24,6 +24,9 @@ if (isset($_SESSION['msg-error'])) {
 }
 //echo date('d:m:Y H:i');return;
 $member_id = getMemberFromUser($_SESSION['userid'], $connect);
+
+$onlineran = mt_rand(1000, 3000);
+$onlineuser = mt_rand($onlineran + 1, 3000);
 ?>
 
 <div class="row">
@@ -33,50 +36,24 @@ $member_id = getMemberFromUser($_SESSION['userid'], $connect);
     <!-- the left side profile picture and other info -->
     <div class="col-lg-9">
         <div class="row">
-            <div class="col-lg-12" style="text-align: center;background-color: #DBF9DB;border-color: #99C68E;width: 100%;border-width: 2px;border-radius: 5px;margin: 5px;">
-                <br />
+            <div class="col-lg-12"
+                 style="text-align: center;background-color: #DBF9DB;border-color: #99C68E;width: 100%;border-width: 2px;border-radius: 5px;margin: 5px;">
+                <br/>
                 <div class="row">
-                    <div class="col-lg-6 d-flex flex-column py-3 px-lg-5 justify-content-lg-between align-items-lg-end" style="text-align: right">
+                    <div class="col-lg-6 d-flex flex-column py-3 px-lg-5 justify-content-lg-between align-items-lg-end"
+                         style="text-align: right">
                         <div style=" width: 20%;height: 20%;">
                             <img alt="Profile image"
                                  src="assets/iCOn/iCOn/success_logo.png" style="width: 90%;"/>
                         </div>
                     </div>
                     <div class="col-lg-6 " style="text-align: left;margin-top: 5px">
-                        <br />
+                        <br/>
                         <h4 style="color: #5bb15b">ยืนยันตัวตนสำเร็จ</h4>
                         <h6 style="color: black">คุณสามารถถอน mPoint และส่งซ่อมได้แล้ว</h6>
                     </div>
                 </div>
-                <br />
-<!--                <div style="text-align: center;width: 5%;height: 5%;margin-top: 5px;">-->
-<!--                    <img alt="Profile image"-->
-<!--                         src="assets/iCOn/iCOn/wallet.png" style="width: 70%;"/>-->
-<!--                </div>-->
-<!--                <h4 style="color: #5bb15b">ยืนยันตัวตนสำเร็จ</h4>-->
-<!--                <h6 style="color: black">คุณสามารถถอน mPoint และส่งซ่อมได้แล้ว</h6>-->
-            </div>
-        </div>
-
-        <br />
-
-        <div class="row">
-            <div class="col-lg-12 bg-danger" style="text-align: center;border-color: #99C68E;width: 100%;border-width: 2px;border-radius: 5px;margin: 5px;">
-                <br />
-                <div class="row">
-                    <div class="col-lg-6 d-flex flex-column py-3 px-lg-5 justify-content-lg-between align-items-lg-end" style="text-align: right">
-                        <div style=" width: 20%;height: 20%;">
-                            <img alt="Profile image"
-                                 src="assets/iCOn/iCOn/unsuccess_logo.png" style="width: 90%;"/>
-                        </div>
-                    </div>
-                    <div class="col-lg-6 " style="text-align: left;margin-top: 5px">
-                        <br />
-                        <h4 style="color: white">ยืนยันตัวตนไม่สำเร็จ</h4>
-                        <h6 style="color: white">คุณไม่สามารถถอน mPoint และไม่สามารคส่งซ่อมได้</h6>
-                    </div>
-                </div>
-                <br />
+                <br/>
                 <!--                <div style="text-align: center;width: 5%;height: 5%;margin-top: 5px;">-->
                 <!--                    <img alt="Profile image"-->
                 <!--                         src="assets/iCOn/iCOn/wallet.png" style="width: 70%;"/>-->
@@ -86,7 +63,37 @@ $member_id = getMemberFromUser($_SESSION['userid'], $connect);
             </div>
         </div>
 
-        <br />
+        <br/>
+
+        <div class="row" style="display: none;">
+            <div class="col-lg-12 bg-danger"
+                 style="text-align: center;border-color: #99C68E;width: 100%;border-width: 2px;border-radius: 5px;margin: 5px;">
+                <br/>
+                <div class="row">
+                    <div class="col-lg-6 d-flex flex-column py-3 px-lg-5 justify-content-lg-between align-items-lg-end"
+                         style="text-align: right">
+                        <div style=" width: 20%;height: 20%;">
+                            <img alt="Profile image"
+                                 src="assets/iCOn/iCOn/unsuccess_logo.png" style="width: 90%;"/>
+                        </div>
+                    </div>
+                    <div class="col-lg-6 " style="text-align: left;margin-top: 5px">
+                        <br/>
+                        <h4 style="color: white">ยืนยันตัวตนไม่สำเร็จ</h4>
+                        <h6 style="color: white">คุณไม่สามารถถอน mPoint และไม่สามารคส่งซ่อมได้</h6>
+                    </div>
+                </div>
+                <br/>
+                <!--                <div style="text-align: center;width: 5%;height: 5%;margin-top: 5px;">-->
+                <!--                    <img alt="Profile image"-->
+                <!--                         src="assets/iCOn/iCOn/wallet.png" style="width: 70%;"/>-->
+                <!--                </div>-->
+                <!--                <h4 style="color: #5bb15b">ยืนยันตัวตนสำเร็จ</h4>-->
+                <!--                <h6 style="color: black">คุณสามารถถอน mPoint และส่งซ่อมได้แล้ว</h6>-->
+            </div>
+        </div>
+
+        <br/>
 
         <div class="card" style="border-color: #5bb15b;border-width: 3px;background-color: #f0efef">
             <div class="card-body">
@@ -99,9 +106,12 @@ $member_id = getMemberFromUser($_SESSION['userid'], $connect);
                     <div class="col-lg-6">
                         <div style="border-width: 3px;border-color: #5bb15b;background-color: white;padding: 10px;border-radius: 10px;width: 100%">
                             <div class="mx-auto mt-25 text-right">
-                                <div class="btn btn-secondary btn-xs btn-edit-profile" style="font-size: 10px;">แก้ไขรูปโปรไฟล์</div>
+                                <div class="btn btn-secondary btn-xs btn-edit-profile" style="font-size: 10px;">
+                                    แก้ไขรูปโปรไฟล์
+                                </div>
                                 <a href="profile_editpage.php?refid=<?= $member_id ?>"
-                                   class="btn btn-info btn-xs btn-edit-data" style="font-size: 10px;">แก้ไขข้อมูลส่วนตัว</a>
+                                   class="btn btn-info btn-xs btn-edit-data"
+                                   style="font-size: 10px;">แก้ไขข้อมูลส่วนตัว</a>
                             </div>
                             <div class="d-flex flex-column py-3 px-lg-5 justify-content-center align-items-center">
                                 <div class="pos-rel">
@@ -120,7 +130,8 @@ $member_id = getMemberFromUser($_SESSION['userid'], $connect);
                                         <?= getUserDisplayname($_SESSION['userid'], $connect) ?>
                                     </h3>
 
-                                    <span class="text-100 text-600" style="background-color: #5bb15b;color: white;border-radius: 10px;padding: 5px;">
+                                    <span class="text-100 text-600"
+                                          style="background-color: #5bb15b;color: white;border-radius: 10px;padding: 5px;">
                             <?php //echo getMemberType($connect, $member_id)?>
                                         <?= getMembertypeName(getMemberType($connect, $member_id), $connect) ?> <br/>
 
@@ -149,7 +160,8 @@ $member_id = getMemberFromUser($_SESSION['userid'], $connect);
                             </div>
                             <div class="row" style="padding-left: 10px;padding-right: 10px;">
                                 <div class="col-lg-12">
-                                    <div class="row" style="background-color: lightgrey;border-radius: 10px;padding: 2px;">
+                                    <div class="row"
+                                         style="background-color: lightgrey;border-radius: 10px;padding: 2px;">
                                         <div class="col-lg-12" style="text-align: left">
                                             <b>Link:</b> <span> </span> <?= getMemberurl($connect, $member_id) ?>
                                         </div>
@@ -159,9 +171,12 @@ $member_id = getMemberFromUser($_SESSION['userid'], $connect);
                             <div style="height: 10px;"></div>
                             <div class="row">
                                 <div class="col-lg-12" style="text-align: center;">
-                                    <span class="text-100 text-600" style="background-color: #e0a800;color: white;border-radius: 5px;padding-left: 20px;padding-right: 20px;">
+                                    <a href="upgraderequest.php">
+                                    <span class="text-100 text-600"
+                                          style="background-color: #e0a800;color: white;border-radius: 5px;padding-left: 20px;padding-right: 20px;">
                                         STATUS
                                     </span>
+                                    </a>
                                 </div>
                             </div>
                         </div>
@@ -171,12 +186,13 @@ $member_id = getMemberFromUser($_SESSION['userid'], $connect);
                         <div class="row">
                             <div class="col-lg-6">
                                 <a class="btn" href="workorder.php?element=1"
-                                     style="background-color: white;border-color: #5bb15b;width: 100%;border-width: 2px;border-radius: 10px;margin: 5px;">
+                                   style="background-color: white;border-color: #5bb15b;width: 100%;border-width: 2px;border-radius: 10px;margin: 5px;">
                                     <div class="row">
                                         <div class="col-lg-4">
                                             <div style="width: 100%;height: 100%;margin-top: 5px;">
                                                 <img alt="Profile image"
-                                                     src="assets/iCOn/iCOn/work_photo.png" style="width: 100%;height: auto"/>
+                                                     src="assets/iCOn/iCOn/work_photo.png"
+                                                     style="width: 100%;height: auto"/>
                                             </div>
                                         </div>
                                         <div class="col-lg-8" style="text-align: center;">
@@ -188,7 +204,7 @@ $member_id = getMemberFromUser($_SESSION['userid'], $connect);
                             </div>
                             <div class="col-lg-6">
                                 <a class="btn" href="dropoff.php?element=1"
-                                     style="background-color: white;border-color: #5bb15b;width: 100%;border-width: 2px;border-radius: 10px;margin: 5px;">
+                                   style="background-color: white;border-color: #5bb15b;width: 100%;border-width: 2px;border-radius: 10px;margin: 5px;">
                                     <div class="row">
                                         <div class="col-lg-4">
                                             <div style="width: 100%;height: 100%;margin-top: 5px;">
@@ -208,7 +224,7 @@ $member_id = getMemberFromUser($_SESSION['userid'], $connect);
                         <div class="row">
                             <div class="col-lg-6">
                                 <a class="btn" href="walletlist.php?element=1"
-                                     style="background-color: white;border-color: #5bb15b;width: 100%;border-width: 2px;border-radius: 10px;margin: 5px;">
+                                   style="background-color: white;border-color: #5bb15b;width: 100%;border-width: 2px;border-radius: 10px;margin: 5px;">
                                     <div class="row">
                                         <div class="col-lg-4">
                                             <div style="width: 100%;height: 100%;margin-top: 5px;">
@@ -225,7 +241,7 @@ $member_id = getMemberFromUser($_SESSION['userid'], $connect);
                             </div>
                             <div class="col-lg-6">
                                 <a class="btn" href="witdrawlist.php?element=1"
-                                     style="background-color: white;border-color: #5bb15b;width: 100%;border-width: 2px;border-radius: 10px;margin: 5px;">
+                                   style="background-color: white;border-color: #5bb15b;width: 100%;border-width: 2px;border-radius: 10px;margin: 5px;">
                                     <div class="row">
                                         <div class="col-lg-4">
                                             <div style="width: 100%;height: 100%;margin-top: 5px;">
@@ -262,7 +278,7 @@ $member_id = getMemberFromUser($_SESSION['userid'], $connect);
                             </div>
                             <div class="col-lg-6">
                                 <a class="btn" href="member_team.php"
-                                     style="background-color: white;border-color: #5bb15b;width: 100%;border-width: 2px;border-radius: 10px;margin: 5px;">
+                                   style="background-color: white;border-color: #5bb15b;width: 100%;border-width: 2px;border-radius: 10px;margin: 5px;">
                                     <div class="row">
                                         <div class="col-lg-4">
                                             <div style="width: 100%;height: 100%;margin-top: 5px;">
@@ -292,7 +308,7 @@ $member_id = getMemberFromUser($_SESSION['userid'], $connect);
                             <div style="height: 10px;"></div>
                             <div class="row">
                                 <div class="col-lg-12" style="text-align: center;color: white">
-                                    <h1><?=number_format(getPointthismonth($connect,$member_id))?></h1>
+                                    <h1><?= number_format(getPointall($connect, $member_id)) ?></h1>
                                 </div>
                             </div>
 
@@ -329,7 +345,7 @@ $member_id = getMemberFromUser($_SESSION['userid'], $connect);
                             <div class="row">
                                 <div class="col-lg-12" style="text-align: center;">
                                     <b>รายได้สะสมเดือนนี้</b>
-                                    <h2><?=number_format(getPointthismonth($connect, $member_id))?></h2>
+                                    <h2><?= number_format(getPointthismonth($connect, $member_id)) ?></h2>
                                 </div>
                             </div>
                         </a>
@@ -340,22 +356,22 @@ $member_id = getMemberFromUser($_SESSION['userid'], $connect);
                             <div class="row">
                                 <div class="col-lg-12" style="text-align: center;">
                                     <b>รายได้สะสมคงเหลือ</b>
-                                    <h2>0</h2>
+                                    <h2><?= number_format(getCurrentPoint($connect, $member_id)) ?></h2>
                                 </div>
                             </div>
                         </a>
                     </div>
                 </div>
 
-                <br />
-                <br />
+                <br/>
+                <br/>
                 <div class="row">
                     <div class="col-lg-12" style="text-align: center;">
                         <h4><b>รีวิวผู้ใช้งาน ImacPlus</b></h4>
                     </div>
                 </div>
-                <br />
-                <br />
+                <br/>
+                <br/>
                 <div class="row">
                     <div class="col-lg-6">
                         <a class="btn" href="#"
@@ -363,7 +379,7 @@ $member_id = getMemberFromUser($_SESSION['userid'], $connect);
                             <div class="row">
                                 <div class="col-lg-12" style="text-align: center;color: white;">
                                     <b>จำนวนผู้ใช้งานออนไลน์ขณะนี้</b>
-                                    <h2>1</h2>
+                                    <h2><?= number_format($onlineuser) ?></h2>
                                 </div>
                             </div>
                         </a>
@@ -383,13 +399,13 @@ $member_id = getMemberFromUser($_SESSION['userid'], $connect);
 
             </div><!-- /.card-body -->
         </div><!-- /.card -->
-
-
     </div>
+
     <div class="col-lg-3">
         <div class="row">
             <div class="col-lg-12">
-                <a href="worktrackinglist.php" class="btn" style="border-radius: 10px;background-color: #5bb15b;width: 100%">
+                <a href="worktrackinglist.php" class="btn"
+                   style="border-radius: 10px;background-color: #5bb15b;width: 100%">
                     <table style="width: 100%">
                         <tr>
                             <td style="text-align: center">
@@ -423,6 +439,8 @@ $member_id = getMemberFromUser($_SESSION['userid'], $connect);
 
 
 </div>
+
+
 <div class="modal" id="myModal">
     <div class="modal-dialog modal-md">
         <div class="modal-content">

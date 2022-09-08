@@ -362,6 +362,7 @@ echo $_SESSION['userid'];
 <!--                            </a>-->
 <!--                            <b class="sub-arrow"></b>-->
 <!--                        </li>-->
+                        <?php if($isadmin !=1):?>
                         <li class="nav-item">
                             <a href="profile.php" class="nav-link">
                                 <img src="assets/iCOn/iCOn/home.png" class="nav-icon" style="width: 10%" alt="">
@@ -462,6 +463,7 @@ echo $_SESSION['userid'];
                             </a>
                             <b class="sub-arrow"></b>
                         </li>
+                        <?php endif;?>
                         <?php if($isadmin == 1):?>
                         <li class="nav-item">
                             <a href="#" class="nav-link dropdown-toggle collapsed">

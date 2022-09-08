@@ -28,6 +28,13 @@ function calmpoint($connect, $work_id)
             return 0;
         }
 
+        // cal parent mpoint
+
+        $parent = findParent1($connect, $member_id);
+        if($parent){
+
+        }
+
     }else{
         return 0;
     }
@@ -158,4 +165,74 @@ function findItemSalePrice($connect, $itemid)
     return $price;
 }
 
+
+
+function findParent1($connect, $member_id)
+{
+    $parent_id = 0;
+    if ($member_id) {
+        $query = "SELECT * FROM member WHERE id='$member_id'";
+        $statement = $connect->prepare($query);
+
+        $statement->execute();
+        $result = $statement->fetchAll();
+
+        foreach ($result as $row) {
+            $parent_id = $row['parent_id'];
+        }
+
+    }
+    return $parent_id;
+}
+function findParent2($connect, $parent1)
+{
+    $parent_id = 0;
+    if ($parent1) {
+        $query = "SELECT * FROM member WHERE id='$parent1'";
+        $statement = $connect->prepare($query);
+
+        $statement->execute();
+        $result = $statement->fetchAll();
+
+        foreach ($result as $row) {
+            $parent_id = $row['parent_id'];
+        }
+
+    }
+    return $parent_id;
+}
+function findParentPercent($connect, $parent_id)
+{
+    $percent_rate = 0;
+    if ($parent_id) {
+        $percent_rate = findStandardPer($connect, $parent_id);
+    }
+    return $percent_rate;
+}
+function findParentMpointPercent($connect, $parent_id)
+{
+    $percent_rate = 0;
+    if ($parent_id) {
+        $percent_rate = findStandardPer($connect, $parent_id);
+    }
+    return $percent_rate;
+}
+function findIntroducePer($connect, $member_id)
+{
+    $per = 0;
+    $member_type = getMemberType($connect, $member_id);
+    $query = "SELECT * FROM member_type WHERE id = '$member_type'";
+    $statement = $connect->prepare($query);
+
+    $statement->execute();
+    $result = $statement->fetchAll();
+
+    //$cus_data = array();
+    //$filtered_rows = $statement->rowCount();
+    foreach ($result as $row) {
+        $per = $row['introduce_percent'];
+        //  array_push($cus_data,['id'=>$row['id'],'name'=>$row['name'],'percent_rate'=>$row['percent_rate']]);
+    }
+    return $per;
+}
 ?>

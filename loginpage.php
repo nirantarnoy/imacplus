@@ -259,7 +259,7 @@ $registerUrl = $helper->getLoginUrl('https://www.imacplus.app/register-callback.
                                             <!-- the second carousel item with dark background -->
                                             <div style="background-image: url(assets/image/login-bg-2.svg);"
                                                  class="d-flex flex-column align-items-center justify-content-start">
-                                                <a class="mt-5 mb-2" href="html/dashboard.html">
+                                                <a class="mt-5 mb-2" href="#">
                                                     <!--                                                    <i class="fa fa-backward text-secondary-m2 fa-3x"></i>-->
                                                     <img src="uploads/logo/imaclogonew.png" style="width: 25%" alt="">
                                                 </a>
@@ -275,7 +275,7 @@ $registerUrl = $helper->getLoginUrl('https://www.imacplus.app/register-callback.
                                             <div style="background-image: url(assets/image/login-bg-3.jpg);"
                                                  class="d-flex flex-column align-items-center justify-content-start">
                                                 <div class="bgc-black-tp4 radius-1 p-3 w-90 text-center my-3 h-100">
-                                                    <a class="mt-5 mb-2" href="html/dashboard.html">
+                                                    <a class="mt-5 mb-2" href="#">
                                                         <!--                                                        <i class="fa fa-backward text-secondary-m2 fa-3x"></i>-->
                                                         <img src="uploads/logo/imaclogonew.png" style="width: 25%"
                                                              alt="">
@@ -292,7 +292,7 @@ $registerUrl = $helper->getLoginUrl('https://www.imacplus.app/register-callback.
                                         <div class="carousel-item minw-100 h-100">
                                             <div style="background-image: url(assets/image/login-bg-4.jpg);"
                                                  class="d-flex flex-column align-items-center justify-content-start">
-                                                <a class="mt-5 mb-2" href="html/dashboard.html">
+                                                <a class="mt-5 mb-2" href="#">
                                                     <!--                                                    <i class="fa fa-backward text-secondary-m2 fa-3x"></i>-->
                                                     <img src="uploads/logo/imaclogonew.png" style="width: 25%" alt="">
                                                 </a>
@@ -340,7 +340,7 @@ $registerUrl = $helper->getLoginUrl('https://www.imacplus.app/register-callback.
 
                                         <!-- show this in mobile device -->
                                         <div class="d-lg-none text-secondary-m1 my-4 text-center">
-                                            <a href="html/dashboard.html">
+                                            <a href="#">
                                                 <!--                                                <i class="fa fa-backward text-secondary-m2 text-200 mb-4"></i>-->
                                                 <img src="uploads/logo/imaclogonew.png" style="width: 25%" alt="">
                                             </a>
