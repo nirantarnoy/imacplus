@@ -22,6 +22,7 @@ $note = "";
 $work_finish_date = '';
 $center_id = 0;
 $delivery_type_id = 0;
+$device_type_id = -1;
 
 
 $recid = 0;
@@ -48,6 +49,9 @@ if (isset($_POST['phone'])) {
 
 if (isset($_POST['phone_brand'])) {
     $brand = $_POST['phone_brand'];
+}
+if (isset($_POST['device_type'])) {
+    $device_type_id = $_POST['device_type'];
 }
 
 if (isset($_POST['phone_model'])) {
@@ -107,7 +111,7 @@ if (isset($_SESSION['userid'])) {
     $userid = $_SESSION['userid'];
 }
 
-//echo $action;return;
+//echo $userid;return;
 if ($userid != null || $userid > 0) {
     $member_id = getMemberIDFromUser($connect, $userid);
     if (count($check_list)) {
@@ -122,8 +126,8 @@ if ($userid != null || $userid > 0) {
             $created_by = $member_id;
             $new_no = getOrderLastNo($connect);
             $new_order_date = date('Y-m-d H:i:s');
-            $sql = "INSERT INTO workorders(work_no,work_date,customer_name,phone,brand_id,phone_model_id,phone_color_id,estimate_price,customer_pass,pre_pay,status,note,created_at,created_by,estimate_finish,center_id,delivery_type_id)
-            VALUES('$new_no','$new_order_date','$customer_name','$customer_phone','$brand','$phone_model','$phone_color','$estimate_price','$phone_pass','$pre_pay','$status','$note','$created_at','$created_by','$finish_date','$center_id','$delivery_type_id')";
+            $sql = "INSERT INTO workorders(work_no,work_date,customer_name,device_type,phone,brand_id,phone_model_id,phone_color_id,estimate_price,customer_pass,pre_pay,status,note,created_at,created_by,estimate_finish,center_id,delivery_type_id)
+            VALUES('$new_no','$new_order_date','$customer_name','$device_type_id','$customer_phone','$brand','$phone_model','$phone_color','$estimate_price','$phone_pass','$pre_pay','$status','$note','$created_at','$created_by','$finish_date','$center_id','$delivery_type_id')";
 //            echo $sql;
             if ($result = $connect->query($sql)) {
                 $maxid = getOrderMaxid($connect, $member_id);
@@ -166,6 +170,7 @@ if ($userid != null || $userid > 0) {
             }
         }
         if ($action == 'update') {
+
             $finish_date = date('Y-m-d');
             //   echo $work_finish_date;return;
             $xdate = explode('-', $work_finish_date);
@@ -178,6 +183,7 @@ if ($userid != null || $userid > 0) {
             $new_order_date = date('Y-m-d H:i:s');
             $sql = "UPDATE workorders SET customer_name='$customer_name',
                       phone='$customer_phone',
+                      device_type='$device_type_id',
                       brand_id='$brand',
                       phone_model_id='$phone_model',
                       phone_color_id='$phone_color',
@@ -196,11 +202,14 @@ if ($userid != null || $userid > 0) {
 
             if ($result = $connect->query($sql)) {
                 // $maxid = getMaxid($connect);
-
-                for ($i = 0; $i <= count($check_list) - 1; $i++) {
-//                $sql_line = "INSERT INTO workorder_line(workorder_id,check_list_id,is_checked)VALUES('$maxid','$check_list[$i]',1)";
-//                if ($result_line = $connect->query($sql_line)) {}
+                $sql3 = "DELETE FROM workorder_line WHERE workorder_id='$recid'";
+                if ($result3 = $connect->query($sql3)) {
+                    for ($i = 0; $i <= count($check_list) - 1; $i++) {
+                        $sql_line = "INSERT INTO workorder_line(workorder_id,check_list_id,is_checked)VALUES('$recid','$check_list[$i]',1)";
+                        if ($result_line = $connect->query($sql_line)) {}
+                    }
                 }
+
 
                 $_SESSION['msg-success'] = 'บันทึกข้อมูลเรียบร้อยแล้ว';
                 header('location:workorder.php');

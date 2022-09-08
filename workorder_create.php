@@ -13,6 +13,8 @@ include("models/ItembrandModel.php");
 include("models/ProvinceModel.php");
 include("models/work_delivery_type.php");
 include("models/WorkorderStatus.php");
+include("models/WorkorderModel.php");
+include("models/CenterModel.php");
 
 
 //$position_data = getPositionmodel($connect);
@@ -37,6 +39,58 @@ $col_4 = [];
 
 $item_nums = 0;
 
+$workorder_data = [];
+$work_checklist = [];
+$edit_id = 0;
+if(isset($_GET['id'])){
+    $edit_id = $_GET['id'];
+
+   $workorder_data = getOrderIdById($connect, $edit_id);
+}
+
+$workorder_id = 0;
+$workorder_no = '';
+$work_date = null;
+$customer_name = '';
+$customer_phone = '';
+$device_type = -1;
+$item_model = -1;
+$item_brand = -1;
+$item_color = '';
+$estimate_price = 0;
+$customer_pass = '';
+$prepay = 0;
+$estimate_finish = null;
+$status = 0;
+$center_id = 0;
+$delivery_type = -1;
+
+if(count($workorder_data)>0){
+    for($i=0;$i<=count($workorder_data)-1;$i++){
+        $workorder_id = $workorder_data[$i]['id'];
+        $workorder_no = $workorder_data[$i]['work_no'];
+        $work_date = $workorder_data[$i]['work_date'];
+        $customer_name = $workorder_data[$i]['customer_name'];
+        $customer_phone = $workorder_data[$i]['phone'];
+        $device_type = $workorder_data[$i]['device_type'];
+        $item_model = $workorder_data[$i]['models'];
+        $item_brand = $workorder_data[$i]['brand'];
+        $item_color = $workorder_data[$i]['phone_color'];
+        $estimate_price = $workorder_data[$i]['estimate_price'];
+        $customer_pass = $workorder_data[$i]['customer_pass'];
+        $prepay = $workorder_data[$i]['pre_pay'];
+        $status = $workorder_data[$i]['status'];
+        $estimate_finish = $workorder_data[$i]['finish_date'];
+        $center_id = $workorder_data[$i]['center_id'];
+        $delivery_type = $workorder_data[$i]['delivery_type_id'];
+        $work_checklist = $workorder_data[$i]['check_list'];
+    }
+}
+
+
+//echo $edit_id;
+
+
 
 if (count($checklist_data) > 0) {
 
@@ -60,6 +114,10 @@ if (count($checklist_data) > 0) {
 
 $noti_ok = '';
 $noti_error = '';
+$action_type = 'create';
+if($edit_id > 0){
+    $action_type = 'update';
+}
 //$status_data = [['id' => 0, 'name' => 'รับคำสั่งซ่อม'], ['id' => 1, 'name' => 'กำลังซ่อม'],['id'=>2,'name'=>'ซ่อมเสร็จ']];
 $status_data = getWorkorderStatusData();
 if (isset($_SESSION['msg-success'])) {
@@ -75,325 +133,330 @@ if (isset($_SESSION['msg-error'])) {
 ?>
 <input type="hidden" class="msg-ok" value="<?= $noti_ok ?>">
 <input type="hidden" class="msg-error" value="<?= $noti_error ?>">
+<div class="row">
+    <div class="col-lg-12">
+        <form action="workorder_action.php" id="form-workorder" method="post" enctype="multipart/form-data">
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <h4 class="modal-title" style="color: #1c606a">สร้างคำสั่งซ่อม</h4>
 
-<div class="d-sm-flex align-items-center justify-content-between mb-4">
-    <h1 class="h3 mb-0 text-gray-800">คำสั่งซ่อม</h1>
-    <div class="btn-group">
-<!--        <a href="#" class="btn btn-light-green btn-h-green btn-a-green border-0 radius-3 py-2 text-600 text-90"-->
-<!--           onclick="showaddbank($(this))">-->
-<!--                  <span class="d-none d-sm-inline mr-1">-->
-<!--                    สร้าง-->
-<!--                  </span>-->
-<!--            <i class="fa fa-save text-110 w-2 h-2"></i>-->
-<!--        </a>-->
-        <a href="workorder_create.php" class="btn btn-light-green btn-h-green btn-a-green border-0 radius-3 py-2 text-600 text-90"
-           onclick="">
-                  <span class="d-none d-sm-inline mr-1">
-                    สร้าง
-                  </span>
-            <i class="fa fa-save text-110 w-2 h-2"></i>
-        </a>
+            </div>
 
-        <!--        <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-success shadow-sm" onclick="showaddbank($(this))"><i-->
-        <!--                class="fas fa-plus-circle fa-sm text-white-50"></i> สร้างใหม่</a>-->
-        <!--        <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i class="fas fa-download fa-sm text-white-50"></i> Export Data</a>-->
-    </div>
+            <!-- Modal body -->
+            <div class="modal-body">
+                <input type="hidden" name="recid" class="user-recid" value="<?=$workorder_id?>">
+                <input type="hidden" name="action_type" class="action-type" value="<?=$action_type?>">
+                <div class="row">
+                    <div class="col-lg-3">
+                        <label for="">เลขที่ใบสั่งซ่อม</label>
+                        <input type="text" class="form-control workorder-no" name="workorder_no" value="<?=$workorder_no?>"
+                               placeholder="เลขที่" readonly>
+                    </div>
+                    <div class="col-lg-3">
+                        <label for="">วันที่</label>
+                        <!--                            <input type="text" class="form-control workorder-date" name="workorder_date" value=""-->
+                        <!--                                   placeholder="วันที่">-->
+                        <input type="text" class="form-control work-date" name="workorder_date"
+                               value="<?= $workorder_id > 0? date('d/m/Y', strtotime($work_date)):date('d/m/Y') ?>"
+                               placeholder="วันที่" readonly>
+                    </div>
+                    <div class="col-lg-3">
+                        <label for="">ลูกค้า</label>
+                        <input type="text" class="form-control customer-name" name="customer_name" value="<?=$customer_name?>"
+                               placeholder="ลูกค้า">
 
-</div>
-<div class="card shadow mb-4">
-    <!--    <div class="card-header py-3">-->
-    <!--        <h6 class="m-0 font-weight-bold text-primary">DataTables Example</h6>-->
-    <!--    </div>-->
-    <div class="card-body">
-        <form action="workorder_action.php" id="form-delete" method="post">
-            <input type="hidden" name="delete_id" class="delete-id" value="">
-            <input type="hidden" name="action_type" value="delete">
+                    </div>
+                    <div class="col-lg-3">
+                        <label for="">เบอร์โทร</label>
+                        <input type="text" class="form-control phone" name="phone" value="<?=$customer_phone?>"
+                               placeholder="เบอร์โทร">
+                    </div>
+                </div>
+                <br>
+                <div class="row">
+                    <div class="col-lg-3">
+                        <label for="">ประเภทอุปกรณ์</label>
+                        <!--                            <select name="phone_brand" class="form-control phone-brand" id="" onchange="findbrandmodel($(this))">-->
+                        <select name="device_type" class="form-control device-type" id="">
+                            <option value="-1">--เลือกประเภทอุปกรณ์--</option>
+                            <?php for ($i = 0; $i <= count($item_type_data) - 1; $i++): ?>
+                                <?php
+                                   $selected = '';
+                                   if($item_type_data[$i]['id'] == $device_type){
+                                       $selected = 'selected';
+                                   }
+                                ?>
+                                <option value="<?= $item_type_data[$i]['id'] ?>" <?=$selected?>><?= $item_type_data[$i]['name'] ?></option>
+                            <?php endfor; ?>
+                        </select>
+                    </div>
+                    <div class="col-lg-3">
+                        <label for="">รับซ่อมโทรศัพท์มือถือยี่ห้อ</label>
+                        <!--                            <select name="phone_brand" class="form-control phone-brand" id="" onchange="findbrandmodel($(this))">-->
+                        <select name="phone_brand" class="form-control phone-brand" id="">
+                            <option value="-1">--เลือกยี่ห้อ--</option>
+                            <?php for ($i = 0; $i <= count($item_brand_data) - 1; $i++): ?>
+                                <?php
+                                $selected = '';
+                                if($item_brand_data[$i]['id'] == $item_brand){
+                                    $selected = 'selected';
+                                }
+                                ?>
+                                <option value="<?= $item_brand_data[$i]['id'] ?>" <?=$selected?>><?= $item_brand_data[$i]['name'] ?></option>
+                            <?php endfor; ?>
+                        </select>
+                    </div>
+                    <div class="col-lg-3">
+                        <label for="">รุ่น</label>
+                        <select name="phone_model" class="form-control phone-model" id=""
+                                onchange="findBrandid($(this))">
+                            <option value="">--เลือกรุ่น--</option>
+                            <?php for ($i = 0; $i <= count($item_model_data) - 1; $i++): ?>
+                                <?php
+                                $selected = '';
+                                if($item_model_data[$i]['id'] == $item_model){
+                                    $selected = 'selected';
+                                }
+                                ?>
+                                <option value="<?= $item_model_data[$i]['id'] ?>" <?=$selected?>><?= $item_model_data[$i]['name'] ?></option>
+                            <?php endfor; ?>
+                        </select>
+                    </div>
+                    <div class="col-lg-3">
+                        <label for="">สี</label>
+                        <input type="text" class="form-control phone-color" name="phone_color" value="<?=$item_color?>"
+                               placeholder="สี">
+                    </div>
+                </div>
+                <br>
+                <h3>อาการเสียที่แจ้งซ่อม</h3>
+                <div class="row">
+                    <div class="col-lg-3">
+                        <table>
+                            <?php if (count($col_1) > 0): ?>
+                                <?php for ($i = 0; $i <= count($col_1) - 1; $i++): ?>
+                                    <?php $check_id = 'check' . $col_1[$i]['id'] ?>
+                                     <?php
+                                        $ischecked = '';
+                                        for($m=0;$m<=count($work_checklist)-1;$m++){
+                                            if($work_checklist[$m]['check_list_id'] == $col_1[$i]['id']){
+                                                $ischecked = 'checked';
+                                            }
+                                        }
+                                      ?>
+                                    <tr>
+                                        <td>
+                                            <input type="checkbox" name="check_list[]" id="<?= $check_id ?>" <?=$ischecked?>
+                                                   style="border-radius: 10px;"
+                                                   value="<?= $col_1[$i]['id'] ?>" onclick="checkselected($(this))"><span> <?= $col_1[$i]['name'] ?></span>
+                                        </td>
+                                    </tr>
+
+                                <?php endfor; ?>
+                            <?php endif; ?>
+                        </table>
+                    </div>
+                    <div class="col-lg-3">
+                        <table>
+                            <?php if (count($col_2) > 0): ?>
+                                <?php for ($i = 0; $i <= count($col_2) - 1; $i++): ?>
+                                    <?php $check_id = 'check' . $col_1[$i]['id'] ?>
+                                    <?php
+                                    $ischecked = '';
+                                    for($m=0;$m<=count($work_checklist)-1;$m++){
+                                        if($work_checklist[$m]['check_list_id'] == $col_2[$i]['id']){
+                                            $ischecked = 'checked';
+                                        }
+                                    }
+                                    ?>
+                                    <tr>
+                                        <td>
+                                            <input type="checkbox" name="check_list[]" id="<?= $check_id ?>" <?=$ischecked?>
+                                                   style="border-radius: 10px;"
+                                                   value="<?= $col_2[$i]['id'] ?>"><span> <?= $col_2[$i]['name'] ?></span>
+                                        </td>
+                                    </tr>
+
+                                <?php endfor; ?>
+                            <?php endif; ?>
+                        </table>
+                    </div>
+                    <div class="col-lg-3">
+                        <table>
+                            <?php if (count($col_3) > 0): ?>
+                                <?php for ($i = 0; $i <= count($col_3) - 1; $i++): ?>
+                                    <?php $check_id = 'check' . $col_1[$i]['id'] ?>
+                                    <?php
+                                    $ischecked = '';
+                                    for($m=0;$m<=count($work_checklist)-1;$m++){
+                                        if($work_checklist[$m]['check_list_id'] == $col_3[$i]['id']){
+                                            $ischecked = 'checked';
+                                        }
+                                    }
+                                    ?>
+                                    <tr>
+                                        <td>
+                                            <input type="checkbox" name="check_list[]" id="<?= $check_id ?>" <?=$ischecked?>
+                                                   style="border-radius: 10px;"
+                                                   value="<?= $col_3[$i]['id'] ?>"><span> <?= $col_3[$i]['name'] ?></span>
+                                        </td>
+                                    </tr>
+
+                                <?php endfor; ?>
+                            <?php endif; ?>
+                        </table>
+                    </div>
+                    <div class="col-lg-3">
+                        <table>
+                            <?php if (count($col_4) > 0): ?>
+                                <?php for ($i = 0; $i <= count($col_4) - 1; $i++): ?>
+                                    <?php $check_id = 'check' . $col_1[$i]['id'] ?>
+                                    <?php
+                                    $ischecked = '';
+                                    for($m=0;$m<=count($work_checklist)-1;$m++){
+                                        if($work_checklist[$m]['check_list_id'] == $col_4[$i]['id']){
+                                            $ischecked = 'checked';
+                                        }
+                                    }
+                                    ?>
+                                    <tr>
+                                        <td>
+                                            <input type="checkbox" name="check_list[]" id="<?= $check_id ?>" <?=$ischecked?>
+                                                   style="border-radius: 10px;"
+                                                   value="<?= $col_4[$i]['id'] ?>"><span> <?= $col_4[$i]['name'] ?></span>
+                                        </td>
+                                    </tr>
+
+                                <?php endfor; ?>
+                            <?php endif; ?>
+                        </table>
+                    </div>
+                </div>
+                <br/>
+                <div class="row">
+                    <div class="col-lg-3">
+                        <label for="">รหัสเข้าเครื่อง</label>
+                        <input type="text" class="form-control customer-pass" name="customer_pass" value="<?=$customer_pass?>">
+                    </div>
+                    <div class="col-lg-3">
+                        <label for="">ราคาประเมิณการซ่อม</label>
+                        <input type="number" autocomplete="off" class="form-control estimate-price" name="estimate_price" value="<?=$estimate_price?>">
+                    </div>
+                    <div class="col-lg-3">
+                        <label for="">มัดจำ</label>
+                        <input type="number" autocomplete="off" class="form-control pre-pay" name="pre_pay" value="<?=$prepay?>">
+                    </div>
+                    <div class="col-lg-3">
+                        <label for="">สถานะ</label>
+                        <select name="status" id="" class="form-control status">
+                            <?php for ($i = 0; $i <= count($status_data) - 1; $i++): ?>
+                                <?php
+                                $selected = '';
+                                if($status_data[$i]['id'] == $status){
+                                    $selected = 'selected';
+                                }
+                                ?>
+                                <option value="<?= $status_data[$i]['id'] ?>" <?=$selected?>><?= $status_data[$i]['name'] ?></option>
+                            <?php endfor; ?>
+                        </select>
+                    </div>
+                </div>
+                <br>
+                <div class="row">
+                    <div class="col-lg-3">
+                        <label for="">วันที่ซ่อมเสร็จโดยประมาณ</label>
+                        <input type="text" class="form-control work-finish-date" name="work_finish_date"
+                               value="<?=$workorder_id >0? date('d-m-Y', strtotime($estimate_finish)): date('d-m-Y') ?>">
+                    </div>
+                    <div class="col-lg-3">
+                        <label for="">Center</label>
+                        <div class="input-group">
+                            <input type="text" class="form-control center-name" value="<?=getCenterName($center_id, $connect)?>" name="center_name">
+                            <div class="btn btn-secondary" onclick="showfindcenter()">เลือก</div>
+                        </div>
+
+                        <input type="hidden" class="center-id" value="<?=$center_id?>" name="center_id">
+                    </div>
+                    <div class="col-lg-3">
+                        <label for="">ประเภทการส่งซ่อม</label>
+                        <select name="delivery_type_id" id="" class="form-control delivery-type-id">
+                            <?php for ($i = 0; $i <= count($delivery_type_data) - 1; $i++): ?>
+                                <?php
+                                $selected = '';
+                                if($delivery_type_data[$i]['id'] == $delivery_type){
+                                    $selected = 'selected';
+                                }
+                                ?>
+                                <option value="<?= $delivery_type_data[$i]['id'] ?>" <?=$selected?>><?= $delivery_type_data[$i]['name'] ?></option>
+                            <?php endfor; ?>
+                        </select>
+                    </div>
+                </div>
+                <br/>
+                <div class="row">
+                    <div class="col-lg-6">
+                        <input type="file" name="upload_file[]" multiple accept="image/jpeg">
+                    </div>
+                </div>
+                <br/>
+                <div class="row">
+                    <div class="col-lg-6">
+                        <h6><b>รูปภาพก่อนซ่อม</b></h6>
+                    </div>
+                </div>
+                <div class="row">
+                    <?php for($i=0;$i<=1;$i++):?>
+                        <div class="col-lg-3">
+                            <img src="uploads/workorder/" alt="" style="width: 100%">
+                        </div>
+                    <?php endfor;?>
+                </div>
+                <br/>
+                <div class="row">
+                    <div class="col-lg-6">
+                        <h6><b>รูปภาพ/วีดีโอ หลังซ่อม</b></h6>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-12">
+
+                    </div>
+                </div>
+                <br/>
+                <br/>
+
+
+            </div>
+
+            <!-- Modal footer -->
+            <div class="modal-footer">
+
+                <div class="btn btn-secondary btn-create-quotation" onclick="createQuotation($(this))">
+
+                    <i
+                        class="fa fa-check-circle"></i> เสนอราคา
+                </div>
+                <div class="btn btn-primary btn-close-final" onclick="createworkfinal($(this))">
+
+                    <i
+                        class="fa fa-trophy"></i> ยืนยันการซ่อมสำเร็จ
+                </div>
+
+                <div class="btn btn-secondary btn-close-work" onclick="closeworkorder($(this))">
+
+                    <i
+                        class="fa fa-check-circle"></i> ปิดใบแจ้งซ่อม
+                </div>
+
+
+                <button type="submit" class="btn btn-info btn-receive" data-dismiss="modalx"><i
+                        class="fa fa-check-circle"></i> ตรวจรับเครื่อง
+                </button>
+                <button type="submit" class="btn btn-success btn-save" data-dismiss="modalx"><i
+                        class="fa fa-save"></i> บันทึก
+                </button>
+            </div>
         </form>
-        <div class="table-responsive">
-            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
-                <thead>
-                <tr>
-                    <th>#</th>
-                    <th>เลขที่ใบสั่งซ่อม</th>
-                    <th>วันที่</th>
-                    <th>ลูกค้า</th>
-                    <th>สถานะ</th>
-                </tr>
-                </thead>
-                <tbody>
-                </tbody>
-            </table>
-        </div>
-    </div>
-</div>
-
-<div class="modal" id="myModal">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <form action="workorder_action.php" id="form-workorder" method="post" enctype="multipart/form-data">
-                <!-- Modal Header -->
-                <div class="modal-header">
-                    <h4 class="modal-title" style="color: #1c606a">สร้างคำสั่งซ่อม</h4>
-                    <button type="button" class="close" data-dismiss="modal">&times;</button>
-                </div>
-
-                <!-- Modal body -->
-                <div class="modal-body">
-                    <input type="hidden" name="recid" class="user-recid" value="">
-                    <input type="hidden" name="action_type" class="action-type" value="create">
-                    <div class="row">
-                        <div class="col-lg-3">
-                            <label for="">เลขที่ใบสั่งซ่อม</label>
-                            <input type="text" class="form-control workorder-no" name="workorder_no" value=""
-                                   placeholder="เลขที่" readonly>
-                        </div>
-                        <div class="col-lg-3">
-                            <label for="">วันที่</label>
-                            <!--                            <input type="text" class="form-control workorder-date" name="workorder_date" value=""-->
-                            <!--                                   placeholder="วันที่">-->
-                            <input type="text" class="form-control work-date" name="workorder_date"
-                                   value="<?= date('d/m/Y') ?>"
-                                   placeholder="วันที่" readonly>
-                        </div>
-                        <div class="col-lg-3">
-                            <label for="">ลูกค้า</label>
-                            <input type="text" class="form-control customer-name" name="customer_name" value=""
-                                   placeholder="ลูกค้า">
-
-                        </div>
-                        <div class="col-lg-3">
-                            <label for="">เบอร์โทร</label>
-                            <input type="text" class="form-control phone" name="phone" value=""
-                                   placeholder="เบอร์โทร">
-                        </div>
-                    </div>
-                    <br>
-                    <div class="row">
-                        <div class="col-lg-3">
-                            <label for="">ประเภทอุปกรณ์</label>
-                            <!--                            <select name="phone_brand" class="form-control phone-brand" id="" onchange="findbrandmodel($(this))">-->
-                            <select name="phone_brand" class="form-control phone-brand" id="">
-                                <option value="-1">--เลือกประเภทอุปกรณ์--</option>
-                                <?php for ($i = 0; $i <= count($item_type_data) - 1; $i++): ?>
-                                    <option value="<?= $item_type_data[$i]['id'] ?>"><?= $item_type_data[$i]['name'] ?></option>
-                                <?php endfor; ?>
-                            </select>
-                        </div>
-                        <div class="col-lg-3">
-                            <label for="">รับซ่อมโทรศัพท์มือถือยี่ห้อ</label>
-                            <!--                            <select name="phone_brand" class="form-control phone-brand" id="" onchange="findbrandmodel($(this))">-->
-                            <select name="phone_brand" class="form-control phone-brand" id="">
-                                <option value="-1">--เลือกยี่ห้อ--</option>
-                                <?php for ($i = 0; $i <= count($item_brand_data) - 1; $i++): ?>
-                                    <option value="<?= $item_brand_data[$i]['id'] ?>"><?= $item_brand_data[$i]['name'] ?></option>
-                                <?php endfor; ?>
-                            </select>
-                        </div>
-                        <div class="col-lg-3">
-                            <label for="">รุ่น</label>
-                            <select name="phone_model" class="form-control phone-model" id=""
-                                    onchange="findBrandid($(this))">
-                                <option value="">--เลือกรุ่น--</option>
-                                <?php for ($i = 0; $i <= count($item_model_data) - 1; $i++): ?>
-                                    <option value="<?= $item_model_data[$i]['id'] ?>"><?= $item_model_data[$i]['name'] ?></option>
-                                <?php endfor; ?>
-                            </select>
-                        </div>
-                        <div class="col-lg-3">
-                            <label for="">สี</label>
-                            <input type="text" class="form-control phone-color" name="phone_color" value=""
-                                   placeholder="สี">
-                        </div>
-                    </div>
-                    <br>
-                    <h3>อาการเสียที่แจ้งซ่อม</h3>
-                    <div class="row">
-                        <div class="col-lg-3">
-                            <table>
-                                <?php if (count($col_1) > 0): ?>
-                                    <?php for ($i = 0; $i <= count($col_1) - 1; $i++): ?>
-                                        <?php $check_id = 'check' . $col_1[$i]['id'] ?>
-                                        <tr>
-                                            <td>
-                                                <input type="checkbox" name="check_list[]" id="<?= $check_id ?>"
-                                                       style="border-radius: 10px;"
-                                                       value="<?= $col_1[$i]['id'] ?>" onclick="checkselected($(this))"><span> <?= $col_1[$i]['name'] ?></span>
-                                            </td>
-                                        </tr>
-
-                                    <?php endfor; ?>
-                                <?php endif; ?>
-                            </table>
-                        </div>
-                        <div class="col-lg-3">
-                            <table>
-                                <?php if (count($col_2) > 0): ?>
-                                    <?php for ($i = 0; $i <= count($col_2) - 1; $i++): ?>
-                                        <?php $check_id = 'check' . $col_1[$i]['id'] ?>
-                                        <tr>
-                                            <td>
-                                                <input type="checkbox" name="check_list[]" id="<?= $check_id ?>"
-                                                       style="border-radius: 10px;"
-                                                       value="<?= $col_2[$i]['id'] ?>"><span> <?= $col_2[$i]['name'] ?></span>
-                                            </td>
-                                        </tr>
-
-                                    <?php endfor; ?>
-                                <?php endif; ?>
-                            </table>
-                        </div>
-                        <div class="col-lg-3">
-                            <table>
-                                <?php if (count($col_3) > 0): ?>
-                                    <?php for ($i = 0; $i <= count($col_3) - 1; $i++): ?>
-                                        <?php $check_id = 'check' . $col_1[$i]['id'] ?>
-                                        <tr>
-                                            <td>
-                                                <input type="checkbox" name="check_list[]" id="<?= $check_id ?>"
-                                                       style="border-radius: 10px;"
-                                                       value="<?= $col_3[$i]['id'] ?>"><span> <?= $col_3[$i]['name'] ?></span>
-                                            </td>
-                                        </tr>
-
-                                    <?php endfor; ?>
-                                <?php endif; ?>
-                            </table>
-                        </div>
-                        <div class="col-lg-3">
-                            <table>
-                                <?php if (count($col_4) > 0): ?>
-                                    <?php for ($i = 0; $i <= count($col_4) - 1; $i++): ?>
-                                        <?php $check_id = 'check' . $col_1[$i]['id'] ?>
-                                        <tr>
-                                            <td>
-                                                <input type="checkbox" name="check_list[]" id="<?= $check_id ?>"
-                                                       style="border-radius: 10px;"
-                                                       value="<?= $col_4[$i]['id'] ?>"><span> <?= $col_4[$i]['name'] ?></span>
-                                            </td>
-                                        </tr>
-
-                                    <?php endfor; ?>
-                                <?php endif; ?>
-                            </table>
-                        </div>
-                    </div>
-                    <br/>
-                    <div class="row">
-                        <div class="col-lg-3">
-                            <label for="">รหัสเข้าเครื่อง</label>
-                            <input type="text" class="form-control customer-pass" name="customer_pass" value="">
-                        </div>
-                        <div class="col-lg-3">
-                            <label for="">ราคาประเมิณการซ่อม</label>
-                            <input type="number" class="form-control estimate-price" name="estimate_price" value="">
-                        </div>
-                        <div class="col-lg-3">
-                            <label for="">มัดจำ</label>
-                            <input type="number" class="form-control pre-pay" name="pre_pay" value="">
-                        </div>
-                        <div class="col-lg-3">
-                            <label for="">สถานะ</label>
-                            <select name="status" id="" class="form-control status">
-                                <?php for ($i = 0; $i <= count($status_data) - 1; $i++): ?>
-                                    <option value="<?= $status_data[$i]['id'] ?>"><?= $status_data[$i]['name'] ?></option>
-                                <?php endfor; ?>
-                            </select>
-                        </div>
-                    </div>
-                    <br>
-                    <div class="row">
-                        <div class="col-lg-3">
-                            <label for="">วันที่ซ่อมเสร็จโดยประมาณ</label>
-                            <input type="text" class="form-control work-finish-date" name="work_finish_date"
-                                   value="<?= date('d-m-Y') ?>">
-                        </div>
-                        <div class="col-lg-3">
-                            <label for="">Center</label>
-                            <div class="input-group">
-                                <input type="text" class="form-control center-name" value="" name="center_name">
-                                <div class="btn btn-secondary" onclick="showfindcenter()">เลือก</div>
-                            </div>
-
-                            <input type="hidden" class="center-id" value="" name="center_id">
-                        </div>
-                        <div class="col-lg-3">
-                            <label for="">ประเภทการส่งซ่อม</label>
-                            <select name="delivery_type_id" id="" class="form-control delivery-type-id">
-                                <?php for ($i = 0; $i <= count($delivery_type_data) - 1; $i++): ?>
-                                    <option value="<?= $delivery_type_data[$i]['id'] ?>"><?= $delivery_type_data[$i]['name'] ?></option>
-                                <?php endfor; ?>
-                            </select>
-                        </div>
-                    </div>
-                    <br/>
-                    <div class="row">
-                        <div class="col-lg-6">
-                            <input type="file" name="upload_file[]" multiple accept="image/jpeg">
-                        </div>
-                    </div>
-                    <br/>
-                    <div class="row">
-                        <div class="col-lg-6">
-                            <h6><b>รูปภาพก่อนซ่อม</b></h6>
-                        </div>
-                    </div>
-                    <div class="row">
-
-                       <div class="col-lg-3">
-                           <img src="uploads/workorder/" alt="" style="width: 100%">
-                       </div>
-
-                    </div>
-                    <br/>
-                    <div class="row">
-                        <div class="col-lg-6">
-                            <h6><b>รูปภาพ/วีดีโอ หลังซ่อม</b></h6>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-lg-12">
-
-                        </div>
-                    </div>
-                    <br/>
-                    <br/>
-
-
-                </div>
-
-                <!-- Modal footer -->
-                <div class="modal-footer">
-
-                    <div class="btn btn-secondary btn-create-quotation" onclick="createQuotation($(this))">
-
-                        <i
-                                class="fa fa-check-circle"></i> เสนอราคา
-                    </div>
-                    <div class="btn btn-primary btn-close-final" onclick="createworkfinal($(this))">
-
-                        <i
-                                class="fa fa-trophy"></i> ยืนยันการซ่อมสำเร็จ
-                    </div>
-
-                    <div class="btn btn-secondary btn-close-work" onclick="closeworkorder($(this))">
-
-                        <i
-                                class="fa fa-check-circle"></i> ปิดใบแจ้งซ่อม
-                    </div>
-
-
-                    <button type="submit" class="btn btn-info btn-receive" data-dismiss="modalx"><i
-                                class="fa fa-check-circle"></i> ตรวจรับเครื่อง
-                    </button>
-                    <button type="submit" class="btn btn-success btn-save" data-dismiss="modalx"><i
-                                class="fa fa-save"></i> บันทึก
-                    </button>
-                    <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fa fa-ban"></i>
-                        ปิดหน้าต่าง
-                    </button>
-                </div>
-            </form>
-        </div>
     </div>
 </div>
 <form id="form-create-quotation" action="quotation_create.php" method="post">

@@ -28,6 +28,8 @@ if(isset($_SESSION['msg-error'])){
     unset($_SESSION['msg-error']);
 }
 
+
+
 ?>
 <input type="hidden" class="msg-ok" value="<?=$noti_ok?>">
 <input type="hidden" class="msg-error" value="<?=$noti_error?>">
@@ -47,6 +49,7 @@ if(isset($_SESSION['msg-error'])){
     </div>
 
 </div>
+
 <div class="card shadow mb-4">
     <!--    <div class="card-header py-3">-->
     <!--        <h6 class="m-0 font-weight-bold text-primary">DataTables Example</h6>-->

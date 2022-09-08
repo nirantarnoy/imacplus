@@ -1,5 +1,5 @@
 <?php
-include "models/ItemModel.php";
+//include "models/ItemModel.php";
 include "models/PointCalculator.php";
 
 function getOrderMaxid($connect,$member_id){
@@ -60,6 +60,8 @@ function getOrderIdById($connect,$id){
                 'pre_pay'=>$row['pre_pay'],
                 'note'=>$row['note'],
                 'status'=>$row['status'],
+                'center_id'=>$row['center_id'],
+                'delivery_type_id'=>$row['delivery_type_id'],
                 'check_list'=> findchecklist($row['id'],$connect),
                 'finish_date'=>date('d-m-Y', strtotime($row['estimate_finish'])),
             ]);
@@ -69,6 +71,7 @@ function getOrderIdById($connect,$id){
         return $data;
     }
 }
+
 function getOrderLastNo($connect){
     $query = "SELECT MAX(work_no) as code FROM workorders WHERE work_no <>''";
     $statement = $connect->prepare($query);
