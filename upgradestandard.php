@@ -28,6 +28,7 @@ include("models/StatusModel.php");
 //include("models/ItemModel.php");
 include("models/SparepartModel.php");
 include("models/MemberTypeModel.php");
+include("models/UpgradestandardModel.php");
 
 
 $sale_data = null;
@@ -41,8 +42,10 @@ if (isset($_GET['update_id'])) {
     $action_type = "update";
 }
 if ($update_id) {
+    $action_type = 'update';
     $sale_data_line = getUpgradeStandardModel($connect, $update_id);
     $rec_id = $update_id;
+//    print_r($sale_data_line);
 }
 
 
@@ -86,7 +89,7 @@ if ($update_id) {
                             <tr data-var="">
                                 <td>
                                     <input type="hidden" class="form-control line-id" name="line_id[]" value="">
-                                    <select name="line_to_member_type" class="form-control line-to-member-type" id="">
+                                    <select name="line_to_member_type[]" class="form-control line-to-member-type" id="">
 
                                         <option value="">--เลือก--</option>
                                         <?php for ($i = 0; $i <= count($member_type_data) - 1; $i++): ?>
@@ -95,7 +98,7 @@ if ($update_id) {
                                     </select>
                                 </td>
                                 <td>
-                                    <select name="line_parent_1_member_type"
+                                    <select name="line_parent_1_member_type[]"
                                             class="form-control line-parent-1-member-type" id="">
                                         <option value="">--เลือก--</option>
                                         <?php for ($i = 0; $i <= count($member_type_data) - 1; $i++): ?>
@@ -109,7 +112,7 @@ if ($update_id) {
                                            name="line_parent_1_rate[]" value="" onchange="calTotal($(this))">
                                 </td>
                                 <td>
-                                    <select name="line_parent_2_member_type"
+                                    <select name="line_parent_2_member_type[]"
                                             class="form-control line-parent-2-member-type" id="">
                                         <option value="">--เลือก--</option>
                                         <?php for ($i = 0; $i <= count($member_type_data) - 1; $i++): ?>
@@ -132,14 +135,14 @@ if ($update_id) {
                                     <tr data-var="<?= $sale_data_line[$i]['id'] ?>">
                                     <td>
                                         <input type="hidden" class="form-control line-id" name="line_id[]" value="">
-                                        <select name="line_to_member_type" class="form-control line-to-member-type"
+                                        <select name="line_to_member_type[]" class="form-control line-to-member-type"
                                                 id="">
 
                                             <option value="">--เลือก--</option>
                                             <?php for ($x = 0; $x <= count($member_type_data) - 1; $x++): ?>
                                                 <?php
                                                 $selected = '';
-                                                if ($member_type_data[$x]['member_type_id'] == $sale_data_line[$i]['member_type_id']) {
+                                                if ($member_type_data[$x]['id'] == $sale_data_line[$i]['member_type_id']) {
                                                     $selected = "selected";
                                                 }
                                                 ?>
@@ -148,13 +151,13 @@ if ($update_id) {
                                         </select>
                                     </td>
                                     <td>
-                                        <select name="line_parent_1_member_type"
+                                        <select name="line_parent_1_member_type[]"
                                                 class="form-control line-parent-1-member-type" id="">
                                             <option value="">--เลือก--</option>
                                             <?php for ($x = 0; $x <= count($member_type_data) - 1; $x++): ?>
                                                 <?php
                                                 $selected = '';
-                                                if ($member_type_data[$x]['parent_1'] == $sale_data_line[$i]['parent_1']) {
+                                                if ($member_type_data[$x]['id'] == $sale_data_line[$i]['parent_1']) {
                                                     $selected = "selected";
                                                 }
                                                 ?>
@@ -170,13 +173,13 @@ if ($update_id) {
                                                onchange="calTotal($(this))">
                                     </td>
                                     <td>
-                                        <select name="line_parent_2_member_type"
+                                        <select name="line_parent_2_member_type[]"
                                                 class="form-control line-parent-2-member-type" id="">
                                             <option value="">--เลือก--</option>
                                             <?php for ($x = 0; $x <= count($member_type_data) - 1; $x++): ?>
                                                 <?php
                                                 $selected = '';
-                                                if ($member_type_data[$x]['parent_2'] == $sale_data_line[$i]['parent_2']) {
+                                                if ($member_type_data[$x]['id'] == $sale_data_line[$i]['parent_2']) {
                                                     $selected = "selected";
                                                 }
                                                 ?>
@@ -209,7 +212,7 @@ if ($update_id) {
                                         </select>
                                     </td>
                                     <td>
-                                        <select name="line_parent_1_member_type"
+                                        <select name="line_parent_1_member_type[]"
                                                 class="form-control line-parent-1-member-type" id="">
                                             <option value="">--เลือก--</option>
                                             <?php for ($i = 0; $i <= count($member_type_data) - 1; $i++): ?>
@@ -223,7 +226,7 @@ if ($update_id) {
                                                name="line_parent_1_rate[]" value="" onchange="calTotal($(this))">
                                     </td>
                                     <td>
-                                        <select name="line_parent_2_member_type"
+                                        <select name="line_parent_2_member_type[]"
                                                 class="form-control line-parent-2-member-type" id="">
                                             <option value="">--เลือก--</option>
                                             <?php for ($i = 0; $i <= count($member_type_data) - 1; $i++): ?>
@@ -529,6 +532,7 @@ include "footer.php";
             // cal_linenum();
             // cal_all();
         }
+        $(".action-type").val('delete');
     }
 
 
