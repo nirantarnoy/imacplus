@@ -35,12 +35,28 @@ if ($id > 0) {
             if (updateMemberUpgradeStatus($connect, $id)) {
 
 
-
-
-
-                if (updateParentMemberPoint($connect, $parent_id, $new_point)) {
-                    $res += 1;
-                }
+               if($parent_id > 0 && $parent_2_id > 0){ // cal 2 level
+                   $parent_rate_amount = getParentMemberTypeRate($connect,$upgrade_to_member_type,$parent_id);
+                   if($parent_rate_amount){
+                       if (updateParentMemberPoint($connect, $parent_id, $parent_rate_amount)) {
+                           $res += 1;
+                       }
+                   }
+                   $parent_rate_amount2 = getParentMemberTypeRate2($connect,$upgrade_to_member_type,$parent_id,$parent_2_id);
+                   if($parent_rate_amount2){
+                       if (updateParentMemberPoint($connect, $parent_2_id, $parent_rate_amount2)) {
+                           $res += 1;
+                       }
+                   }
+               }else if($parent_id > 0 && $parent_2_id <= 0){ // cal 1 level
+                  $parent_rate_amount = getParentMemberTypeRate($connect,$upgrade_to_member_type,$parent_id);
+                  if($parent_rate_amount){
+                      if (updateParentMemberPoint($connect, $parent_id, $parent_rate_amount)) {
+                          $res += 1;
+                      }
+                  }
+               }
+              $res +=1;
             }
         }
 
@@ -222,6 +238,44 @@ function findIntroducePercent($connect, $member_id, $member_type_id)
         //  array_push($cus_data,['id'=>$row['id'],'name'=>$row['name'],'percent_rate'=>$row['percent_rate']]);
     }
     return $per;
+}
+
+function getParentMemberTypeRate($connect, $member_type_id, $parent_id)
+{
+    $rate_amount = 0;
+    $parent_type = getMemberType($connect, $parent_id);
+    $query = "SELECT * FROM upgrage_standard WHERE member_type_id = '$member_type_id' and parent_1 ='$parent_type'";
+    $statement = $connect->prepare($query);
+
+    $statement->execute();
+    $result = $statement->fetchAll();
+
+    //$cus_data = array();
+    //$filtered_rows = $statement->rowCount();
+    foreach ($result as $row) {
+        $rate_amount = $row['parent_1_rate'];
+        //  array_push($cus_data,['id'=>$row['id'],'name'=>$row['name'],'percent_rate'=>$row['percent_rate']]);
+    }
+    return $rate_amount;
+}
+function getParentMemberTypeRate2($connect, $member_type_id,$parent_id, $parent_2_id)
+{
+    $rate_amount = 0;
+    $parent_type = getMemberType($connect, $parent_id);
+    $parent_type_2 = getMemberType($connect, $parent_2_id);
+    $query = "SELECT * FROM upgrage_standard WHERE member_type_id = '$member_type_id' and parent_1 ='$parent_type' and parent_2='$parent_type_2'";
+    $statement = $connect->prepare($query);
+
+    $statement->execute();
+    $result = $statement->fetchAll();
+
+    //$cus_data = array();
+    //$filtered_rows = $statement->rowCount();
+    foreach ($result as $row) {
+        $rate_amount = $row['parent_2_rate'];
+        //  array_push($cus_data,['id'=>$row['id'],'name'=>$row['name'],'percent_rate'=>$row['percent_rate']]);
+    }
+    return $rate_amount;
 }
 
 ?>
