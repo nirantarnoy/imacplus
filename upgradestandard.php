@@ -32,21 +32,41 @@ include("models/UpgradestandardModel.php");
 
 
 $sale_data = null;
-$update_id = 0;
+$update_id = 1;
 $action_type = "create";
 $rec_id = '';
 $sale_data_line = null;
 $member_type_data = getMemberTypeData($connect);
-if (isset($_GET['update_id'])) {
-    $update_id = $_GET['update_id'];
-    $action_type = "update";
-}
+//if (isset($_GET['update_id'])) {
+//    $update_id = $_GET['update_id'];
+//    $action_type = "update";
+//}
 if ($update_id) {
     $action_type = 'update';
     $sale_data_line = getUpgradeStandardModel($connect, $update_id);
     $rec_id = $update_id;
 //    print_r($sale_data_line);
 }
+
+
+//$query = "SELECT * FROM upgrade_standard ";
+//$statement = $connect->prepare($query);
+//$statement->execute();
+//$result = $statement->fetchAll();
+//$filtered_rows = $statement->rowCount();
+//$data = [];
+//if($filtered_rows > 0) {
+//    foreach ($result as $row) {
+//        array_push($data, [
+//            'id' => $row['id'],
+//            'member_type_id' => $row['member_type_id'],
+//            'parent_1' => $row['parent_1'],
+//            'parent_1_rate' => $row['parent_1_rate'],
+//            'parent_2' => $row['parent_2'],
+//            'parent_2_rate' => $row['parent_2_rate'],
+//        ]);
+//    }
+//}
 
 
 ?>
@@ -68,9 +88,6 @@ if ($update_id) {
             <input type="hidden" class="remove-line-list" name="remove_line_list" value="">
             <input type="hidden" class="action-type" value="<?= $action_type ?>" name="action_type">
             <input type="hidden" class="recid" value="<?= $rec_id ?>" name="recid">
-
-            <h4>รายละเอียด</h4>
-            <hr>
             <div class="row">
                 <div class="col-lg-12">
                     <table class="table table-bordered table-striped" id="table-list" style="width: 100%">
@@ -85,51 +102,7 @@ if ($update_id) {
                         </tr>
                         </thead>
                         <tbody>
-                        <?php if ($update_id == ""): ?>
-                            <tr data-var="">
-                                <td>
-                                    <input type="hidden" class="form-control line-id" name="line_id[]" value="">
-                                    <select name="line_to_member_type[]" class="form-control line-to-member-type" id="">
 
-                                        <option value="">--เลือก--</option>
-                                        <?php for ($i = 0; $i <= count($member_type_data) - 1; $i++): ?>
-                                            <option value="<?= $member_type_data[$i]['id'] ?>"><?= $member_type_data[$i]['name'] ?></option>
-                                        <?php endfor; ?>
-                                    </select>
-                                </td>
-                                <td>
-                                    <select name="line_parent_1_member_type[]"
-                                            class="form-control line-parent-1-member-type" id="">
-                                        <option value="">--เลือก--</option>
-                                        <?php for ($i = 0; $i <= count($member_type_data) - 1; $i++): ?>
-                                            <option value="<?= $member_type_data[$i]['id'] ?>"><?= $member_type_data[$i]['name'] ?></option>
-                                        <?php endfor; ?>
-                                    </select>
-                                </td>
-                                <td>
-                                    <input style="text-align: right" type="number"
-                                           class="form-control line-parent-1-rate"
-                                           name="line_parent_1_rate[]" value="" onchange="calTotal($(this))">
-                                </td>
-                                <td>
-                                    <select name="line_parent_2_member_type[]"
-                                            class="form-control line-parent-2-member-type" id="">
-                                        <option value="">--เลือก--</option>
-                                        <?php for ($i = 0; $i <= count($member_type_data) - 1; $i++): ?>
-                                            <option value="<?= $member_type_data[$i]['id'] ?>"><?= $member_type_data[$i]['name'] ?></option>
-                                        <?php endfor; ?>
-                                    </select>
-                                </td>
-                                <td>
-                                    <input style="text-align: right" type="number"
-                                           class="form-control line-parent-2-rate"
-                                           name="line_parent_2_rate[]" value="" onchange="calTotal($(this))">
-                                </td>
-                                <td>
-                                    <div class="btn btn-danger" onclick="removeline($(this))">ลบ</div>
-                                </td>
-                            </tr>
-                        <?php else: ?>
                             <?php if (count($sale_data_line)): ?>
                                 <?php for ($i = 0; $i <= count($sale_data_line) - 1; $i++): ?>
                                     <tr data-var="<?= $sale_data_line[$i]['id'] ?>">
@@ -244,7 +217,7 @@ if ($update_id) {
                                     </td>
                                 </tr>
                             <?php endif; ?>
-                        <?php endif; ?>
+
                         </tbody>
                         <tfoot>
                         <tr>
@@ -425,7 +398,12 @@ include "footer.php";
         var tr = $("#table-list tbody tr:last");
 
         var clone = tr.clone();
-
+        clone.find(".line-id").val("");
+        clone.find(".line-to-member-type").val(-1);
+        clone.find(".line-parent-1-member-type").val(-1);
+        clone.find(".line-parent-1-rate").val(0);
+        clone.find(".line-parent-2-member-type").val(-1);
+        clone.find(".line-parent-2-rate").val(0);
         tr.after(clone);
 
 

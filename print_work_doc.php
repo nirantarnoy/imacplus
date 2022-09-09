@@ -102,7 +102,7 @@ if (count($checklist_data) > 0) {
     <input type="hidden" id="rec-id" value="<?=$id?>">
     <table style="width: 100%;border: none;">
         <tr>
-            <td colspan="2" style="text-align: center;font-family: 'SukhumvitSet-Medium'"><h3>ใบรับเครื่องซ่อม</h3></td>
+            <td colspan="2" style="text-align: center;"><h3>ใบรับเครื่องซ่อม</h3></td>
 
         </tr>
         <tr>

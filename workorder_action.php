@@ -74,8 +74,8 @@ if (isset($_POST['pre_pay'])) {
     $pre_pay = $_POST['pre_pay'];
 }
 
-if (isset($_POST['status'])) {
-    $status = $_POST['status'];
+if (isset($_POST['update_status'])) {
+    $status = $_POST['update_status'];
 }
 if (isset($_POST['note'])) {
     $note = $_POST['note'];

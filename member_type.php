@@ -7,7 +7,7 @@ session_start();
 //}
 //echo date('H:i');return;
 include "header.php";
-
+include("models/YesNoStatus.php");
 //$position_data = getPositionmodel($connect);
 //$per_check = checkPer($user_position,"is_product_cat", $connect);
 //if(!$per_check){
@@ -28,6 +28,8 @@ if(isset($_SESSION['msg-error'])){
     $noti_error = $_SESSION['msg-error'];
     unset($_SESSION['msg-error']);
 }
+
+$yesno  = getYesNoStatusData();
 
 ?>
 <input type="hidden" class="msg-ok" value="<?=$noti_ok?>">
@@ -112,9 +114,28 @@ if(isset($_SESSION['msg-error'])){
                     <div class="row">
                         <div class="col-lg-12">
                             <label for="">ประเภท</label>
-                            <select name="status" id="" class="form-control status">
+                            <select name="platform_type" id="" class="form-control platform-type">
                                 <?php for ($i = 0; $i <= count($platform_type_date) - 1; $i++): ?>
                                     <option value="<?= $platform_type_date[$i]['id'] ?>"><?= $platform_type_date[$i]['name'] ?></option>
+                                <?php endfor; ?>
+                            </select>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <label for="">CENTER</label>
+                            <select name="is_center" id="" class="form-control is-center">
+                                <?php for ($i = 0; $i <= count($yesno) - 1; $i++): ?>
+                                    <option value="<?= $yesno[$i]['id'] ?>"><?= $yesno[$i]['name'] ?></option>
+                                <?php endfor; ?>
+                            </select>
+                        </div>
+                        <div class="col-lg-6">
+                            <label for="">VIP SHOP</label>
+                            <select name="is_vipshop" id="" class="form-control is-vipshop">
+                                <?php for ($i = 0; $i <= count($yesno) - 1; $i++): ?>
+                                    <option value="<?= $yesno[$i]['id'] ?>"><?= $yesno[$i]['name'] ?></option>
                                 <?php endfor; ?>
                             </select>
                         </div>
@@ -148,8 +169,13 @@ include "footer.php";
     notify();
     function showaddbank(e) {
         $(".user-recid").val(0);
+        $(".name").val('');
+        $(".percent-rate").val(0);
         $(".bank-name").val('');
         $(".description").val('');
+        $(".is-center").val(0).change();
+        $(".is-vipshop").val(0).change();
+        $(".platform-type").val(0).change();
         $("#myModal").modal("show");
     }
 
@@ -187,6 +213,9 @@ include "footer.php";
             var percent = '';
             var description = '';
             var status = '';
+            var is_center = 0;
+            var is_vipshop = 0;
+            var platform_type = 0;
             $.ajax({
                 'type': 'post',
                 'dataType': 'json',
@@ -200,15 +229,21 @@ include "footer.php";
                         description = data[0]['description'];
                         percent = data[0]['percent_rate'];
                         status = data[0]['status'];
+                        is_center = data[0]['is_center'];
+                        is_vipshop = data[0]['is_vipshop'];
+                        platform_type = data[0]['platform_type_id'];
                     }
                 }
             });
 
             $(".user-recid").val(recid);
-            $(".status").val(status);
+            $(".status").val(status).change();
             $(".name").val(name);
             $(".percent-rate").val(percent);
             $(".description").val(description);
+            $(".is-center").val(is_center);
+            $(".is-vipshop").val(is_vipshop);
+            $(".platform-type").val(platform_type);
 
             $(".modal-title").html('แก้ไขข้อมูลประเภทสินค้า');
             $(".action-type").val('update');

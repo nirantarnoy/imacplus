@@ -51,13 +51,20 @@ $filtered_rows = $statement->rowCount();
 foreach ($result as $row){
 
     //$branch_name = $row['branch'];
+    $status_name = getPlatformName($row['platform_type_id']);
+    $status = '';
+    if($row['platform_type_id'] == 0){
+        $status = '<div class="badge badge-default">'.$status_name.'</div>';
+    }else{
+        $status = '<div class="badge badge-success">'.$status_name.'</div>';
+    }
     $i++;
     $sub_array = array();
 //    $sub_array[] = '<p style="font-weight: ;text-align: left">'.$i.'</p>';
     $sub_array[] = '<p style="font-weight: ;text-align: left">'.$row['name'].'</p>';
     $sub_array[] = '<p style="font-weight: ;text-align: left">'.$row['description'].'</p>';
     $sub_array[] = '<p style="font-weight: ;text-align: left">'.$row['percent_rate'].'</p>';
-    $sub_array[] = '<p style="font-weight: ;text-align: left">'.getPlatformName($row['platform_type_id']).'</p>';
+    $sub_array[] = '<p style="font-weight: ;text-align: left">'.$status.'</p>';
     $sub_array[] = '<p style="font-weight: ;text-align: left">'.getStatus($row['status']).'</p>';
     $sub_array[] = '<div class="btn btn-secondary btn-sm" data-id="'.$row['id'].'" onclick="showupdate($(this))"><i class="fas fa-edit"></i> Edit</div><span> </span><div class="btn btn-danger btn-sm" data-id="'.$row['id'].'" onclick="recDelete($(this))"><i class="fas fa-trash-alt"></i> Delete</div>';
 

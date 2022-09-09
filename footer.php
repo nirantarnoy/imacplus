@@ -2,7 +2,7 @@
     <div class="footer-inner bgc-white-tp1">
         <div class="pt-3 border-none border-t-3 brc-grey-l2">
             <span class="text-secondary-m1 font-bolder text-120">iMac Plus</span>
-            <span class="text-grey">Application &copy; <?=date('Y')?></span>
+            <span class="text-grey">Application &copy; <?=date('Y')?> version 1.0</span>
 
             <span class="mx-3 action-buttons">
 <!--                      <a href="#" class="text-blue-m2 text-150"><i class="fab fa-twitter-square"></i></a>-->

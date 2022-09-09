@@ -25,7 +25,7 @@ function getMemberTypeData($connect){
     $cus_data = array();
     $filtered_rows = $statement->rowCount();
     foreach ($result as $row){
-        array_push($cus_data,['id'=>$row['id'],'name'=>$row['name']]);
+        array_push($cus_data,['id'=>$row['id'],'name'=>$row['name'],'is_vipshop'=>$row['is_vipshop'],'update_price'=>$row['update_price']]);
     }
     return $cus_data;
 

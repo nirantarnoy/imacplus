@@ -18,11 +18,9 @@ function calmpoint($connect, $work_id)
         // return $new_point;//
 
         if ($new_point > 0) {
-<<<<<<< HEAD
+
             $sql = "UPDATE member SET point='$new_point' WHERE id='$member_id'"; // update member who created workorder
-=======
-            $sql = "UPDATE member SET point='$new_point' WHERE id='$member_id'";
->>>>>>> 8d1456bb899503ec87843a53f6162240e3b56259
+
             if ($connect->query($sql)) {
                 return 1;
             } else {

@@ -7,7 +7,7 @@ include "models/MemberModel.php";
 
 $id = 0;
 $action = "";
-$upgrade_to_member_type = 0;
+$upgrade_to_member_type = 28;
 
 if (isset($_POST['delete_id'])) {
     $id = $_POST['delete_id'];
@@ -15,21 +15,22 @@ if (isset($_POST['delete_id'])) {
 if (isset($_POST['action_type'])) {
     $action = $_POST['action_type'];
 }
-if (isset($_POST['member_type_id'])) {
-    $upgrade_to_member_type = $_POST['member_type_id'];
-}
+//if (isset($_POST['member_type_id'])) {
+//    $upgrade_to_member_type = $_POST['member_type_id'];
+//}
 if ($id > 0) {
     if ($action == 'accept') {
         $res = 0;
         $member_id = getMemberFromUpgradeId($id, $connect);
+        $upgrade_to_member_type = getMemberUpgradetotypeId($id, $connect);
 
         // find parent
         $parent_id = findParent($connect, $member_id);
         $parent_2_id = findParent($connect, $parent_id);
 
-        $old_point = getOldParentPoint($connect, $parent_id);
-
-        $new_point = ($old_point + 500);
+//        $old_point = getOldParentPoint($connect, $parent_id);
+//
+//        $new_point = ($old_point + 500);
 
         if (updateMemberType($connect, $member_id, $upgrade_to_member_type)) {
             if (updateMemberUpgradeStatus($connect, $id)) {
@@ -102,6 +103,23 @@ function getMemberFromUpgradeId($id, $connect){
     }
     return $member_id;
 }
+function getMemberUpgradetotypeId($id, $connect){
+    $to_type = 0;
+
+    if ($id > 0) {
+        $query = "SELECT * FROM member_upgrade WHERE id='$id'";
+        $statement = $connect->prepare($query);
+        $statement->execute();
+        $result = $statement->fetchAll();
+        $filtered_rows = $statement->rowCount();
+        if ($filtered_rows > 0) {
+            foreach ($result as $row) {
+                $to_type = $row['upgrade_to_type'];
+            }
+        }
+    }
+    return $to_type;
+}
 function getMemberUpgradeAmount($id, $connect){
     $amount = 0;
 
@@ -159,7 +177,9 @@ function getAcceptWallet($connect, $id)
 
 function updateParentMemberPoint($connect, $parentid, $new_point)
 {
-    $sql = "UPDATE member SET point='$new_point' WHERE id='$parentid'";
+    $old_point = getOldParentPoint($connect, $parentid);
+    $update_new_point = ($new_point + $old_point);
+    $sql = "UPDATE member SET point='$update_new_point' WHERE id='$parentid'";
     if ($connect->query($sql)) {
         return 1;
     } else {

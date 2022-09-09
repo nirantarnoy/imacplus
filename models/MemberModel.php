@@ -9,7 +9,7 @@ function getMembermodel($connect)
     $filtered_rows = $statement->rowCount();
     if ($filtered_rows > 0) {
         foreach ($result as $row) {
-            array_push($data, ['id' => $row['id'], 'name' => $row['first_name'], 'photo' => $row['photo']]);
+            array_push($data, ['id' => $row['id'], 'name' => $row['first_name'], 'photo' => $row['photo'],'is_verified'=>$row['is_verified']]);
         }
     }
 
@@ -523,6 +523,23 @@ function getMemberCenterData($connect)
     if ($filtered_rows > 0) {
         foreach ($result as $row) {
             array_push($data, ['id' => $row['id'], 'name' => $row['first_name'], 'photo' => $row['photo']]);
+        }
+    }
+
+    return $data;
+}
+
+function getMemberverifiedstatus($connect, $id)
+{
+    $data =0;
+    $query = "SELECT * FROM member WHERE id='$id'";
+    $statement = $connect->prepare($query);
+    $statement->execute();
+    $result = $statement->fetchAll();
+    $filtered_rows = $statement->rowCount();
+    if ($filtered_rows > 0) {
+        foreach ($result as $row) {
+            $data = $row['is_verified'];
         }
     }
 

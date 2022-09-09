@@ -2,7 +2,8 @@
 //include "models/ItemModel.php";
 include "models/PointCalculator.php";
 
-function getOrderMaxid($connect,$member_id){
+function getOrderMaxid($connect, $member_id)
+{
     $query = "SELECT MAX(id) as id FROM workorders WHERE created_by = '$member_id' ";
     $statement = $connect->prepare($query);
     $statement->execute();
@@ -12,92 +13,97 @@ function getOrderMaxid($connect,$member_id){
     $runno = '';
     $new = 0;
     //return $filtered_rows;
-    if($filtered_rows > 0){
-        foreach($result as $row){
+    if ($filtered_rows > 0) {
+        foreach ($result as $row) {
             $num = $row['id'];
         }
         return $num;
-    }else{
+    } else {
         return 0;
     }
 }
-function getOrderIdByNo($connect,$work_no){
+
+function getOrderIdByNo($connect, $work_no)
+{
     $query = "SELECT * FROM workorders WHERE work_no = '$work_no' ";
     $statement = $connect->prepare($query);
     $statement->execute();
     $result = $statement->fetchAll();
     $filtered_rows = $statement->rowCount();
     $num = '';
-    if($filtered_rows > 0){
-        foreach($result as $row){
+    if ($filtered_rows > 0) {
+        foreach ($result as $row) {
             $num = $row['id'];
         }
         return $num;
-    }else{
+    } else {
         return 0;
     }
 }
-function getOrderIdById($connect,$id){
+
+function getOrderIdById($connect, $id)
+{
     $query = "SELECT * FROM workorders WHERE id = '$id' ";
     $statement = $connect->prepare($query);
     $statement->execute();
     $result = $statement->fetchAll();
     $filtered_rows = $statement->rowCount();
     $data = [];
-    if($filtered_rows > 0){
-        foreach($result as $row){
-            array_push($data,['id'=>$row['id'],
-                'work_no'=>$row['work_no'],
-                'work_date'=>$row['work_date'],
-                'customer_name'=>$row['customer_name'],
-                'device_type'=>$row['device_type'],
-                'phone'=>$row['phone'],
-                'brand'=>$row['brand_id'],
-                'models'=>$row['phone_model_id'],
-                'phone_color'=>$row['phone_color_id'],
-                'customer_pass'=>$row['customer_pass'],
-                'estimate_price'=>$row['estimate_price'],
-                'pre_pay'=>$row['pre_pay'],
-                'note'=>$row['note'],
-                'status'=>$row['status'],
-                'center_id'=>$row['center_id'],
-                'delivery_type_id'=>$row['delivery_type_id'],
-                'check_list'=> findchecklist($row['id'],$connect),
-                'finish_date'=>date('d-m-Y', strtotime($row['estimate_finish'])),
+    if ($filtered_rows > 0) {
+        foreach ($result as $row) {
+            array_push($data, ['id' => $row['id'],
+                'work_no' => $row['work_no'],
+                'work_date' => $row['work_date'],
+                'customer_name' => $row['customer_name'],
+                'device_type' => $row['device_type'],
+                'phone' => $row['phone'],
+                'brand' => $row['brand_id'],
+                'models' => $row['phone_model_id'],
+                'phone_color' => $row['phone_color_id'],
+                'customer_pass' => $row['customer_pass'],
+                'estimate_price' => $row['estimate_price'],
+                'pre_pay' => $row['pre_pay'],
+                'note' => $row['note'],
+                'status' => $row['status'],
+                'center_id' => $row['center_id'],
+                'delivery_type_id' => $row['delivery_type_id'],
+                'check_list' => findchecklist($row['id'], $connect),
+                'finish_date' => date('d-m-Y', strtotime($row['estimate_finish'])),
             ]);
         }
         return $data;
-    }else{
+    } else {
         return $data;
     }
 }
 
-function getOrderLastNo($connect){
+function getOrderLastNo($connect)
+{
     $query = "SELECT MAX(work_no) as code FROM workorders WHERE work_no <>''";
     $statement = $connect->prepare($query);
     $statement->execute();
     $result = $statement->fetchAll();
     $filtered_rows = $statement->rowCount();
     $num = '';
-   // $runno = substr(date('Y'),2,2);
+    // $runno = substr(date('Y'),2,2);
     $runno = '';
     $new = 0;
     //return $filtered_rows;
     $prefix = 'iMPO-';
-    if($filtered_rows > 0){
-        foreach($result as $row){
-            if($row['code'] == ''){
-                return $prefix.$runno.'000001';
+    if ($filtered_rows > 0) {
+        foreach ($result as $row) {
+            if ($row['code'] == '') {
+                return $prefix . $runno . '000001';
             }
-            $new = (int)substr($row['code'],5,6) +1;
-            $diff = 6-strlen($new);
-            for($i=0;$i<=$diff-1;$i++){
-                $runno = $runno.'0';
+            $new = (int)substr($row['code'], 5, 6) + 1;
+            $diff = 6 - strlen($new);
+            for ($i = 0; $i <= $diff - 1; $i++) {
+                $runno = $runno . '0';
             }
         }
-        return $prefix.$runno.$new;
-    }else{
-        return $prefix.$runno.'000001';
+        return $prefix . $runno . $new;
+    } else {
+        return $prefix . $runno . '000001';
     }
 }
 
@@ -115,7 +121,7 @@ function getWOrkStatus($id)
     $data = [
         ['id' => 0, 'name' => 'รับคำสั่งซ่อม'],
         ['id' => 1, 'name' => 'กำลังซ่อม'],
-        ['id' => 2, 'name'=>'ซ่อมเสร็จ']
+        ['id' => 2, 'name' => 'ซ่อมเสร็จ']
 
     ];
     $name = '';
@@ -130,7 +136,7 @@ function getWorkStatusData()
     $data = [
         ['id' => 0, 'name' => 'รับคำสั่งซ่อม'],
         ['id' => 1, 'name' => 'กำลังซ่อม'],
-        ['id' => 2, 'name'=>'ซ่อมเสร็จ']
+        ['id' => 2, 'name' => 'ซ่อมเสร็จ']
     ];
     return $data;
 }
@@ -166,7 +172,7 @@ function getWorkorder($connect, $id)
                 'id' => $row['id'],
                 'work_no' => $row['work_no'],
                 'work_date' => $row['work_date'],
-                'phone_model_id' => getItemName($row['phone_model_id'],$connect),
+                'phone_model_id' => getItemName($row['phone_model_id'], $connect),
                 'status' => $row['status'],
             ]);
         }
@@ -174,7 +180,8 @@ function getWorkorder($connect, $id)
     return $data;
 }
 
-function findchecklist($id, $connect){
+function findchecklist($id, $connect)
+{
     $data = [];
     $query = "SELECT * FROM workorder_line WHERE workorder_id='$id' ";
     $statement = $connect->prepare($query);
@@ -182,48 +189,88 @@ function findchecklist($id, $connect){
     $result = $statement->fetchAll();
     foreach ($result as $row) {
         array_push($data,
-            ['id'=>$row['id'],
-                'check_list_id'=>$row['check_list_id'],
+            ['id' => $row['id'],
+                'check_list_id' => $row['check_list_id'],
             ]);
     }
     return $data;
 }
 
-function getOrderNobyId($connect,$id){
+function getOrderNobyId($connect, $id)
+{
     $query = "SELECT * FROM workorders WHERE id = '$id' ";
     $statement = $connect->prepare($query);
     $statement->execute();
     $result = $statement->fetchAll();
     $filtered_rows = $statement->rowCount();
     $num = '';
-    if($filtered_rows > 0){
-        foreach($result as $row){
+    if ($filtered_rows > 0) {
+        foreach ($result as $row) {
             $num = $row['work_no'];
         }
         return $num;
-    }else{
+    } else {
         return 0;
     }
 }
 
-function getCustomerfromOrderId($connect,$workorder_id){
+function getCustomerfromOrderId($connect, $workorder_id)
+{
     $query = "SELECT * FROM workorders WHERE id = '$workorder_id' ";
     $statement = $connect->prepare($query);
     $statement->execute();
     $result = $statement->fetchAll();
     $filtered_rows = $statement->rowCount();
     $data = '';
-    if($filtered_rows > 0){
-        foreach($result as $row){
+    if ($filtered_rows > 0) {
+        foreach ($result as $row) {
             $data = $row['customer_name'];
         }
         return $data;
-    }else{
+    } else {
         return '';
     }
 }
 
-function getPointthismonth($connect, $member_id){
+function getPointtoday($connect, $member_id)
+{
+    $total = 0;
+    $c_month = date('d');
+    $query = "SELECT * FROM workorders WHERE created_by = '$member_id' and day(work_date) ='$c_month' ";
+    $statement = $connect->prepare($query);
+    $statement->execute();
+    $result = $statement->fetchAll();
+    $filtered_rows = $statement->rowCount();
+
+    if ($filtered_rows > 0) {
+        foreach ($result as $row) {
+            $total = ($total + calmpointtrans($connect, $row['id']));
+        }
+    }
+    return $total;
+}
+
+function getPointsevenday($connect, $member_id)
+{
+    $total = 0;
+    $today = date('Y-m-d');
+    $start_date = date('Y-m-d', strtotime(date('Y-m-d') . " -7 day"));
+    $query = "SELECT * FROM workorders WHERE created_by = '$member_id' and date(work_date) >='$start_date' and date(work_date)<='$today' ";
+    $statement = $connect->prepare($query);
+    $statement->execute();
+    $result = $statement->fetchAll();
+    $filtered_rows = $statement->rowCount();
+
+    if ($filtered_rows > 0) {
+        foreach ($result as $row) {
+            $total = ($total + calmpointtrans($connect, $row['id']));
+        }
+    }
+    return $total;
+}
+
+function getPointthismonth($connect, $member_id)
+{
     $total = 0;
     $c_month = date('m');
     $query = "SELECT * FROM workorders WHERE created_by = '$member_id' and month(work_date) ='$c_month' ";
@@ -232,15 +279,16 @@ function getPointthismonth($connect, $member_id){
     $result = $statement->fetchAll();
     $filtered_rows = $statement->rowCount();
 
-    if($filtered_rows > 0){
-        foreach($result as $row){
-           $total = ($total + calmpointtrans($connect, $row['id']));
+    if ($filtered_rows > 0) {
+        foreach ($result as $row) {
+            $total = ($total + calmpointtrans($connect, $row['id']));
         }
     }
     return $total;
 }
 
-function getPointall($connect, $member_id){
+function getPointall($connect, $member_id)
+{
     $total = 0;
     $query = "SELECT * FROM workorders WHERE created_by = '$member_id' ";
     $statement = $connect->prepare($query);
@@ -248,15 +296,16 @@ function getPointall($connect, $member_id){
     $result = $statement->fetchAll();
     $filtered_rows = $statement->rowCount();
 
-    if($filtered_rows > 0){
-        foreach($result as $row){
+    if ($filtered_rows > 0) {
+        foreach ($result as $row) {
             $total = ($total + calmpointtrans($connect, $row['id']));
         }
     }
     return $total;
 }
 
-function getCurrentPoint($connect, $member_id){
+function getCurrentPoint($connect, $member_id)
+{
     $balance = 0;
     $query = "SELECT point FROM member WHERE created_by = '$member_id' ";
     $statement = $connect->prepare($query);
@@ -264,23 +313,64 @@ function getCurrentPoint($connect, $member_id){
     $result = $statement->fetchAll();
     $filtered_rows = $statement->rowCount();
 
-    if($filtered_rows > 0){
-        foreach($result as $row){
+    if ($filtered_rows > 0) {
+        foreach ($result as $row) {
             $balance = $row['point'];
         }
     }
     return $balance;
 }
 
-function getPointthisday($connect, $member_id){
+
+function getPointbalance($connect, $member_id)
+{
 
 }
 
-function getPointsevenday($connect, $member_id){
-
+function getWorkorderPhoto($connect, $id)
+{
+    $data = [];
+    $query = "SELECT * FROM workorder_photo WHERE workorder_id='$id'";
+    $statement = $connect->prepare($query);
+    $statement->execute();
+    $result = $statement->fetchAll();
+    $filtered_rows = $statement->rowCount();
+    if ($filtered_rows > 0) {
+        foreach ($result as $row) {
+            array_push($data, ['id' => $row['id'], 'photo' => $row['photo']]);
+        }
+    }
+    return $data;
 }
-function getPointbalance($connect, $member_id){
-
+function getQuotationId($connect, $id)
+{
+    $quotation_id = 0;
+    $query = "SELECT * FROM quotation WHERE workorder_id='$id'";
+    $statement = $connect->prepare($query);
+    $statement->execute();
+    $result = $statement->fetchAll();
+    $filtered_rows = $statement->rowCount();
+    if ($filtered_rows > 0) {
+        foreach ($result as $row) {
+            $quotation_id =  $row['id'];
+        }
+    }
+    return $quotation_id;
+}
+function getWorkorderVideo($connect, $id)
+{
+    $data = [];
+    $query = "SELECT * FROM workorder_video WHERE workorder_id='$id'";
+    $statement = $connect->prepare($query);
+    $statement->execute();
+    $result = $statement->fetchAll();
+    $filtered_rows = $statement->rowCount();
+    if ($filtered_rows > 0) {
+        foreach ($result as $row) {
+            array_push($data, ['id' => $row['id'], 'video' => $row['video']]);
+        }
+    }
+    return $data;
 }
 
 ?>

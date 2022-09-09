@@ -374,7 +374,7 @@ echo $_SESSION['userid'];
                             <b class="sub-arrow"></b>
                         </li>
                         <li class="nav-item">
-                            <a href="member_team.php" class="nav-link">
+                            <a href="member_teamlist.php" class="nav-link">
                                 <img src="assets/iCOn/iCOn/member.png" class="nav-icon" style="width: 10%" alt="">
                                 <span class="nav-text fadeable">
                                   <span>ทีมงานของฉัน</span>
@@ -675,9 +675,23 @@ echo $_SESSION['userid'];
                             <div class="hideable submenu collapse">
                                 <ul class="submenu-inner">
                                     <li class="nav-item">
+                                        <a href="upgradestandard.php" class="nav-link">
+                                          <span class="nav-text">
+                                              <span>ตั้งค่าคำนวน mPoint</span>
+                                          </span>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
                                         <a href="sparepart_type.php" class="nav-link">
                                           <span class="nav-text">
                                               <span>ประเภทอะไหล่</span>
+                                          </span>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="sparepart.php" class="nav-link">
+                                          <span class="nav-text">
+                                              <span>อะไหล่</span>
                                           </span>
                                         </a>
                                     </li>

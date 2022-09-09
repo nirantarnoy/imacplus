@@ -18,8 +18,8 @@ if (isset($_SESSION['msg-error'])) {
     unset($_SESSION['msg-error']);
 }
 
-if (isset($_POST['ref_id'])){
-    $workorder_id = $_POST['ref_id'];
+if (isset($_GET['ref_id'])){
+    $workorder_id = $_GET['ref_id'];
 }
 
 

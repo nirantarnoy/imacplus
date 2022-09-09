@@ -3,6 +3,7 @@ ob_start();
 session_start();
 date_default_timezone_set('Asia/Bangkok');
 include("common/dbcon.php");
+include("models/ItemModel.php");
 
 $item_id = '';
 $price = '';
@@ -69,6 +70,27 @@ if (1 > 0) {
                 }
             }
 
+
+            // create sparepart
+
+            $sql_check_ref_id = "SELECT * FROM sparepart WHERE item_ref_id='$item_id[$i]'";
+            $statement2 = $connect->prepare($sql_check_ref_id);
+
+            $statement2->execute();
+            if ($statement2->rowCount() > 0) {
+
+            } else {
+
+                $item_name = getItemName($item_id[$i], $connect);
+//                echo $item_name;return;
+                $sql = "INSERT INTO sparepart (part_type_id,part_name,description,cost_price,item_ref_id,status,created_at,created_by)
+           VALUES ('$sparepart_type','$item_name','$item_name',0,'$item_id[$i]',1,'$c_timestamp','$c_user')";
+
+                if ($result = $connect->query($sql)) {
+                    $res += 1;
+                }
+            }
+
         }
 
 
@@ -84,18 +106,18 @@ if (1 > 0) {
     }
 
 } else {
-    echo "no";
-    return;
-    $sql = "UPDATE customer SET code='$code',name='$name',phone='$phone',email='$email',address='$address',updated_at='$c_timestamp',updated_by='$c_user',line_id='$line_id',facebook='$facebook',note='$note'";
-    $sql .= " WHERE id='$recid'";
+//    echo "no";
+//    return;
+//    $sql = "UPDATE customer SET code='$code',name='$name',phone='$phone',email='$email',address='$address',updated_at='$c_timestamp',updated_by='$c_user',line_id='$line_id',facebook='$facebook',note='$note'";
+//    $sql .= " WHERE id='$recid'";
 
-    if ($result = $connect->query($sql)) {
-        $_SESSION['msg-success'] = 'Saved data successfully';
-        header('location:standardprice.php');
-    } else {
-        $_SESSION['msg-error'] = 'Save data error';
-        header('location:standardprice.php');
-    }
+//    if ($result = $connect->query($sql)) {
+//        $_SESSION['msg-success'] = 'Saved data successfully';
+//        header('location:standardprice.php');
+//    } else {
+//        $_SESSION['msg-error'] = 'Save data error';
+//        header('location:standardprice.php');
+//    }
 }
 
 ?>

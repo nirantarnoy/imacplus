@@ -17,6 +17,9 @@ $recid = 0;
 $delete_id = '';
 $action = null;
 $userid = 0;
+$is_center = 0;
+$is_vipshop = 0;
+$platform_type = -1;
 
 if (isset($_SESSION['userid'])) {
     $userid = $_SESSION['userid'];
@@ -44,13 +47,24 @@ if (isset($_POST['recid'])) {
 if (isset($_POST['action_type'])) {
     $action = $_POST['action_type'];
 }
+
+
+if (isset($_POST['is_center'])) {
+    $is_center = $_POST['is_center'];
+}
+if (isset($_POST['is_vipshop'])) {
+    $is_vipshop= $_POST['is_vipshop'];
+}
+if(isset($_POST['platform_type'])){
+    $platform_type = $_POST['platform_type'];
+}
 //print_r($action);return;
 
 if ($action == 'create') {
     $created_at = time();
     $created_by = $userid;
-    $sql = "INSERT INTO member_type(name,description,percent_rate,status,created_at,created_by)
-            VALUES('$name','$description','$percent','$status','$created_at','$created_by')";
+    $sql = "INSERT INTO member_type(name,description,percent_rate,status,created_at,created_by,is_center,is_vipshop,platform_type_id)
+            VALUES('$name','$description','$percent','$status','$created_at','$created_by','$is_center','$is_vipshop','$platform_type')";
     if ($result = $connect->query($sql)) {
         $_SESSION['msg-success'] = 'บันทึกข้อมูลเรียบร้อยแล้ว';
         header('location:member_type.php');
@@ -64,7 +78,7 @@ if ($action == 'update') {
 //        echo $status;return;
         $created_at = time();
         $created_by = $userid;
-        $sql2 = "UPDATE member_type SET name='$name',description='$description',percent_rate='$percent',status='$status',updated_at='$created_at',updated_by='$created_by' WHERE id='$id'";
+        $sql2 = "UPDATE member_type SET name='$name',description='$description',percent_rate='$percent',status='$status',updated_at='$created_at',updated_by='$created_by',is_center='$is_center',is_vipshop='$is_vipshop',platform_type_id='$platform_type' WHERE id='$id'";
         if ($result2 = $connect->query($sql2)) {
             $_SESSION['msg-success'] = 'บันทึกข้อมูลเรียบร้อยแล้ว';
             header('location:member_type.php');

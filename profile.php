@@ -27,6 +27,8 @@ $member_id = getMemberFromUser($_SESSION['userid'], $connect);
 
 $onlineran = mt_rand(1000, 3000);
 $onlineuser = mt_rand($onlineran + 1, 3000);
+
+$is_verified = getMemberverifiedstatus($connect, $member_id);
 ?>
 
 <div class="row">
@@ -35,67 +37,68 @@ $onlineuser = mt_rand($onlineran + 1, 3000);
     <input type="hidden" class="msg-error" value="<?= $noti_error ?>">
     <!-- the left side profile picture and other info -->
     <div class="col-lg-9">
-        <div class="row">
-            <div class="col-lg-12"
-                 style="text-align: center;background-color: #DBF9DB;border-color: #99C68E;width: 100%;border-width: 2px;border-radius: 5px;margin: 5px;">
-                <br/>
-                <div class="row">
-                    <div class="col-lg-6 d-flex flex-column py-3 px-lg-5 justify-content-lg-between align-items-lg-end"
-                         style="text-align: right">
-                        <div style=" width: 20%;height: 20%;">
-                            <img alt="Profile image"
-                                 src="assets/iCOn/iCOn/success_logo.png" style="width: 90%;"/>
+        <?php if ($is_verified): ?>
+            <div class="row">
+                <div class="col-lg-12"
+                     style="text-align: center;background-color: #DBF9DB;border-color: #99C68E;width: 100%;border-width: 2px;border-radius: 5px;margin: 5px;">
+                    <br/>
+                    <div class="row">
+                        <div class="col-lg-6 d-flex flex-column py-3 px-lg-5 justify-content-lg-between align-items-lg-end"
+                             style="text-align: right">
+                            <div style=" width: 20%;height: 20%;">
+                                <img alt="Profile image"
+                                     src="assets/iCOn/iCOn/success_logo.png" style="width: 90%;"/>
+                            </div>
+                        </div>
+                        <div class="col-lg-6 " style="text-align: left;margin-top: 5px">
+                            <br/>
+                            <h4 style="color: #5bb15b">ยืนยันตัวตนสำเร็จ</h4>
+                            <h6 style="color: black">คุณสามารถถอน mPoint และส่งซ่อมได้แล้ว</h6>
                         </div>
                     </div>
-                    <div class="col-lg-6 " style="text-align: left;margin-top: 5px">
-                        <br/>
-                        <h4 style="color: #5bb15b">ยืนยันตัวตนสำเร็จ</h4>
-                        <h6 style="color: black">คุณสามารถถอน mPoint และส่งซ่อมได้แล้ว</h6>
-                    </div>
+                    <br/>
+                    <!--                <div style="text-align: center;width: 5%;height: 5%;margin-top: 5px;">-->
+                    <!--                    <img alt="Profile image"-->
+                    <!--                         src="assets/iCOn/iCOn/wallet.png" style="width: 70%;"/>-->
+                    <!--                </div>-->
+                    <!--                <h4 style="color: #5bb15b">ยืนยันตัวตนสำเร็จ</h4>-->
+                    <!--                <h6 style="color: black">คุณสามารถถอน mPoint และส่งซ่อมได้แล้ว</h6>-->
                 </div>
-                <br/>
-                <!--                <div style="text-align: center;width: 5%;height: 5%;margin-top: 5px;">-->
-                <!--                    <img alt="Profile image"-->
-                <!--                         src="assets/iCOn/iCOn/wallet.png" style="width: 70%;"/>-->
-                <!--                </div>-->
-                <!--                <h4 style="color: #5bb15b">ยืนยันตัวตนสำเร็จ</h4>-->
-                <!--                <h6 style="color: black">คุณสามารถถอน mPoint และส่งซ่อมได้แล้ว</h6>-->
             </div>
-        </div>
 
-        <br/>
-
-        <div class="row" style="display: none;">
-            <div class="col-lg-12 bg-danger"
-                 style="text-align: center;border-color: #99C68E;width: 100%;border-width: 2px;border-radius: 5px;margin: 5px;">
-                <br/>
-                <div class="row">
-                    <div class="col-lg-6 d-flex flex-column py-3 px-lg-5 justify-content-lg-between align-items-lg-end"
-                         style="text-align: right">
-                        <div style=" width: 20%;height: 20%;">
-                            <img alt="Profile image"
-                                 src="assets/iCOn/iCOn/unsuccess_logo.png" style="width: 90%;"/>
+            <br/>
+        <?php else: ?>
+            <div class="row" style="">
+                <div class="col-lg-12 bg-danger"
+                     style="text-align: center;border-color: #99C68E;width: 100%;border-width: 2px;border-radius: 5px;margin: 5px;">
+                    <br/>
+                    <div class="row">
+                        <div class="col-lg-6 d-flex flex-column py-3 px-lg-5 justify-content-lg-between align-items-lg-end"
+                             style="text-align: right">
+                            <div style=" width: 20%;height: 20%;">
+                                <img alt="Profile image"
+                                     src="assets/iCOn/iCOn/unsuccess_logo.png" style="width: 90%;"/>
+                            </div>
+                        </div>
+                        <div class="col-lg-6 " style="text-align: left;margin-top: 5px">
+                            <br/>
+                            <h4 style="color: white">ยืนยันตัวตนไม่สำเร็จ</h4>
+                            <h6 style="color: white">คุณไม่สามารถถอน mPoint และไม่สามารคส่งซ่อมได้</h6>
                         </div>
                     </div>
-                    <div class="col-lg-6 " style="text-align: left;margin-top: 5px">
-                        <br/>
-                        <h4 style="color: white">ยืนยันตัวตนไม่สำเร็จ</h4>
-                        <h6 style="color: white">คุณไม่สามารถถอน mPoint และไม่สามารคส่งซ่อมได้</h6>
-                    </div>
+                    <br/>
+                    <!--                <div style="text-align: center;width: 5%;height: 5%;margin-top: 5px;">-->
+                    <!--                    <img alt="Profile image"-->
+                    <!--                         src="assets/iCOn/iCOn/wallet.png" style="width: 70%;"/>-->
+                    <!--                </div>-->
+                    <!--                <h4 style="color: #5bb15b">ยืนยันตัวตนสำเร็จ</h4>-->
+                    <!--                <h6 style="color: black">คุณสามารถถอน mPoint และส่งซ่อมได้แล้ว</h6>-->
                 </div>
-                <br/>
-                <!--                <div style="text-align: center;width: 5%;height: 5%;margin-top: 5px;">-->
-                <!--                    <img alt="Profile image"-->
-                <!--                         src="assets/iCOn/iCOn/wallet.png" style="width: 70%;"/>-->
-                <!--                </div>-->
-                <!--                <h4 style="color: #5bb15b">ยืนยันตัวตนสำเร็จ</h4>-->
-                <!--                <h6 style="color: black">คุณสามารถถอน mPoint และส่งซ่อมได้แล้ว</h6>-->
             </div>
-        </div>
-
+        <?php endif; ?>
         <br/>
 
-        <div class="card" style="border-color: #5bb15b;border-width: 3px;background-color: #f0efef">
+        <div class="card" style="border-color: #66CC00;border-width: 3px;background-color: #f0efef">
             <div class="card-body">
                     <span class="d-none position-tl mt-2 pt-3px">
                     <span class="text-white bgc-blue-d1 ml-2 radius-b-1 py-2 px-2">
@@ -185,8 +188,11 @@ $onlineuser = mt_rand($onlineran + 1, 3000);
                     <div class="col-lg-6">
                         <div class="row">
                             <div class="col-lg-6">
-                                <a class="btn" href="workorder.php?element=1"
-                                   style="background-color: white;border-color: #5bb15b;width: 100%;border-width: 2px;border-radius: 10px;margin: 5px;">
+                                <?php
+                                $url = $is_verified ? 'workorder.php?element=1' : '#';
+                                ?>
+                                <a class="btn" href="<?= $url ?>"
+                                   style="background-color: white;border-color: #66CC00;width: 100%;border-width: 2px;border-radius: 10px;margin: 5px;">
                                     <div class="row">
                                         <div class="col-lg-4">
                                             <div style="width: 100%;height: 100%;margin-top: 5px;">
@@ -201,10 +207,14 @@ $onlineuser = mt_rand($onlineran + 1, 3000);
                                         </div>
                                     </div>
                                 </a>
+
                             </div>
                             <div class="col-lg-6">
-                                <a class="btn" href="dropoff.php?element=1"
-                                   style="background-color: white;border-color: #5bb15b;width: 100%;border-width: 2px;border-radius: 10px;margin: 5px;">
+                                <?php
+                                $url = $is_verified ? 'dropoff.php?element=1' : '#';
+                                ?>
+                                <a class="btn" href="<?= $url ?>"
+                                   style="background-color: white;border-color: #66CC00;width: 100%;border-width: 2px;border-radius: 10px;margin: 5px;">
                                     <div class="row">
                                         <div class="col-lg-4">
                                             <div style="width: 100%;height: 100%;margin-top: 5px;">
@@ -223,8 +233,11 @@ $onlineuser = mt_rand($onlineran + 1, 3000);
                         <br/>
                         <div class="row">
                             <div class="col-lg-6">
-                                <a class="btn" href="walletlist.php?element=1"
-                                   style="background-color: white;border-color: #5bb15b;width: 100%;border-width: 2px;border-radius: 10px;margin: 5px;">
+                                <?php
+                                $url = $is_verified ? 'walletlist.php?element=1' : '#';
+                                ?>
+                                <a class="btn" href="<?=$url?>"
+                                   style="background-color: white;border-color: #66CC00;width: 100%;border-width: 2px;border-radius: 10px;margin: 5px;">
                                     <div class="row">
                                         <div class="col-lg-4">
                                             <div style="width: 100%;height: 100%;margin-top: 5px;">
@@ -240,8 +253,11 @@ $onlineuser = mt_rand($onlineran + 1, 3000);
                                 </a>
                             </div>
                             <div class="col-lg-6">
-                                <a class="btn" href="witdrawlist.php?element=1"
-                                   style="background-color: white;border-color: #5bb15b;width: 100%;border-width: 2px;border-radius: 10px;margin: 5px;">
+                                <?php
+                                $url = $is_verified ? 'witdrawlist.php?element=1' : '#';
+                                ?>
+                                <a class="btn" href="<?=$url?>"
+                                   style="background-color: white;border-color: #66CC00;width: 100%;border-width: 2px;border-radius: 10px;margin: 5px;">
                                     <div class="row">
                                         <div class="col-lg-4">
                                             <div style="width: 100%;height: 100%;margin-top: 5px;">
@@ -261,7 +277,7 @@ $onlineuser = mt_rand($onlineran + 1, 3000);
                         <div class="row">
                             <div class="col-lg-6">
                                 <div class="btn"
-                                     style="background-color: white;border-color: #5bb15b;width: 100%;border-width: 2px;border-radius: 10px;margin: 5px;">
+                                     style="background-color: white;border-color: #66CC00;width: 100%;border-width: 2px;border-radius: 10px;margin: 5px;">
                                     <div class="row">
                                         <div class="col-lg-4">
                                             <div style="width: 100%;height: 100%;margin-top: 5px;">
@@ -277,8 +293,11 @@ $onlineuser = mt_rand($onlineran + 1, 3000);
                                 </div>
                             </div>
                             <div class="col-lg-6">
-                                <a class="btn" href="member_team.php"
-                                   style="background-color: white;border-color: #5bb15b;width: 100%;border-width: 2px;border-radius: 10px;margin: 5px;">
+                                <?php
+                                $url = $is_verified ? 'member_teamlist.php?element=1' : '#';
+                                ?>
+                                <a class="btn" href="<?=$url?>"
+                                   style="background-color: white;border-color: #66CC00;width: 100%;border-width: 2px;border-radius: 10px;margin: 5px;">
                                     <div class="row">
                                         <div class="col-lg-4">
                                             <div style="width: 100%;height: 100%;margin-top: 5px;">
@@ -299,7 +318,7 @@ $onlineuser = mt_rand($onlineran + 1, 3000);
                 <div style="height: 10px;"></div>
                 <div class="row">
                     <div class="col-lg-12">
-                        <div style="width: 100%;border-radius: 10px;background-color: #5bb15b;padding: 10px;">
+                        <div style="width: 100%;border-radius: 10px;background-color: #66CC00;padding: 10px;">
                             <div class="row">
                                 <div class="col-lg-12" style="text-align: center;">
                                     <h4><b>รายได้สะสมทั้งหมด</b></h4>
@@ -319,29 +338,29 @@ $onlineuser = mt_rand($onlineran + 1, 3000);
                 <div class="row">
                     <div class="col-lg-3">
                         <a class="btn" href="#"
-                           style="background-color: white;border-color: #5bb15b;width: 100%;border-width: 2px;border-radius: 10px;margin: 5px;">
+                           style="background-color: white;border-color: #66CC00;width: 100%;border-width: 2px;border-radius: 10px;margin: 5px;">
                             <div class="row">
                                 <div class="col-lg-12" style="text-align: center;">
                                     <b>รายได้วันนี้ <?= date('d-m-Y'); ?></b>
-                                    <h2>0</h2>
+                                    <h2><?= number_format(getPointtoday($connect, $member_id)) ?></h2>
                                 </div>
                             </div>
                         </a>
                     </div>
                     <div class="col-lg-3">
                         <a class="btn" href="#"
-                           style="background-color: white;border-color: #5bb15b;width: 100%;border-width: 2px;border-radius: 10px;margin: 5px;">
+                           style="background-color: white;border-color: #66CC00;width: 100%;border-width: 2px;border-radius: 10px;margin: 5px;">
                             <div class="row">
                                 <div class="col-lg-12" style="text-align: center;">
                                     <b>รายได้ 7 วันที่ผ่านมา</b>
-                                    <h2>0</h2>
+                                    <h2><?= number_format(getPointsevenday($connect, $member_id)) ?></h2>
                                 </div>
                             </div>
                         </a>
                     </div>
                     <div class="col-lg-3">
                         <a class="btn" href="#"
-                           style="background-color: white;border-color: #5bb15b;width: 100%;border-width: 2px;border-radius: 10px;margin: 5px;">
+                           style="background-color: white;border-color: #66CC00;width: 100%;border-width: 2px;border-radius: 10px;margin: 5px;">
                             <div class="row">
                                 <div class="col-lg-12" style="text-align: center;">
                                     <b>รายได้สะสมเดือนนี้</b>
@@ -352,7 +371,7 @@ $onlineuser = mt_rand($onlineran + 1, 3000);
                     </div>
                     <div class="col-lg-3">
                         <a class="btn" href="#"
-                           style="background-color: white;border-color: #5bb15b;width: 100%;border-width: 2px;border-radius: 10px;margin: 5px;">
+                           style="background-color: white;border-color: #66CC00;width: 100%;border-width: 2px;border-radius: 10px;margin: 5px;">
                             <div class="row">
                                 <div class="col-lg-12" style="text-align: center;">
                                     <b>รายได้สะสมคงเหลือ</b>
@@ -375,9 +394,9 @@ $onlineuser = mt_rand($onlineran + 1, 3000);
                 <div class="row">
                     <div class="col-lg-6">
                         <a class="btn" href="#"
-                           style="background-color: #5bb15b;border-color: #5bb15b;width: 100%;border-width: 2px;border-radius: 10px;margin: 5px;">
+                           style="background-color: #66CC00;border-color: #5bb15b;width: 100%;border-width: 2px;border-radius: 10px;margin: 5px;">
                             <div class="row">
-                                <div class="col-lg-12" style="text-align: center;color: white;">
+                                <div class="col-lg-12" style="text-align: center;color: black;">
                                     <b>จำนวนผู้ใช้งานออนไลน์ขณะนี้</b>
                                     <h2><?= number_format($onlineuser) ?></h2>
                                 </div>
@@ -386,9 +405,9 @@ $onlineuser = mt_rand($onlineran + 1, 3000);
                     </div>
                     <div class="col-lg-6">
                         <a class="btn" href="#"
-                           style="background-color: #5bb15b;border-color: #5bb15b;width: 100%;border-width: 2px;border-radius: 10px;margin: 5px;">
+                           style="background-color: #66CC00;border-color: #5bb15b;width: 100%;border-width: 2px;border-radius: 10px;margin: 5px;">
                             <div class="row">
-                                <div class="col-lg-12" style="text-align: center;color: white;">
+                                <div class="col-lg-12" style="text-align: center;color: black;">
                                     <b>ส่งซ่อมเสร็จแล้ว</b>
                                     <h2>0</h2>
                                 </div>
@@ -405,7 +424,7 @@ $onlineuser = mt_rand($onlineran + 1, 3000);
         <div class="row">
             <div class="col-lg-12">
                 <a href="worktrackinglist.php" class="btn"
-                   style="border-radius: 10px;background-color: #5bb15b;width: 100%">
+                   style="border-radius: 10px;background-color: #66CC00;width: 100%">
                     <table style="width: 100%">
                         <tr>
                             <td style="text-align: center">

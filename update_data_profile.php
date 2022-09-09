@@ -66,7 +66,7 @@ if ($id != null || $id != '') {
     if ($fname != '' && $lname != '') {
         $created_at = time();
         $created_by = $userid;
-        $sql = "UPDATE member set first_name='$fname', last_name='$lname' WHERE id='$id'";
+        $sql = "UPDATE member set first_name='$fname', last_name='$lname' WHERE id='$id', is_verified=1";
         if ($result = $connect->query($sql)) {
             $res += 1;
         }

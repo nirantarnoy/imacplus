@@ -19,6 +19,8 @@ $email = '';
 $line_id = '';
 $url= '';
 $point= '';
+$is_center = 0;
+$is_vipshop = 0;
 
 $status = '';
 $recid = 0;
@@ -73,6 +75,13 @@ if (isset($_POST['recid'])) {
 }
 if (isset($_POST['action_type'])) {
     $action = $_POST['action_type'];
+}
+
+if (isset($_POST['is_center'])) {
+    $is_center = $_POST['is_center'];
+}
+if (isset($_POST['is_vipshop'])) {
+    $is_vipshop= $_POST['is_vipshop'];
 }
 //print_r($action);return;
 

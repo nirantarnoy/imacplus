@@ -75,7 +75,11 @@ foreach ($result as $row){
     $sub_array[] = '<p style="font-weight: ;text-align: left">'.$row['upgrade_amount'].'</p>';
     $sub_array[] = '<p style="font-weight: ;text-align: left">'.$doc_ref.'</p>';
     $sub_array[] = '<p style="font-weight: ;text-align: left">'.$status_color.'</p>';
-    $sub_array[] = '<div class="btn btn-success btn-sm" data-id="'.$row['id'].'" onclick="recAccept($(this))"><i class="fas fa-check-circle"></i> Accept</div><span> </span><div class="btn btn-danger btn-sm" data-id="'.$row['id'].'" onclick="recDecline($(this))"><i class="fas fa-ban"></i> Decline</div>';
+    if($row['status'] != 1){
+        $sub_array[] = '<div class="btn btn-success btn-sm" data-id="'.$row['id'].'" onclick="recAccept($(this))"><i class="fas fa-check-circle"></i> Accept</div><span> </span><div class="btn btn-danger btn-sm" data-id="'.$row['id'].'" onclick="recDecline($(this))"><i class="fas fa-ban"></i> Decline</div>';
+    }else{
+        $sub_array[] = '';
+    }
 
     $data[] = $sub_array;
 }

@@ -12,6 +12,7 @@ $member_id = getMemberIDFromUser($connect, $userid);
 $upgrade_amount = 0;
 $package_name = "";
 $slip = 0;
+$package_id = 0;
 
 
 $recid = 0;
@@ -30,9 +31,13 @@ if (isset($_POST['package_name'])) {
 if (isset($_POST['recid'])) {
     $recid = $_POST['recid'];
 }
+if (isset($_POST['package_id'])) {
+    $package_id = $_POST['package_id'];
+}
 
 
-if ($member_id != null && $upgrade_amount != '') {
+
+if ($member_id != null && $upgrade_amount != '' && $package_id > 0) {
 
     $slip_doc = '';
     if (isset($_FILES['file_slip'])) {
@@ -46,8 +51,8 @@ if ($member_id != null && $upgrade_amount != '') {
     $c_date = date('Y-m-d H:i:s');
     $created_at = time();
     $get_lastno = getMemberUpgradeLastNo($connect);
-    $sql = "INSERT INTO member_upgrade (trans_no,trans_date,member_id,upgrade_amount,transfer_doc,created_at,created_by,status)
-           VALUES ('$get_lastno','$c_date','$member_id','$upgrade_amount','$slip_doc','$created_at','$member_id', 0)";
+    $sql = "INSERT INTO member_upgrade (trans_no,trans_date,member_id,upgrade_amount,transfer_doc,created_at,created_by,status,upgrade_to_type)
+           VALUES ('$get_lastno','$c_date','$member_id','$upgrade_amount','$slip_doc','$created_at','$member_id', 0,'$package_id')";
 
     if ($result = $connect->query($sql)) {
         $maxid = getMemberUpgradeMaxId($connect, $member_id);

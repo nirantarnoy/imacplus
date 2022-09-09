@@ -26,7 +26,11 @@ if ($id) {
             'name'=>$row['name'],
             'description'=>$row['description'],
             'percent_rate'=>$row['percent_rate'],
-            'status'=>$row['status']]);
+            'status'=>$row['status'],
+            'is_center'=>$row['is_center'],
+            'is_vipshop' => $row['is_vipshop'],
+            'platform_type_id'=>$row['platform_type_id'],
+            ]);
     }
 
     echo json_encode($data);

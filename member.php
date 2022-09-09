@@ -10,6 +10,7 @@ include "header.php";
 include("models/StatusModel.php");
 include("models/MemberTypeModel.php");
 
+
 //$position_data = getPositionmodel($connect);
 //$per_check = checkPer($user_position,"is_product_cat", $connect);
 //if(!$per_check){
@@ -33,6 +34,9 @@ if (isset($_SESSION['msg-error'])) {
 $member_type_filter_selected = 0;
 $member_type_data = getMemberTypeData($connect);
 $selected = '';
+
+
+
 
 ?>
 <input type="hidden" class="msg-ok" value="<?= $noti_ok ?>">
@@ -178,7 +182,8 @@ $selected = '';
                     </div>
                     <br/>
                     <div class="row">
-                        <div class="col-lg-12">
+
+                        <div class="col-lg-4">
                             <label for="">สถานะ</label>
                             <select name="status" id="" class="form-control status">
                                 <?php for ($i = 0; $i <= count($status_data) - 1; $i++): ?>
@@ -186,6 +191,7 @@ $selected = '';
                                 <?php endfor; ?>
                             </select>
                         </div>
+
                     </div>
                     <br>
 

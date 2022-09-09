@@ -2,7 +2,7 @@
 function getUpgradeStandardModel($connect, $id)
 {
     $data = [];
-    $query = "SELECT * FROM upgrade_standard WHERE id='$id'";
+    $query = "SELECT * FROM upgrade_standard";
     $statement = $connect->prepare($query);
     $statement->execute();
     $result = $statement->fetchAll();
