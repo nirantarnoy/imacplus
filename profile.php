@@ -390,7 +390,22 @@ $is_verified = getMemberverifiedstatus($connect, $member_id);
                     </div>
                 </div>
                 <br/>
+                <div class="row">
+                    <div class="col-lg-4" style="margin-top: 5px;">
+                        <img alt="review image"
+                             src="assets/image/review/review.jpg" style="width: 100%"/>
+                    </div>
+                    <div class="col-lg-4" style="margin-top: 5px;">
+                        <img alt="review image"
+                             src="assets/image/review/review.jpg" style="width: 100%"/>
+                    </div>
+                    <div class="col-lg-4" style="margin-top: 5px;">
+                        <img alt="review image"
+                             src="assets/image/review/review.jpg" style="width: 100%"/>
+                    </div>
+                </div>
                 <br/>
+                <div style="height: 20px;"></div>
                 <div class="row">
                     <div class="col-lg-6">
                         <a class="btn" href="#"
@@ -422,7 +437,7 @@ $is_verified = getMemberverifiedstatus($connect, $member_id);
 
     <div class="col-lg-3">
         <div class="row">
-            <div class="col-lg-12">
+            <div class="col-lg-12" style="margin-top: 10px;">
                 <a href="worktrackinglist.php" class="btn"
                    style="border-radius: 10px;background-color: #66CC00;width: 100%">
                     <table style="width: 100%">

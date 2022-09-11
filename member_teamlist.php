@@ -38,7 +38,7 @@ if ($member_id > 0) {
             <div class="row">
                 <?php for ($i = 0; $i <= count($data) - 1; $i++): ?>
 
-                    <div class="col-lg-3">
+                    <div class="col-lg-2">
                         <div class="row">
                             <div class="col-lg-12">
                                 <div class="text-center mt-2" style="text-align: center;">

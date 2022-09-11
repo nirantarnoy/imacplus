@@ -2,6 +2,7 @@
 include('header.php');
 include('models/ItemModel.php');
 include("models/ChecklistModel.php");
+include("models/WorkorderModel.php");
 
 $id = 0;
 if (isset($_GET['id'])) {
@@ -16,6 +17,7 @@ $customer_id = '';
 $customer_name = '';
 $customer_phone = '';
 $workorder_id = 0;
+$status = 0;
 
 if ($id > 0) {
     $query = "SELECT * FROM quotation WHERE id ='$id'";
@@ -33,6 +35,7 @@ if ($id > 0) {
         $customer_name = $row['customer_name'];
         $customer_phone = '';
         $workorder_id = $row['workorder_id'];
+        $status = $row['status'];
 
     }
 
@@ -60,7 +63,7 @@ if ($id > 0) {
     <input type="hidden" id="rec-id" value="<?= $id ?>">
     <table style="width: 100%;border: none;">
         <tr>
-            <td colspan="2" style="text-align: center;font-family: 'SukhumvitSet-Medium'"><h3>ใบเสนอราคาซ่อม</h3></td>
+            <td colspan="2" style="text-align: center;"><h3>ใบเสนอราคาซ่อม</h3></td>
 
         </tr>
         <tr>
@@ -81,7 +84,7 @@ if ($id > 0) {
     </table>
     <table style="width: 100%">
         <tr>
-            <td style="width: 50%">อ้างอิงเลขที่แจ้งซ่อม &nbsp; &nbsp; <b><?= $workorder_id ?></b></td>
+            <td style="width: 50%">อ้างอิงเลขที่แจ้งซ่อม &nbsp; &nbsp; <b><?=getWorkorderNo($connect, $workorder_id) ?></b></td>
 
             <td style="width: 50%"></td>
 
@@ -133,12 +136,13 @@ if ($id > 0) {
 <br/>
 <div class="row">
     <div class="col-lg-8">
+        <?php if($status != 1):?>
         <form id="form-confirm" action="quotation_action.php" method="post">
             <input type="hidden" name="action_type" value="confirm">
             <input type="hidden" name="quotation_confirm_id" value="<?=$quotation_id?>">
             <div class="btn btn-success" onclick="quotationaccept()">ยอมรับและยืนยัน</div>
         </form>
-
+       <?php endif;?>
     </div>
     <div class="col-lg-4" style="text-align: right;">
         <div class="btn btn-info" onclick="printContent('print-area')">พิมพ์</div>

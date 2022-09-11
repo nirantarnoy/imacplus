@@ -370,6 +370,41 @@ function getMemberTypeVIP($connect, $id)
     }
 
 }
+function getMemberTypeVIPSHOP($connect, $id)
+{
+    $query = "SELECT * FROM member WHERE id='$id'";
+    $statement = $connect->prepare($query);
+    $statement->execute();
+    $result = $statement->fetchAll();
+    $filtered_rows = $statement->rowCount();
+    //return $filtered_rows;
+    if ($filtered_rows > 0) {
+        foreach ($result as $row) {
+            return findIsVip($connect, $row['member_type_id']);
+        }
+    }else{
+        return  0;
+    }
+
+}
+
+function findIsVip($connect, $member_type_id)
+{
+    $query = "SELECT * FROM member_type WHERE id = '$member_type_id'";
+    $statement = $connect->prepare($query);
+    $statement->execute();
+    $result = $statement->fetchAll();
+    $filtered_rows = $statement->rowCount();
+    //return $filtered_rows;
+    if ($filtered_rows > 0) {
+        foreach ($result as $row) {
+            return $row['is_vipshop'];
+        }
+    } else {
+        return 0;
+    }
+
+}
 
 function findParentForRegister($connect, $token)
 {

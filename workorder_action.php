@@ -231,7 +231,7 @@ if ($userid != null || $userid > 0) {
         }
     }
     if ($action == 'complete') {
-//echo "ok complete".$recid;
+//echo "ok complete".$recid;return;
         if ($recid > 0) {
             $sql3 = "UPDATE workorders SET status=6 WHERE id='$recid'";
             if ($result3 = $connect->query($sql3)) {

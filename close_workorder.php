@@ -23,6 +23,7 @@ if (isset($_SESSION['userid'])) {
 }
 
 //echo $action;return;
+$res = 0;
 if ($workorder_id > 0) {
     if (isset($_FILES['work_upload_file'])) {
         $name = $_FILES['work_upload_file']['name'];
@@ -37,10 +38,19 @@ if ($workorder_id > 0) {
             $sql_photo = "INSERT INTO workorder_video(workorder_id,video) VALUES ('$workorder_id','$filename')";
             if ($connect->query($sql_photo)) {
                 move_uploaded_file($file_tmp, "uploads/workorder/video/" . $filename);
+                $res+=1;
             }
         }
     }
 }
+if($res > 0){
+    $_SESSION['msg-success'] = 'ทำรายการสำเร็จ';
+    header('location:workorder.php');
+}else{
+    $_SESSION['msg-success'] = 'ทำรายการไม่สำเร็จ';
+    header('location:workorder.php');
+}
+
 
 ?>
 

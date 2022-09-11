@@ -464,7 +464,7 @@ if (isset($_SESSION['msg-error'])) {
                     </div>
                 <?php endif; ?>
                 <?php if ($status == 4): ?>
-                    <div class="btn btn-primary btn-close-final" onclick="createworkfinal($(this))">
+                    <div class="btn btn-primary btn-close-final-" onclick="createworkfinal($(this))">
 
                         <i
                                 class="fa fa-trophy"></i> ยืนยันการซ่อมสำเร็จ

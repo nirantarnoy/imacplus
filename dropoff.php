@@ -18,34 +18,40 @@ include("models/StatusModel.php");
 
 $noti_ok = '';
 $noti_error = '';
-$status_data = [['id'=>1,'name'=>'Active'],['id'=>0,'name'=>'Inactive']];
+$status_data = [['id' => 1, 'name' => 'Active'], ['id' => 0, 'name' => 'Inactive']];
 
-if(isset($_SESSION['msg-success'])){
+if (isset($_SESSION['msg-success'])) {
     $noti_ok = $_SESSION['msg-success'];
     unset($_SESSION['msg-success']);
 }
 
-if(isset($_SESSION['msg-error'])){
+if (isset($_SESSION['msg-error'])) {
     $noti_error = $_SESSION['msg-error'];
     unset($_SESSION['msg-error']);
 }
 
+
+$userid = $_SESSION['userid'];
+$member_id = getMemberIDFromUser($connect, $userid);
+$member_type_id = getMemberType($connect, $member_id);
+$is_vipshop = getMemberTypeVIPSHOP($connect, $member_id);
 ?>
-<input type="hidden" class="msg-ok" value="<?=$noti_ok?>">
-<input type="hidden" class="msg-error" value="<?=$noti_error?>">
+<input type="hidden" class="msg-ok" value="<?= $noti_ok ?>">
+<input type="hidden" class="msg-error" value="<?= $noti_error ?>">
 
 <div class="d-sm-flex align-items-center justify-content-between mb-4">
     <h1 class="h3 mb-0 text-gray-800">รายการ Drop-off</h1>
     <div class="btn-group">
-        <a href="#" class="btn btn-light-green btn-h-green btn-a-green border-0 radius-3 py-2 text-600 text-90" onclick="showaddbank($(this))">
+        <a href="#" class="btn btn-light-green btn-h-green btn-a-green border-0 radius-3 py-2 text-600 text-90"
+           onclick="showaddbank($(this))">
                   <span class="d-none d-sm-inline mr-1">
                     สร้าง
                   </span>
-                <i class="fa fa-save text-110 w-2 h-2"></i>
+            <i class="fa fa-save text-110 w-2 h-2"></i>
         </a>
 
-<!--        <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-success shadow-sm" onclick="showaddbank($(this))"><i-->
-<!--                class="fas fa-plus-circle fa-sm text-white-50"></i> สร้างใหม่</a>-->
+        <!--        <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-success shadow-sm" onclick="showaddbank($(this))"><i-->
+        <!--                class="fas fa-plus-circle fa-sm text-white-50"></i> สร้างใหม่</a>-->
         <!--        <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i class="fas fa-download fa-sm text-white-50"></i> Export Data</a>-->
     </div>
 
@@ -62,13 +68,13 @@ if(isset($_SESSION['msg-error'])){
         <div class="table-responsive">
             <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                 <thead>
-                    <tr>
-                        <th>#</th>
-                        <th>วันที่</th>
-                        <th>สมาชิก</th>
-                        <th>คำสั่งซ่อม</th>
-                        <th>สถานะ</th>
-                    </tr>
+                <tr>
+                    <th>#</th>
+                    <th>วันที่</th>
+                    <th>สมาชิก</th>
+                    <th>คำสั่งซ่อม</th>
+                    <th>สถานะ</th>
+                </tr>
                 </thead>
                 <tbody>
                 </tbody>
@@ -91,28 +97,32 @@ if(isset($_SESSION['msg-error'])){
                 <div class="modal-body">
                     <input type="hidden" name="recid" class="user-recid" value="">
                     <input type="hidden" name="action_type" class="action-type" value="create">
-                    <input type="hidden" name="member_id" class="member-id" value="<?=getMemberIDFromUser($connect, $_SESSION['userid'])?>">
+                    <input type="hidden" name="member_id" class="member-id"
+                           value="<?= getMemberIDFromUser($connect, $_SESSION['userid']) ?>">
                     <div class="row">
                         <div class="col-lg-12">
                             <label for="">วันที่</label>
-                            <input type="text" class="form-control dropoff-date" name="dropoff_date" value="<?=date('d/m/Y H:i:s')?>"
+                            <input type="text" class="form-control dropoff-date" name="dropoff_date"
+                                   value="<?= date('d/m/Y H:i:s') ?>"
                                    readonly>
                         </div>
                     </div>
                     <br>
-<!--                    <div class="row">-->
-<!--                        <div class="col-lg-12">-->
-<!--                            <label for="">สมาชิก</label>-->
-<!--                            <input type="text" name="member_id" class="form-control member-id" value="" readonly>-->
-<!--                        </div>-->
-<!--                    </div>-->
-<!--                    <br>-->
+                    <!--                    <div class="row">-->
+                    <!--                        <div class="col-lg-12">-->
+                    <!--                            <label for="">สมาชิก</label>-->
+                    <!--                            <input type="text" name="member_id" class="form-control member-id" value="" readonly>-->
+                    <!--                        </div>-->
+                    <!--                    </div>-->
+                    <!--                    <br>-->
                     <div class="row">
                         <div class="col-lg-12">
                             <label for="">คำสั่งซ่อม</label>
-                            <input type="text" name="workorder_id" class="form-control workorder-id" value="">
+                            <input type="text" name="workorder_id" class="form-control workorder-id"
+                                   data-var="<?= $is_vipshop ?>" value="" onchange="checkorder($(this))">
                         </div>
                     </div>
+                    <div class="alert alert-danger find-workorder-error" style="display: none;"></div>
                     <br>
                     <div class="row">
                         <div class="col-lg-12">
@@ -127,13 +137,15 @@ if(isset($_SESSION['msg-error'])){
                     <br>
 
 
-
                 </div>
 
                 <!-- Modal footer -->
                 <div class="modal-footer">
-                    <button type="submit" class="btn btn-success btn-save" data-dismiss="modalx"><i class="fa fa-save"></i> Save </button>
-                    <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fa fa-ban"></i> Cancel</button>
+                    <button type="submit" class="btn btn-success btn-save" data-dismiss="modalx"><i
+                                class="fa fa-save"></i> Save
+                    </button>
+                    <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fa fa-ban"></i> Cancel
+                    </button>
                 </div>
             </form>
         </div>
@@ -144,7 +156,8 @@ include "footer.php";
 ?>
 <script>
     notify();
-   $('.dropoff-date').datetimepicker({format: "DD-MM-yyyy"});
+    $('.dropoff-date').datetimepicker({format: "DD-MM-yyyy"});
+
     function showaddbank(e) {
         $(".user-recid").val(0);
         $(".bank-name").val('');
@@ -235,7 +248,7 @@ include "footer.php";
             confirmButtonText: 'ใช่',
             cancelButtonText: 'ไม่ใช่',
             reverseButtons: true
-        }).then(function(result) {
+        }).then(function (result) {
             if (result.value) {
                 $("#form-delete").submit();
             }
@@ -257,6 +270,7 @@ include "footer.php";
         //     // e.trigger("click");
         // });
     }
+
     function notify() {
         // $.toast({
         //     title: 'Message Notify',
@@ -274,7 +288,7 @@ include "footer.php";
         // });
         var msg_ok = $(".msg-ok").val();
         var msg_error = $(".msg-error").val();
-        if(msg_ok != ''){
+        if (msg_ok != '') {
             $.aceToaster.add({
                 placement: 'tr',
                 body: "<p class='p-3 mb-0 text-center'>\
@@ -310,7 +324,7 @@ include "footer.php";
             //     pause_on_hover: false
             // });
         }
-        if(msg_error != ''){
+        if (msg_error != '') {
             $.aceToaster.add({
                 placement: 'tr',
                 body: "<div class='p-3 m-2 d-flex'>\
@@ -350,5 +364,37 @@ include "footer.php";
             // });
         }
 
+    }
+
+    function checkorder(e) {
+        var is_vipshop = e.attr("data-var");
+        var work_no = e.val();
+        if (work_no != '') {
+            var create_by_vipshop = 0;
+            var has_order = 0;
+            $.ajax({
+                'type': 'post',
+                'dataType': 'json',
+                'async': false,
+                'url': 'check_workorder_dropoff.php',
+                'data': {'work_no': work_no},
+                'success': function (data) {
+                    if (data.length > 0) {
+                        create_by_vipshop = data[0]['is_vipshop'];
+                        has_order = data[0]['has_order'];
+                    }
+                }
+            });
+            alert(has_order);
+            if(has_order == 0){
+                $(".find-workorder-error").html("ไม่พบรายการใบแจ้งซ่อมหรือใบแจ้งซ่อมนี้ปิดไปแล้ว").show();
+            }
+            if (is_vipshop == 1 && create_by_vipshop == 1) {
+                alert("ไม่สามารถ dropoff ใบแจ้งซ่อมนี้ได้");
+                e.val("");
+            }
+        }else{
+            $(".find-workorder-error").hide();
+        }
     }
 </script>

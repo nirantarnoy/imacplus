@@ -41,6 +41,23 @@ function getOrderIdByNo($connect, $work_no)
     }
 }
 
+function getWorkorderNo($connect, $id){
+    $query = "SELECT * FROM workorders WHERE id = '$id' ";
+    $statement = $connect->prepare($query);
+    $statement->execute();
+    $result = $statement->fetchAll();
+    $filtered_rows = $statement->rowCount();
+    $num = '';
+    if ($filtered_rows > 0) {
+        foreach ($result as $row) {
+            $num = $row['work_no'];
+        }
+        return $num;
+    } else {
+        return '';
+    }
+}
+
 function getOrderIdById($connect, $id)
 {
     $query = "SELECT * FROM workorders WHERE id = '$id' ";
@@ -307,7 +324,7 @@ function getPointall($connect, $member_id)
 function getCurrentPoint($connect, $member_id)
 {
     $balance = 0;
-    $query = "SELECT point FROM member WHERE created_by = '$member_id' ";
+    $query = "SELECT point FROM member WHERE id = '$member_id' ";
     $statement = $connect->prepare($query);
     $statement->execute();
     $result = $statement->fetchAll();

@@ -1,7 +1,8 @@
 <?php
 include("header.php");
 include("models/WorkorderModel.php");
-//include("models/ItemModel.php");
+include("models/WorkorderStatus.php");
+include("models/ItemModel.php");
 include("models/ChecklistModel.php");
 
 $work_id = 0;
@@ -11,6 +12,10 @@ if (isset($_POST['ref_id'])) {
 }
 
 $work_data = getOrderIdById($connect, $work_id);
+$checklist_date = [];
+if($work_data){
+    $checklist_date = $work_data[0]['check_list'];
+}
 //print_r($work_data);return;
 ?>
     <div class="row">
@@ -64,7 +69,14 @@ $work_data = getOrderIdById($connect, $work_id);
     <br/>
     <div class="row">
         <div class="col-lg-12">
-            <h5><?= getChecklistname($connect, $work_data[0]['models']) ?></h5>
+            <div class="badge badge-warning">
+                <h5>
+                    <?php for ($i = 0; $i <= count($checklist_date) - 1; $i++): ?>
+                        <?= getChecklistname($connect, $checklist_date[$i]['check_list_id']) . ',' ?>
+                    <?php endfor; ?>
+                </h5>
+            </div>
+
         </div>
     </div>
     <br/>
@@ -73,7 +85,7 @@ $work_data = getOrderIdById($connect, $work_id);
         <div class="row">
             <div class="col-lg-4">
                 <label for="">สถานะ</label>
-                <h5><?= getWOrkStatus($work_data[0]['status']) ?></h5>
+                <h5><?= getWorkorderStatus($work_data[0]['status']) ?></h5>
             </div>
             <div class="col-lg-4">
                 <label for="">อัพโหลดวีดีโอ</label><br/>
