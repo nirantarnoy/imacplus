@@ -9,7 +9,7 @@ function getMembermodel($connect)
     $filtered_rows = $statement->rowCount();
     if ($filtered_rows > 0) {
         foreach ($result as $row) {
-            array_push($data, ['id' => $row['id'], 'name' => $row['first_name'], 'photo' => $row['photo'],'is_verified'=>$row['is_verified']]);
+            array_push($data, ['id' => $row['id'], 'name' => $row['first_name'], 'photo' => $row['photo'], 'is_verified' => $row['is_verified']]);
         }
     }
 
@@ -26,7 +26,7 @@ function getMemberIntroduceData($connect, $id)
     $filtered_rows = $statement->rowCount();
     if ($filtered_rows > 0) {
         foreach ($result as $row) {
-            array_push($data, ['id' => $row['id'], 'name' => $row['first_name'],'lname'=>$row['last_name'], 'photo' => $row['photo']]);
+            array_push($data, ['id' => $row['id'], 'name' => $row['first_name'], 'lname' => $row['last_name'], 'photo' => $row['photo']]);
         }
     }
 
@@ -109,6 +109,7 @@ function getMemberBankaccount($connect, $id)
     }
     return $data;
 }
+
 function getMemberBankAddress($connect, $id)
 {
     $data = [];
@@ -350,6 +351,7 @@ function getMemberType($connect, $id)
     }
 
 }
+
 function getMemberTypeVIP($connect, $id)
 {
     $query = "SELECT * FROM member WHERE id='$id'";
@@ -360,50 +362,53 @@ function getMemberTypeVIP($connect, $id)
     //return $filtered_rows;
     if ($filtered_rows > 0) {
         foreach ($result as $row) {
-            if($row['member_type_id'] == 28){
+            if ($row['member_type_id'] == 28) {
                 return 1;
             }
 
-        }
-    }else{
-        return  0;
-    }
-
-}
-function getMemberTypeVIPSHOP($connect, $id)
-{
-    $query = "SELECT * FROM member WHERE id='$id'";
-    $statement = $connect->prepare($query);
-    $statement->execute();
-    $result = $statement->fetchAll();
-    $filtered_rows = $statement->rowCount();
-    //return $filtered_rows;
-    if ($filtered_rows > 0) {
-        foreach ($result as $row) {
-            return findIsVip($connect, $row['member_type_id']);
-        }
-    }else{
-        return  0;
-    }
-
-}
-
-function findIsVip($connect, $member_type_id)
-{
-    $query = "SELECT * FROM member_type WHERE id = '$member_type_id'";
-    $statement = $connect->prepare($query);
-    $statement->execute();
-    $result = $statement->fetchAll();
-    $filtered_rows = $statement->rowCount();
-    //return $filtered_rows;
-    if ($filtered_rows > 0) {
-        foreach ($result as $row) {
-            return $row['is_vipshop'];
         }
     } else {
         return 0;
     }
 
+}
+
+function getMemberTypeVIPSHOP($connect, $id)
+{
+    $isvipshop = 0;
+//    $query = "SELECT * FROM member WHERE id='$id'";
+//    $statement = $connect->prepare($query);
+//    $statement->execute();
+//    $result = $statement->fetchAll();
+//    $filtered_rows = $statement->rowCount();
+//    //return $filtered_rows;
+//    if ($filtered_rows > 0) {
+//        foreach ($result as $row) {
+//            $isvipshop = findIsVip($connect, $row['member_type_id']);
+//        }
+//    } else {
+//        return 0;
+//    }
+    return $isvipshop;
+}
+
+function findIsVip($connect, $member_type_id)
+{
+    $isvip = 1;
+//    $query = "SELECT * FROM member_type WHERE id = '$member_type_id'";
+//    $statement = $connect->prepare($query);
+//    $statement->execute();
+//    $result = $statement->fetchAll();
+//    $filtered_rows = $statement->rowCount();
+//    //return $filtered_rows;
+//    if ($filtered_rows > 0) {
+//        foreach ($result as $row) {
+//            $isvip = $row['is_vipshop'];
+//        }
+//    } else {
+//        return 0;
+//    }
+    return $isvip;
 }
 
 function findParentForRegister($connect, $token)
@@ -419,8 +424,8 @@ function findParentForRegister($connect, $token)
         foreach ($result as $row) {
 //            $x = explode('=', $row['url']);
 //            if ($x[1] == $token) {
-                return $row['id'];
-           // }
+            return $row['id'];
+            // }
 //            return $row['wallet_amount'];
         }
     } else {
@@ -450,6 +455,7 @@ function findParentForRegisterold($connect, $token)
     }
 
 }
+
 function findCurrentParentId($connect, $member_id)
 {
     $query = "SELECT * FROM member WHERE id = '$member_id'";
@@ -460,7 +466,7 @@ function findCurrentParentId($connect, $member_id)
     //return $filtered_rows;
     if ($filtered_rows > 0) {
         foreach ($result as $row) {
-         return $row['parent_id'];
+            return $row['parent_id'];
         }
     } else {
         return 0;
@@ -521,32 +527,34 @@ function checkDuplicateMember($connect, $email, $phone)
 
 }
 
-function getMemberLastNo($connect){
+function getMemberLastNo($connect)
+{
     $query = "SELECT MAX(member_no) as code FROM member WHERE member_no <>''";
     $statement = $connect->prepare($query);
     $statement->execute();
     $result = $statement->fetchAll();
     $filtered_rows = $statement->rowCount();
     $num = '';
-    $runno = substr(date('Y'),2,2);
+    $runno = substr(date('Y'), 2, 2);
     $new = 0;
     //return $filtered_rows;
-    if($filtered_rows > 0){
-        foreach($result as $row){
-            if($row['code'] == ''){
-                return $runno.'00001';
+    if ($filtered_rows > 0) {
+        foreach ($result as $row) {
+            if ($row['code'] == '') {
+                return $runno . '00001';
             }
-            $new = (int)substr($row['code'],2,5) +1;
-            $diff = 5-strlen($new);
-            for($i=0;$i<=$diff-1;$i++){
-                $runno = $runno.'0';
+            $new = (int)substr($row['code'], 2, 5) + 1;
+            $diff = 5 - strlen($new);
+            for ($i = 0; $i <= $diff - 1; $i++) {
+                $runno = $runno . '0';
             }
         }
-        return $num = $runno.$new;
-    }else{
-        return $runno.'00001';
+        return $num = $runno . $new;
+    } else {
+        return $runno . '00001';
     }
 }
+
 function getMemberCenterData($connect)
 {
     $data = [];
@@ -566,7 +574,7 @@ function getMemberCenterData($connect)
 
 function getMemberverifiedstatus($connect, $id)
 {
-    $data =0;
+    $data = 0;
     $query = "SELECT * FROM member WHERE id='$id'";
     $statement = $connect->prepare($query);
     $statement->execute();

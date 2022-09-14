@@ -383,9 +383,12 @@ include "footer.php";
                         create_by_vipshop = data[0]['is_vipshop'];
                         has_order = data[0]['has_order'];
                     }
+                },
+                'error': function(err){
+                    alert('error');
                 }
             });
-            alert(has_order);
+           // alert(has_order);
             if(has_order == 0){
                 $(".find-workorder-error").html("ไม่พบรายการใบแจ้งซ่อมหรือใบแจ้งซ่อมนี้ปิดไปแล้ว").show();
             }
