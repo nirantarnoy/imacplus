@@ -93,6 +93,9 @@ if (isset($accessToken)) {
                     if (isset($_COOKIE["member_login"])) {
                         setcookie("member_login", "");
                     }
+
+                    $_SESSION['start'] = time();
+                    $_SESSION['expire'] = $_SESSION['start'] + (30 * 60);
                 }
                 $_SESSION['msg-success'] = 'บันทึกข้อมูลเรียบร้อยแล้ว';
                 // header('location:registersuccess.php');

@@ -4,6 +4,10 @@ if (!session_id()) {
     session_start();
 }
 
+if (isset($_SESSION['userid'])) {
+    header("location:profile.php");
+}
+
 require_once __DIR__ . '/vendor/php-graph-sdk-5.x/src/Facebook/autoload.php';
 
 include("common/dbcon.php");

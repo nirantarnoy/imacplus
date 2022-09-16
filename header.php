@@ -5,7 +5,11 @@ session_start();
 if (!isset($_SESSION['userid'])) {
     header("location:loginpage.php");
 }
+$now = time(); // Checking the time now when home page starts.
 
+if ($now > $_SESSION['expire']) {
+    header("location:logout.php");
+}
 include("common/dbcon.php");
 include("models/UserModel.php");
 include("models/MemberModel.php");
@@ -19,7 +23,7 @@ echo $_SESSION['userid'];
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1">
+    <meta name="viewport" content="widts=device-width, height=device-height, initial-scale=1">
     <!--        <base href="./" />-->
 
     <title>iMac Plus</title>
@@ -230,7 +234,7 @@ echo $_SESSION['userid'];
                                 <div class="dropdown-divider brc-primary-l2"></div>
 
                                 <a class="dropdown-item btn btn-outline-grey bgc-h-secondary-l3 btn-h-light-secondary btn-a-light-secondary"
-                                   href="loginpage.php">
+                                   href="logout.php">
                                     <i class="fa fa-power-off text-warning-d1 text-105 mr-1"></i>
                                     Logout
                                 </a>

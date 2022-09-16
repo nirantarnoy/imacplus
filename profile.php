@@ -29,6 +29,7 @@ $onlineran = mt_rand(1000, 3000);
 $onlineuser = mt_rand($onlineran + 1, 3000);
 
 $is_verified = getMemberverifiedstatus($connect, $member_id);
+$is_center = findIsCenter($connect, $member_id);
 ?>
 
 <div class="row">
@@ -147,7 +148,7 @@ $is_verified = getMemberverifiedstatus($connect, $member_id);
                                         <!--                                <i class="fa fa-link w-4 text-120"></i>-->
                                         <!--                            </a>-->
                                         <input type="hidden" id="member-url"
-                                               value="<?= getMemberurl($connect, $member_id) ?>">
+                                               value="<?= $is_center == 1?'':getMemberurl($connect, $member_id) ?>">
                                         <span>แนะนำเพื่อน </span>
                                         <a href="#"
                                            class="btn btn-white btn-text-info btn-h-info btn-a-info radius-1 py-2 px-1 shadow-sm"
@@ -165,9 +166,11 @@ $is_verified = getMemberverifiedstatus($connect, $member_id);
                                 <div class="col-lg-12">
                                     <div class="row"
                                          style="background-color: lightgrey;border-radius: 10px;padding: 2px;">
+                                        <?php if($is_center==0):?>
                                         <div class="col-lg-12" style="text-align: left">
                                             <b>Link:</b> <span> </span> <?= getMemberurl($connect, $member_id) ?>
                                         </div>
+                                        <?php endif;?>
                                     </div>
                                 </div>
                             </div>

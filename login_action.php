@@ -32,6 +32,8 @@ if ($username != '' && $password != '') {
                 if (isset($_COOKIE["member_login"])) {
                     setcookie("member_login", "");
                 }
+                $_SESSION['start'] = time();
+                $_SESSION['expire'] = $_SESSION['start'] + (30 * 60); // expired after 30 minutes
             }
         }
         // if(checktime($_SESSION['userid'] , $connect)){

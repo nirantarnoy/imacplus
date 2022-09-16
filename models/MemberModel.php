@@ -376,39 +376,58 @@ function getMemberTypeVIP($connect, $id)
 function getMemberTypeVIPSHOP($connect, $id)
 {
     $isvipshop = 0;
-//    $query = "SELECT * FROM member WHERE id='$id'";
-//    $statement = $connect->prepare($query);
-//    $statement->execute();
-//    $result = $statement->fetchAll();
-//    $filtered_rows = $statement->rowCount();
-//    //return $filtered_rows;
-//    if ($filtered_rows > 0) {
-//        foreach ($result as $row) {
-//            $isvipshop = findIsVip($connect, $row['member_type_id']);
-//        }
-//    } else {
-//        return 0;
-//    }
+    $query = "SELECT * FROM member WHERE id='$id'";
+    $statement = $connect->prepare($query);
+    $statement->execute();
+    $result = $statement->fetchAll();
+    $filtered_rows = $statement->rowCount();
+    //return $filtered_rows;
+    if ($filtered_rows > 0) {
+        foreach ($result as $row) {
+            $isvipshop = findIsVip($connect, $row['member_type_id']);
+        }
+    } else {
+        return 0;
+    }
     return $isvipshop;
 }
 
 function findIsVip($connect, $member_type_id)
 {
     $isvip = 1;
-//    $query = "SELECT * FROM member_type WHERE id = '$member_type_id'";
-//    $statement = $connect->prepare($query);
-//    $statement->execute();
-//    $result = $statement->fetchAll();
-//    $filtered_rows = $statement->rowCount();
-//    //return $filtered_rows;
-//    if ($filtered_rows > 0) {
-//        foreach ($result as $row) {
-//            $isvip = $row['is_vipshop'];
-//        }
-//    } else {
-//        return 0;
-//    }
+    $query = "SELECT * FROM member_type WHERE id = '$member_type_id'";
+    $statement = $connect->prepare($query);
+    $statement->execute();
+    $result = $statement->fetchAll();
+    $filtered_rows = $statement->rowCount();
+    //return $filtered_rows;
+    if ($filtered_rows > 0) {
+        foreach ($result as $row) {
+            $isvip = $row['is_vipshop'];
+        }
+    } else {
+        return 0;
+    }
     return $isvip;
+}
+
+function findIsCenter($connect, $member_id)
+{
+    $iscenter = 1;
+    $query = "SELECT * FROM member WHERE id = '$member_id'";
+    $statement = $connect->prepare($query);
+    $statement->execute();
+    $result = $statement->fetchAll();
+    $filtered_rows = $statement->rowCount();
+    //return $filtered_rows;
+    if ($filtered_rows > 0) {
+        foreach ($result as $row) {
+            $iscenter = $row['is_center'];
+        }
+    } else {
+        return 0;
+    }
+    return $iscenter;
 }
 
 function findParentForRegister($connect, $token)
