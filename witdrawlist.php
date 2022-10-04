@@ -97,22 +97,22 @@ $member_id = getMemberIDFromUser($connect, $user_id);
                 <div class="modal-body">
                     <input type="hidden" name="member_id" class="user-recid" value="5">
                     <input type="hidden" name="action_type" class="action-type" value="create">
-<!--                    <input type="hidden" class="member-point-balance" value="--><?php ////echo getMemberPoint($connect, $member_id)?><!--">-->
-                    <input type="hidden" class="member-point-balance" value="<?=500?>">
+                    <input type="hidden" class="member-point-balance" value="<?php echo getMemberPoint($connect, $member_id)?>">
+<!--                    <input type="hidden" class="member-point-balance" value="--><?//=500?><!--">-->
                     <div class="row">
                         <div class="col-lg-6">
                             <label for=""><b>จำนวน mPoint คงเหลือ</b></label>
 
                         </div>
                         <div class="col-lg-6" style="text-align: right;font-size: 20px;">
-                            <b><?php echo '500'; //echo getMemberPoint($connect, $member_id)?></b>
+                            <b><?php echo getMemberPoint($connect, $member_id)?></b>
                         </div>
                     </div>
-
+                    <br />
                     <div class="row">
                         <div class="col-lg-12">
                             <label for=""><b>จำนวนถอน</b></label>
-                            <input type="text" class="form-control witdraw-amount" name="witdraw_amount" value=""
+                            <input type="number" class="form-control witdraw-amount" name="witdraw_amount" value=""
                                    placeholder="จำนวนเงิน" required onchange="checkamount($(this))">
                         </div>
 

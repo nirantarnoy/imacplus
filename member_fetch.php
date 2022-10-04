@@ -66,7 +66,7 @@ foreach ($result as $row){
 //    $sub_array[] = '<p style="font-weight: ;text-align: left">'.$row['line_id'].'</p>';
     $sub_array[] = '<p style="font-weight: ;text-align: left">'.$row['point'].'</p>';
     $sub_array[] = '<p style="font-weight: ;text-align: left">'.getStatus($row['status']).'</p>';
-    $sub_array[] = '<div class="btn btn-secondary btn-sm" data-id="'.$row['id'].'" onclick="showupdate($(this))"><i class="fas fa-edit"></i> Edit</div><span> </span><div class="btn btn-danger btn-sm" data-id="'.$row['id'].'" onclick="recDelete($(this))"><i class="fas fa-trash-alt"></i> Delete</div>';
+    $sub_array[] = '<a class="btn btn-success btn-sm" href="member_verify.php?id='.$row['id'].'"><i class="fas fa-edit"></i> Verify</a><span> </span><div class="btn btn-secondary btn-sm" data-id="'.$row['id'].'" onclick="showupdate($(this))"><i class="fas fa-edit"></i> Edit</div><span> </span><div class="btn btn-danger btn-sm" data-id="'.$row['id'].'" onclick="recDelete($(this))"><i class="fas fa-trash-alt"></i> Delete</div>';
 
     $data[] = $sub_array;
 }

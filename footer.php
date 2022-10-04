@@ -105,6 +105,7 @@
 <!--<script src="views/pages/dashboard/@page-script.js"></script>-->
 <script src="views/pages/page-profile/@page-script.js"></script>
 <script src="views/pages/form-wizard/@page-script.js"></script>
+<script src="views/pages/form-basic/@page-script.js"></script>
 </body>
 
 </html>

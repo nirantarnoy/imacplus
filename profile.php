@@ -113,7 +113,7 @@ $is_center = findIsCenter($connect, $member_id);
                                 <div class="btn btn-secondary btn-xs btn-edit-profile" style="font-size: 10px;">
                                     แก้ไขรูปโปรไฟล์
                                 </div>
-                                <a href="profile_editpage.php?refid=<?= $member_id ?>"
+                                <a href="profile_edit_page.php?refid=<?= $member_id ?>"
                                    class="btn btn-info btn-xs btn-edit-data"
                                    style="font-size: 10px;">แก้ไขข้อมูลส่วนตัว</a>
                             </div>

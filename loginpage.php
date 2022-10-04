@@ -369,7 +369,7 @@ $registerUrl = $helper->getLoginUrl('https://www.imacplus.app/register-callback.
                                                     <i class="fa fa-user text-grey-m2 ml-n4"></i>
                                                     <label class="floating-label text-grey-l1 ml-n3"
                                                            for="id-login-username">
-                                                        Username
+                                                        เบอร์โทรศัพท์
                                                     </label>
                                                 </div>
                                             </div>
@@ -402,7 +402,7 @@ $registerUrl = $helper->getLoginUrl('https://www.imacplus.app/register-callback.
                                                 <label class="d-inline-block mt-3 mb-0 text-dark-l1">
                                                     <input type="checkbox" class="mr-1" id="id-remember-me"
                                                            name="rememberme" value=""/>
-                                                    Remember me
+                                                    จำฉันไว้ในระบบ
                                                 </label>
 
                                                 <button type="button"
@@ -1236,7 +1236,7 @@ $registerUrl = $helper->getLoginUrl('https://www.imacplus.app/register-callback.
             e.preventDefault();
             var username = $(".username").val();
             if (username == '') {
-                $(".message").val("กรุณากรอกข้อมูล Username");
+                $(".message").val("กรุณากรอกข้อมูลเบอร์โทรศัพท์");
                 $(".username").focus();
                 err_message();
                 return false;
@@ -1255,7 +1255,7 @@ $registerUrl = $helper->getLoginUrl('https://www.imacplus.app/register-callback.
            // alert(pwd);return;
 
             if (username == '') {
-                $(".message").val("กรุณากรอกข้อมูล Username");
+                $(".message").val("กรุณากรอกข้อมูลเบอร์โทรศัพท์");
                 $(".username").focus();
                 err_message();
                 return false;

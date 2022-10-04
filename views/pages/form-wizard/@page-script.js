@@ -42,12 +42,15 @@ jQuery(function($) {
       showNextButton: false, // show/hide a Next button
       showPreviousButton: false, // show/hide a Previous button
       toolbarExtraButtons: [
-          $('<button class="btn btn-outline-secondary sw-btn-prev radius-l-1 mr-2px"><i class="fa fa-arrow-left mr-15"></i> Previous</button>'),
+          $('<button class="btn btn-outline-secondary sw-btn-prev radius-l-1 mr-2px"><i class="fa fa-arrow-left mr-15"></i> ก่อนหน้า</button>'),
 
-          $('<button class="btn btn-outline-primary sw-btn-next sw-btn-hide radius-r-1">Next <i class="fa fa-arrow-right mr-15"></i></button>'),
+          $('<button class="btn btn-outline-primary sw-btn-next sw-btn-hide radius-r-1">ถัดไป <i class="fa fa-arrow-right mr-15"></i></button>').on('click',function(){
+              submitmyform();
+          }),
 
           $('<button class="btn btn-green sw-btn-finish radius-r-1">Finish <i class="fa fa-check mr-15"></i></button>')
           .on('click', function(){
+             saveform();
               //Finish Action
           }),
       ]
@@ -84,11 +87,12 @@ jQuery(function($) {
     }
  })
  .on("leaveStep", function(e, anchorObject, stepNumber, stepDirection) {
-  if(stepNumber == 0 && stepDirection == 'forward')  {
-    
+   // if(stepNumber == 0 && stepDirection == 'forward')  {
+     if(stepNumber >=0 && stepDirection == 'forward')  {
+      // alert(stepNumber);
     // use jQuery plugin to validate
     if( document.getElementById('id-validate').checked && !$('#validation-form').valid() ) return false;
-
+    submitmyform();
     // or use HTML & Bootstrap validation
     /**
     var form = document.getElementById('validation-form');
@@ -155,49 +159,58 @@ jQuery(function($) {
  $('#validation-form').validate({
   errorElement: 'span',
   errorClass: 'form-text form-error text-danger-m2',
-  focusInvalid: false,
+  focusInvalid: true,
   ignore: "",
   rules: {
-    email: {
-      required: true,
-      email:true
-    },
-    password: {
-      required: true,
-      minlength: 5
-    },
-    password2: {
-      required: true,
-      minlength: 5,
-      equalTo: "#password"
-    },
-    name: {
-      required: true
-    },
-    phone: {
-      required: true,
-      phone: 'required'
-    },
-    url: {
-      required: true,
-      url: true
-    },
-    comment: {
-     //required: true
-    },
-    state: {
-      //required: true
-    },
-    platform: {
-      required: true
-    },
-    subscription: {
-      required: true
-    },
+    // email: {
+    //   required: true,
+    //   email:true
+    // },
+    // password: {
+    //   required: true,
+    //   minlength: 5
+    // },
+    // password2: {
+    //   required: true,
+    //   minlength: 5,
+    //   equalTo: "#password"
+    // },
+    // name: {
+    //   required: true
+    // },
+    // phone: {
+    //   required: true,
+    //   phone: 'required'
+    // },
+    // url: {
+    //   required: true,
+    //   url: true
+    // },
+    // comment: {
+    //  //required: true
+    // },
+    // state: {
+    //   //required: true
+    // },
+    // platform: {
+    //   required: true
+    // },
+    // subscription: {
+    //   required: true
+    // },
     gender: {
       required: true,
     },
     agree: {
+      required: true,
+    },
+    thai_person: {
+      required: true,
+    },
+    address: {
+      required: true,
+    },
+    dob: {
       required: true,
     }
   },
@@ -214,7 +227,10 @@ jQuery(function($) {
     platform: "Please choose your platform",
     subscription: "Please choose at least one option",
     gender: "Please choose gender",
-    agree: "Please agree to our terms of use"
+    agree: "Please agree to our terms of use",
+    thai_person: "กรุณาระบุสัญชาติ",
+    address: "กรุณากรอกที่อยู่",
+    dob: "กรุณากรอกวันเดือนปีเกิด",
   },
 
 
@@ -289,6 +305,7 @@ jQuery(function($) {
   },
 
   submitHandler: function (form) {
+
   },
   invalidHandler: function (form) {
   }

@@ -43,7 +43,37 @@ function getMemberProfileData($connect, $id)
     $filtered_rows = $statement->rowCount();
     if ($filtered_rows > 0) {
         foreach ($result as $row) {
-            array_push($data, ['fname' => $row['first_name'], 'lname' => $row['last_name']]);
+            array_push($data, [
+                'fname' => $row['first_name'],
+                'lname' => $row['last_name'],
+                'engname'=>$row['engname'],
+                'engsurname'=>$row['engsurname'],
+                'gender'=> $row['gender'],
+                'nation_type'=> $row['nation_type'],
+                'dob'=>date('dmY',strtotime($row['dob'])),
+                'is_verified'=> $row['is_verified'],
+                'address_current_type'=>$row['address_current_type'],
+                'agree_verified'=>$row['agree_verified'],
+            ]);
+        }
+    }
+
+    return $data;
+}
+
+function getMemberIncomeData($connect, $id)
+{
+    $data = [];
+    $query = "SELECT * FROM member_income_type WHERE member_id='$id'";
+    $statement = $connect->prepare($query);
+    $statement->execute();
+    $result = $statement->fetchAll();
+    $filtered_rows = $statement->rowCount();
+    if ($filtered_rows > 0) {
+        foreach ($result as $row) {
+            array_push($data, [
+                'income_type_id' => $row['income_type_id'],
+            ]);
         }
     }
 

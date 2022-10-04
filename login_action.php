@@ -17,41 +17,68 @@ if (isset($_POST['password'])) {
 
 if ($username != '' && $password != '') {
     $newpass = md5($password);
-    $query = "SELECT * FROM user WHERE username='$username' AND password='$newpass'";
+    $memeber_id = checkPhone($connect, $username); // send phone check user
+  //  echo $memeber_id;return;
+    if($memeber_id){
+      //  $query = "SELECT * FROM user WHERE username='$username' AND password='$newpass'";
+        $query = "SELECT * FROM user WHERE member_ref_id='$memeber_id' AND password='$newpass'";
+        $statement = $connect->prepare($query);
+        $statement->execute();
+        $result = $statement->fetchAll();
+        $filtered_rows = $statement->rowCount();
+        if ($filtered_rows > 0) {
+            foreach ($result as $row) {
+                $_SESSION['userid'] = $row['id'];
+
+                if (!empty($_POST["remember"])) {
+                    setcookie("member_login", $_POST["username"], time() + (10 * 365 * 24 * 60 * 60));
+                } else {
+                    if (isset($_COOKIE["member_login"])) {
+                        setcookie("member_login", "");
+                    }
+                    $_SESSION['start'] = time();
+                    $_SESSION['expire'] = $_SESSION['start'] + (30 * 60); // expired after 30 minutes
+                }
+            }
+            // if(checktime($_SESSION['userid'] , $connect)){
+            header('location: profile.php');
+            // }else{
+            //   $_SESSION['msg_err'] = 'ไม่ได้อยู่ในเวลาทำการ';
+            //    header("location:loginpage.php");
+            //}
+        } else {
+            //   echo "no";return;
+            $_SESSION['msg_err'] = 'เบอร์โทรศัพท์ หรือ Password ไม่ถูกต้อง';
+            header("location:loginpage.php");
+        }
+    }else {
+        //   echo "no";return;
+        $_SESSION['msg_err'] = 'เบอร์โทรศัพท์ หรือ Password ไม่ถูกต้อง';
+        header("location:loginpage.php");
+    }
+
+
+} else {
+
+    $_SESSION['msg_err'] = 'กรุณากรอกข้อมูลให้ครบ';
+    header("location:loginpage.php");
+}
+
+function checkPhone($connect, $phone)
+{
+    $member_id = 0;
+    $query = "SELECT * FROM member WHERE phone_number='$phone'";
     $statement = $connect->prepare($query);
     $statement->execute();
     $result = $statement->fetchAll();
     $filtered_rows = $statement->rowCount();
     if ($filtered_rows > 0) {
         foreach ($result as $row) {
-            $_SESSION['userid'] = $row['id'];
-
-            if (!empty($_POST["remember"])) {
-                setcookie("member_login", $_POST["username"], time() + (10 * 365 * 24 * 60 * 60));
-            } else {
-                if (isset($_COOKIE["member_login"])) {
-                    setcookie("member_login", "");
-                }
-                $_SESSION['start'] = time();
-                $_SESSION['expire'] = $_SESSION['start'] + (30 * 60); // expired after 30 minutes
-            }
+            $member_id = $row['id'];
         }
-        // if(checktime($_SESSION['userid'] , $connect)){
-        header('location: profile.php');
-        // }else{
-        //   $_SESSION['msg_err'] = 'ไม่ได้อยู่ในเวลาทำการ';
-        //    header("location:loginpage.php");
-        //}
-    } else {
-     //   echo "no";return;
-        $_SESSION['msg_err'] = 'Username หรือ Password ไม่ถูกต้อง';
-        header("location:loginpage.php");
     }
-
-}else{
-
-    $_SESSION['msg_err'] = 'กรุณากรอกข้อมูลให้ครบ';
-    header("location:loginpage.php");
+    //return $query;
+    return $member_id;
 }
 
 function checktime($uid, $connect)

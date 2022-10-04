@@ -5,10 +5,13 @@ session_start();
 if (!isset($_SESSION['userid'])) {
     header("location:loginpage.php");
 }
+
 $now = time(); // Checking the time now when home page starts.
 
 if ($now > $_SESSION['expire']) {
     header("location:logout.php");
+} else {
+    $_SESSION['expire'] = $now + (30 * 60);
 }
 include("common/dbcon.php");
 include("models/UserModel.php");
@@ -17,7 +20,9 @@ include("models/MemberModel.php");
 $member_id = getMemberFromUser($_SESSION['userid'], $connect);
 $isadmin = checkUserAdmin($connect, $_SESSION['userid']);
 
-echo $_SESSION['userid'];
+//echo $_SESSION['userid'];
+
+$is_verified = getMemberverifiedstatus($connect, $member_id);
 ?>
 <!doctype html>
 <html lang="en">
@@ -66,6 +71,7 @@ echo $_SESSION['userid'];
     <!-- "Dashboard" page styles, specific to this page for demo only -->
     <link rel="stylesheet" type="text/css" href="views/pages/dashboard/@page-style.css">
     <link rel="stylesheet" type="text/css" href="views/pages/page-profile/@page-style.css">
+    <link rel="stylesheet" type="text/css" href="views/pages/form-basic/@page-style.css">
 
 
     <style>
@@ -89,12 +95,14 @@ echo $_SESSION['userid'];
             font-weight: normal;
             font-style: normal;
         }
+
         @font-face {
             font-family: 'Prompt-Regular';
             src: url('dist/font/Prompt/Prompt-Regular.ttf') format('truetype');
             font-weight: normal;
             font-style: normal;
         }
+
         @font-face {
             font-family: 'Prompt-Italic';
             src: url('dist/font/Prompt/Prompt-Italic.ttf') format('truetype');
@@ -107,14 +115,26 @@ echo $_SESSION['userid'];
             font-family: "Prompt-Regular";
             font-size: 16px;
         }
+
         @media print {
-            body { font-size: 10pt ; font-family: "Prompt-Regular"; }
+            body {
+                font-size: 10pt;
+                font-family: "Prompt-Regular";
+            }
         }
+
         @media screen {
-            body { font-size: 13px ;  font-family: "Prompt-Regular";}
+            body {
+                font-size: 13px;
+                font-family: "Prompt-Regular";
+            }
         }
+
         @media screen, print {
-            body { line-height: 1.2 ;  font-family: "Prompt-Regular"; }
+            body {
+                line-height: 1.2;
+                font-family: "Prompt-Regular";
+            }
         }
     </style>
 </head>
@@ -133,11 +153,11 @@ echo $_SESSION['userid'];
                 </button><!-- mobile sidebar toggler button -->
 
                 <a class="navbar-brand text-white" href="#">
-<!--                    <i class="fa fa-backward"></i>-->
+                    <!--                    <i class="fa fa-backward"></i>-->
 
                     <img src="uploads/logo/imaclogonew.png" style="width: 30%" alt="">
-                                        <span>iMac</span>
-                                        <span>Plus</span>
+                    <span>iMac</span>
+                    <span>Plus</span>
                 </a><!-- /.navbar-brand -->
 
                 <button type="button" class="btn btn-burger mr-2 d-none d-xl-flex" data-toggle="sidebar"
@@ -169,7 +189,8 @@ echo $_SESSION['userid'];
             <button class="navbar-toggler ml-1 mr-2 px-1" type="button" data-toggle="collapse" data-target="#navbarMenu"
                     aria-controls="navbarMenu" aria-expanded="false" aria-label="Toggle navbar menu">
             <span class="pos-rel">
-                  <img class="border-2 brc-white-tp1 radius-round" width="36" src="uploads/member_photo/<?=getMemberPhoto($connect, $member_id)==''?'demo.png':getMemberPhoto($connect, $member_id)?>"
+                  <img class="border-2 brc-white-tp1 radius-round" width="36"
+                       src="uploads/member_photo/<?= getMemberPhoto($connect, $member_id) == '' ? 'demo.png' : getMemberPhoto($connect, $member_id) ?>"
                        alt="Jason's Photo">
                   <span class="bgc-warning radius-round border-2 brc-white p-1 position-tr mr-n1px mt-n1px"></span>
             </span>
@@ -200,10 +221,11 @@ echo $_SESSION['userid'];
                                aria-haspopup="true" aria-expanded="false">
                                 <img id="id-navbar-user-image"
                                      class="d-none d-lg-inline-block radius-round border-2 brc-white-tp1 mr-2 w-6"
-                                     src="uploads/member_photo/<?=getMemberPhoto($connect, $member_id) == ''?'demo.png':getMemberPhoto($connect, $member_id)?>" alt="Admin 's photo">
+                                     src="uploads/member_photo/<?= getMemberPhoto($connect, $member_id) == '' ? 'demo.png' : getMemberPhoto($connect, $member_id) ?>"
+                                     alt="Admin 's photo">
                                 <span class="d-inline-block d-lg-none d-xl-inline-block">
                               <span class="text-90 text-white" id="id-user-welcome">Welcome,</span>
-                    <span class="nav-user-name text-white"><?= getUserDisplayname($_SESSION['userid'],$connect)?></span>
+                    <span class="nav-user-name text-white"><?= getUserDisplayname($_SESSION['userid'], $connect) ?></span>
                     </span>
 
                                 <i class="caret fa fa-angle-down text-white d-none d-xl-block"></i>
@@ -256,43 +278,43 @@ echo $_SESSION['userid'];
 
                 <div class="ace-scroll flex-grow-1" data-ace-scroll="{}">
 
-<!--                    <div class="sidebar-section my-2">-->
-                        <!-- the shortcut buttons -->
-<!--                        <div class="sidebar-section-item fadeable-left">-->
-<!--                            <div class="fadeinable sidebar-shortcuts-mini">-->
-                                <!-- show this small buttons when collapsed -->
-<!--                                <span class="btn btn-success p-0 opacity-1"></span>-->
-<!--                                <span class="btn btn-info p-0 opacity-1"></span>-->
-<!--                                <span class="btn btn-orange p-0 opacity-1"></span>-->
-<!--                                <span class="btn btn-danger p-0 opacity-1"></span>-->
-<!--                            </div>-->
-<!---->
-<!--                            <div class="fadeable">-->
-                                <!-- show this small buttons when not collapsed -->
-<!--                                <div class="sub-arrow"></div>-->
-<!--                                <div>-->
-<!--                                    <button class="btn px-25 py-2 text-95 btn-success opacity-1">-->
-<!--                                        <i class="fa fa-signal f-n-hover"></i>-->
-<!--                                    </button>-->
-<!---->
-<!--                                    <button class="btn px-25 py-2 text-95 btn-info opacity-1">-->
-<!--                                        <i class="fa fa-edit f-n-hover"></i>-->
-<!--                                    </button>-->
-<!---->
-<!--                                    <button class="btn px-25 py-2 text-95 btn-orange opacity-1">-->
-<!--                                        <i class="fa fa-users f-n-hover"></i>-->
-<!--                                    </button>-->
-<!---->
-<!--                                    <button class="btn px-25 py-2 text-95 btn-danger opacity-1">-->
-<!--                                        <i class="fa fa-cogs f-n-hover"></i>-->
-<!--                                    </button>-->
-<!--                                </div>-->
-<!--                            </div>-->
-<!--                        </div>-->
-<!---->
-<!---->
-                        <!-- the search box -->
-<!--                    </div>-->
+                    <!--                    <div class="sidebar-section my-2">-->
+                    <!-- the shortcut buttons -->
+                    <!--                        <div class="sidebar-section-item fadeable-left">-->
+                    <!--                            <div class="fadeinable sidebar-shortcuts-mini">-->
+                    <!-- show this small buttons when collapsed -->
+                    <!--                                <span class="btn btn-success p-0 opacity-1"></span>-->
+                    <!--                                <span class="btn btn-info p-0 opacity-1"></span>-->
+                    <!--                                <span class="btn btn-orange p-0 opacity-1"></span>-->
+                    <!--                                <span class="btn btn-danger p-0 opacity-1"></span>-->
+                    <!--                            </div>-->
+                    <!---->
+                    <!--                            <div class="fadeable">-->
+                    <!-- show this small buttons when not collapsed -->
+                    <!--                                <div class="sub-arrow"></div>-->
+                    <!--                                <div>-->
+                    <!--                                    <button class="btn px-25 py-2 text-95 btn-success opacity-1">-->
+                    <!--                                        <i class="fa fa-signal f-n-hover"></i>-->
+                    <!--                                    </button>-->
+                    <!---->
+                    <!--                                    <button class="btn px-25 py-2 text-95 btn-info opacity-1">-->
+                    <!--                                        <i class="fa fa-edit f-n-hover"></i>-->
+                    <!--                                    </button>-->
+                    <!---->
+                    <!--                                    <button class="btn px-25 py-2 text-95 btn-orange opacity-1">-->
+                    <!--                                        <i class="fa fa-users f-n-hover"></i>-->
+                    <!--                                    </button>-->
+                    <!---->
+                    <!--                                    <button class="btn px-25 py-2 text-95 btn-danger opacity-1">-->
+                    <!--                                        <i class="fa fa-cogs f-n-hover"></i>-->
+                    <!--                                    </button>-->
+                    <!--                                </div>-->
+                    <!--                            </div>-->
+                    <!--                        </div>-->
+                    <!---->
+                    <!---->
+                    <!-- the search box -->
+                    <!--                    </div>-->
 
                     <?php
                     $is_active = null;
@@ -317,7 +339,7 @@ echo $_SESSION['userid'];
                     $absolute_url = full_url($_SERVER);
 
                     $current_url = explode('/', $absolute_url);
-                   // print_r($current_url[4]);
+                    // print_r($current_url[4]);
                     function checkActiveMenu($obj, $menu)
                     {
                         if ($obj == $menu) {
@@ -327,6 +349,7 @@ echo $_SESSION['userid'];
                         }
                         return $is_active;
                     }
+
                     function checkShowMenu($obj, $menu)
                     {
                         if ($obj == $menu) {
@@ -357,427 +380,451 @@ echo $_SESSION['userid'];
                         </li>
 
 
-<!--                        <li class="nav-item  --><?//=checkActiveMenu($current_url[4],'index.php')?><!--">-->
-<!--                            <a href="profile.php" class="nav-link">-->
-<!--                                <i class="nav-icon fa fa-tachometer-alt"></i>-->
-<!--                                <span class="nav-text fadeable">-->
-<!--                                  <span>Dashboard</span>-->
-<!--                                </span>-->
-<!--                            </a>-->
-<!--                            <b class="sub-arrow"></b>-->
-<!--                        </li>-->
-                        <?php if($isadmin !=1):?>
-                        <li class="nav-item">
-                            <a href="profile.php" class="nav-link">
-                                <img src="assets/iCOn/iCOn/home.png" class="nav-icon" style="width: 10%" alt="">
-                                <span class="nav-text fadeable">
+                        <!--                        <li class="nav-item  -->
+                        <? //=checkActiveMenu($current_url[4],'index.php')?><!--">-->
+                        <!--                            <a href="profile.php" class="nav-link">-->
+                        <!--                                <i class="nav-icon fa fa-tachometer-alt"></i>-->
+                        <!--                                <span class="nav-text fadeable">-->
+                        <!--                                  <span>Dashboard</span>-->
+                        <!--                                </span>-->
+                        <!--                            </a>-->
+                        <!--                            <b class="sub-arrow"></b>-->
+                        <!--                        </li>-->
+                        <?php if ($isadmin != 1): ?>
+                            <li class="nav-item">
+                                <?php
+                                $url = $is_verified ? 'profile.php' : '#';
+                                ?>
+                                <a href="<?= $url ?>" class="nav-link">
+                                    <img src="assets/iCOn/iCOn/home.png" class="nav-icon" style="width: 10%" alt="">
+                                    <span class="nav-text fadeable">
 
                                   <span>หน้าหลัก</span>
                                 </span>
-                            </a>
-                            <b class="sub-arrow"></b>
-                        </li>
-                        <li class="nav-item">
-                            <a href="member_teamlist.php" class="nav-link">
-                                <img src="assets/iCOn/iCOn/member.png" class="nav-icon" style="width: 10%" alt="">
-                                <span class="nav-text fadeable">
+                                </a>
+                                <b class="sub-arrow"></b>
+                            </li>
+                            <li class="nav-item">
+                                <?php
+                                $url = $is_verified ? 'member_teamlist.php' : '#';
+                                ?>
+                                <a href="<?= $url ?>" class="nav-link">
+                                    <img src="assets/iCOn/iCOn/member.png" class="nav-icon" style="width: 10%" alt="">
+                                    <span class="nav-text fadeable">
                                   <span>ทีมงานของฉัน</span>
                                 </span>
-                            </a>
-                            <b class="sub-arrow"></b>
-                        </li>
-                        <li class="nav-item">
-                            <a href="workorder.php" class="nav-link">
-                                <img src="assets/iCOn/iCOn/work_photo.png" class="nav-icon" style="width: 10%" alt="">
-                                <span class="nav-text fadeable">
+                                </a>
+                                <b class="sub-arrow"></b>
+                            </li>
+                            <li class="nav-item">
+                                <?php
+                                $url = $is_verified ? 'workorder.php' : '#';
+                                ?>
+                                <a href="<?= $url ?>" class="nav-link">
+                                    <img src="assets/iCOn/iCOn/work_photo.png" class="nav-icon" style="width: 10%"
+                                         alt="">
+                                    <span class="nav-text fadeable">
                                   <span>ข้อมูลการซ่อม</span>
                                 </span>
-                            </a>
-                            <b class="sub-arrow"></b>
-                        </li>
-                        <li class="nav-item">
-                            <a href="dropoff.php" class="nav-link">
-                                <img src="assets/iCOn/iCOn/DropOff.png" class="nav-icon" style="width: 10%" alt="">
-                                <span class="nav-text fadeable">
+                                </a>
+                                <b class="sub-arrow"></b>
+                            </li>
+                            <li class="nav-item">
+                                <?php
+                                $url = $is_verified ? 'dropoff.php' : '#';
+                                ?>
+                                <a href="<?= $url ?>" class="nav-link">
+                                    <img src="assets/iCOn/iCOn/DropOff.png" class="nav-icon" style="width: 10%" alt="">
+                                    <span class="nav-text fadeable">
                                   <span>Drop Off</span>
                                 </span>
-                            </a>
-                            <b class="sub-arrow"></b>
-                        </li>
-                        <li class="nav-item">
-                            <a href="walletlist.php" class="nav-link">
-                                <img src="assets/iCOn/iCOn/wallet.png" class="nav-icon" style="width: 10%" alt="">
-                                <span class="nav-text fadeable">
+                                </a>
+                                <b class="sub-arrow"></b>
+                            </li>
+                            <li class="nav-item">
+                                <?php
+                                $url = $is_verified ? 'walletlist.php' : '#';
+                                ?>
+                                <a href="<?= $url ?>" class="nav-link">
+                                    <img src="assets/iCOn/iCOn/wallet.png" class="nav-icon" style="width: 10%" alt="">
+                                    <span class="nav-text fadeable">
                                   <span>My Wallet</span>
                                 </span>
-                            </a>
-                            <b class="sub-arrow"></b>
-                        </li>
-                        <li class="nav-item">
-                            <a href="witdrawlist.php" class="nav-link">
-                                <img src="assets/iCOn/iCOn/mPoint.png" class="nav-icon" style="width: 10%" alt="">
-                                <span class="nav-text fadeable">
+                                </a>
+                                <b class="sub-arrow"></b>
+                            </li>
+                            <li class="nav-item">
+                                <?php
+                                $url = $is_verified ? 'witdrawlist.php' : '#';
+                                ?>
+                                <a href="<?= $url ?>" class="nav-link">
+                                    <img src="assets/iCOn/iCOn/mPoint.png" class="nav-icon" style="width: 10%" alt="">
+                                    <span class="nav-text fadeable">
                                   <span>My mPoint</span>
                                 </span>
-                            </a>
-                            <b class="sub-arrow"></b>
-                        </li>
-                        <li class="nav-item">
-                            <a href="#" class="nav-link">
-                                <img src="assets/iCOn/iCOn/review.png" class="nav-icon" style="width: 10%" alt="">
-                                <span class="nav-text fadeable">
+                                </a>
+                                <b class="sub-arrow"></b>
+                            </li>
+                            <li class="nav-item">
+                                <?php
+                                $url = $is_verified ? '#' : '#';
+                                ?>
+                                <a href="#" class="nav-link">
+                                    <img src="assets/iCOn/iCOn/review.png" class="nav-icon" style="width: 10%" alt="">
+                                    <span class="nav-text fadeable">
                                   <span>รีวิวผู้ใช้งาน</span>
                                 </span>
-                            </a>
-                            <b class="sub-arrow"></b>
-                        </li>
-                        <li class="nav-item">
-                            <a href="#" class="nav-link">
-                                <img src="assets/iCOn/iCOn/knowledge.png" class="nav-icon" style="width: 10%" alt="">
-                                <span class="nav-text fadeable">
+                                </a>
+                                <b class="sub-arrow"></b>
+                            </li>
+                            <li class="nav-item">
+                                <a href="#" class="nav-link">
+                                    <img src="assets/iCOn/iCOn/knowledge.png" class="nav-icon" style="width: 10%"
+                                         alt="">
+                                    <span class="nav-text fadeable">
                                   <span>แหล่งเรียนรู้</span>
                                 </span>
-                            </a>
-                            <b class="sub-arrow"></b>
-                        </li>
-                        <li class="nav-item">
-                            <a href="#" class="nav-link">
-                                <img src="assets/iCOn/iCOn/Market.png" class="nav-icon" style="width: 10%" alt="">
-                                <span class="nav-text fadeable">
+                                </a>
+                                <b class="sub-arrow"></b>
+                            </li>
+                            <li class="nav-item">
+                                <a href="#" class="nav-link">
+                                    <img src="assets/iCOn/iCOn/Market.png" class="nav-icon" style="width: 10%" alt="">
+                                    <span class="nav-text fadeable">
                                   <span>Market</span>
                                 </span>
-                            </a>
-                            <b class="sub-arrow"></b>
-                        </li>
-                        <li class="nav-item">
-                            <a href="#" class="nav-link">
-                                <img src="assets/iCOn/iCOn/return.png" class="nav-icon" style="width: 10%" alt="">
-                                <span class="nav-text fadeable">
+                                </a>
+                                <b class="sub-arrow"></b>
+                            </li>
+                            <li class="nav-item">
+                                <a href="#" class="nav-link">
+                                    <img src="assets/iCOn/iCOn/return.png" class="nav-icon" style="width: 10%" alt="">
+                                    <span class="nav-text fadeable">
                                   <span>คืนเงิน/คืนสินค้า</span>
                                 </span>
-                            </a>
-                            <b class="sub-arrow"></b>
-                        </li>
-                        <li class="nav-item">
-                            <a href="#" class="nav-link">
-                                <img src="assets/iCOn/iCOn/qa.png" class="nav-icon" style="width: 10%" alt="">
-                                <span class="nav-text fadeable">
+                                </a>
+                                <b class="sub-arrow"></b>
+                            </li>
+                            <li class="nav-item">
+                                <a href="#" class="nav-link">
+                                    <img src="assets/iCOn/iCOn/qa.png" class="nav-icon" style="width: 10%" alt="">
+                                    <span class="nav-text fadeable">
                                   <span>คำถามที่พบบ่อย</span>
                                 </span>
-                            </a>
-                            <b class="sub-arrow"></b>
-                        </li>
-                        <?php endif;?>
-                        <?php if($isadmin == 1):?>
-                        <li class="nav-item">
-                            <a href="#" class="nav-link dropdown-toggle collapsed">
-                                <i class="nav-icon fa fa-cube"></i>
-                                <span class="nav-text fadeable">
+                                </a>
+                                <b class="sub-arrow"></b>
+                            </li>
+                        <?php endif; ?>
+                        <?php if ($isadmin == 1): ?>
+                            <li class="nav-item">
+                                <a href="#" class="nav-link dropdown-toggle collapsed">
+                                    <i class="nav-icon fa fa-cube"></i>
+                                    <span class="nav-text fadeable">
                                   <span>สินค้า</span>
                                 </span>
-                                <b class="caret fa fa-angle-left rt-n90"></b>
+                                    <b class="caret fa fa-angle-left rt-n90"></b>
 
-                                <!-- or you can use custom icons. first add `d-style` to 'A' -->
-                                <!--
-                                    <b class="caret d-n-collapsed fa fa-minus text-80"></b>
-                                    <b class="caret d-collapsed fa fa-plus text-80"></b>
-                                -->
-                            </a>
-                            <div class="hideable submenu collapse <?=checkShowMenu($current_url[4],'productcat.php')?>">
-                                <ul class="submenu-inner">
-                                    <li class="nav-item <?=checkActiveMenu($current_url[4],'device_type.php')?>">
-                                        <a href="device_type.php" class="nav-link">
+                                    <!-- or you can use custom icons. first add `d-style` to 'A' -->
+                                    <!--
+                                        <b class="caret d-n-collapsed fa fa-minus text-80"></b>
+                                        <b class="caret d-collapsed fa fa-plus text-80"></b>
+                                    -->
+                                </a>
+                                <div class="hideable submenu collapse <?= checkShowMenu($current_url[4], 'productcat.php') ?>">
+                                    <ul class="submenu-inner">
+                                        <li class="nav-item <?= checkActiveMenu($current_url[4], 'device_type.php') ?>">
+                                            <a href="device_type.php" class="nav-link">
                                           <span class="nav-text">
                                               <span>ประเภทอุปกรณ์</span>
                                           </span>
-                                        </a>
-                                    </li>
-                                    <li class="nav-item <?=checkActiveMenu($current_url[4],'itembrand.php')?>">
-                                        <a href="itembrand.php" class="nav-link">
+                                            </a>
+                                        </li>
+                                        <li class="nav-item <?= checkActiveMenu($current_url[4], 'itembrand.php') ?>">
+                                            <a href="itembrand.php" class="nav-link">
                                           <span class="nav-text">
                                               <span>ยี่ห้อ</span>
                                           </span>
-                                        </a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a href="item.php" class="nav-link">
+                                            </a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a href="item.php" class="nav-link">
                                           <span class="nav-text">
                                               <span>Models</span>
                                           </span>
-                                        </a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a href="standardprice.php" class="nav-link">
+                                            </a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a href="standardprice.php" class="nav-link">
                                           <span class="nav-text">
                                               <span>มาตรฐานราคา</span>
                                           </span>
-                                        </a>
-                                    </li>
-<!--                                    <li class="nav-item">-->
-<!--                                        <a href="unit.php" class="nav-link">-->
-<!--                                          <span class="nav-text">-->
-<!--                                              <span>หน่วยนับ</span>-->
-<!--                                          </span>-->
-<!--                                        </a>-->
-<!--                                    </li>-->
-                                </ul>
-                            </div>
-                            <b class="sub-arrow"></b>
-                        </li>
-                        <?php endif;?>
+                                            </a>
+                                        </li>
+                                        <!--                                    <li class="nav-item">-->
+                                        <!--                                        <a href="unit.php" class="nav-link">-->
+                                        <!--                                          <span class="nav-text">-->
+                                        <!--                                              <span>หน่วยนับ</span>-->
+                                        <!--                                          </span>-->
+                                        <!--                                        </a>-->
+                                        <!--                                    </li>-->
+                                    </ul>
+                                </div>
+                                <b class="sub-arrow"></b>
+                            </li>
+                        <?php endif; ?>
 
-                        <?php if($isadmin == 1):?>
-                        <li class="nav-item">
-                            <a href="#" class="nav-link dropdown-toggle collapsed">
-                                <i class="nav-icon fa fa-user-cog"></i>
-                                <span class="nav-text fadeable">
+                        <?php if ($isadmin == 1): ?>
+                            <li class="nav-item">
+                                <a href="#" class="nav-link dropdown-toggle collapsed">
+                                    <i class="nav-icon fa fa-user-cog"></i>
+                                    <span class="nav-text fadeable">
                                   <span>สมาชิก</span>
                                 </span>
-                                <b class="caret fa fa-angle-left rt-n90"></b>
-                                <!-- or you can use custom icons. first add `d-style` to 'A' -->
-                                <!--
-                                    <b class="caret d-n-collapsed fa fa-minus text-80"></b>
-                                    <b class="caret d-collapsed fa fa-plus text-80"></b>
-                                -->
-                            </a>
-                            <div class="hideable submenu collapse">
-                                <ul class="submenu-inner">
+                                    <b class="caret fa fa-angle-left rt-n90"></b>
+                                    <!-- or you can use custom icons. first add `d-style` to 'A' -->
+                                    <!--
+                                        <b class="caret d-n-collapsed fa fa-minus text-80"></b>
+                                        <b class="caret d-collapsed fa fa-plus text-80"></b>
+                                    -->
+                                </a>
+                                <div class="hideable submenu collapse">
+                                    <ul class="submenu-inner">
 
-                                    <li class="nav-item">
+                                        <li class="nav-item">
 
-                                        <a href="member_type.php" class="nav-link">
+                                            <a href="member_type.php" class="nav-link">
                                           <span class="nav-text">
                                               <span>ประเภทสมาชิก</span>
                                           </span>
-                                        </a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a href="member.php" class="nav-link">
+                                            </a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a href="member.php" class="nav-link">
                                           <span class="nav-text">
                                               <span>สมาชิก</span>
                                           </span>
-                                        </a>
-                                    </li>
-                                </ul>
-                            </div>
-                            <b class="sub-arrow"></b>
-                        </li>
-                        <?php endif;?>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <b class="sub-arrow"></b>
+                            </li>
+                        <?php endif; ?>
 
-                        <?php if($isadmin == 1):?>
-                        <li class="nav-item">
-                            <a href="#" class="nav-link dropdown-toggle collapsed">
-                                <i class="nav-icon fa fa-wrench"></i>
-                                <span class="nav-text fadeable">
+                        <?php if ($isadmin == 1): ?>
+                            <li class="nav-item">
+                                <a href="#" class="nav-link dropdown-toggle collapsed">
+                                    <i class="nav-icon fa fa-wrench"></i>
+                                    <span class="nav-text fadeable">
                                       <span>ข้อมูลการซ่อม</span>
                                         </span>
-                                <b class="caret fa fa-angle-left rt-n90"></b>
+                                    <b class="caret fa fa-angle-left rt-n90"></b>
 
-                                <!-- or you can use custom icons. first add `d-style` to 'A' -->
-                                <!--
-                                    <b class="caret d-n-collapsed fa fa-minus text-80"></b>
-                                    <b class="caret d-collapsed fa fa-plus text-80"></b>
-                                -->
-                            </a>
+                                    <!-- or you can use custom icons. first add `d-style` to 'A' -->
+                                    <!--
+                                        <b class="caret d-n-collapsed fa fa-minus text-80"></b>
+                                        <b class="caret d-collapsed fa fa-plus text-80"></b>
+                                    -->
+                                </a>
 
-                            <div class="hideable submenu collapse">
-                                <ul class="submenu-inner">
-                                    <li class="nav-item">
-                                        <a href="check_list.php" class="nav-link">
+                                <div class="hideable submenu collapse">
+                                    <ul class="submenu-inner">
+                                        <li class="nav-item">
+                                            <a href="check_list.php" class="nav-link">
                                           <span class="nav-text">
                                               <span>Check List</span>
                                           </span>
-                                        </a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a href="quotation.php" class="nav-link">
+                                            </a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a href="quotation.php" class="nav-link">
                                           <span class="nav-text">
                                               <span>เสนอราคา</span>
                                           </span>
-                                        </a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a href="workorder.php" class="nav-link">
+                                            </a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a href="workorder.php" class="nav-link">
                                           <span class="nav-text">
                                               <span>คำสั่งซ่อม</span>
                                           </span>
-                                        </a>
-                                    </li>
-                                </ul>
-                            </div>
-                            <b class="sub-arrow"></b>
-                        </li>
-                        <?php endif;?>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <b class="sub-arrow"></b>
+                            </li>
+                        <?php endif; ?>
 
-                        <?php if($isadmin == 1):?>
-                        <li class="nav-item">
-                            <a href="memberupgradepage.php" class="nav-link">
-                                <i class="nav-icon fa fa-wallet"></i>
-                                <span class="nav-text fadeable">
+                        <?php if ($isadmin == 1): ?>
+                            <li class="nav-item">
+                                <a href="memberupgradepage.php" class="nav-link">
+                                    <i class="nav-icon fa fa-wallet"></i>
+                                    <span class="nav-text fadeable">
                                   <span>อัพเกรดสมาชิก</span>
                                 </span>
-                            </a>
-                            <b class="sub-arrow"></b>
-                        </li>
-                        <?php endif;?>
+                                </a>
+                                <b class="sub-arrow"></b>
+                            </li>
+                        <?php endif; ?>
 
-                        <?php if($isadmin == 1):?>
-                        <li class="nav-item">
-                            <a href="walletpage.php" class="nav-link">
-                                <i class="nav-icon fa fa-wallet"></i>
-                                <span class="nav-text fadeable">
+                        <?php if ($isadmin == 1): ?>
+                            <li class="nav-item">
+                                <a href="walletpage.php" class="nav-link">
+                                    <i class="nav-icon fa fa-wallet"></i>
+                                    <span class="nav-text fadeable">
                                   <span>เติม Wallet</span>
                                 </span>
-                            </a>
-                            <b class="sub-arrow"></b>
-                        </li>
-                        <?php endif;?>
+                                </a>
+                                <b class="sub-arrow"></b>
+                            </li>
+                        <?php endif; ?>
 
-                        <?php if($isadmin == 1):?>
-                        <li class="nav-item">
-                            <a href="witdrawpage.php" class="nav-link">
-                                <i class="nav-icon fa fa-wallet"></i>
-                                <span class="nav-text fadeable">
+                        <?php if ($isadmin == 1): ?>
+                            <li class="nav-item">
+                                <a href="witdrawpage.php" class="nav-link">
+                                    <i class="nav-icon fa fa-wallet"></i>
+                                    <span class="nav-text fadeable">
                                   <span>ถอน mPoint</span>
                                 </span>
-                            </a>
-                            <b class="sub-arrow"></b>
-                        </li>
-                        <?php endif;?>
+                                </a>
+                                <b class="sub-arrow"></b>
+                            </li>
+                        <?php endif; ?>
 
-                        <?php if($isadmin == 1):?>
-                        <li class="nav-item-caption">
-                            <span class="fadeable pl-3">ตั้งค่าคะแนน Point</span>
-                            <span class="fadeinable mt-n2 text-125">&hellip;</span>
-                            <!--
-                                     OR something like the following (with `.hideable` text)
-                                 -->
-                            <!--
-                                     <div class="hideable">
-                                         <span class="pl-3">OTHER</span>
-                                     </div>
-                                     <span class="fadeinable mt-n2 text-125">&hellip;</span>
-                                 -->
-                        </li>
-                        <?php endif;?>
+                        <?php if ($isadmin == 1): ?>
+                            <li class="nav-item-caption">
+                                <span class="fadeable pl-3">ตั้งค่าคะแนน Point</span>
+                                <span class="fadeinable mt-n2 text-125">&hellip;</span>
+                                <!--
+                                         OR something like the following (with `.hideable` text)
+                                     -->
+                                <!--
+                                         <div class="hideable">
+                                             <span class="pl-3">OTHER</span>
+                                         </div>
+                                         <span class="fadeinable mt-n2 text-125">&hellip;</span>
+                                     -->
+                            </li>
+                        <?php endif; ?>
 
-                        <?php if($isadmin== 1):?>
-                        <li class="nav-item">
-                            <a href="#" class="nav-link dropdown-toggle collapsed">
-                                <i class="nav-icon fa fa-trophy"></i>
-                                <span class="nav-text fadeable">
+                        <?php if ($isadmin == 1): ?>
+                            <li class="nav-item">
+                                <a href="#" class="nav-link dropdown-toggle collapsed">
+                                    <i class="nav-icon fa fa-trophy"></i>
+                                    <span class="nav-text fadeable">
                                   <span>ข้อมูลคะแนน</span>
                                 </span>
-                                <b class="caret fa fa-angle-left rt-n90"></b>
-                                <!-- or you can use custom icons. first add `d-style` to 'A' -->
-                                <!--
-                                    <b class="caret d-n-collapsed fa fa-minus text-80"></b>
-                                    <b class="caret d-collapsed fa fa-plus text-80"></b>
-                                -->
-                            </a>
+                                    <b class="caret fa fa-angle-left rt-n90"></b>
+                                    <!-- or you can use custom icons. first add `d-style` to 'A' -->
+                                    <!--
+                                        <b class="caret d-n-collapsed fa fa-minus text-80"></b>
+                                        <b class="caret d-collapsed fa fa-plus text-80"></b>
+                                    -->
+                                </a>
 
-                            <div class="hideable submenu collapse">
-                                <ul class="submenu-inner">
-                                    <li class="nav-item">
-                                        <a href="upgradestandard.php" class="nav-link">
+                                <div class="hideable submenu collapse">
+                                    <ul class="submenu-inner">
+                                        <li class="nav-item">
+                                            <a href="upgradestandard.php" class="nav-link">
                                           <span class="nav-text">
                                               <span>ตั้งค่าคำนวน mPoint</span>
                                           </span>
-                                        </a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a href="sparepart_type.php" class="nav-link">
+                                            </a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a href="sparepart_type.php" class="nav-link">
                                           <span class="nav-text">
                                               <span>ประเภทอะไหล่</span>
                                           </span>
-                                        </a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a href="sparepart.php" class="nav-link">
+                                            </a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a href="sparepart.php" class="nav-link">
                                           <span class="nav-text">
                                               <span>อะไหล่</span>
                                           </span>
-                                        </a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a href="shop_type.php" class="nav-link">
+                                            </a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a href="shop_type.php" class="nav-link">
                                               <span class="nav-text">
                                                   <span>ประเภทร้าน</span>
                                               </span>
-                                        </a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a href="#" class="nav-link">
+                                            </a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a href="#" class="nav-link">
                                           <span class="nav-text">
                                               <span>Point</span>
                                           </span>
-                                        </a>
-                                    </li>
-                                </ul>
-                            </div>
-                            <b class="sub-arrow"></b>
-                        </li>
-                        <?php endif;?>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <b class="sub-arrow"></b>
+                            </li>
+                        <?php endif; ?>
 
-                        <?php if($isadmin == 1):?>
-                        <li class="nav-item-caption">
-                            <span class="fadeable pl-3">สิทธิ์การใช้งาน</span>
-                            <span class="fadeinable mt-n2 text-125">&hellip;</span>
-                            <!--
-                                     OR something like the following (with `.hideable` text)
-                                 -->
-                            <!--
-                                     <div class="hideable">
-                                         <span class="pl-3">OTHER</span>
-                                     </div>
-                                     <span class="fadeinable mt-n2 text-125">&hellip;</span>
-                                 -->
-                        </li>
-                        <?php endif;?>
+                        <?php if ($isadmin == 1): ?>
+                            <li class="nav-item-caption">
+                                <span class="fadeable pl-3">สิทธิ์การใช้งาน</span>
+                                <span class="fadeinable mt-n2 text-125">&hellip;</span>
+                                <!--
+                                         OR something like the following (with `.hideable` text)
+                                     -->
+                                <!--
+                                         <div class="hideable">
+                                             <span class="pl-3">OTHER</span>
+                                         </div>
+                                         <span class="fadeinable mt-n2 text-125">&hellip;</span>
+                                     -->
+                            </li>
+                        <?php endif; ?>
 
-                        <?php if($isadmin == 1):?>
-                        <li class="nav-item">
-                            <a href="#" class="nav-link dropdown-toggle collapsed">
-                                <i class="nav-icon fa fa-lock-open"></i>
-                                <span class="nav-text fadeable">
+                        <?php if ($isadmin == 1): ?>
+                            <li class="nav-item">
+                                <a href="#" class="nav-link dropdown-toggle collapsed">
+                                    <i class="nav-icon fa fa-lock-open"></i>
+                                    <span class="nav-text fadeable">
                                   <span>ผู้ดูแลระบบ</span>
                                 </span>
-                                <b class="caret fa fa-angle-left rt-n90"></b>
-                                <!-- or you can use custom icons. first add `d-style` to 'A' -->
-                                <!--
-                                    <b class="caret d-n-collapsed fa fa-minus text-80"></b>
-                                    <b class="caret d-collapsed fa fa-plus text-80"></b>
-                                -->
-                            </a>
+                                    <b class="caret fa fa-angle-left rt-n90"></b>
+                                    <!-- or you can use custom icons. first add `d-style` to 'A' -->
+                                    <!--
+                                        <b class="caret d-n-collapsed fa fa-minus text-80"></b>
+                                        <b class="caret d-collapsed fa fa-plus text-80"></b>
+                                    -->
+                                </a>
 
-                            <div class="hideable submenu collapse">
-                                <ul class="submenu-inner">
-                                    <li class="nav-item">
-                                        <a href="user_group.php" class="nav-link">
+                                <div class="hideable submenu collapse">
+                                    <ul class="submenu-inner">
+                                        <li class="nav-item">
+                                            <a href="user_group.php" class="nav-link">
                                           <span class="nav-text">
                                               <span>กลุ่มผู้ใช้งาน</span>
                                           </span>
-                                        </a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a href="user.php" class="nav-link">
+                                            </a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a href="user.php" class="nav-link">
                                               <span class="nav-text">
                                                   <span>ผู้ใช้งาน</span>
                                               </span>
-                                        </a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a href="#" class="nav-link">
+                                            </a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a href="#" class="nav-link">
                                           <span class="nav-text">
                                               <span>สิทธิ์การเข้าถึง</span>
                                           </span>
-                                        </a>
-                                    </li>
-                                </ul>
-                            </div>
-                            <b class="sub-arrow"></b>
-                        </li>
-                        <?php endif;?>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <b class="sub-arrow"></b>
+                            </li>
+                        <?php endif; ?>
                     </ul>
                 </div><!-- /.sidebar scroll -->
 
@@ -788,7 +835,7 @@ echo $_SESSION['userid'];
 
         <div role="main" class="main-content">
 
-<!--            <div class="page-content container container-plus">-->
+            <!--            <div class="page-content container container-plus">-->
             <div class="page-content">
                 <!-- page header and toolbox -->
 
