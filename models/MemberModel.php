@@ -54,6 +54,7 @@ function getMemberProfileData($connect, $id)
                 'is_verified'=> $row['is_verified'],
                 'address_current_type'=>$row['address_current_type'],
                 'agree_verified'=>$row['agree_verified'],
+                'otp_number'=>'',
             ]);
         }
     }

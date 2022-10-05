@@ -28,6 +28,8 @@ $member_income_list = [];
 $address_current_type = 0;
 $agree_verified = 0;
 $otp_num = '';
+
+$verify_code = mt_rand(100000,999999);
 $member_data = getMemberProfileData($connect, $member_id);
 if ($member_data != null) {
     $fname = $member_data[0]['fname'];
@@ -43,7 +45,7 @@ if ($member_data != null) {
     $otp_num = $member_data[0]['otp_number'];
 }
 
-echo $dob;
+//echo $dob;
 
 $member_income_type_data = getMemberIncomeData($connect, $member_id);
 //if($member_income_type_data != null){
@@ -111,6 +113,7 @@ if ($member_address != null) {
 
                     <form id="validation-form" method="post" action="update_data_profile.php">
                         <input type="hidden" class="recid" name="recid" value="<?= $member_id ?>">
+                        <input type="hidden" class="verify-code" name="verify_code" value="<?=$verify_code?>">
                         <div class="px-2 py-2 mb-4">
 
                             <div id="step-1">
@@ -316,7 +319,7 @@ if ($member_address != null) {
 
                                     <div class="col-sm-9 pr-0 pr-sm-3">
                                         <input id="otp-phone-number" required type="text" name="otp_phone_no"
-                                               class="form-control col-11 col-sm-8 col-md-5"
+                                               class="form-control otp-number col-11 col-sm-8 col-md-5"
                                                placeholder="" value=""/>
                                     </div>
                                 </div>
@@ -686,6 +689,61 @@ if ($member_address != null) {
         </div>
     </div>
 </div>
+<div class="modal" id="myModal">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content">
+                <!-- Modal Header -->
+                <div class="modal-header">
+                    <h4 class="modal-title" style="color: #1c606a">ยืนยันรหัส</h4>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+
+                <!-- Modal body -->
+                <div class="modal-body">
+                    <input type="hidden" name="recid" class="user-recid" value="">
+                   <div class="row">
+                       <div class="col-lg-12" style="text-align: center ">
+                           <h4>กรอกรหัสที่ได้รับทาง SMS</h4>
+                       </div>
+                   </div>
+                    <br>
+                    <table style="border: none;">
+                    <tr>
+                        <td style="padding: 5px;">
+                            <input type="text" class="form-control pin-input" maxlength="1" style="text-align: center" value="">
+                        </td>
+                        <td style="padding: 5px;">
+                            <input type="text" class="form-control pin-input" maxlength="1" style="text-align: center" value="">
+                        </td>
+                        <td style="padding: 5px;">
+                            <input type="text" class="form-control pin-input" maxlength="1" style="text-align: center" value="">
+                        </td>
+                        <td style="padding: 5px;">
+                            <input type="text" class="form-control pin-input" maxlength="1" style="text-align: center" value="">
+                        </td>
+                        <td style="padding: 5px;">
+                            <input type="text" class="form-control pin-input" maxlength="1" style="text-align: center" value="">
+                        </td>
+                        <td style="padding: 5px;">
+                            <input type="text" class="form-control pin-input" maxlength="1" style="text-align: center" value="">
+                        </td>
+                    </tr>
+                    </table>
+
+                </div>
+            <br /><br />
+
+                <!-- Modal footer -->
+                <div class="modal-footer">
+                    <div class="btn btn-success btn-verify-save" data-dismiss="modalx" onclick="submitmyform()"><i
+                                class="fa fa-check-circle"></i> ตกลง
+                    </div>
+                    <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fa fa-ban"></i> ยกเลิก
+                    </button>
+                </div>
+        </div>
+    </div>
+</div>
 <?php
 function checkoptionselected($member_income_listx, $id)
 {
@@ -720,8 +778,19 @@ include("footer.php");
     //     });
     //
     //
+    $('.pin-input').on('input', function (event) {
+        this.value = this.value.replace(/[^0-9]/g, '');
+    });
+
+    $(".pin-input").keyup(function () {
+
+        if (this.value.length == this.maxLength) {
+           $(this).next('input').focus();
+        }
+    });
+
     $("#form-field-mask-1").inputmask("99/99/9999")
-    $("#otp-phone-number").inputmask("999-999-9999")
+    $("#otp-phone-number").inputmask("999-9999999")
     //
     // });
 
@@ -912,7 +981,44 @@ include("footer.php");
 
     function submitmyform() {
         if (!$('#validation-form').valid()) return false;
-        document.getElementById('validation-form').submit();
+        var verify_code = $(".verify-code").val();
+        var otp_number = $(".otp-number").val().replace('-','');
+        // alert(otp_number);return;
+        if(verify_code != '' && verify_code.length == 6 && otp_number !=''){
+            $.ajax({
+                type: "post",
+                dataType: "json",
+                url: "models/Sendsms.php",
+                async: false,
+                data: {'otp_number': otp_number,'verify_code': verify_code},
+                success: function (data) {
+                    //alert(data[0]['success']);
+                    // if(data.length > 0){
+                    $("#myModal").modal("show");
+                    // }
+                },
+                error: function(err){
+                    console.log(err);
+                }
+            });
+
+        }
+
+        // document.getElementById('validation-form').submit();
+    }
+    function submitmyformverify() {
+        if (!$('#validation-form').valid()) return false;
+        var verify_code = $(".verify-code").val();
+        var verify_number = '';
+        $(".pin-input").each(function(){
+            verify_number = ""+verify_number + $(this).val();
+        });
+        // alert(otp_number);return;
+        if(verify_code == verify_number){
+            document.getElementById('validation-form').submit();
+        }
+
+        // document.getElementById('validation-form').submit();
     }
 
     function checkaccountname(e){
