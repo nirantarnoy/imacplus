@@ -25,7 +25,7 @@ if($otp_number !='' && $message !=''){
         CURLOPT_POSTFIELDS =>'{
     "sender": "SMS PRO",
     "msisdn": ["'.$otp_number.'"],
-    "message": "รหัสยืนยันตัวตนระบบ iMacplus ของคุณคือ '.$message.'"
+    "message": "รหัสยืนยัน iMacPlus ของคุณคือ OTP : '.$message.' จะหมดอายุภายใน 3 นาที"
 }',
         CURLOPT_HTTPHEADER => array(
             'Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC90aHNtcy5jb21cL21hbmFnZVwvYXBpLWtleSIsImlhdCI6MTY2MzIyNjY4NCwibmJmIjoxNjY0OTY5NDczLCJqdGkiOiJ5c05wTFJFb1FWY1FaaHI4Iiwic3ViIjoxMDczNTIsInBydiI6IjIzYmQ1Yzg5NDlmNjAwYWRiMzllNzAxYzQwMDg3MmRiN2E1OTc2ZjcifQ.5I1SasMTUwq1u7rT4vyAyi-VXlzkAeMXh44xwBCXiJ4',

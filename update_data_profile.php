@@ -30,8 +30,8 @@ $engsurname = '';
 $gender = '';
 $dob = '';
 $otp_number = '';
-$income_list = [];
-$is_agree = '';
+$income_list = '';
+$is_agree = 0;
 $upload_photo = null;
 
 $address_current_type = '';
@@ -77,12 +77,22 @@ if (isset($_POST['dob'])) {
 if (isset($_POST['otp_number'])) {
     $otp_number = $_POST['otp_number'];
 }
-if (isset($_POST['income_list'])) {
-    $income_list = $_POST['income_list'];
+if (isset($_POST['income_selected'])) {
+    $income_list = $_POST['income_selected'];
 }
 if (isset($_POST['is_agree'])) {
     $is_agree = $_POST['is_agree'];
+    if($is_agree == 'on'){
+        $is_agree = 1;
+    }
 }
+
+//print_r($income_list);return;
+//if(isset($_POST['income_selected'])){
+//    $income_list =
+//}
+
+
 //if (isset($_POST['upload_photo'])) {
 //    $upload_photo = $_POST['upload_photo'];
 //}
@@ -141,6 +151,10 @@ if (isset($_POST['member_account_name'])) {
     $account_name = $_POST['member_account_name'];
 }
 
+
+//print_r($_POST);return;
+
+
 //print_r($_POST);return;
 //echo $id;return;
 
@@ -148,7 +162,7 @@ if (isset($_POST['member_account_name'])) {
 
 if($verify_member_status == 1){
     $res = 0;
-    $sql = "UPDATE member set is_verified='$verify_member_status' WHERE id='$id'";
+    $sql = "UPDATE member set is_verified='$verify_member_status', status=1 WHERE id='$id'";
     if ($result = $connect->query($sql)) {
         $res += 1;
     }
@@ -159,13 +173,14 @@ if($verify_member_status == 1){
 if (($id != null || $id != '') && $verify_member_status == 0) {
     $res = 0;
 
-//    echo $fname.' = '.$lname;return;
+ //  echo $fname.' = '.$lname;return;
     if ($fname != '' && $lname != '') {
         $created_at = time();
         $created_by = $userid;
 
         $slip_doc = '';
         if (isset($_FILE['photo_verify'])) {
+          //  echo "ok has photo";return;
             $errors = array();
             $file_name = $_FILES['photo_verify']['name'];
             $file_tmp = $_FILES['photo_verify']['tmp_name'];
@@ -180,10 +195,10 @@ if (($id != null || $id != '') && $verify_member_status == 0) {
             $dob_new = date('Y-m-d',strtotime($fulldate[2].'/'.$fulldate[1].'/'.$fulldate[0]));
         }
 
-        $sql = "UPDATE member set first_name='$fname', last_name='$lname' ,engname='$engname',engsurname='$engsurname',nation_type='$nation_type',id_verify='$id_verify',gender='$gender',dob='$dob_new',verify_photo='$slip_doc',address_curren_type='$address_current_type',agree_verified='$is_agree' WHERE id='$id'";
+        $sql = "UPDATE member set first_name='$fname', last_name='$lname' ,engname='$engname',engsurname='$engsurname',nation_type='$nation_type',gender='$gender',dob='$dob_new',verify_photo='$slip_doc',address_current_type='$address_current_type',agree_verified='$is_agree' WHERE id='$id'";
 //        $sql = "UPDATE member set first_name='$fname', last_name='$lname' ,engname='$engname',engsurename='$engsurname',nation_type='$nation_type',id_verify='$id_verify',gender='$gender','dob'='$dob',verify_photo='$slip_doc' WHERE id='$id', is_verified=1";
-//        echo $sql;return;
-        if ($result = $connect->query($sql)) {
+        //echo $sql;return;
+        if ($connect->query($sql)) {
             $res += 1;
         }
     }
@@ -279,13 +294,18 @@ if (($id != null || $id != '') && $verify_member_status == 0) {
         }
     }
 
-    if(count($income_list) > 0){
-      for($x=0;$x<=count($income_list)-1;$x++){
-          $sql = "INSERT INTO member_income_type(member_id,income_type_id,status)VALUES('$id','$income_list[$x]',1)";
-          if ($result = $connect->query($sql)) {
+    if($income_list != ""){
+        $xlist = explode(",",$income_list);
+        if(count($xlist)>0){
+          //  echo $xlist[1];return;
+            for($x=0;$x<=count($xlist)-1;$x++){
+                $sql = "INSERT INTO member_income_type(member_id,income_type_id,status)VALUES('$id','$xlist[$x]',1)";
+                if ($connect->query($sql)) {
 
-          }
-      }
+                }
+            }
+        }
+
     }
 
     $_SESSION['msg-success'] = 'บันทึกข้อมูลเรียบร้อยแล้ว';

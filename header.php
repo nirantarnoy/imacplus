@@ -506,7 +506,7 @@ $is_verified = getMemberverifiedstatus($connect, $member_id);
                                 <b class="sub-arrow"></b>
                             </li>
                             <li class="nav-item">
-                                <a href="#" class="nav-link">
+                                <a href="qandapage.php" class="nav-link">
                                     <img src="assets/iCOn/iCOn/qa.png" class="nav-icon" style="width: 10%" alt="">
                                     <span class="nav-text fadeable">
                                   <span>คำถามที่พบบ่อย</span>

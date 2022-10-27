@@ -51,7 +51,7 @@ if($phone!="" && $email != ""){
         $cdate = date("Y-m-d H:i:s");
         $ctimestamp = time();
         //echo bin2hex($bytes);
-        $sql_member = "INSERT INTO member(phone_number,email,url,parent_id,agree_read,agree_date,created_at,member_type_id,status)VALUES('$phone','$email','$member_url','$parent_id',1,'$cdate','$ctimestamp',30,1)";
+        $sql_member = "INSERT INTO member(phone_number,email,url,parent_id,agree_read,agree_date,created_at,member_type_id,status)VALUES('$phone','$email','$member_url','$parent_id',1,'$cdate','$ctimestamp',30,2)";
         if ($rest = $connect->query($sql_member)) {
             $newpass = md5($password);
             $maxid = getMaxid($connect);
@@ -63,38 +63,69 @@ if($phone!="" && $email != ""){
 //                // header('location:registersuccess.php');
 //                header('location:index.php');
                 //$newpass = md5($newpass);
-                $query = "SELECT * FROM user WHERE username='$email' AND password='$newpass'";
+//                $query = "SELECT * FROM user WHERE username='$email' AND password='$newpass'";
+//                $statement = $connect->prepare($query);
+//                $statement->execute();
+//                $result = $statement->fetchAll();
+//                $filtered_rows = $statement->rowCount();
+//                if ($filtered_rows > 0) {
+//
+//                    foreach ($result as $row) {
+//                        $_SESSION['userid'] = $row['id'];
+//                       // echo $_SESSION['userid'];return;
+//                        if (!empty($_POST["remember"])) {
+//                            setcookie("member_login", $_POST["username"], time() + (10 * 365 * 24 * 60 * 60));
+//                        } else {
+//                            if (isset($_COOKIE["member_login"])) {
+//                                setcookie("member_login", "");
+//                            }
+//                        }
+//                    }
+//                    // if(checktime($_SESSION['userid'] , $connect)){
+//                    if(isset($_SESSION['userid'])){
+//                       // echo "OKKsdsK".$_SESSION['userid'];return;
+//                        header('location: profile.php');
+//                    }else{
+//                        header("location:loginpage.php");
+//                    }
+//
+//                    // }else{
+//                    //   $_SESSION['msg_err'] = 'ไม่ได้อยู่ในเวลาทำการ';
+//                    //    header("location:loginpage.php");
+//                    //}
+//                } else {
+//                    $_SESSION['msg_err'] = 'Usernam หรือ Password ไม่ถูกต้อง';
+//                    header("location:loginpage.php");
+//                }
+
+                $query = "SELECT * FROM user WHERE member_ref_id='$maxid' AND password='$newpass'";
                 $statement = $connect->prepare($query);
                 $statement->execute();
                 $result = $statement->fetchAll();
                 $filtered_rows = $statement->rowCount();
                 if ($filtered_rows > 0) {
-
                     foreach ($result as $row) {
                         $_SESSION['userid'] = $row['id'];
-                       // echo $_SESSION['userid'];return;
+
                         if (!empty($_POST["remember"])) {
                             setcookie("member_login", $_POST["username"], time() + (10 * 365 * 24 * 60 * 60));
                         } else {
                             if (isset($_COOKIE["member_login"])) {
                                 setcookie("member_login", "");
                             }
+                            $_SESSION['start'] = time();
+                            $_SESSION['expire'] = $_SESSION['start'] + (30 * 60); // expired after 30 minutes
                         }
                     }
                     // if(checktime($_SESSION['userid'] , $connect)){
-                    if(isset($_SESSION['userid'])){
-                       // echo "OKKsdsK".$_SESSION['userid'];return;
-                        header('location: profile.php');
-                    }else{
-                        header("location:loginpage.php");
-                    }
-
+                    header('location: profile.php');
                     // }else{
                     //   $_SESSION['msg_err'] = 'ไม่ได้อยู่ในเวลาทำการ';
                     //    header("location:loginpage.php");
                     //}
                 } else {
-                    $_SESSION['msg_err'] = 'Usernam หรือ Password ไม่ถูกต้อง';
+                    //   echo "no";return;
+                    $_SESSION['msg_err'] = 'เบอร์โทรศัพท์ หรือ Password ไม่ถูกต้อง';
                     header("location:loginpage.php");
                 }
             } else {
@@ -103,6 +134,5 @@ if($phone!="" && $email != ""){
             }
         }
     }
-
 
 }

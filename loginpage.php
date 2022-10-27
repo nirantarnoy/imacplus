@@ -20,7 +20,7 @@ if (isset($_SESSION['msg_err'])) {
 }
 $mes_register_error = '';
 if (isset($_SESSION['msg_register_err'])) {
-    if($_SESSION['msg_register_err'] != '' || $_SESSION['msg_register_err'] != null){
+    if ($_SESSION['msg_register_err'] != '' || $_SESSION['msg_register_err'] != null) {
         $mes_register_error = $_SESSION['msg_register_err'];
         unset($_SESSION['msg_register_err']);
     }
@@ -63,6 +63,8 @@ $permissions = ['email', 'user_likes']; // optional
 $loginUrl = $helper->getLoginUrl('https://www.imacplus.app/login-callback.php', $permissions);
 $registerUrl = $helper->getLoginUrl('https://www.imacplus.app/register-callback.php', $permissions);
 
+$verify_code = mt_rand(100000, 999999);
+
 ?>
 <!doctype html>
 <html lang="en">
@@ -72,7 +74,7 @@ $registerUrl = $helper->getLoginUrl('https://www.imacplus.app/register-callback.
     <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1">
     <!--    <base href="../" />-->
 
-    <title>Login - iMac Plus</title>
+    <title>Login - iMacPlus</title>
 
     <!-- include common vendor stylesheets & fontawesome -->
     <link rel="stylesheet" type="text/css" href="node_modules/bootstrap/dist/css/bootstrap.css">
@@ -120,15 +122,23 @@ $registerUrl = $helper->getLoginUrl('https://www.imacplus.app/register-callback.
             font-weight: normal;
             font-style: normal;
         }
+
         @font-face {
             font-family: 'Prompt-Regular';
             src: url('dist/font/Prompt/Prompt-Regular.ttf') format('truetype');
             font-weight: normal;
             font-style: normal;
         }
+
         @font-face {
             font-family: 'Prompt-Italic';
             src: url('dist/font/Prompt/Prompt-Italic.ttf') format('truetype');
+            font-weight: normal;
+            font-style: normal;
+        }
+        @font-face {
+            font-family: 'Moon2.0-Regular';
+            src: url('dist/font/Moon/Moon2.0-Regular.otf') format('truetype');
             font-weight: normal;
             font-style: normal;
         }
@@ -147,6 +157,7 @@ $registerUrl = $helper->getLoginUrl('https://www.imacplus.app/register-callback.
             border-radius: 50%;
             display: inline-block;
         }
+
         .dot-login {
             margin: 5px;
             height: 25px;
@@ -192,7 +203,7 @@ $registerUrl = $helper->getLoginUrl('https://www.imacplus.app/register-callback.
 
 <body>
 <div class="body-container" style="background-color: white;">
-
+    <input type="hidden" class="verify-code" name="verify_code" value="<?= $verify_code ?>">
     <div class="main-container container bgc-transparent">
 
         <div class="main-content minh-100 justify-content-center">
@@ -224,10 +235,10 @@ $registerUrl = $helper->getLoginUrl('https://www.imacplus.app/register-callback.
                                                 </a>
 
                                                 <h2 class="text-secondary-d1">
-                                                    iMac Plus <span class="text-80 text-dark-l1"></span>
+                                                    <span style="font-family: 'Moon2.0-Regular'">iMacPlus </span>
                                                 </h2>
 
-                                                <div class="mt-5 mx-4 text-dark-tp3">
+                                                <div class="mt-5 mx-4 text-dark-tp3" style="font-family: 'Moon2.0-Regular'">
                                                     <!--                              <span class="text-120">-->
                                                     <!--                           Join our community to make friends,<br /> meet experts &amp; receive exclusive offers!-->
                                                     <!--                       </span>-->
@@ -252,8 +263,8 @@ $registerUrl = $helper->getLoginUrl('https://www.imacplus.app/register-callback.
                                                     </div>
                                                 </div>
 
-                                                <div class="mt-auto mb-4 text-dark-tp2">
-                                                    iMac Plus &copy; <?= date('Y') ?>
+                                                <div class="mt-auto mb-4 text-dark-tp2" style="font-family: 'Moon2.0-Regular'">
+                                                    iMacPlus &copy; <?= date('Y') ?>
                                                 </div>
                                             </div>
                                         </div>
@@ -269,7 +280,7 @@ $registerUrl = $helper->getLoginUrl('https://www.imacplus.app/register-callback.
                                                 </a>
 
                                                 <h2 class="text-blue-l1">
-                                                    iMac Plus <span class="text-80 text-dark-l1"></span>
+                                                    iMacPlus <span class="text-80 text-dark-l1"></span>
                                                 </h2>
                                             </div>
                                         </div>
@@ -286,7 +297,7 @@ $registerUrl = $helper->getLoginUrl('https://www.imacplus.app/register-callback.
                                                     </a>
 
                                                     <h2 class="text-blue-l1">
-                                                        iMac Plus <span class="text-80 text-dark-l1"></span>
+                                                        iMacPlus</span>
                                                     </h2>
                                                 </div>
                                             </div>
@@ -302,7 +313,7 @@ $registerUrl = $helper->getLoginUrl('https://www.imacplus.app/register-callback.
                                                 </a>
 
                                                 <h2 class="text-blue-d1">
-                                                    iMac Plus <span class="text-80 text-dark-l1"></span>
+                                                    iMacPlus <span class="text-80 text-dark-l1"></span>
                                                 </h2>
                                             </div>
                                         </div>
@@ -350,7 +361,7 @@ $registerUrl = $helper->getLoginUrl('https://www.imacplus.app/register-callback.
                                             </a>
                                             <h1 class="text-170">
                             <span class="text-secondary-d1">
-                                iMac <span class="text-80 text-dark-tp3">Plus</span>
+                                iMacPlus
                             </span>
                                             </h1>
 
@@ -376,18 +387,18 @@ $registerUrl = $helper->getLoginUrl('https://www.imacplus.app/register-callback.
                                             <input type="hidden" class="password" name="password" value="">
 
 
-<!--                                            <div class="form-group col-sm-10 offset-sm-1 col-md-8 offset-md-2 col-lg-6 offset-lg-3 mt-2 mt-md-1">-->
-<!--                                                <div class="d-flex align-items-center input-floating-label text-blue brc-blue-m2">-->
-<!--                                                    <input type="password"-->
-<!--                                                           class="form-control form-control-lg pr-4 shadow-none password"-->
-<!--                                                           id="id-login-password" name="password"/>-->
-<!--                                                    <i class="fa fa-key text-grey-m2 ml-n4"></i>-->
-<!--                                                    <label class="floating-label text-grey-l1 ml-n3"-->
-<!--                                                           for="id-login-password">-->
-<!--                                                        Password-->
-<!--                                                    </label>-->
-<!--                                                </div>-->
-<!--                                            </div>-->
+                                            <!--                                            <div class="form-group col-sm-10 offset-sm-1 col-md-8 offset-md-2 col-lg-6 offset-lg-3 mt-2 mt-md-1">-->
+                                            <!--                                                <div class="d-flex align-items-center input-floating-label text-blue brc-blue-m2">-->
+                                            <!--                                                    <input type="password"-->
+                                            <!--                                                           class="form-control form-control-lg pr-4 shadow-none password"-->
+                                            <!--                                                           id="id-login-password" name="password"/>-->
+                                            <!--                                                    <i class="fa fa-key text-grey-m2 ml-n4"></i>-->
+                                            <!--                                                    <label class="floating-label text-grey-l1 ml-n3"-->
+                                            <!--                                                           for="id-login-password">-->
+                                            <!--                                                        Password-->
+                                            <!--                                                    </label>-->
+                                            <!--                                                </div>-->
+                                            <!--                                            </div>-->
 
 
                                             <div class="col-sm-10 offset-sm-1 col-md-8 offset-md-2 col-lg-6 offset-lg-3 text-right text-md-right mt-n2 mb-2">
@@ -479,13 +490,15 @@ $registerUrl = $helper->getLoginUrl('https://www.imacplus.app/register-callback.
                                                     <?php if ($member_data[0]['photo'] != null): ?>
                                                         <img id="id-navbar-user-image"
                                                              class="d-none d-lg-inline-block radius-round border-2 brc-white-tp1 mr-2 w-6"
-                                                             src="uploads/member_photo/<?= $member_data[0]['photo'] == ''?'demo.png':$member_data[0]['photo'] ?>"
+                                                             src="uploads/member_photo/<?= $member_data[0]['photo'] == '' ? 'demo.png' : $member_data[0]['photo'] ?>"
                                                              alt="Member 's photo">
 
                                                     <?php else: ?>
                                                         <i class="fa fa-user-circle fa-5x text-info"></i>
                                                     <?php endif; ?>
-                                                    <p><b><?= $member_data[0]['name'].' '.$member_data[0]['lname'] ?></b></p>
+                                                    <p>
+                                                        <b><?= $member_data[0]['name'] . ' ' . $member_data[0]['lname'] ?></b>
+                                                    </p>
                                                 </div>
                                                 <br>
                                             <?php endif; ?>
@@ -501,8 +514,7 @@ $registerUrl = $helper->getLoginUrl('https://www.imacplus.app/register-callback.
                                             <div class="d-lg-none text-secondary-m1 my-4 text-center">
                                                 <!--                                                <i class="fa fa-backward text-secondary-m2 text-200 mb-4"></i>-->
                                                 <h1 class="text-170">
-                                                <span class="text-blue-d1">iMac <span
-                                                            class="text-80 text-dark-tp4">Plus</span></span>
+                                                <span class="text-blue-d1">iMacPlus</span>
                                                 </h1>
 
                                                 สมัครสมาชิก
@@ -714,7 +726,7 @@ $registerUrl = $helper->getLoginUrl('https://www.imacplus.app/register-callback.
                 </div><!-- /.row -->
 
                 <div class="d-lg-none my-3 text-white-tp1 text-center">
-                    iMac Plus &copy; <?= date('Y') ?>
+                    iMacPlus &copy; <?= date('Y') ?>
                 </div>
             </div>
         </div>
@@ -754,9 +766,9 @@ $registerUrl = $helper->getLoginUrl('https://www.imacplus.app/register-callback.
                                             โดยละเอียดก่อนรับบริการซ่อมหรือบริการอื่นที่เกี่ยวข้อง
                                             ข้อตกลงและเงื่อนไขฉบับนี้เป็นข้อตกลงที่มีผลผูกพันตามกฎหมายระหว่างผู้ขอรับบริการ
                                             (“ลูกค้า”) กับบริษัท ไทยออล จำกัด (“ไทยออล”) ซึ่งเป็นผู้ให้บริการแพลตฟอร์ม
-                                            iMac Plus (“ไอแมค พลัส” ) รวมเรียกว่า (“ศูนย์บริการ” )
+                                            iMacPlus (“ไอแมค พลัส” ) รวมเรียกว่า (“ศูนย์บริการ” )
                                             การให้บริการซ่อมหรือบริการอื่นที่เกี่ยวข้องสำหรับอุปกรณ์
-                                            หรือการอัพเกรดซอฟต์แวร์ที่ดำเนินการผ่าน แพลตฟอร์ม iMac Plus
+                                            หรือการอัพเกรดซอฟต์แวร์ที่ดำเนินการผ่าน แพลตฟอร์ม iMacPlus
                                             หรือศูนย์บริการที่ได้รับอนุญาต (รวมเรียก “บริการ”)</p>
                                     </td>
                                 </tr>
@@ -824,12 +836,14 @@ $registerUrl = $helper->getLoginUrl('https://www.imacplus.app/register-callback.
                             6) ก่อนการส่งซ่อมสินค้าในรูปแบบออนไลน์
                             ลูกค้าต้องถ่ายรูปตัวเครื่องของลูกค้าเพื่ออัพโหลดเข้าในระบบตามที่บริษัทกำหนด <br/>
                             7) ลูกค้าต้องชำระค่าบริการ 50% ก่อนตกลงใช้บริการหรือตามที่ศูนย์บริการกำหนดเบื้องต้น <br/>
-                            เว้นแต่ว่ามีบริการใส่ส่วนอื่นเพิ่มเติมหลังจากศูนย์บริการแจ้งลูกค้าภายหลัง <br />
+                            เว้นแต่ว่ามีบริการใส่ส่วนอื่นเพิ่มเติมหลังจากศูนย์บริการแจ้งลูกค้าภายหลัง <br/>
                             8) ความรับผิดในค่าเสียหายพื้นฐานของเราที่เกิดขึ้นกับสินค้าใด ๆ
                             นั้นจะจำกัดเพียงการสูญเสียและความเสียหายโดยตรงและรวมมูลค่าสูงสุดไม่เกิน 1,000 บาทต่อ 1
                             ใบนำส่งสินค้า
-                            เว้นเสียแต่ว่ามีการระบุไว้เป็นอย่างอื่นในข้อตกลงร่วมกันเป็นลายลักษณ์อักษรระหว่างบริษัทผู้ส่งสินค้าและลูกค้า <br/>
-                            9) ข้อตกลงและเงื่อนไขจะอยู่ภายใต้กฎหมายแห่งราชอาณาจักรไทยและคู่สัญญาทั้งสองฝ่ายอยู่ใต้เขตอำนาจศาลแห่งราชอาณาจักรไทยโดยไม่อาจเพิกถอนได้
+                            เว้นเสียแต่ว่ามีการระบุไว้เป็นอย่างอื่นในข้อตกลงร่วมกันเป็นลายลักษณ์อักษรระหว่างบริษัทผู้ส่งสินค้าและลูกค้า
+                            <br/>
+                            9)
+                            ข้อตกลงและเงื่อนไขจะอยู่ภายใต้กฎหมายแห่งราชอาณาจักรไทยและคู่สัญญาทั้งสองฝ่ายอยู่ใต้เขตอำนาจศาลแห่งราชอาณาจักรไทยโดยไม่อาจเพิกถอนได้
                             <br/>
                             10) ค่าบริการตรวจเช็ค 150 – 500 บาท หรือตามที่บริษัทกำหนด <br/>
                             11) ลูกค้ายินยอมให้ บริษัท ไทยออล จำกัด และศูนย์บริการในเครือเก็บ รวบรวม ใช้
@@ -935,7 +949,9 @@ $registerUrl = $helper->getLoginUrl('https://www.imacplus.app/register-callback.
 
             <!-- Modal footer -->
             <div class="modal-footer">
-                <div class="btn btn-success btn-pin-save" style="display: none" data-dismiss="modalx">ดำเนินการต่อ</div>
+                <div class="btn btn-success btn-pin-save" style="display: none" data-dismiss="modalx"
+                     onclick="submitregister($(this))">ดำเนินการต่อ
+                </div>
                 <!--                    <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fa fa-ban"></i> Cancel</button>-->
             </div>
 
@@ -1015,7 +1031,9 @@ $registerUrl = $helper->getLoginUrl('https://www.imacplus.app/register-callback.
 
             <!-- Modal footer -->
             <div class="modal-footer">
-                <div class="btn btn-success btn-pin-login-save" style="display: none" data-dismiss="modalx">ดำเนินการต่อ</div>
+                <div class="btn btn-success btn-pin-login-save" style="display: none" data-dismiss="modalx">
+                    ดำเนินการต่อ
+                </div>
                 <!--                    <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fa fa-ban"></i> Cancel</button>-->
             </div>
 
@@ -1049,37 +1067,92 @@ $registerUrl = $helper->getLoginUrl('https://www.imacplus.app/register-callback.
                             <table style="width: 100%">
                                 <tr>
                                     <td style="text-align: left;">
-                                        <p style="text-indent: 10px;">ตามที่บริษัทในกลุ่มบริษัท ไทยออล จํากัด หรือเรียกอีกชื่อหนึ่ง “iMacPlus”(ไอแมคพลัส) “iMacPost” (ไอแมคโพส) ได้มุ่งมั่น พัฒนาคุณภาพสินค้าและบริการ ตลอดจนสร้างประสบการณ์ใหม่ ๆ ให้ผู้ใช้บริการ และเพื่อให้ผู้ใช้บริการ ได้ใช้บริการที่ดีที่สุดและได้รับสิทธิประโยชน์ที่หลากหลายตรงต่อตามความต้องการมากที่สุด จึงได้ขอให้ ผู้ใช้บริการให้ความยินยอมในการเก็บ รวมรวม ประมวลผล ใช้ และเปิดเผยข้อมูลส่วนบุคคล ตาม พระราชบัญญัติคุ้มครองข้อมูลส่วนบุคคล พ.ศ. 2562 (“พ.ร.บ. คุ้มครองข้อมูลส่วนบุคคล”) โดยการ ดําเนินการดังกล่าวนั้น บริษัทในกลุ่มไทยออล ได้ให้ความสําคัญต่อความเป็นส่วนตัวของผู้ใช้บริการ และ จัดเก็บข้อมูลส่วนบุคคลของผู้ใช้บริการอย่างปลอดภัยและเป็นไปตามมาตรฐานที่กฎหมายกําหนด ดังนั้น ข้าพเจ้าในฐานะผู้ใช้บริการตกลงให้ความยินยอม ดังนี้</p>
+                                        <p style="text-indent: 10px;">ตามที่บริษัทในกลุ่มบริษัท ไทยออล จํากัด
+                                            หรือเรียกอีกชื่อหนึ่ง “iMacPlus”(ไอแมคพลัส) “iMacPost” (ไอแมคโพส)
+                                            ได้มุ่งมั่น พัฒนาคุณภาพสินค้าและบริการ ตลอดจนสร้างประสบการณ์ใหม่ ๆ
+                                            ให้ผู้ใช้บริการ และเพื่อให้ผู้ใช้บริการ
+                                            ได้ใช้บริการที่ดีที่สุดและได้รับสิทธิประโยชน์ที่หลากหลายตรงต่อตามความต้องการมากที่สุด
+                                            จึงได้ขอให้ ผู้ใช้บริการให้ความยินยอมในการเก็บ รวมรวม ประมวลผล ใช้
+                                            และเปิดเผยข้อมูลส่วนบุคคล ตาม พระราชบัญญัติคุ้มครองข้อมูลส่วนบุคคล พ.ศ. 2562
+                                            (“พ.ร.บ. คุ้มครองข้อมูลส่วนบุคคล”) โดยการ ดําเนินการดังกล่าวนั้น
+                                            บริษัทในกลุ่มไทยออล ได้ให้ความสําคัญต่อความเป็นส่วนตัวของผู้ใช้บริการ และ
+                                            จัดเก็บข้อมูลส่วนบุคคลของผู้ใช้บริการอย่างปลอดภัยและเป็นไปตามมาตรฐานที่กฎหมายกําหนด
+                                            ดังนั้น ข้าพเจ้าในฐานะผู้ใช้บริการตกลงให้ความยินยอม ดังนี้</p>
                                     </td>
                                 </tr>
                             </table>
 
 
-                            <p style="text-indent: 10px;">ข้าพเจ้าตกลงและให้ความยินยอมแก่บริษัทในกลุ่มไทยออล (ดังรายชื่อที่ปรากฏท้ายหนังสือให้ความ ยินยอมนี้ และที่อาจเปลี่ยนแปลงในอนาคตซึ่งจะได้ประกาศในช่องทางอื่นของบริษัทต่อไป ซึ่งข้าพเจ้าได้ อ่านและเข้าใจดีแล้ว) ซึ่งข้าพเจ้าตกลงใช้บริการหรือผลิตภัณฑ์และบริษัทในกลุ่มไทยออลอื่น ๆ ณ วันที่ให้ ความยินยอมนี้และต่อเนื่องไปถึงวันและภายหลังวันที่ พ.ร.บ. คุ้มครองข้อมูลส่วนบุคคลมีผลใช้บังคับต่อไป ด้วย ในการเก็บรวบรวม ประมวลผล ใช้ และ/หรือ เปิดเผยข้อมูลส่วนบุคคลที่อ่อนไหว (sensitive data) (เช่น เชื้อชาติ สัญชาติ ศาสนา กรุ๊ปเลือด เป็นต้น) ที่มีข้อมูลปรากฏอยู่บนเอกสารระบุตัวตนของข้าพเจ้า (เช่น บัตรประชาชน หนังสือเดินทาง หรือเอกสารอื่นใดที่ออกโดยหน่วยงานราชการ) รวมถึงข้อมูลชีวภาพ ของข้าพเจ้า (เช่น ข้อมูล จําลองลายนิ้วมือ ข้อมูลชีวมิติ ข้อมูลภาพถ่ายจําลองใบหน้า เป็นต้น) ตลอดจน ข้อมูลภาพหรือเสียงที่มีการบันทึก (ต่อไปนี้รวมเรียกว่า “ข้อมูลส่วนบุคคลของข้าพเจ้า”) เพื่อ วัตถุประสงค์ในการยืนยันและระบุตัวตนของข้าพเจ้าในการขอใช้บริการหรือผลิตภัณฑ์ขอดังกล่าว และ หรือ ตามที่กฎหมายกําหนด</p>
+                            <p style="text-indent: 10px;">ข้าพเจ้าตกลงและให้ความยินยอมแก่บริษัทในกลุ่มไทยออล
+                                (ดังรายชื่อที่ปรากฏท้ายหนังสือให้ความ ยินยอมนี้
+                                และที่อาจเปลี่ยนแปลงในอนาคตซึ่งจะได้ประกาศในช่องทางอื่นของบริษัทต่อไป ซึ่งข้าพเจ้าได้
+                                อ่านและเข้าใจดีแล้ว) ซึ่งข้าพเจ้าตกลงใช้บริการหรือผลิตภัณฑ์และบริษัทในกลุ่มไทยออลอื่น ๆ
+                                ณ วันที่ให้ ความยินยอมนี้และต่อเนื่องไปถึงวันและภายหลังวันที่ พ.ร.บ.
+                                คุ้มครองข้อมูลส่วนบุคคลมีผลใช้บังคับต่อไป ด้วย ในการเก็บรวบรวม ประมวลผล ใช้ และ/หรือ
+                                เปิดเผยข้อมูลส่วนบุคคลที่อ่อนไหว (sensitive data) (เช่น เชื้อชาติ สัญชาติ ศาสนา
+                                กรุ๊ปเลือด เป็นต้น) ที่มีข้อมูลปรากฏอยู่บนเอกสารระบุตัวตนของข้าพเจ้า (เช่น บัตรประชาชน
+                                หนังสือเดินทาง หรือเอกสารอื่นใดที่ออกโดยหน่วยงานราชการ) รวมถึงข้อมูลชีวภาพ ของข้าพเจ้า
+                                (เช่น ข้อมูล จําลองลายนิ้วมือ ข้อมูลชีวมิติ ข้อมูลภาพถ่ายจําลองใบหน้า เป็นต้น) ตลอดจน
+                                ข้อมูลภาพหรือเสียงที่มีการบันทึก (ต่อไปนี้รวมเรียกว่า “ข้อมูลส่วนบุคคลของข้าพเจ้า”)
+                                เพื่อ
+                                วัตถุประสงค์ในการยืนยันและระบุตัวตนของข้าพเจ้าในการขอใช้บริการหรือผลิตภัณฑ์ขอดังกล่าว
+                                และ หรือ ตามที่กฎหมายกําหนด</p>
                             <br/><br/>
 
-                            <p style="text-indent: 10px;">ข้าพเจ้าให้ความยินยอม ณ วันที่ให้ความยินยอมนี้ และให้การให้ความยินยอมนี้มีผลสมบูรณ์ทางกฎหมาย ต่อเนื่องไป ณ วันและภายหลังวันที่ พ.ร.บ. คุ้มครองข้อมูลส่วนบุคคลมีผล </p><br/><br/>
+                            <p style="text-indent: 10px;">ข้าพเจ้าให้ความยินยอม ณ วันที่ให้ความยินยอมนี้
+                                และให้การให้ความยินยอมนี้มีผลสมบูรณ์ทางกฎหมาย ต่อเนื่องไป ณ วันและภายหลังวันที่ พ.ร.บ.
+                                คุ้มครองข้อมูลส่วนบุคคลมีผล </p><br/><br/>
 
-                            <p style="text-indent: 10px;">ใช้บังคับด้วย แก่บริษัทในกลุ่ม ไทยออล ธุรกิจในเครือ และ/หรือ พันธมิตรทางธุรกิจ ดังปรากฏรายชื่อแนบท้ายนี้ และที่อาจเปลี่ยนแปลงในอนาคตซึ่งจะได้ ประกาศในช่องทางอื่นของบริษัทต่อไป ในการเก็บรวบรวม ประมวลผล ใช้ และ/หรือ เปิดเผยข้อมูลส่วน บุคคลของข้าพเจ้า และ/หรือ ข้อมูลใด ๆ เกี่ยวกับการใช้สินค้า และ/หรือ บริการของข้าพเจ้า เพื่อวัตถุประสงค์ทางการตลาด เพื่อนําเสนอสินค้าและบริการ สิทธิประโยชน์ รายการส่งเสริมการขาย และ ข้อเสนอต่าง ๆ ของบริษัทในกลุ่มไทยออล หรือพันธมิตรทางธุรกิจ เพื่อวัตถุประสงค์ในการวิเคราะห์ หรือคาดการณ์เกี่ยวกับความชื่นชอบหรือพฤติกรรมของข้าพเจ้า วิจัย พัฒนา ปรับปรุงผลิตภัณฑ์ และวางแผนการตลาด เพื่อให้ บริษัทในกลุ่มไทยออล และ/หรือ พันธมิตรทาง ธุรกิจ สามารถวิเคราะห์และคัดสรรสินค้าและบริการอย่างเหมาะสมกับข้าพเจ้า รวมถึงยินยอมให้มีการ เปิดเผยข้อมูลส่วนบุคคลของข้าพเจ้าระหว่าง และ/หรือให้แก่ บริษัทในกลุ่มไทยออล ธุรกิจในเครือ และ/หรือ พันธมิตรทางธุรกิจ เพื่อวัตถุประสงค์ดังกล่าวด้วย</p><br/><br/>
+                            <p style="text-indent: 10px;">ใช้บังคับด้วย แก่บริษัทในกลุ่ม ไทยออล ธุรกิจในเครือ และ/หรือ
+                                พันธมิตรทางธุรกิจ ดังปรากฏรายชื่อแนบท้ายนี้ และที่อาจเปลี่ยนแปลงในอนาคตซึ่งจะได้
+                                ประกาศในช่องทางอื่นของบริษัทต่อไป ในการเก็บรวบรวม ประมวลผล ใช้ และ/หรือ
+                                เปิดเผยข้อมูลส่วน บุคคลของข้าพเจ้า และ/หรือ ข้อมูลใด ๆ เกี่ยวกับการใช้สินค้า และ/หรือ
+                                บริการของข้าพเจ้า เพื่อวัตถุประสงค์ทางการตลาด เพื่อนําเสนอสินค้าและบริการ สิทธิประโยชน์
+                                รายการส่งเสริมการขาย และ ข้อเสนอต่าง ๆ ของบริษัทในกลุ่มไทยออล หรือพันธมิตรทางธุรกิจ
+                                เพื่อวัตถุประสงค์ในการวิเคราะห์ หรือคาดการณ์เกี่ยวกับความชื่นชอบหรือพฤติกรรมของข้าพเจ้า
+                                วิจัย พัฒนา ปรับปรุงผลิตภัณฑ์ และวางแผนการตลาด เพื่อให้ บริษัทในกลุ่มไทยออล และ/หรือ
+                                พันธมิตรทาง ธุรกิจ สามารถวิเคราะห์และคัดสรรสินค้าและบริการอย่างเหมาะสมกับข้าพเจ้า
+                                รวมถึงยินยอมให้มีการ เปิดเผยข้อมูลส่วนบุคคลของข้าพเจ้าระหว่าง และ/หรือให้แก่
+                                บริษัทในกลุ่มไทยออล ธุรกิจในเครือ และ/หรือ พันธมิตรทางธุรกิจ
+                                เพื่อวัตถุประสงค์ดังกล่าวด้วย</p><br/><br/>
 
 
-                            <p style="text-indent: 10px;">ทั้งนี้ ในกรณีที่ข้าพเจ้าเป็นผู้เยาว์ ข้าพเจ้ารับรองว่า ผู้ใช้อํานาจปกครองได้รับทราบและเข้าใจใน บริการและผลิตภัณฑ์ที่ข้าพเจ้าจะใช้ ตลอดจนหนังสือให้ความยินยอมนี้แล้ว และข้าพเจ้าและผู้ใช้อํานาจ ปกครองได้ให้ความยินยอมตามหนังสือให้ความยินยอมนี้แล้ว<br/>
+                            <p style="text-indent: 10px;">ทั้งนี้ ในกรณีที่ข้าพเจ้าเป็นผู้เยาว์ ข้าพเจ้ารับรองว่า
+                                ผู้ใช้อํานาจปกครองได้รับทราบและเข้าใจใน บริการและผลิตภัณฑ์ที่ข้าพเจ้าจะใช้
+                                ตลอดจนหนังสือให้ความยินยอมนี้แล้ว และข้าพเจ้าและผู้ใช้อํานาจ
+                                ปกครองได้ให้ความยินยอมตามหนังสือให้ความยินยอมนี้แล้ว<br/>
 
-                            ข้าพเจ้าได้อ่านและรับทราบนโยบายคุ้มครองข้อมูลส่วนบุคคลของบริษัทในกลุ่มไทยออลแล้วเป็น อย่างดีแล้วบนแพลตฟอร์ม/แอพพลิเคชั่น/ระบบการใช้งาน ทั้งหมด <br/>
+                                ข้าพเจ้าได้อ่านและรับทราบนโยบายคุ้มครองข้อมูลส่วนบุคคลของบริษัทในกลุ่มไทยออลแล้วเป็น
+                                อย่างดีแล้วบนแพลตฟอร์ม/แอพพลิเคชั่น/ระบบการใช้งาน ทั้งหมด <br/>
 
-                            ข้าพเจ้าให้ความยินยอม ด้วยความสมัครใจ ปราศจากการบังคับหรือชักจูง และข้าพเจ้าทราบว่า ข้าพเจ้าสามารถถอนความยินยอมนี้เสียเมื่อไรก็ได้ เว้นแต่ในกรณีที่มีข้อจํากัดสิทธิตามกฎหมาย หรือเป็น การรักษาสิทธิตามกฎหมายของข้าพเจ้ากับบริษัทฯ บริษัทในกลุ่มไทยออล หรือพันธมิตรทางธุรกิจแล้วแต่ กรณี ทั้งนี้การถอนความยินยอมดังกล่าวไม่กระทบต่อการใช้ เปิดเผย รวมถึงการประมวลผลข้อมูลที่ได้ ดําเนินการเสร็จสิ้นไปแล้ว โดยข้าพเจ้าสามารถขอถอนความยินยอมได้ตามช่องทางที่บริษัทระบุไว้  <br/>
+                                ข้าพเจ้าให้ความยินยอม ด้วยความสมัครใจ ปราศจากการบังคับหรือชักจูง และข้าพเจ้าทราบว่า
+                                ข้าพเจ้าสามารถถอนความยินยอมนี้เสียเมื่อไรก็ได้ เว้นแต่ในกรณีที่มีข้อจํากัดสิทธิตามกฎหมาย
+                                หรือเป็น การรักษาสิทธิตามกฎหมายของข้าพเจ้ากับบริษัทฯ บริษัทในกลุ่มไทยออล
+                                หรือพันธมิตรทางธุรกิจแล้วแต่ กรณี ทั้งนี้การถอนความยินยอมดังกล่าวไม่กระทบต่อการใช้
+                                เปิดเผย รวมถึงการประมวลผลข้อมูลที่ได้ ดําเนินการเสร็จสิ้นไปแล้ว
+                                โดยข้าพเจ้าสามารถขอถอนความยินยอมได้ตามช่องทางที่บริษัทระบุไว้ <br/>
 
-                                การให้ความยินยอมนี้เป็นการให้ความยินยอมตามที่ระบุเอาไว้ใน สัญญาธุรกิจภายใต้บริษัทไทยออล ธุรกิจในเครือและ/หรือ พันธมิตรทางธุรกิจทั้งหหมด และ และขอเปิดใช้ระบบทั้งหมด ฉบับลงวันที่..........................................</p><br/><br/>
+                                การให้ความยินยอมนี้เป็นการให้ความยินยอมตามที่ระบุเอาไว้ใน สัญญาธุรกิจภายใต้บริษัทไทยออล
+                                ธุรกิจในเครือและ/หรือ พันธมิตรทางธุรกิจทั้งหหมด และ และขอเปิดใช้ระบบทั้งหมด
+                                ฉบับลงวันที่..........................................</p><br/><br/>
 
                             <u><b>การถอนความยินยอม</b></u><br/>
 
-                            <p style="text-indent: 10px;">ท่านมีสิทธิขอถอนคํายินยอมเมื่อใดก็ได้ ผ่านบริษัทโดยตรงตาม Email ที่ได้ระบุไว้ และช่องทางที่กลุ่มบริษัทกําหนดในภายหน้า โดยสามารถดูรายละเอียดช่องทางการยกเลิกการ ให้คํายินยอมได้ที่ประกาศนโยบายความเป็นส่วนตัวของกลุ่มบริษัท ทั้งนี้ บริษัทจะพิจารณาดําเนินการ ภายใน 7 วัน นับแต่วันที่ได้รับการแจ้งถอนคํายินยอม </p> <br/>
+                            <p style="text-indent: 10px;">ท่านมีสิทธิขอถอนคํายินยอมเมื่อใดก็ได้ ผ่านบริษัทโดยตรงตาม
+                                Email ที่ได้ระบุไว้ และช่องทางที่กลุ่มบริษัทกําหนดในภายหน้า
+                                โดยสามารถดูรายละเอียดช่องทางการยกเลิกการ
+                                ให้คํายินยอมได้ที่ประกาศนโยบายความเป็นส่วนตัวของกลุ่มบริษัท ทั้งนี้
+                                บริษัทจะพิจารณาดําเนินการ ภายใน 7 วัน นับแต่วันที่ได้รับการแจ้งถอนคํายินยอม </p> <br/>
                             <u><b>การสอบถามสิทธิอื่น ๆ ของข้อมูล </b></u> <br/><br/>
                             1. ผ่านบริษัทหรือติดต่อ Call Center และ Page Facebook เปิดให้บริการ 09.00-17.00 <br/>
-                            2.ขอแบบฟอร์มคําขอใช้สิทธิ ของเจ้าของข้อมูลที่เกี่ยวกับข้อมูลส่วนบุคคลทาง กรอกรายละเอียดส่ง Email มาที่ thaiallofficial@gmail.com
+                            2.ขอแบบฟอร์มคําขอใช้สิทธิ ของเจ้าของข้อมูลที่เกี่ยวกับข้อมูลส่วนบุคคลทาง กรอกรายละเอียดส่ง
+                            Email มาที่ thaiallofficial@gmail.com
                             <br/>
-                            รายชื่อกลุ่มบริษัทในกลุ่มไทยออลและพันธมิตรทางธุรกิจ  <br/><br/>
-                            (ก) บริษัทในกลุ่มไทยออล ได้แก่ (1) บริษัท ไทยออล จํากัด (ผู้ให้บริการแพลตฟอร์ม “ไอแมคพลัส” “ไอแมคโพส”) และพันธมิตรหรือบริษัทที่เกิดขึ้นในอนาคตหรือบริษัทที่เกิดขึ้นในอนาคต (ข) พันธมิตรทางธุรกิจ บริษัท  (1)บริษัท เดอะ เลตเตอร์ โพสต์ เซอร์วิส (2)บริษัท เอ็มพ้อยท์เอ็กซ์เพรส จํากัด และพันธมิตรหรือบริษัทที่เกิดขึ้นในอนาคต
+                            รายชื่อกลุ่มบริษัทในกลุ่มไทยออลและพันธมิตรทางธุรกิจ <br/><br/>
+                            (ก) บริษัทในกลุ่มไทยออล ได้แก่ (1) บริษัท ไทยออล จํากัด (ผู้ให้บริการแพลตฟอร์ม “ไอแมคพลัส”
+                            “ไอแมคโพส”) และพันธมิตรหรือบริษัทที่เกิดขึ้นในอนาคตหรือบริษัทที่เกิดขึ้นในอนาคต (ข)
+                            พันธมิตรทางธุรกิจ บริษัท (1)บริษัท เดอะ เลตเตอร์ โพสต์ เซอร์วิส (2)บริษัท
+                            เอ็มพ้อยท์เอ็กซ์เพรส จํากัด และพันธมิตรหรือบริษัทที่เกิดขึ้นในอนาคต
                             <br/>
 
 
@@ -1100,6 +1173,76 @@ $registerUrl = $helper->getLoginUrl('https://www.imacplus.app/register-callback.
         </div>
     </div>
 </div>
+
+<div class="modal" id="myModalVerify">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content">
+            <!-- Modal Header -->
+            <!--            <div class="modal-header">-->
+            <!--                <h4 class="modal-title" style="color: #1c606a">ยืนยันรหัส</h4>-->
+            <!--                <button type="button" class="close" data-dismiss="modal">&times;</button>-->
+            <!--            </div>-->
+
+            <!-- Modal body -->
+            <div class="modal-body">
+                <input type="hidden" name="recid" class="user-recid" value="">
+                <div class="row">
+                    <div class="col-lg-12" style="text-align: center ">
+                        <h4>กรอกรหัสที่ได้รับทาง SMS</h4>
+                    </div>
+                </div>
+                <br>
+                <div class="row">
+                    <div class="col-lg-12" style="text-align: center ">
+                        <h6>เหลือเวลาในการทำรายการ <b><span class="verify-count-down" style="color: red"></b> </span>
+                            วินาที</h6>
+                    </div>
+                </div>
+                <br>
+                <table style="border: none;">
+                    <tr>
+                        <td style="padding: 5px;">
+                            <input type="text" class="form-control pin-input" data-var="1" maxlength="1" style="text-align: center"
+                                   value="" onkeyup="findNext($(this))">
+                        </td>
+                        <td style="padding: 5px;">
+                            <input type="text" class="form-control pin-input" data-var="2" maxlength="1" style="text-align: center"
+                                   value="" onkeyup="findNext($(this))">
+                        </td>
+                        <td style="padding: 5px;">
+                            <input type="text" class="form-control pin-input" data-var="3" maxlength="1" style="text-align: center"
+                                   value="" onkeyup="findNext($(this))">
+                        </td>
+                        <td style="padding: 5px;">
+                            <input type="text" class="form-control pin-input" data-var="4" maxlength="1" style="text-align: center"
+                                   value="" onkeyup="findNext($(this))">
+                        </td>
+                        <td style="padding: 5px;">
+                            <input type="text" class="form-control pin-input" data-var="5" maxlength="1" style="text-align: center"
+                                   value="" onkeyup="findNext($(this))">
+                        </td>
+                        <td style="padding: 5px;">
+                            <input type="text" class="form-control pin-input" data-var="6"  maxlength="1" style="text-align: center"
+                                   value="" onkeyup="findNext($(this))">
+                        </td>
+                    </tr>
+                </table>
+
+            </div>
+            <br/><br/>
+
+            <!-- Modal footer -->
+            <div class="modal-footer">
+                <div class="btn btn-success btn-verify-save" data-dismiss="modalx" onclick="submitmyformverify()"><i
+                            class="fa fa-check-circle"></i> ตกลง
+                </div>
+                <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fa fa-ban"></i> ยกเลิก
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+<!--<button id="xx">clike</button>-->
 
 <!-- include common vendor scripts used in demo pages -->
 <script src="node_modules/jquery/dist/jquery.js"></script>
@@ -1124,6 +1267,9 @@ $registerUrl = $helper->getLoginUrl('https://www.imacplus.app/register-callback.
 <script src="views/pages/page-login/@page-script.js"></script>
 
 <script>
+    $("#xx").click(function(){
+        $("#myModalVerify").modal("show");
+    });
     function readok(e) {
         if ($('input[name=check_read_ok]').is(':checked') && $('input[name=check_pdpa_ok]').is(':checked')) {
             $(".btn-register-submit").prop("disabled", false);
@@ -1133,6 +1279,7 @@ $registerUrl = $helper->getLoginUrl('https://www.imacplus.app/register-callback.
         }
 
     }
+
     function readpdpaok(e) {
         if ($('input[name=check_pdpa_ok]').is(':checked') && $('input[name=check_read_ok]').is(':checked')) {
             $(".btn-register-submit").prop("disabled", false);
@@ -1146,6 +1293,7 @@ $registerUrl = $helper->getLoginUrl('https://www.imacplus.app/register-callback.
     function showcondition() {
         $("#myModal").modal("show");
     }
+
     function showPdpa() {
         $("#myPdpaModal").modal("show");
     }
@@ -1163,6 +1311,7 @@ $registerUrl = $helper->getLoginUrl('https://www.imacplus.app/register-callback.
             }
         });
     }
+
     function keypinlogin(e) {
         var data = e.attr("data-var");
         $(".dot-login").each(function () {
@@ -1190,6 +1339,7 @@ $registerUrl = $helper->getLoginUrl('https://www.imacplus.app/register-callback.
             $(".btn-pin-save").hide();
         }
     }
+
     function checknumberOk2() {
         var pin_count = 0;
         $(".dot-login").each(function () {
@@ -1222,8 +1372,8 @@ $registerUrl = $helper->getLoginUrl('https://www.imacplus.app/register-callback.
     $(function () {
         var msg2 = $(".message2").val();
         if (msg2 != "") {
-           // alert(msg2);
-           $(".btn-to-register").trigger("click");
+            // alert(msg2);
+            $(".btn-to-register").trigger("click");
         }
         err_message();
         err_message2();
@@ -1241,6 +1391,7 @@ $registerUrl = $helper->getLoginUrl('https://www.imacplus.app/register-callback.
                 err_message();
                 return false;
             }
+
             $("#myModalPassLogin").modal("show");
         });
         $(".btn-pin-login-save").click(function (e) {
@@ -1248,11 +1399,11 @@ $registerUrl = $helper->getLoginUrl('https://www.imacplus.app/register-callback.
             e.preventDefault();
             var username = $(".username").val();
             var pwd = '';
-            $(".dot-login").each(function(){
+            $(".dot-login").each(function () {
                 pwd = pwd + $(this).attr("data-var");
             });
 
-           // alert(pwd);return;
+            // alert(pwd);return;
 
             if (username == '') {
                 $(".message").val("กรุณากรอกข้อมูลเบอร์โทรศัพท์");
@@ -1318,17 +1469,22 @@ $registerUrl = $helper->getLoginUrl('https://www.imacplus.app/register-callback.
                 err_message2();
                 return false;
             }
-            $('#myModalPass').modal("show");
+
+            submitmyform();
+            //$('#myModalPass').modal("show");
             // return false;
         });
-        $(".btn-pin-save").click(function(){
-            var xpass = '';
-            $(".dot").each(function(){
-                xpass = xpass + $(this).attr("data-var");
-            });
-            $(".pin-pass").val(xpass);
-             $("form#form-register").submit();
-        });
+        // $(".btn-pin-save").click(function () {
+        //     // var xpass = '';
+        //     // $(".dot").each(function () {
+        //     //     xpass = xpass + $(this).attr("data-var");
+        //     // });
+        //     // $(".pin-pass").val(xpass);
+        //     alert('');
+        //     // $("form#form-register").submit();
+        // });
+
+
         function err_message() {
             var e_msg = $(".message").val();
             if (e_msg != '') {
@@ -1350,8 +1506,91 @@ $registerUrl = $helper->getLoginUrl('https://www.imacplus.app/register-callback.
 
         }
 
-
     });
+
+    function submitregister(e) {
+        var xpass = '';
+        $(".dot").each(function () {
+            xpass = xpass + $(this).attr("data-var");
+        });
+        $(".pin-pass").val(xpass);
+        // alert('');
+        $("form#form-register").submit();
+    }
+
+    function submitmyform() {
+        //  if (!$('#validation-form').valid()) return false;
+        var verify_code = $(".verify-code").val();
+        //var otp_number = $(".phone-regis").val().replace('-','');
+        var otp_number = $(".phone-regis").val();
+        // alert(otp_number);return;
+        if (verify_code != '' && verify_code.length == 6 && otp_number != '') {
+            $.ajax({
+                type: "post",
+                dataType: "json",
+                url: "models/Sendsms.php",
+                async: false,
+                data: {'otp_number': otp_number, 'verify_code': verify_code},
+                success: function (data) {
+                    //alert(data[0]['success']);
+                    // if(data.length > 0){
+                    $("#myModalVerify").modal("show");
+                    verifycountdown();
+                    // }
+                },
+                error: function (err) {
+                    console.log(err);
+                }
+            });
+
+        }
+
+        // document.getElementById('validation-form').submit();
+    }
+
+    function submitmyformverify() {
+        //  if (!$('#validation-form').valid()) return false;
+        var verify_code = $(".verify-code").val();
+        var verify_number = '';
+        $(".pin-input").each(function () {
+            verify_number = "" + verify_number + $(this).val();
+        });
+        // alert(verify_number);
+        if (verify_code == verify_number) {
+            $("#myModalVerify").modal("hide");
+            $("#myModalPass").modal("show");
+        }
+
+        // document.getElementById('validation-form').submit();
+    }
+
+    function verifycountdown() {
+        var counter = 180;
+        var interval = setInterval(function () {
+            counter--;
+            // Display 'counter' wherever you want to display it.
+            $(".verify-count-down").html(counter);
+            if (counter == 0) {
+                // Display a login box
+                clearInterval(interval);
+                $("#myModalVerify").modal("hide");
+            }
+        }, 1000);
+    }
+
+    function findNext(e){
+        var tag = e.attr("data-var");
+        var new_tag = parseInt(tag) +1;
+
+        e.closest("tr").find(".pin-input").each(function(){
+           var x = $(this).attr("data-var");
+           if(parseInt(x) == new_tag){
+               //alert();
+               $(this).focus();
+           }
+        });
+
+    }
 </script>
 </body>
 

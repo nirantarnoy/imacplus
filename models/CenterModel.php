@@ -1,6 +1,6 @@
 <?php
 function getCenterName($id,$connect){
-    $query = "SELECT * FROM member WHERE member_type_id=13";
+    $query = "SELECT * FROM member WHERE id='$id'";
     $statement = $connect->prepare($query);
     $statement->execute();
     $result = $statement->fetchAll();

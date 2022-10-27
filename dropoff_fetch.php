@@ -57,7 +57,7 @@ foreach ($result as $row){
 //    $sub_array[] = '<p style="font-weight: ;text-align: left">'.$i.'</p>';
     $sub_array[] = '<p style="font-weight: ;text-align: left">'.$row['trans_date'].'</p>';
     $sub_array[] = '<p style="font-weight: ;text-align: left">'.getMembername($connect,$row['member_id']).'</p>';
-    $sub_array[] = '<p style="font-weight: ;text-align: left">'.getOrderNobyId($connect,$row['workorder_ref_id']).'</p>';
+    $sub_array[] = '<p style="font-weight: ;text-align: left"><a href="workorder_create.php?id='.$row['workorder_ref_id'].'"> '.getOrderNobyId($connect,$row['workorder_ref_id']).'</a></p>';
     $sub_array[] = '<p style="font-weight: ;text-align: left">'.getStatus($row['status']).'</p>';
     $sub_array[] = '<div class="btn btn-secondary btn-sm" data-id="'.$row['id'].'" onclick="showupdate($(this))"><i class="fas fa-edit"></i> Edit</div><span> </span><div class="btn btn-danger btn-sm" data-id="'.$row['id'].'" onclick="recDelete($(this))"><i class="fas fa-trash-alt"></i> Delete</div>';
 

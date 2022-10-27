@@ -131,7 +131,12 @@ $is_center = findIsCenter($connect, $member_id);
 
                                 <div class="text-center mt-2">
                                     <h3 class="text-130 text-dark-m3">
-                                        <?= getUserDisplayname($_SESSION['userid'], $connect) ?>
+                                        <?php if($is_verified == 1){
+                                          echo getMemberFullname($connect, $member_id);
+                                        }else{
+                                           echo getUserDisplayname($_SESSION['userid'], $connect);
+                                        }?>
+
                                     </h3>
 
                                     <span class="text-100 text-600"
@@ -330,7 +335,7 @@ $is_center = findIsCenter($connect, $member_id);
                             <div style="height: 10px;"></div>
                             <div class="row">
                                 <div class="col-lg-12" style="text-align: center;color: white">
-                                    <h1><?= number_format(getPointall($connect, $member_id)) ?></h1>
+                                    <h1><?= number_format(getMemberAllPoint($connect, $member_id)) ?></h1>
                                 </div>
                             </div>
 
@@ -394,15 +399,19 @@ $is_center = findIsCenter($connect, $member_id);
                 </div>
                 <br/>
                 <div class="row">
-                    <div class="col-lg-4" style="margin-top: 5px;">
+                    <div class="col-lg-3" style="margin-top: 5px;">
                         <img alt="review image"
                              src="assets/image/review/review.jpg" style="width: 100%"/>
                     </div>
-                    <div class="col-lg-4" style="margin-top: 5px;">
+                    <div class="col-lg-3" style="margin-top: 5px;">
                         <img alt="review image"
                              src="assets/image/review/review.jpg" style="width: 100%"/>
                     </div>
-                    <div class="col-lg-4" style="margin-top: 5px;">
+                    <div class="col-lg-3" style="margin-top: 5px;">
+                        <img alt="review image"
+                             src="assets/image/review/review.jpg" style="width: 100%"/>
+                    </div>
+                    <div class="col-lg-3" style="margin-top: 5px;">
                         <img alt="review image"
                              src="assets/image/review/review.jpg" style="width: 100%"/>
                     </div>

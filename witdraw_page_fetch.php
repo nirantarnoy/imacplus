@@ -7,6 +7,8 @@ if(!isset($_SESSION['userid'])){
 }
 include("common/dbcon.php");
 include("models/WalletStatus.php");
+include("models/MemberModel.php");
+
 $query_filter = '';
 $query = "SELECT * FROM witdraw_trans where id > 0";
 
@@ -69,6 +71,7 @@ foreach ($result as $row){
     $sub_array[] = '<p style="text-align: center;">'.$i.'</p>';
     $sub_array[] = '<p style="font-weight: ;text-align: left">'.$row['trans_no'].'</p>';
     $sub_array[] = '<p style="font-weight: ;text-align: left">'.$row['trans_date'].'</p>';
+    $sub_array[] = '<p style="font-weight: ;text-align: left">'.getMemberFullname($connect,$row['member_id']).'</p>';
     $sub_array[] = '<p style="font-weight: ;text-align: left">'.$row['witdraw_amount'].'</p>';
     $sub_array[] = '<p style="font-weight: ;text-align: left">'.$status_color.'</p>';
     $sub_array[] = '<div class="btn btn-success btn-sm" data-id="'.$row['id'].'" onclick="recAccept($(this))"><i class="fas fa-check-circle"></i> Accept</div><span> </span><div class="btn btn-danger btn-sm" data-id="'.$row['id'].'" onclick="recDecline($(this))"><i class="fas fa-ban"></i> Decline</div>';

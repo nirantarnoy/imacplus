@@ -10,6 +10,7 @@ function getStatus($id){ //ชื่อฟังก์ชั่น
     $data=[
         ['id'=>0,'name'=>'ไม่ใช้งาน'],
         ['id'=>1,'name'=>'ใช้งาน'],
+        ['id'=>2,'name'=>'รอยืนยัน'],
 
     ];
     $name = '';
@@ -22,6 +23,7 @@ function getStatusData(){
     $data=[
         ['id'=>0,'name'=>'ไม่ใช้งาน'],
         ['id'=>1,'name'=>'ใช้งาน'],
+        ['id'=>2,'name'=>'รอยืนยัน'],
     ];
     return $data;
 }

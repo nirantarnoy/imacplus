@@ -76,10 +76,15 @@ if ($member_id > 0) {
 
         </div>
     </div>
-   <?php if($data != null):?>
+<?php if ($data != null): ?>
+    <br/>
+    <div class="row">
+        <div class="col-lg-12" style="text-align: center;">
+            <h3><b>สมาชิกชั้นที่ 2</b></h3>
+        </div>
+    </div>
     <div class="row">
         <div class="col-lg-12">
-            <h4>สมาชิกชั้นที่ 2</h4>
             <div class="row">
                 <?php for ($i = 0; $i <= count($data) - 1; $i++): ?>
                     <?php $data2 = getChild($connect, $data[$i]['id']); ?>
@@ -123,7 +128,7 @@ if ($member_id > 0) {
             </div>
         </div>
     </div>
-<?php endif;?>
+<?php endif; ?>
 
 <?php function getChild($connect, $parent_id)
 {

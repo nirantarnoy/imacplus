@@ -44,4 +44,21 @@ function getSparepartData($connect){
     return $data;
 }
 
+function getSparepartCalPrice($connect){
+
+    $query = "SELECT * FROM spatepart WHERE id>0";
+    $statement = $connect->prepare($query);
+
+    $statement->execute();
+    $result = $statement->fetchAll();
+
+    $cus_data = array();
+    $filtered_rows = $statement->rowCount();
+    foreach ($result as $row){
+        array_push($cus_data,['id'=>$row['id'],'name'=>$row['name'],'cal_price'=>$row['sale_price']]);
+    }
+    return $cus_data;
+
+}
+
 ?>

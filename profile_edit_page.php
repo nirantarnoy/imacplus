@@ -28,8 +28,11 @@ $member_income_list = [];
 $address_current_type = 0;
 $agree_verified = 0;
 $otp_num = '';
+$phone = '';
 
-$verify_code = mt_rand(100000,999999);
+$action_id = 1;
+
+$verify_code = mt_rand(100000, 999999);
 $member_data = getMemberProfileData($connect, $member_id);
 if ($member_data != null) {
     $fname = $member_data[0]['fname'];
@@ -43,11 +46,15 @@ if ($member_data != null) {
     $address_current_type = $member_data[0]['address_current_type'];
     $agree_verified = $member_data[0]['agree_verified'];
     $otp_num = $member_data[0]['otp_number'];
+    $phone = $member_data[0]['phone'];
+    $action_id = 0;
+    $verify_photo = $member_data[0]['verify_photo'];
 }
 
 //echo $dob;
 
 $member_income_type_data = getMemberIncomeData($connect, $member_id);
+//print_r($member_income_type_data);
 //if($member_income_type_data != null){
 //    for($x=0;$x<=count($member_income_type_data)-1;$x++){
 //        array_push($member_income_list,$member_income_type_data[$x]['income_type_id']);
@@ -84,6 +91,24 @@ if ($member_address != null) {
     $zipcode = $member_address[0]['zipcode'];
 }
 
+
+$province_id_c = -1;
+$city_id_c = -1;
+$district_id_c = -1;
+$zipcode_c = '';
+$address_c = '';
+$street_c = '';
+
+$member_address_c = getMemberCurrentAddress($connect, $member_id);
+if ($member_address != null) {
+    $address_c = $member_address_c[0]['address'];
+    $street_c = $member_address_c[0]['street'];
+    $province_id_c = $member_address_c[0]['province_id'];
+    $city_id_c = $member_address_c[0]['city_id'];
+    $district_id_c = $member_address_c[0]['district_id'];
+    $zipcode_c = $member_address_c[0]['zipcode'];
+}
+
 ?>
 <!--<form action="update_data_profile.php" id="form-x" method="post"></form>-->
 <!--<form id="form-update" method="post" action="update_data_profile.php" enctype="multipart/form-data">-->
@@ -111,9 +136,10 @@ if ($member_address != null) {
             <div class="card">
                 <div class="card-body">
 
-                    <form id="validation-form" method="post" action="update_data_profile.php">
+                    <form action="update_data_profile.php" id="validation-form" method="post" enctype="multipart/form-data">
+                        <input type="hidden" class="action-name" value="<?= 0 ?>" name="action_name">
                         <input type="hidden" class="recid" name="recid" value="<?= $member_id ?>">
-                        <input type="hidden" class="verify-code" name="verify_code" value="<?=$verify_code?>">
+                        <input type="hidden" class="verify-code" name="verify_code" value="<?= $verify_code ?>">
                         <div class="px-2 py-2 mb-4">
 
                             <div id="step-1">
@@ -160,18 +186,22 @@ if ($member_address != null) {
                                     </div>
                                 </div>
 
-                                <div class="form-group row">
-                                    <div class="col-sm-3 col-form-label text-sm-right pr-0">
-                                        IDENTITY VERIFICATION:
-                                    </div>
-
-                                    <div class="col-sm-9 pr-0 pr-sm-3">
-                                        <input required type="text" name="id_verify"
-                                               class="form-control col-11 col-sm-8 col-md-3" id="id-verify"
-                                               placeholder=""/>
+                                <!--                                <div class="form-group row">-->
+                                <!--                                    <div class="col-sm-3 col-form-label text-sm-right pr-0">-->
+                                <!--                                        IDENTITY VERIFICATION:-->
+                                <!--                                    </div>-->
+                                <!---->
+                                <!--                                    <div class="col-sm-9 pr-0 pr-sm-3">-->
+                                <!--                                        <input required type="text" name="id_verify"-->
+                                <!--                                               class="form-control col-11 col-sm-8 col-md-3" id="id-verify"-->
+                                <!--                                               placeholder=""/>-->
+                                <!--                                    </div>-->
+                                <!--                                </div>-->
+                                <div class="row">
+                                    <div class="col-lg-12">
+                                        IDENTITY VERIFICATION
                                     </div>
                                 </div>
-
                                 <div class="form-group row mt-2">
                                     <div class="col-sm-3 col-form-label text-sm-right pr-0">
                                         ชื่อ:
@@ -263,7 +293,8 @@ if ($member_address != null) {
                                     <div class="col-sm-9 pr-0 pr-sm-3">
                                         <input required type="text" name="member_account_name"
                                                class="form-control col-11 col-sm-8 col-md-5 member-account-name"
-                                               placeholder="" value="<?= $account_name ?>" onchange="checkaccountname($(this))"/>
+                                               placeholder="" value="<?= $account_name ?>"
+                                               onchange="checkaccountname($(this))"/>
                                         <span style="color: red;display: none;" class="span-error-account-name">กรุณาตรวจสอบชื่อบัญชีให้ตรงกับชื่อ-นามสกุล จริง</span>
                                     </div>
                                 </div>
@@ -307,7 +338,7 @@ if ($member_address != null) {
                                         <input required type="text" name="dob"
                                                id="form-field-mask-1"
                                                class="form-control col-11 col-sm-8 col-md-5"
-                                               placeholder="" value="<?=$dob?>"/>
+                                               placeholder="" value="<?= $dob ?>"/>
 
                                     </div>
                                 </div>
@@ -320,7 +351,7 @@ if ($member_address != null) {
                                     <div class="col-sm-9 pr-0 pr-sm-3">
                                         <input id="otp-phone-number" required type="text" name="otp_phone_no"
                                                class="form-control otp-number col-11 col-sm-8 col-md-5"
-                                               placeholder="" value=""/>
+                                               placeholder="" value="<?= $phone ?>"/>
                                     </div>
                                 </div>
 
@@ -445,7 +476,7 @@ if ($member_address != null) {
                                             <label>
                                                 <input type="radio" id="id-radio-address-type"
                                                        name="address_current_type"
-                                                       value="1" <?=$address_current_type==1?'checked':''?>
+                                                       value="1" <?= $address_current_type == 1 ? 'checked' : '' ?>
                                                        class="mr-1 align-sub"
                                                        onchange="copyaddress($(this))"/>
                                                 ที่อยู่เดียวกับบัตรประชาชน
@@ -456,7 +487,7 @@ if ($member_address != null) {
                                             <label>
                                                 <input type="radio" id="id-radio-address-type"
                                                        name="address_current_type"
-                                                       value="2" <?=$address_current_type==2?'checked':''?>
+                                                       value="2" <?= $address_current_type == 2 ? 'checked' : '' ?>
                                                        class="mr-1 align-sub"
                                                        onchange="copyaddress($(this))"/>
                                                 ที่อยู่ปัจจุบัน(กรุณากรอกข้อมูล)
@@ -470,10 +501,10 @@ if ($member_address != null) {
                                     </div>
 
                                     <div class="col-sm-9 pr-0 pr-sm-3">
-
                                         <input type="text" name="address_current"
                                                class="form-control col-11 col-sm-8 col-md-5 address-current"
-                                               placeholder="" value="<?= $address ?>" <?=$address_current_type==1?'disabled':''?> />
+                                               placeholder=""
+                                               value="<?= $address_c ?>" <?= $address_current_type == 1 ? 'disabled' : '' ?> />
                                     </div>
                                 </div>
                                 <div class="form-group row">
@@ -485,7 +516,8 @@ if ($member_address != null) {
 
                                         <input type="text" name="street_current"
                                                class="form-control col-11 col-sm-8 col-md-5 street-current"
-                                               placeholder="" value="<?= $street ?>" <?=$address_current_type==1?'disabled':''?> />
+                                               placeholder=""
+                                               value="<?= $street_c ?>" <?= $address_current_type == 1 ? 'disabled' : '' ?> />
                                     </div>
                                 </div>
                                 <div class="form-group row">
@@ -496,13 +528,13 @@ if ($member_address != null) {
                                     <div class="col-sm-9 pr-0 pr-sm-3">
 
                                         <select name="province_current_id"
-                                                class="form-control col-11 col-sm-4 province-current-id" <?=$address_current_type==1?'disabled':''?>
+                                                class="form-control col-11 col-sm-4 province-current-id" <?= $address_current_type == 1 ? 'disabled' : '' ?>
                                                 id=""
                                                 onchange="getCity2($(this))">
                                             <option value="-1">--เลือกจังหวัด--</option>
                                             <?php for ($i = 0; $i <= count($province_data) - 1; $i++): ?>
                                                 <?php $selected = '';
-                                                if ($province_id == $province_data[$i]['id']) {
+                                                if ($province_id_c == $province_data[$i]['id']) {
                                                     $selected = 'selected';
                                                 }
                                                 ?>
@@ -518,13 +550,13 @@ if ($member_address != null) {
 
                                     <div class="col-sm-9 pr-0 pr-sm-3">
                                         <select name="city_current_id"
-                                                class="form-control col-11 col-sm-4 city-current-id" <?=$address_current_type==1?'disabled':''?>
+                                                class="form-control col-11 col-sm-4 city-current-id" <?= $address_current_type == 1 ? 'disabled' : '' ?>
                                                 id=""
                                                 onchange="getDistrict2($(this))">
                                             <option value="-1">--เลือกอำเภอ--</option>
                                             <?php for ($i = 0; $i <= count($city_data) - 1; $i++): ?>
                                                 <?php $selected = '';
-                                                if ($city_id == $city_data[$i]['id']) {
+                                                if ($city_id_c == $city_data[$i]['id']) {
                                                     $selected = 'selected';
                                                 }
                                                 ?>
@@ -540,12 +572,12 @@ if ($member_address != null) {
 
                                     <div class="col-sm-9 pr-0 pr-sm-3">
                                         <select name="district_current_id"
-                                                class="form-control col-11 col-sm-4 district-current-id" <?=$address_current_type==1?'disabled':''?>
+                                                class="form-control col-11 col-sm-4 district-current-id" <?= $address_current_type == 1 ? 'disabled' : '' ?>
                                                 id="">
                                             <option value="-1">--เลือกตำบล--</option>
                                             <?php for ($i = 0; $i <= count($district_data) - 1; $i++): ?>
                                                 <?php $selected = '';
-                                                if ($district_id == $district_data[$i]['id']) {
+                                                if ($district_id_c == $district_data[$i]['id']) {
                                                     $selected = 'selected';
                                                 }
                                                 ?>
@@ -562,8 +594,8 @@ if ($member_address != null) {
                                     <div class="col-sm-9 pr-0 pr-sm-3">
 
                                         <input readonly type="text" name="zipcode_current"
-                                               class="form-control col-11 col-sm-8 col-md-5 zipcode-current" <?=$address_current_type==1?'disabled':''?>
-                                               placeholder="" value="<?= $zipcode ?>"/>
+                                               class="form-control col-11 col-sm-8 col-md-5 zipcode-current" <?= $address_current_type == 1 ? 'disabled' : '' ?>
+                                               placeholder="" value="<?= $zipcode_c ?>"/>
                                     </div>
                                 </div>
 
@@ -604,7 +636,7 @@ if ($member_address != null) {
                                             <label>
                                                 <input required type="checkbox"
                                                        class="border-2 brc-success-m1 brc-on-checked input-lg text-dark-tp3 mr-1"
-                                                       id="id-check-terms" name="agree"/>
+                                                       id="id-check-terms" name="is_agree"/>
                                                 ข้าพเจ้ายืนยันว่าข้อมูลทั้งหมดที่ข้าพเจ้าได้ส่งให้ทาง iMacPlus
                                                 เป็นความจริง และข้าพเจ้าตกลงให้ความยินยอม
                                                 รวมถึงการอนุญาตตามเงื่อนไขของบริษัท และที่กฎหมายกำหนดไว้ ทั้งหมด
@@ -612,7 +644,7 @@ if ($member_address != null) {
                                         <?php else: ?>
                                             <input required type="checkbox"
                                                    class="border-2 brc-success-m1 brc-on-checked input-lg text-dark-tp3 mr-1 d-none"
-                                                   id="id-check-terms" name="agree" checked/>
+                                                   id="id-check-terms" name="is_agree" checked/>
                                         <?php endif; ?>
                                     </div>
                                 </div>
@@ -640,11 +672,11 @@ if ($member_address != null) {
                                         </div>
                                         <div class="col-sm-9 pr-0 pr-sm-3 pt-1 offset-sm-3">
                                             <p>
-                                                 ถือบัตรประชาชนไม่ปิดบังใบหน้า <br/>
-                                                 มองเห็นบัตรและ ID ชัดเจน <br/>
-                                                 ถือกระดาษที่เขียนว่า imacplus.app พร้อมลงวันที่ <br/>
-                                                 ถ่ายรูปท่านเอง พร้อมกับถือบัตรประชาชนและกระดาษที่เขียน <br/>
-                                                 กรุณาถ่ายรูปในที่แสงสว่างเพียงพอ ไม่มืด<br/>
+                                                - ถือบัตรประชาชนไม่ปิดบังใบหน้า <br/>
+                                                - มองเห็นบัตรและ ID ชัดเจน <br/>
+                                                - ถือกระดาษที่เขียนว่า imacplus.app พร้อมลงวันที่ <br/>
+                                                - ถ่ายรูปท่านเอง พร้อมกับถือบัตรประชาชนและกระดาษที่เขียน <br/>
+                                                - กรุณาถ่ายรูปในที่แสงสว่างเพียงพอ ไม่มืด<br/>
                                             </p>
                                         </div>
                                         <div class="col-sm-9 pr-0 pr-sm-3 pt-1 offset-sm-3">
@@ -657,19 +689,38 @@ if ($member_address != null) {
                                             <input type="file" class="form-control" name="photo_verify">
                                         </div>
                                     </div>
-                                <?php else:?>
-                                <div class="form-group row mt-4">
-                                    <div class="col-sm-9 pr-0 pr-sm-3 pt-1 offset-sm-3">
-                                        <h3>
-                                            แนบรูปภาพ
-                                        </h3>
+                                <?php else: ?>
+                                    <div class="form-group row mt-4">
+                                        <div class="col-sm-9 pr-0 pr-sm-3 pt-1 offset-sm-3">
+                                            <h3>
+                                                รูปภาพยืนยันตัวตน
+                                            </h3>
+                                        </div>
+                                        <br/>
                                     </div>
-                                    <br/>
-                                </div>
+                                    <?php if ($verify_photo != ''): ?>
+                                        <div class="row">
+                                            <div class="col-lg-8">
+                                                <img src="uploads/member_verify/<?= $verify_photo ?>" width="100%"
+                                                     alt="">
+                                            </div>
+                                            <div class="col-lg-4">
+                                                <div class="col-sm-9 pr-0 pr-sm-3 pt-1 offset-sm-3">
+                                                    <input type="file" class="form-control" name="photo_verify">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    <?php else: ?>
+                                        <div class="row">
+                                            <div class="col-lg-4">
+                                                <input type="file" class="form-control" name="photo_verify">
+
+                                            </div>
+                                        </div>
+                                    <?php endif; ?>
                                 <?php endif; ?>
                                 <!--                                    </form>-->
                             </div>
-
 
                         </div>
                         <div class="form-group row">
@@ -681,6 +732,7 @@ if ($member_address != null) {
                                 <div class="btn btn-primary" onclick="submitmyform()">บันทึกข้อมูล</div>
                             </div>
                         </div>
+
                     </form>
 
                 </div><!-- /.card-body -->
@@ -688,59 +740,70 @@ if ($member_address != null) {
 
         </div>
     </div>
+<!--    <form action="updatex.php" method="post" id="test-upload" enctype="multipart/form-data">-->
+<!--        <input type="text" name="nx">-->
+<!--        <input type="file" accept="*">-->
+<!--        <input type="submit" value="ok">-->
+<!--    </form>-->
 </div>
 <div class="modal" id="myModal">
     <div class="modal-dialog modal-md">
         <div class="modal-content">
-                <!-- Modal Header -->
-                <div class="modal-header">
-                    <h4 class="modal-title" style="color: #1c606a">ยืนยันรหัส</h4>
-                    <button type="button" class="close" data-dismiss="modal">&times;</button>
-                </div>
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <h4 class="modal-title" style="color: #1c606a">ยืนยันรหัส</h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
 
-                <!-- Modal body -->
-                <div class="modal-body">
-                    <input type="hidden" name="recid" class="user-recid" value="">
-                   <div class="row">
-                       <div class="col-lg-12" style="text-align: center ">
-                           <h4>กรอกรหัสที่ได้รับทาง SMS</h4>
-                       </div>
-                   </div>
-                    <br>
-                    <table style="border: none;">
+            <!-- Modal body -->
+            <div class="modal-body">
+                <input type="hidden" name="recid" class="user-recid" value="">
+                <div class="row">
+                    <div class="col-lg-12" style="text-align: center ">
+                        <h4>กรอกรหัสที่ได้รับทาง SMS</h4>
+                    </div>
+                </div>
+                <br>
+                <table style="border: none;">
                     <tr>
                         <td style="padding: 5px;">
-                            <input type="text" class="form-control pin-input" maxlength="1" style="text-align: center" value="">
+                            <input type="text" class="form-control pin-input" maxlength="1" style="text-align: center"
+                                   value="">
                         </td>
                         <td style="padding: 5px;">
-                            <input type="text" class="form-control pin-input" maxlength="1" style="text-align: center" value="">
+                            <input type="text" class="form-control pin-input" maxlength="1" style="text-align: center"
+                                   value="">
                         </td>
                         <td style="padding: 5px;">
-                            <input type="text" class="form-control pin-input" maxlength="1" style="text-align: center" value="">
+                            <input type="text" class="form-control pin-input" maxlength="1" style="text-align: center"
+                                   value="">
                         </td>
                         <td style="padding: 5px;">
-                            <input type="text" class="form-control pin-input" maxlength="1" style="text-align: center" value="">
+                            <input type="text" class="form-control pin-input" maxlength="1" style="text-align: center"
+                                   value="">
                         </td>
                         <td style="padding: 5px;">
-                            <input type="text" class="form-control pin-input" maxlength="1" style="text-align: center" value="">
+                            <input type="text" class="form-control pin-input" maxlength="1" style="text-align: center"
+                                   value="">
                         </td>
                         <td style="padding: 5px;">
-                            <input type="text" class="form-control pin-input" maxlength="1" style="text-align: center" value="">
+                            <input type="text" class="form-control pin-input" maxlength="1" style="text-align: center"
+                                   value="">
                         </td>
                     </tr>
-                    </table>
+                </table>
 
-                </div>
-            <br /><br />
+            </div>
+            <br/><br/>
 
-                <!-- Modal footer -->
-                <div class="modal-footer">
-                    <div class="btn btn-success btn-verify-save" data-dismiss="modalx" onclick="submitmyform()"><i
-                                class="fa fa-check-circle"></i> ตกลง
-                    </div>
-                    <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fa fa-ban"></i> ยกเลิก
-                    </button>
+            <!-- Modal footer -->
+            <div class="modal-footer">
+                <div class="btn btn-success btn-verify-save" data-dismiss="modalx" onclick="submitmyform()"><i
+                            class="fa fa-check-circle"></i> ตกลง
                 </div>
+                <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fa fa-ban"></i> ยกเลิก
+                </button>
+            </div>
         </div>
     </div>
 </div>
@@ -752,6 +815,7 @@ function checkoptionselected($member_income_listx, $id)
         for ($x = 0; $x <= count($member_income_listx) - 1; $x++) {
             if ($id == $member_income_listx[$x]['income_type_id']) {
                 $checked = 'checked';
+                break;
             } else {
                 $checked = '';
             }
@@ -785,7 +849,7 @@ include("footer.php");
     $(".pin-input").keyup(function () {
 
         if (this.value.length == this.maxLength) {
-           $(this).next('input').focus();
+            $(this).next('input').focus();
         }
     });
 
@@ -795,6 +859,7 @@ include("footer.php");
     // });
 
     $(".span-error-account-name").hide();
+
     function copyaddress(e) {
         var val = e.val();
 
@@ -981,54 +1046,55 @@ include("footer.php");
 
     function submitmyform() {
         if (!$('#validation-form').valid()) return false;
-        var verify_code = $(".verify-code").val();
-        var otp_number = $(".otp-number").val().replace('-','');
-        // alert(otp_number);return;
-        if(verify_code != '' && verify_code.length == 6 && otp_number !=''){
-            $.ajax({
-                type: "post",
-                dataType: "json",
-                url: "models/Sendsms.php",
-                async: false,
-                data: {'otp_number': otp_number,'verify_code': verify_code},
-                success: function (data) {
-                    //alert(data[0]['success']);
-                    // if(data.length > 0){
-                    $("#myModal").modal("show");
-                    // }
-                },
-                error: function(err){
-                    console.log(err);
-                }
-            });
+        // var verify_code = $(".verify-code").val();
+        // var otp_number = $(".otp-number").val().replace('-','');
+        // // alert(otp_number);return;
+        // if(verify_code != '' && verify_code.length == 6 && otp_number !=''){
+        //     $.ajax({
+        //         type: "post",
+        //         dataType: "json",
+        //         url: "models/Sendsms.php",
+        //         async: false,
+        //         data: {'otp_number': otp_number,'verify_code': verify_code},
+        //         success: function (data) {
+        //             //alert(data[0]['success']);
+        //             // if(data.length > 0){
+        //             $("#myModal").modal("show");
+        //             // }
+        //         },
+        //         error: function(err){
+        //             console.log(err);
+        //         }
+        //     });
+        //
+        // }
 
-        }
-
-        // document.getElementById('validation-form').submit();
+        document.getElementById('validation-form').submit();
     }
+
     function submitmyformverify() {
         if (!$('#validation-form').valid()) return false;
         var verify_code = $(".verify-code").val();
         var verify_number = '';
-        $(".pin-input").each(function(){
-            verify_number = ""+verify_number + $(this).val();
+        $(".pin-input").each(function () {
+            verify_number = "" + verify_number + $(this).val();
         });
         // alert(otp_number);return;
-        if(verify_code == verify_number){
+        if (verify_code == verify_number) {
             document.getElementById('validation-form').submit();
         }
 
         // document.getElementById('validation-form').submit();
     }
 
-    function checkaccountname(e){
+    function checkaccountname(e) {
         var account_name = e.val();
         var fname = $(".member-fname").val();
         var lname = $(".member-lname").val();
-        var full_name = fname + " "+ lname;
+        var full_name = fname + " " + lname;
 
-        if(account_name != full_name){
-             $(".span-error-account-name").show();
+        if (account_name != full_name) {
+            $(".span-error-account-name").show();
             e.val('');
         }
     }

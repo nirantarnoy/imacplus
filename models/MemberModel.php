@@ -55,6 +55,8 @@ function getMemberProfileData($connect, $id)
                 'address_current_type'=>$row['address_current_type'],
                 'agree_verified'=>$row['agree_verified'],
                 'otp_number'=>'',
+                'phone'=>$row['phone_number'],
+                'verify_photo'=> $row['verify_photo'],
             ]);
         }
     }
@@ -163,6 +165,28 @@ function getMemberBankAddress($connect, $id)
     }
     return $data;
 }
+function getMemberCurrentAddress($connect, $id)
+{
+    $data = [];
+    $query = "SELECT * FROM member_address_current WHERE member_id='$id'";
+    $statement = $connect->prepare($query);
+    $statement->execute();
+    $result = $statement->fetchAll();
+    $filtered_rows = $statement->rowCount();
+    if ($filtered_rows > 0) {
+        foreach ($result as $row) {
+            array_push($data, [
+                'address' => $row['address'],
+                'street' => $row['street'],
+                'province_id' => $row['province_id'],
+                'city_id' => $row['city_id'],
+                'district_id' => $row['district_id'],
+                'zipcode' => $row['zipcode'],
+            ]);
+        }
+    }
+    return $data;
+}
 
 function getMembername($connect, $code)
 {
@@ -177,6 +201,21 @@ function getMembername($connect, $code)
         }
     }
 
+}
+function getMemberFullname($connect, $member_id)
+{
+    $name = '';
+    $query = "SELECT * FROM member WHERE id='$member_id'";
+    $statement = $connect->prepare($query);
+    $statement->execute();
+    $result = $statement->fetchAll();
+    $filtered_rows = $statement->rowCount();
+    if ($filtered_rows > 0) {
+        foreach ($result as $row) {
+            $name =  $row['first_name'].' '.$row['last_name'];
+        }
+    }
+   return $name;
 }
 
 function getMemberurl($connect, $id)
@@ -345,6 +384,22 @@ function getMemberPoint($connect, $id)
     if ($filtered_rows > 0) {
         foreach ($result as $row) {
             $point = $row['point'] == null ? 0 : $row['point'];
+        }
+    }
+    return $point;
+}
+
+function getMemberAllPoint($connect, $id)
+{
+    $point = 0;
+    $query = "SELECT * FROM member WHERE id='$id'";
+    $statement = $connect->prepare($query);
+    $statement->execute();
+    $result = $statement->fetchAll();
+    $filtered_rows = $statement->rowCount();
+    if ($filtered_rows > 0) {
+        foreach ($result as $row) {
+            $point = $row['all_point'] == null ? 0 : $row['all_point'];
         }
     }
     return $point;

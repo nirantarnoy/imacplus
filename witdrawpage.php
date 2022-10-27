@@ -53,6 +53,7 @@ if (isset($_SESSION['msg-error'])) {
 
                     <th>เลขที่รายการ</th>
                     <th>วันที่ทำรายการ</th>
+                    <th>สมาชิก</th>
                     <th>จำนวนถอน</th>
                     <th>สถานะ</th>
                     <th>-</th>

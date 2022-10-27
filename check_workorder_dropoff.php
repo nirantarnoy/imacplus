@@ -32,7 +32,7 @@ if ($work_no != '') {
             array_push($data, ['is_vipshop' => 1, 'has_order' => 1]);
         }
     } else {
-        array_push($data, ['is_vipshop' => 0, 'has_order' => 10]);
+        array_push($data, ['is_vipshop' => 0, 'has_order' => 0]);
     }
 
    // array_push($data, ['is_vipshop' => 0, 'has_order' => $query]);

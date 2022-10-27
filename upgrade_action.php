@@ -25,39 +25,42 @@ if ($id > 0) {
         $upgrade_to_member_type = getMemberUpgradetotypeId($id, $connect);
 
         // find parent
-        $parent_id = findParent($connect, $member_id);
-        $parent_2_id = findParent($connect, $parent_id);
-
-//        $old_point = getOldParentPoint($connect, $parent_id);
-//
-//        $new_point = ($old_point + 500);
-
-        if (updateMemberType($connect, $member_id, $upgrade_to_member_type)) {
-            if (updateMemberUpgradeStatus($connect, $id)) {
+        $parent_id = findParent($connect, $member_id); // parent level1
+        $parent_2_id = findParent($connect, $parent_id); // parent level2
 
 
-               if($parent_id > 0 && $parent_2_id > 0){ // cal 2 level
-                   $parent_rate_amount = getParentMemberTypeRate($connect,$upgrade_to_member_type,$parent_id);
-                   if($parent_rate_amount){
-                       if (updateParentMemberPoint($connect, $parent_id, $parent_rate_amount)) {
-                           $res += 1;
-                       }
-                   }
-                   $parent_rate_amount2 = getParentMemberTypeRate2($connect,$upgrade_to_member_type,$parent_id,$parent_2_id);
-                   if($parent_rate_amount2){
-                       if (updateParentMemberPoint($connect, $parent_2_id, $parent_rate_amount2)) {
-                           $res += 1;
-                       }
-                   }
-               }else if($parent_id > 0 && $parent_2_id <= 0){ // cal 1 level
-                  $parent_rate_amount = getParentMemberTypeRate($connect,$upgrade_to_member_type,$parent_id);
-                  if($parent_rate_amount){
-                      if (updateParentMemberPoint($connect, $parent_id, $parent_rate_amount)) {
-                          $res += 1;
-                      }
-                  }
-               }
-              $res +=1;
+//        echo 'member is '.$member_id.'<br />';
+//        echo 'parent1 is '.$parent_id.'<br />';
+//        echo 'update to '.$upgrade_to_member_type.'<br />';
+//        $parent_rate_amount = getParentMemberTypeRate($connect,$upgrade_to_member_type,$parent_id);
+//        echo 'rate for parent is '.$parent_rate_amount;
+//        return;
+
+        if (updateMemberType($connect, $member_id, $upgrade_to_member_type)) { // change to new member type
+            if (updateMemberUpgradeStatus($connect, $id)) { // update member upgrade request to complete
+
+                if ($parent_id > 0 && $parent_2_id > 0) { // cal 2 level
+                    $parent_rate_amount = getParentMemberTypeRate($connect, $upgrade_to_member_type, $parent_id); // find parent rate from upgrade standard
+                    if ($parent_rate_amount) {
+                        if (updateParentMemberPoint($connect, $parent_id, $parent_rate_amount)) { // add mpoint for parent level 1
+                            $res += 1;
+                        }
+                    }
+                    $parent_rate_amount2 = getParentMemberTypeRate2($connect, $upgrade_to_member_type, $parent_id, $parent_2_id); // find parent rate from upgrade standard
+                    if ($parent_rate_amount2) {
+                        if (updateParentMemberPoint($connect, $parent_2_id, $parent_rate_amount2)) { // add mpoint for parent level 2
+                            $res += 1;
+                        }
+                    }
+                } else if ($parent_id > 0 && $parent_2_id <= 0) { // cal 1 level
+                    $parent_rate_amount = getParentMemberTypeRate($connect, $upgrade_to_member_type, $parent_id); // find parent rate from upgrade standard
+                    if ($parent_rate_amount) {
+                        if (updateParentMemberPoint($connect, $parent_id, $parent_rate_amount)) { // add mpoint for parent
+                            $res += 1;
+                        }
+                    }
+                }
+                $res += 1;
             }
         }
 
@@ -72,9 +75,7 @@ if ($id > 0) {
     } else if ($action == 'decline') {
         $res = 0;
         if (declineWallet($connect, $id)) {
-
             $res += 1;
-
         }
 
         if ($res > 0) {
@@ -86,7 +87,8 @@ if ($id > 0) {
         }
     }
 }
-function getMemberFromUpgradeId($id, $connect){
+function getMemberFromUpgradeId($id, $connect)
+{
     $member_id = 0;
 
     if ($id > 0) {
@@ -103,7 +105,9 @@ function getMemberFromUpgradeId($id, $connect){
     }
     return $member_id;
 }
-function getMemberUpgradetotypeId($id, $connect){
+
+function getMemberUpgradetotypeId($id, $connect)
+{
     $to_type = 0;
 
     if ($id > 0) {
@@ -120,7 +124,9 @@ function getMemberUpgradetotypeId($id, $connect){
     }
     return $to_type;
 }
-function getMemberUpgradeAmount($id, $connect){
+
+function getMemberUpgradeAmount($id, $connect)
+{
     $amount = 0;
 
     if ($id > 0) {
@@ -137,6 +143,7 @@ function getMemberUpgradeAmount($id, $connect){
     }
     return $amount;
 }
+
 function getOldParentPoint($connect, $parent_id)
 {
     $point = 0;
@@ -150,6 +157,25 @@ function getOldParentPoint($connect, $parent_id)
         if ($filtered_rows > 0) {
             foreach ($result as $row) {
                 $point = $row['point'];
+            }
+        }
+    }
+    return $point;
+}
+
+function getOldParentAllPoint($connect, $parent_id)
+{
+    $point = 0;
+
+    if ($parent_id > 0) {
+        $query = "SELECT * FROM member WHERE id='$parent_id'";
+        $statement = $connect->prepare($query);
+        $statement->execute();
+        $result = $statement->fetchAll();
+        $filtered_rows = $statement->rowCount();
+        if ($filtered_rows > 0) {
+            foreach ($result as $row) {
+                $point = $row['all_point'];
             }
         }
     }
@@ -177,9 +203,12 @@ function getAcceptWallet($connect, $id)
 
 function updateParentMemberPoint($connect, $parentid, $new_point)
 {
-    $old_point = getOldParentPoint($connect, $parentid);
-    $update_new_point = ($new_point + $old_point);
-    $sql = "UPDATE member SET point='$update_new_point' WHERE id='$parentid'";
+    $old_point = getOldParentPoint($connect, $parentid); // balance point
+    $old_all_point = getOldParentAllPoint($connect, $parentid); // all point
+    $update_new_point = ($new_point + $old_point); // new balance point
+    $new_all_point = ($update_new_point + $old_all_point); //new all point
+
+    $sql = "UPDATE member SET point='$update_new_point',all_point='$new_all_point' WHERE id='$parentid'";
     if ($connect->query($sql)) {
         return 1;
     } else {
@@ -240,6 +269,7 @@ function findParent($connect, $member_id)
     }
     return $parent_id;
 }
+
 function findIntroducePercent($connect, $member_id, $member_type_id)
 {
     $per = 0;
@@ -253,8 +283,8 @@ function findIntroducePercent($connect, $member_id, $member_type_id)
     //$cus_data = array();
     //$filtered_rows = $statement->rowCount();
     foreach ($result as $row) {
-        if($member_type_id == $member_type)
-        $per = $row['introduce_percent'];
+        if ($member_type_id == $member_type)
+            $per = $row['introduce_percent'];
         //  array_push($cus_data,['id'=>$row['id'],'name'=>$row['name'],'percent_rate'=>$row['percent_rate']]);
     }
     return $per;
@@ -264,9 +294,8 @@ function getParentMemberTypeRate($connect, $member_type_id, $parent_id)
 {
     $rate_amount = 0;
     $parent_type = getMemberType($connect, $parent_id);
-    $query = "SELECT * FROM upgrage_standard WHERE member_type_id = '$member_type_id' and parent_1 ='$parent_type'";
+    $query = "SELECT * FROM upgrade_standard WHERE member_type_id = '$member_type_id' and parent_1 ='$parent_type'"; // check member type and parent level 1
     $statement = $connect->prepare($query);
-
     $statement->execute();
     $result = $statement->fetchAll();
 
@@ -277,13 +306,15 @@ function getParentMemberTypeRate($connect, $member_type_id, $parent_id)
         //  array_push($cus_data,['id'=>$row['id'],'name'=>$row['name'],'percent_rate'=>$row['percent_rate']]);
     }
     return $rate_amount;
+//    return $parent_type;
 }
-function getParentMemberTypeRate2($connect, $member_type_id,$parent_id, $parent_2_id)
+
+function getParentMemberTypeRate2($connect, $member_type_id, $parent_id, $parent_2_id)
 {
     $rate_amount = 0;
     $parent_type = getMemberType($connect, $parent_id);
     $parent_type_2 = getMemberType($connect, $parent_2_id);
-    $query = "SELECT * FROM upgrage_standard WHERE member_type_id = '$member_type_id' and parent_1 ='$parent_type' and parent_2='$parent_type_2'";
+    $query = "SELECT * FROM upgrade_standard WHERE member_type_id = '$member_type_id' and parent_1 ='$parent_type' and parent_2='$parent_type_2'";
     $statement = $connect->prepare($query);
 
     $statement->execute();

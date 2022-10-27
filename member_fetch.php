@@ -55,6 +55,18 @@ foreach ($result as $row){
     //$branch_name = $row['branch'];
     $member_type = getMembertypeName($row['member_type_id'], $connect);
     $i++;
+
+    $tag_status = '';
+    $status_name = getStatus($row['status']);
+    if($row['status']==2){
+        $tag_status = '<span class="badge badge-warning">'.$status_name.'</span>';
+    }else if($row['status']==0){
+        $tag_status = '<span class="badge badge-secondary">'.$status_name.'</span>';
+    }else{
+        $tag_status = '<span class="badge badge-success">'.$status_name.'</span>';
+    }
+
+
     $sub_array = array();
 //    $sub_array[] = '<p style="font-weight: ;text-align: left">'.$i.'</p>';
     $sub_array[] = '<p style="font-weight: ;text-align: left">'.$row['first_name'].' '.$row['last_name'].'</p>';
@@ -65,7 +77,7 @@ foreach ($result as $row){
     $sub_array[] = '<p style="font-weight: ;text-align: left">'.$row['email'].'</p>';
 //    $sub_array[] = '<p style="font-weight: ;text-align: left">'.$row['line_id'].'</p>';
     $sub_array[] = '<p style="font-weight: ;text-align: left">'.$row['point'].'</p>';
-    $sub_array[] = '<p style="font-weight: ;text-align: left">'.getStatus($row['status']).'</p>';
+    $sub_array[] = '<p style="font-weight: ;text-align: left">'.$tag_status.'</p>';
     $sub_array[] = '<a class="btn btn-success btn-sm" href="member_verify.php?id='.$row['id'].'"><i class="fas fa-edit"></i> Verify</a><span> </span><div class="btn btn-secondary btn-sm" data-id="'.$row['id'].'" onclick="showupdate($(this))"><i class="fas fa-edit"></i> Edit</div><span> </span><div class="btn btn-danger btn-sm" data-id="'.$row['id'].'" onclick="recDelete($(this))"><i class="fas fa-trash-alt"></i> Delete</div>';
 
     $data[] = $sub_array;

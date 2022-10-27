@@ -22,6 +22,7 @@ $engname = '';
 $engsurname = '';
 $gender = 1;
 $nation_type = 1;
+$phone = '';
 $dob = '';
 $is_verified = 0;
 $member_income_list = [];
@@ -39,9 +40,10 @@ if ($member_data != null) {
     $is_verified = $member_data[0]['is_verified'];
     $address_current_type = $member_data[0]['address_current_type'];
     $agree_verified = $member_data[0]['agree_verified'];
+    $phone = $member_data[0]['phone'];
 }
 
-echo $dob;
+//echo $dob;
 
 $member_income_type_data = getMemberIncomeData($connect, $member_id);
 //if($member_income_type_data != null){
@@ -80,6 +82,23 @@ if ($member_address != null) {
     $zipcode = $member_address[0]['zipcode'];
 }
 
+$province_id_c = -1;
+$city_id_c = -1;
+$district_id_c = -1;
+$zipcode_c = '';
+$address_c = '';
+$street_c = '';
+
+$member_address_c = getMemberCurrentAddress($connect, $member_id);
+if ($member_address != null) {
+    $address_c = $member_address_c[0]['address'];
+    $street_c = $member_address_c[0]['street'];
+    $province_id_c = $member_address_c[0]['province_id'];
+    $city_id_c = $member_address_c[0]['city_id'];
+    $district_id_c = $member_address_c[0]['district_id'];
+    $zipcode_c = $member_address_c[0]['zipcode'];
+}
+
 ?>
 <!--<form action="update_data_profile.php" id="form-x" method="post"></form>-->
 <!--<form id="form-update" method="post" action="update_data_profile.php" enctype="multipart/form-data">-->
@@ -111,8 +130,18 @@ if ($member_address != null) {
                         <input type="hidden" class="recid" name="recid" value="<?= $member_id ?>">
                         <input type="hidden" class="action-type" name="action_name" value="1">
                         <div class="px-2 py-2 mb-4">
-
                             <div id="step-1">
+                                <div class="row">
+                                    <div class="col-sm-3 col-form-label text-sm-right pr-0">
+                                    </div>
+                                    <div class="col-sm-9 pr-0 pr-sm-3 pt-1">
+                                        <?php if($is_verified == 1):?>
+                                            <h4><span class="text-success"><i class="fa fa-check-circle text-success"></i> ยืนยันตัวตนแล้ว</span></h4>
+                                        <?php else:?>
+                                            <h4><span class="text-danger"><i class="fa fa-check-circle text-danger"></i> ยังไม่ยืนยันตัวตน</span></h4>
+                                        <?php endif;?>
+                                    </div>
+                                </div>
                                 <div class="form-group row">
                                     <div class="col-sm-3 col-form-label text-sm-right pr-0">
                                     </div>
@@ -156,18 +185,18 @@ if ($member_address != null) {
                                     </div>
                                 </div>
 
-                                <div class="form-group row">
-                                    <div class="col-sm-3 col-form-label text-sm-right pr-0">
-                                        IDENTITY VERIFICATION:
-                                    </div>
-
-                                    <div class="col-sm-9 pr-0 pr-sm-3">
-                                        <input required type="text" name="id_verify"
-                                               class="form-control col-11 col-sm-8 col-md-3" id="id-verify"
-                                               placeholder=""/>
-                                    </div>
-                                </div>
-
+<!--                                <div class="form-group row">-->
+<!--                                    <div class="col-sm-3 col-form-label text-sm-right pr-0">-->
+<!--                                        IDENTITY VERIFICATION:-->
+<!--                                    </div>-->
+<!---->
+<!--                                    <div class="col-sm-9 pr-0 pr-sm-3">-->
+<!--                                        <input required type="text" name="id_verify"-->
+<!--                                               class="form-control col-11 col-sm-8 col-md-3" id="id-verify"-->
+<!--                                               placeholder=""/>-->
+<!--                                    </div>-->
+<!--                                </div>-->
+                                IDENTITY VERIFICATION:
                                 <div class="form-group row mt-2">
                                     <div class="col-sm-3 col-form-label text-sm-right pr-0">
                                         ชื่อ:
@@ -315,7 +344,7 @@ if ($member_address != null) {
                                     <div class="col-sm-9 pr-0 pr-sm-3">
                                         <input id="otp-phone-number" required type="text" name="otp_phone_no"
                                                class="form-control col-11 col-sm-8 col-md-5"
-                                               placeholder="" value=""/>
+                                               placeholder="" value="<?=$phone?>"/>
                                     </div>
                                 </div>
 
@@ -468,7 +497,7 @@ if ($member_address != null) {
 
                                         <input type="text" name="address_current"
                                                class="form-control col-11 col-sm-8 col-md-5 address-current"
-                                               placeholder="" value="<?= $address ?>" <?=$address_current_type==1?'disabled':''?> />
+                                               placeholder="" value="<?= $address_c ?>" <?=$address_current_type==1?'disabled':''?> />
                                     </div>
                                 </div>
                                 <div class="form-group row">
@@ -480,7 +509,7 @@ if ($member_address != null) {
 
                                         <input type="text" name="street_current"
                                                class="form-control col-11 col-sm-8 col-md-5 street-current"
-                                               placeholder="" value="<?= $street ?>" <?=$address_current_type==1?'disabled':''?> />
+                                               placeholder="" value="<?= $street_c ?>" <?=$address_current_type==1?'disabled':''?> />
                                     </div>
                                 </div>
                                 <div class="form-group row">
@@ -497,7 +526,7 @@ if ($member_address != null) {
                                             <option value="-1">--เลือกจังหวัด--</option>
                                             <?php for ($i = 0; $i <= count($province_data) - 1; $i++): ?>
                                                 <?php $selected = '';
-                                                if ($province_id == $province_data[$i]['id']) {
+                                                if ($province_id_c == $province_data[$i]['id']) {
                                                     $selected = 'selected';
                                                 }
                                                 ?>
@@ -519,7 +548,7 @@ if ($member_address != null) {
                                             <option value="-1">--เลือกอำเภอ--</option>
                                             <?php for ($i = 0; $i <= count($city_data) - 1; $i++): ?>
                                                 <?php $selected = '';
-                                                if ($city_id == $city_data[$i]['id']) {
+                                                if ($city_id_c == $city_data[$i]['id']) {
                                                     $selected = 'selected';
                                                 }
                                                 ?>
@@ -540,7 +569,7 @@ if ($member_address != null) {
                                             <option value="-1">--เลือกตำบล--</option>
                                             <?php for ($i = 0; $i <= count($district_data) - 1; $i++): ?>
                                                 <?php $selected = '';
-                                                if ($district_id == $district_data[$i]['id']) {
+                                                if ($district_id_c == $district_data[$i]['id']) {
                                                     $selected = 'selected';
                                                 }
                                                 ?>
@@ -558,7 +587,7 @@ if ($member_address != null) {
 
                                         <input readonly type="text" name="zipcode_current"
                                                class="form-control col-11 col-sm-8 col-md-5 zipcode-current" <?=$address_current_type==1?'disabled':''?>
-                                               placeholder="" value="<?= $zipcode ?>"/>
+                                               placeholder="" value="<?= $zipcode_c ?>"/>
                                     </div>
                                 </div>
 
@@ -635,11 +664,11 @@ if ($member_address != null) {
                                         </div>
                                         <div class="col-sm-9 pr-0 pr-sm-3 pt-1 offset-sm-3">
                                             <p>
-                                                 ถือบัตรประชาชนไม่ปิดบังใบหน้า <br/>
-                                                 มองเห็นบัตรและ ID ชัดเจน <br/>
-                                                 ถือกระดาษที่เขียนว่า imacplus.app พร้อมลงวันที่ <br/>
-                                                 ถ่ายรูปท่านเอง พร้อมกับถือบัตรประชาชนและกระดาษที่เขียน <br/>
-                                                 กรุณาถ่ายรูปในที่แสงสว่างเพียงพอ ไม่มืด<br/>
+                                                - ถือบัตรประชาชนไม่ปิดบังใบหน้า <br/>
+                                                - มองเห็นบัตรและ ID ชัดเจน <br/>
+                                                - ถือกระดาษที่เขียนว่า imacplus.app พร้อมลงวันที่ <br/>
+                                                - ถ่ายรูปท่านเอง พร้อมกับถือบัตรประชาชนและกระดาษที่เขียน <br/>
+                                                - กรุณาถ่ายรูปในที่แสงสว่างเพียงพอ ไม่มืด<br/>
                                             </p>
                                         </div>
                                         <div class="col-sm-9 pr-0 pr-sm-3 pt-1 offset-sm-3">
@@ -656,7 +685,7 @@ if ($member_address != null) {
                                     <div class="form-group row mt-4">
                                         <div class="col-sm-9 pr-0 pr-sm-3 pt-1 offset-sm-3">
                                             <h3>
-                                                แนบรูปภาพ
+                                                รูปยืนยันตัวตน
                                             </h3>
                                         </div>
                                         <br/>
@@ -667,6 +696,7 @@ if ($member_address != null) {
 
 
                         </div>
+                        <?php if($is_verified !=1):?>
                         <div class="form-group row">
                             <div class="col-sm-3 col-form-label text-sm-right pr-0">
                             </div>
@@ -676,6 +706,7 @@ if ($member_address != null) {
                                 <div class="btn btn-primary" onclick="submitmyform()">ยืนยันการตรวจสอบ</div>
                             </div>
                         </div>
+                        <?php endif;?>
                     </form>
 
                 </div><!-- /.card-body -->
@@ -692,6 +723,7 @@ function checkoptionselected($member_income_listx, $id)
         for ($x = 0; $x <= count($member_income_listx) - 1; $x++) {
             if ($id == $member_income_listx[$x]['income_type_id']) {
                 $checked = 'checked';
+                break;
             } else {
                 $checked = '';
             }
@@ -719,7 +751,7 @@ include("footer.php");
     //
     //
     $("#form-field-mask-1").inputmask("99/99/9999")
-    $("#otp-phone-number").inputmask("999-999-9999")
+    $("#otp-phone-number").inputmask("999-9999999")
     //
     // });
 

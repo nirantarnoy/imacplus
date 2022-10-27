@@ -87,25 +87,38 @@ if (isset($_SESSION['msg-error'])) {
                     <input type="hidden" name="action_type" class="action-type" value="create">
                     <div class="row">
                         <div class="col-lg-12">
-                            <label for=""><b>เลือกจำนวน</b></label>
-                            <div class="row">
+                            <label for=""><i class="fa fa-edit"></i> <span> <b>วิธีเติมวอลเล็ท</b></span></label>
+                            <p style="color: blue;font-size: 14px;">
+                                โอนเงินเข้าบัญชี ไทยพาณิชย์ 426-128-677-8 <br>
+                                ชื่อบัญชี บริษัท ไทยออล จำกัด
+                            </p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <label for=""><b>เลือกจำนวนที่ต้องการเติม</b></label>
+                            <div class="row" style="padding: 10px;">
                                 <div class="col-lg-3" style="padding: 2px;">
-                                    <div class="btn btn-secondary" style="width: 100%;" data-value="300" onclick="fillamount($(this))">
+                                    <div class="btn btn-secondary" style="width: 100%;" data-value="300"
+                                         onclick="fillamount($(this))">
                                         <b>300</b>
                                     </div>
                                 </div>
                                 <div class="col-lg-3" style="padding: 2px;">
-                                    <div class="btn btn-secondary" style="width: 100%;" data-value="500" onclick="fillamount($(this))">
+                                    <div class="btn btn-secondary" style="width: 100%;" data-value="500"
+                                         onclick="fillamount($(this))">
                                         <b>500</b>
                                     </div>
                                 </div>
                                 <div class="col-lg-3" style="padding: 2px;">
-                                    <div class="btn btn-secondary" style="width: 100%;" data-value="1000" onclick="fillamount($(this))">
+                                    <div class="btn btn-secondary" style="width: 100%;" data-value="1000"
+                                         onclick="fillamount($(this))">
                                         <b>1,000</b>
                                     </div>
                                 </div>
                                 <div class="col-lg-3" style="padding: 2px;">
-                                    <div class="btn btn-secondary"  style="width: 100%;" data-value="1500" onclick="fillamount($(this))">
+                                    <div class="btn btn-secondary" style="width: 100%;" data-value="1500"
+                                         onclick="fillamount($(this))">
                                         <b>1,500</b>
                                     </div>
                                 </div>
@@ -117,12 +130,33 @@ if (isset($_SESSION['msg-error'])) {
                     <div class="row">
                         <div class="col-lg-12">
                             <label for=""><b>จำนวนที่ต้องการเติม</b></label>
-                            <input type="text" class="form-control wallet-pay" style="font-size: 25px;" name="wallet_pay" value=""
-                                   placeholder="จำนวนเงิน" required>
+                            <input type="text" class="form-control wallet-pay" style="font-size: 25px;text-align: right;"
+                                   name="wallet_pay" value=""
+                                   placeholder="จำนวนเงิน" onchange="fillamount2($(this))" required>
                         </div>
 
                     </div>
                     <br>
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <label for=""><b>ค่าบริการหักภาษี ณ ที่จ่าย 3%</b></label>
+                            <input type="text" class="form-control wallet-pay-vat" style="font-size: 25px;text-align: right;"
+                                   name="wallet_pay_vat" value=""
+                                   placeholder="" readonly>
+                        </div>
+
+                    </div>
+                    <br>
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <label for=""><b>จำนวนเงินเข้าระบบ</b></label>
+                            <input type="text" class="form-control wallet-pay-total" style="font-size: 25px;text-align: right;"
+                                   name="wallet_pay_total" value=""
+                                   placeholder="" readonly>
+                        </div>
+                    </div>
+                    <br>
+                    <hr>
                     <div class="row">
                         <div class="col-lg-12">
                             <label for=""><b>แนบหลักฐาน</b></label>
@@ -135,6 +169,7 @@ if (isset($_SESSION['msg-error'])) {
                             <p style="color: red;font-size: 14px;">*ต้องทำการแนบหลักฐานการโอนเงินทุกครั้ง</p>
                         </div>
                     </div>
+
                 </div>
 
                 <!-- Modal footer -->
@@ -186,11 +221,37 @@ include "footer.php";
         $("#myModal").modal("show");
     }
 
-    function fillamount(e){
+    function fillamount(e) {
         var click_amount = e.attr("data-value");
-        if(parseFloat(click_amount) >0){
+        var vat_rate = 3;
+        if (parseFloat(click_amount) > 0) {
+            // var vat3 = (click_amount * 3)/100;
+            // var total = (click_amount - vat3);
             $(".wallet-pay").val(click_amount);
-        }else{
+            cal_amount();
+            // $(".wallet-pay-vat").val(vat3);
+            // $(".wallet-pay-total").val(total);
+
+        } else {
+            $(".wallet-pay").val(0);
+        }
+    }
+
+    function fillamount2(e) {
+        cal_amount();
+    }
+
+    function cal_amount() {
+        var click_amount = $(".wallet-pay").val();
+        var vat_rate = 3;
+        if (parseFloat(click_amount) > 0) {
+            var vat3 = (click_amount * 3) / 100;
+            var total = (click_amount - vat3);
+            $(".wallet-pay").val(click_amount);
+            $(".wallet-pay-vat").val(vat3);
+            $(".wallet-pay-total").val(total);
+
+        } else {
             $(".wallet-pay").val(0);
         }
     }
@@ -244,7 +305,7 @@ include "footer.php";
                 bodyClass: 'border-0 p-0',
                 headerClass: 'd-none'
             })
-       
+
         }
 
     }

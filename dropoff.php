@@ -118,7 +118,7 @@ $is_vipshop = getMemberTypeVIPSHOP($connect, $member_id);
                     <div class="row">
                         <div class="col-lg-12">
                             <label for="">คำสั่งซ่อม</label>
-                            <input type="text" name="workorder_id" class="form-control workorder-id"
+                            <input type="text" required name="workorder_id" class="form-control workorder-id"
                                    data-var="<?= $is_vipshop ?>" value="" onchange="checkorder($(this))">
                         </div>
                     </div>
@@ -388,16 +388,21 @@ include "footer.php";
                     alert('error');
                 }
             });
-           // alert(has_order);
+            //alert(has_order);
             if(has_order == 0){
                 $(".find-workorder-error").html("ไม่พบรายการใบแจ้งซ่อมหรือใบแจ้งซ่อมนี้ปิดไปแล้ว").show();
+                $(".btn-save").prop("disabled","disabled");
+            }else{
+                $(".btn-save").prop("disabled","");
             }
             if (is_vipshop == 1 && create_by_vipshop == 1) {
                 alert("ไม่สามารถ dropoff ใบแจ้งซ่อมนี้ได้");
                 e.val("");
+                $(".btn-save").prop("disabled","");
             }
         }else{
             $(".find-workorder-error").hide();
+            $(".btn-save").prop("disabled","");
         }
     }
 </script>

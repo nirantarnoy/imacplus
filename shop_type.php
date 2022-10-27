@@ -34,7 +34,7 @@ if(isset($_SESSION['msg-error'])){
 <input type="hidden" class="msg-error" value="<?=$noti_error?>">
 
 <div class="d-sm-flex align-items-center justify-content-between mb-4">
-    <h1 class="h3 mb-0 text-gray-800">ประภทร้านค้า</h1>
+    <h1 class="h3 mb-0 text-gray-800">ประเภทร้านค้า</h1>
     <div class="btn-group">
         <a href="#" class="btn btn-light-green btn-h-green btn-a-green border-0 radius-3 py-2 text-600 text-90" onclick="showaddbank($(this))">
                   <span class="d-none d-sm-inline mr-1">

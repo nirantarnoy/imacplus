@@ -7,7 +7,6 @@ if (!isset($_SESSION['userid'])) {
 }
 include "header.php";
 //include("models/MemberModel.php");
-
 $noti_ok = '';
 $noti_error = '';
 $status_data = [['id' => 1, 'name' => 'Active'], ['id' => 0, 'name' => 'Inactive']];
@@ -22,12 +21,12 @@ if (isset($_SESSION['msg-error'])) {
     unset($_SESSION['msg-error']);
 }
 
-$user_id = 0;
-if(isset($_SESSION['userid'])){
-    $user_id = isset($_SESSION['userid']);
-}
+//$user_id = 0;
+//if(isset($_SESSION['userid'])){
+//    $user_id = isset($_SESSION['userid']);
+//}
 
-$member_id = getMemberIDFromUser($connect, $user_id);
+$member_id =  getMemberIDFromUser($connect, $_SESSION['userid']);
 
 ?>
 
@@ -101,7 +100,7 @@ $member_id = getMemberIDFromUser($connect, $user_id);
 <!--                    <input type="hidden" class="member-point-balance" value="--><?//=500?><!--">-->
                     <div class="row">
                         <div class="col-lg-6">
-                            <label for=""><b>จำนวน mPoint คงเหลือ</b></label>
+                            <label for=""><h5><b>จำนวน mPoint คงเหลือ</b></h5></label>
 
                         </div>
                         <div class="col-lg-6" style="text-align: right;font-size: 20px;">
