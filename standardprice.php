@@ -57,7 +57,8 @@ if (isset($_SESSION['msg-error'])) {
             </div>
         </div>
         <div class="col-lg-2" style="text-align: right;">
-            <button type="submit" class="btn btn-light-green btn-h-green btn-a-green border-0 radius-3 py-2 text-600 text-90">
+            <button type="submit"
+                    class="btn btn-light-green btn-h-green btn-a-green border-0 radius-3 py-2 text-600 text-90">
                   <span class="d-none d-sm-inline mr-1">
                 Save
             </span>
@@ -89,6 +90,8 @@ if (isset($_SESSION['msg-error'])) {
                     <th colspan="<?= count($models_member_type_online_data) ?>"
                         style="text-align: center;background-color: lightgreen">SHOP Online
                     </th>
+                    <th style="width: 10%"></th>
+                    <th style="width: 10%"></th>
                 </tr>
                 <tr>
                     <?php for ($a = 0; $a <= count($models_member_type_offline_data) - 1; $a++): ?>
@@ -111,12 +114,16 @@ if (isset($_SESSION['msg-error'])) {
                     <?php
                     $line_price = 0;
                     $line_price_vat = 0;
+                    $line_cost_price = 0;
+                    $line_cal_price = 0;
                     $line_price_for_cal = $models_data[$i]['cal_price'];
 
                     $line_data = getLineData($models_data[$i]['id'], $sparpart_type, $connect);
                     if ($line_data) {
                         $line_price = $line_data[0]['price'];
                         $line_price_vat = $line_data[0]['price_vat'];
+                        $line_cost_price = $line_data[0]['cost_price'];
+                        $line_cal_price = $line_data[0]['cal_price'];
                     }
                     ?>
                     <tr>
@@ -127,7 +134,7 @@ if (isset($_SESSION['msg-error'])) {
                             <p><?= $models_data[$i]['name'] ?></p>
                         </td>
                         <td>
-                            <input type="hidden" class="price-for-cal" value="<?=$line_price_for_cal?>">
+                            <input type="hidden" class="price-for-cal" value="<?= $line_price_for_cal ?>">
                             <input type="text" class="form-control line-item-price" name="line_item_pirce[]"
                                    value="<?= $line_price ?>"
                                    onchange="calline($(this))" autocomplete="off">
@@ -139,6 +146,7 @@ if (isset($_SESSION['msg-error'])) {
                         </td>
                         <?php for ($a = 0; $a <= count($models_member_type_offline_data) - 1; $a++): ?>
                             <td style="text-align: center;vertical-align: middle;">
+                                <span class="line-item-percent-cal"></span>
                                 <input type="hidden" class="line-item-percent-rate"
                                        value="<?= $models_member_type_offline_data[$a]['percent_rate'] ?>">
                             </td>
@@ -146,11 +154,20 @@ if (isset($_SESSION['msg-error'])) {
 
                         <?php for ($a = 0; $a <= count($models_member_type_online_data) - 1; $a++): ?>
                             <td style="text-align: center;vertical-align: middle;">
+                                <span class="line-item-percent-cal"></span>
                                 <input type="hidden" class="line-item-percent-rate"
                                        value="<?= $models_member_type_online_data[$a]['percent_rate'] ?>">
 
                             </td>
                         <?php endfor; ?>
+                        <td>
+                            <input type="text" class="form-control line-cost-price" value="<?=$line_cost_price?>"
+                                   name="line_item_cost_price[]" onchange="calline($(this))">
+                        </td>
+                        <td>
+                            <input type="text" class="form-control line-cal-price" value="<?=$line_cal_price?>"
+                                   name="line_item_cal_price[]" readonly onchange="calline_line($(this))">
+                        </td>
                     </tr>
                 <?php endfor; ?>
                 </tbody>
@@ -170,7 +187,13 @@ function getLineData($item_id, $part_type, $connect)
         $statement->execute();
         $result = $statement->fetchAll();
         foreach ($result as $row) {
-            array_push($data, ['id' => $row['id'], 'price' => $row['platform_price'], 'price_vat' => $row['platform_price_include_vat']]);
+            array_push($data, [
+                'id' => $row['id'],
+                'price' => $row['platform_price'],
+                'price_vat' => $row['platform_price_include_vat'],
+                'cost_price' => $row['cost'],
+                'cal_price' => $row['last_price'],
+            ]);
         }
     }
     return $data;
@@ -183,20 +206,39 @@ include "footer.php";
     refreshupdate();
 
     function calline(e) {
-      //  var line_price = e.val();
-        var line_price = e.closest("tr").find(".price-for-cal").val();
+        // var line_price = e.val();
+        var line_price = e.closest("tr").find(".line-item-price").val();
+        var line_cost_price = e.closest("tr").find(".line-cost-price").val();
+        var line_cal_price = 0;
+        var x = 900;
+        // var line_price = e.closest("tr").find(".price-for-cal").val();
 
         var line_price_vat = parseFloat(parseFloat(line_price) + parseFloat(line_price * 7) / 100).toFixed(1);
+        line_cal_price = (line_price_vat - line_cost_price);
+        e.closest("tr").find(".line-cal-price").val(line_cal_price);
         var item_id = e.closest("tr").find(".line-item-id").val();
         //alert(item_id);
-        var c_row = e.closest("tr").find(".line-item-percent-rate");
-        c_row.each(function () {
-            //  console.log($(this).val());
-            var p_rate = $(this).val();
-            var total = parseFloat(parseFloat(line_price) * parseFloat(p_rate) / 100).toFixed(1);
-            $(this).parent().html(total);
-        });
+
         e.closest("tr").find(".line-item-price-vat").val(line_price_vat);
+
+        calline_line(e);
+
+    }
+
+    function calline_line(e) {
+        var c_value = e.closest("tr").find(".line-cal-price").val();
+        var c_row = e.closest("tr").find(".line-item-percent-rate");
+
+        c_row.each(function () {
+            // alert(line_cal_price);
+            //  console.log($(this).val());
+            //  var c_row_cal_price = $(this).closest("tr").find(".line-cal-price").val();
+            var p_rate = $(this).val();
+            var total = parseFloat(parseFloat(c_value) * parseFloat(p_rate) / 100).toFixed(1);
+            $(this).parent().find(".line-item-percent-cal").html(total);
+           // $(this).parent().html(total);
+
+        });
     }
 
     function refreshupdate() {

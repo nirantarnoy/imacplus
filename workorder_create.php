@@ -2,9 +2,9 @@
 ob_start();
 session_start();
 
-//if (!isset($_SESSION['userid'])) {
-//    header("location:loginpage.php");
-//}
+if (!isset($_SESSION['userid'])) {
+    header("location:loginpage.php");
+}
 //echo date('H:i');return;
 include "header.php";
 include("models/StatusModel.php");
@@ -23,13 +23,16 @@ include("models/CenterModel.php");
 //    header("location:errorpage.php");
 //}
 
+$member_id = getMemberFromUser($_SESSION['userid'], $connect);
+
+
 $checklist_data = getChecklistmodel($connect);
 $item_brand_data = getItembrandData($connect);
 $item_model_data = getItemModelData($connect);
 $item_type_data = getDeviceTypeData($connect);
 $item_center_data = getMemberCenterData($connect);
 $provice_data = getProvincemodel($connect);
-$delivery_type_data = getDeliveryTypeData($connect);
+$delivery_type_data = getDeliveryTypeData();
 
 
 $col_1 = [];
@@ -67,7 +70,10 @@ $prepay = 0;
 $estimate_finish = null;
 $status = -1;
 $center_id = 0;
+$center_address = '';
 $delivery_type = -1;
+
+$is_member_center = findIsCenter($connect, $member_id);
 
 if (count($workorder_data) > 0) {
     for ($i = 0; $i <= count($workorder_data) - 1; $i++) {
@@ -86,6 +92,7 @@ if (count($workorder_data) > 0) {
         $status = $workorder_data[$i]['status'];
         $estimate_finish = $workorder_data[$i]['finish_date'];
         $center_id = $workorder_data[$i]['center_id'];
+        $center_address = findcenteraddress($connect, $workorder_data[$i]['center_id']);
         $delivery_type = $workorder_data[$i]['delivery_type_id'];
         $work_checklist = $workorder_data[$i]['check_list'];
     }
@@ -388,14 +395,16 @@ if (isset($_SESSION['msg-error'])) {
                         <div class="input-group">
                             <input type="text" class="form-control center-name"
                                    value="<?= getCenterName($center_id, $connect) ?>" name="center_name">
+                            <?php if($is_member_center != 1):?>
                             <div class="btn btn-secondary" onclick="showfindcenter()">เลือก</div>
+                            <?php endif;?>
                         </div>
 
                         <input type="hidden" class="center-id" value="<?= $center_id ?>" name="center_id">
                     </div>
                     <div class="col-lg-3">
                         <label for="">ประเภทการส่งซ่อม</label>
-                        <select name="delivery_type_id" id="" class="form-control delivery-type-id">
+                        <select name="delivery_type_id" id="" class="form-control delivery-type-id" onchange="showCustomerAddress($(this))">
                             <?php for ($i = 0; $i <= count($delivery_type_data) - 1; $i++): ?>
                                 <?php
                                 $selected = '';
@@ -409,32 +418,247 @@ if (isset($_SESSION['msg-error'])) {
                     </div>
                     <div class="col-lg-3">
                         <div style="height: 25px;"></div>
-                        <?php $quotation_id = getQuotationId($connect, $workorder_id);?>
-                        <?php if($quotation_id > 0):?>
-                        <a href="print_quotation.php?id=<?=$quotation_id?>" class="btn btn-default text-white">ตรวจสอบใบเสนอราคา</a>
-                        <?php endif;?>
+                        <?php $quotation_id = getQuotationId($connect, $workorder_id); ?>
+                        <?php if ($quotation_id > 0): ?>
+                            <a href="print_quotation.php?id=<?= $quotation_id ?>" class="btn btn-default text-white">ตรวจสอบใบเสนอราคา</a>
+                        <?php endif; ?>
                     </div>
+                </div>
+                <br />
+                <div class="customer-address" style="display: none;">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <label for="">ที่อยู่เข้ารับสินค้า/ส่งคืนสินค้า</label>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-8">
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <label for="">ที่อยู่</label>
+                                <textarea name="" id="" cols="30" rows="3" class="form-control" placeholder="ที่อยู่"></textarea>
+                            </div>
+                            <div class="col-lg-6">
+                                <label for="">ถนน</label>
+                                <input type="text" class="form-control" name="customer_street" value="" placeholder="ถนน">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <label for="">ตำบล</label>
+                                <input type="text" class="form-control" name="customer_district" value="" placeholder="ตำบล">
+                            </div>
+                            <div class="col-lg-6">
+                                <label for="">อำเภอ</label>
+                                <input type="text" class="form-control" name="customer_city" value="" placeholder="อำเภอ">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <label for="">จังหวัด</label>
+                                <input type="text" class="form-control" name="customer_province" value="" placeholder="จังหวัด">
+                            </div>
+                            <div class="col-lg-6">
+                                <label for="">รหัสไปรษณีย์</label>
+                                <input type="text" class="form-control" name="customer_zipcode" value="" placeholder="รหัสไปรษณีย์">
+                            </div>
+                        </div>
+                    </div>
+                </div>
                 </div>
                 <br/>
                 <div class="row">
-                    <div class="col-lg-6">
-                        <input type="file" name="upload_file[]" multiple accept="image/jpeg">
+                    <div class="col-lg-4">
+                        <label for="">ที่อยู่ส่งซ่อม</label>
+                        <textarea readonly class="form-control center-address" name="center_address" id="" cols="30"
+                                  rows="5"><?= $center_address ?></textarea>
                     </div>
+                    <div class="col-lg-4">
+
+                    </div>
+                    <div class="col-lg-4"></div>
                 </div>
                 <br/>
+
+                <hr/>
                 <div class="row">
                     <div class="col-lg-6">
                         <h6><b>รูปภาพก่อนซ่อม</b></h6>
                     </div>
                 </div>
-                <div class="row">
-                    <?php for ($i = 0; $i <= count($work_photo) - 1; $i++): ?>
-                        <div class="col-lg-3">
-                            <img src="uploads/workorder/<?= $work_photo[$i]['photo'] ?>" alt="" style="width: 100%">
+                <?php if ($workorder_data == null): ?>
+                    <div class="row">
+                        <div class="col-lg-2">
+                            <div id="btn-add-before-photo-1"
+                                 style="width: 150px;height: 200px;background-color: lightblue;border-radius: 5px;text-align: center;display: block;justify-content: center;line-height: 200px;"
+                                 onclick="before1photo($(this))">
+                                เพิ่มรูป
+                            </div>
+                            <img id="blah" src="#" alt="your image"
+                                 style="width: 150px;height: 200px;display: none;border-radius: 5px;"/>
+                            <input type="file" style="display: none;" class="before-1-photo" name="upload_file_1"
+                                   accept="image/jpeg">
+                            <div style="height: 3px;"></div>
+                            <div class="btn btn-secondary btn-del-1" style="width: 150px;display: none;"
+                                 onclick="deletephoto1($(this))">ลบ
+                            </div>
                         </div>
-                    <?php endfor; ?>
-                </div>
+                        <div class="col-lg-2">
+                            <div id="btn-add-before-photo-2"
+                                 style="width: 150px;height: 200px;background-color: lightblue;border-radius: 5px;text-align: center;display: block;justify-content: center;line-height: 200px;"
+                                 onclick="before2photo($(this))">
+                                เพิ่มรูป
+                            </div>
+                            <img id="blah2" src="#" alt="your image"
+                                 style="width: 150px;height: 200px;display: none;border-radius: 5px;"/>
+                            <input type="file" style="display: none;" class="before-2-photo" name="upload_file_2"
+                                   accept="image/jpeg">
+                            <div style="height: 3px;"></div>
+                            <div class="btn btn-secondary btn-del-2" style="width: 150px;display: none;"
+                                 onclick="deletephoto2($(this))">ลบ
+                            </div>
+                        </div>
+                        <div class="col-lg-2">
+                            <div id="btn-add-before-photo-3"
+                                 style="width: 150px;height: 200px;background-color: lightblue;border-radius: 5px;text-align: center;display: block;justify-content: center;line-height: 200px;"
+                                 onclick="before3photo($(this))">
+                                เพิ่มรูป
+                            </div>
+                            <img id="blah3" src="#" alt="your image"
+                                 style="width: 150px;height: 200px;display: none;border-radius: 5px;"/>
+                            <input type="file" style="display: none;" class="before-3-photo" name="upload_file_3"
+                                   accept="image/jpeg">
+                            <div style="height: 3px;"></div>
+                            <div class="btn btn-secondary btn-del-3" style="width: 150px;display: none;"
+                                 onclick="deletephoto3($(this))">ลบ
+                            </div>
+                        </div>
+                        <div class="col-lg-2">
+                            <div id="btn-add-before-photo-4"
+                                 style="width: 150px;height: 200px;background-color: lightblue;border-radius: 5px;text-align: center;display: block;justify-content: center;line-height: 200px;"
+                                 onclick="before4photo($(this))">
+                                เพิ่มรูป
+                            </div>
+                            <img id="blah4" src="#" alt="your image"
+                                 style="width: 150px;height: 200px;display: none;border-radius: 5px;"/>
+                            <input type="file" style="display: none;" class="before-4-photo" name="upload_file_4"
+                                   accept="image/jpeg">
+                            <div style="height: 3px;"></div>
+                            <div class="btn btn-secondary btn-del-4" style="width: 150px;display: none;"
+                                 onclick="deletephoto4($(this))">ลบ
+                            </div>
+                        </div>
+                    </div>
+                    <br/>
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <input style="display: none;" type="file" name="upload_file[]" multiple accept="image/jpeg">
+                        </div>
+                    </div>
+                    <br/>
+                <?php else: ?>
+                    <div class="row">
+                        <?php for ($i = 0; $i <= count($work_photo) - 1; $i++): ?>
+                            <!--                        <div class="col-lg-3">-->
+                            <!--                            <img src="uploads/workorder/--><? //= $work_photo[$i]['photo'] ?><!--" alt="" style="width: 100%">-->
+                            <!--                        </div>-->
+                            <?php if ($i == 0): ?>
+                                <?php
+                                $has_photo = $work_photo[$i]['photo'] == null ? 0 : 1;
+                                ?>
+                                <div class="col-lg-2">
+                                    <div id="btn-add-before-photo-1"
+                                         style="width: 150px;height: 200px;background-color: lightblue;border-radius: 5px;text-align: center;display: <?= $has_photo == 1 ? 'none' : 'block' ?>;justify-content: center;line-height: 200px;"
+                                         onclick="before1photo($(this))">
+                                        เพิ่มรูป
+                                    </div>
+                                    <img id="blah" src="uploads/workorder/<?= $work_photo[$i]['photo'] ?>"
+                                         alt="your image"
+                                         style="width: 150px;height: 200px;display: <?= $has_photo == 1 ? '' : 'none' ?>;border-radius: 5px;"/>
+                                    <input type="file" style="display: none;" class="before-1-photo"
+                                           name="upload_file_1"
+                                           accept="image/jpeg">
+                                    <div style="height: 3px;"></div>
+                                    <div class="btn btn-secondary btn-del-1"
+                                         style="width: 150px;display: <?= $has_photo == 1 ? 'block' : 'none' ?>;"
+                                         onclick="deletephoto1($(this))">ลบ
+                                    </div>
+                                </div>
+                            <?php endif; ?>
+                            <?php if ($i == 1): ?>
+                                <?php
+                                $has_photo = $work_photo[$i]['photo'] == null ? 0 : 1;
+                                ?>
+                                <div class="col-lg-2">
+                                    <div id="btn-add-before-photo-2"
+                                         style="width: 150px;height: 200px;background-color: lightblue;border-radius: 5px;text-align: center;display: <?= $has_photo == 1 ? 'none' : 'block' ?>;justify-content: center;line-height: 200px;"
+                                         onclick="before2photo($(this))">
+                                        เพิ่มรูป
+                                    </div>
+                                    <img id="blah2" src="uploads/workorder/<?= $work_photo[$i]['photo'] ?>"
+                                         alt="your image"
+                                         style="width: 150px;height: 200px;display: <?= $has_photo == 1 ? '' : 'none' ?>;border-radius: 5px;"/>
+                                    <input type="file" style="display: none;" class="before-2-photo"
+                                           name="upload_file_2"
+                                           accept="image/jpeg">
+                                    <div style="height: 3px;"></div>
+                                    <div class="btn btn-secondary btn-del-2"
+                                         style="width: 150px;display: <?= $has_photo == 1 ? 'block' : 'none' ?>;"
+                                         onclick="deletephoto2($(this))">ลบ
+                                    </div>
+                                </div>
+                            <?php endif; ?>
+                            <?php if ($i == 2): ?>
+                                <?php
+                                $has_photo = $work_photo[$i]['photo'] == null ? 0 : 1;
+                                ?>
+                                <div class="col-lg-2">
+                                    <div id="btn-add-before-photo-3"
+                                         style="width: 150px;height: 200px;background-color: lightblue;border-radius: 5px;text-align: center;display: <?= $has_photo == 1 ? 'none' : 'block' ?>;justify-content: center;line-height: 200px;"
+                                         onclick="before3photo($(this))">
+                                        เพิ่มรูป
+                                    </div>
+                                    <img id="blah3" src="uploads/workorder/<?= $work_photo[$i]['photo'] ?>"
+                                         alt="your image"
+                                         style="width: 150px;height: 200px;display: <?= $has_photo == 1 ? '' : 'none' ?>;border-radius: 5px;"/>
+                                    <input type="file" style="display: none;" class="before-3-photo"
+                                           name="upload_file_3"
+                                           accept="image/jpeg">
+                                    <div style="height: 3px;"></div>
+                                    <div class="btn btn-secondary btn-del-3"
+                                         style="width: 150px;display: <?= $has_photo == 1 ? 'block' : 'none' ?>;"
+                                         onclick="deletephoto3($(this))">ลบ
+                                    </div>
+                                </div>
+                            <?php endif; ?>
+                            <?php if ($i == 3): ?>
+                                <?php
+                                $has_photo = $work_photo[$i]['photo'] == null ? 0 : 1;
+                                ?>
+                                <div class="col-lg-2">
+                                    <div id="btn-add-before-photo-4"
+                                         style="width: 150px;height: 200px;background-color: lightblue;border-radius: 5px;text-align: center;display: <?= $has_photo == 1 ? 'none' : 'block' ?>;justify-content: center;line-height: 200px;"
+                                         onclick="before4photo($(this))">
+                                        เพิ่มรูป
+                                    </div>
+                                    <img id="blah4" src="uploads/workorder/<?= $work_photo[$i]['photo'] ?>"
+                                         alt="your image"
+                                         style="width: 150px;height: 200px;display: <?= $has_photo == 1 ? '' : 'none' ?>;border-radius: 5px;"/>
+                                    <input type="file" style="display: none;" class="before-4-photo"
+                                           name="upload_file_4"
+                                           accept="image/jpeg">
+                                    <div style="height: 3px;"></div>
+                                    <div class="btn btn-secondary btn-del-4"
+                                         style="width: 150px;display: <?= $has_photo == 1 ? 'block' : 'none' ?>;"
+                                         onclick="deletephoto4($(this))">ลบ
+                                    </div>
+                                </div>
+                            <?php endif; ?>
+                        <?php endfor; ?>
+                    </div>
+                <?php endif; ?>
                 <br/>
+                <hr/>
                 <div class="row">
                     <div class="col-lg-6">
                         <h6><b>รูปภาพ/วีดีโอ หลังซ่อม</b></h6>
@@ -456,7 +680,7 @@ if (isset($_SESSION['msg-error'])) {
 
             <!-- Modal footer -->
             <div class="modal-footer">
-                <?php if ($status == 1): ?>
+                <?php if ($status == 1 && $is_member_center == 1): ?>
                     <div class="btn btn-secondary btn-create-quotation" onclick="createQuotation($(this))">
 
                         <i
@@ -470,14 +694,14 @@ if (isset($_SESSION['msg-error'])) {
                                 class="fa fa-trophy"></i> ยืนยันการซ่อมสำเร็จ
                     </div>
                 <?php endif; ?>
-                <?php if ($status == 3): ?>
+                <?php if ($status == 3 && $is_member_center == 1): ?>
                     <div class="btn btn-secondary btn-close-work" onclick="closeworkorder($(this))">
 
                         <i
                                 class="fa fa-check-circle"></i> ปิดใบแจ้งซ่อม
                     </div>
                 <?php endif; ?>
-                <?php if ($status == 0): ?>
+                <?php if ($status == 0 && $is_member_center == 1): ?>
                     <div class="btn btn-info btn-receive" data-dismiss="modalx"><i
                                 class="fa fa-check-circle"></i> ตรวจรับเครื่อง
                     </div>
@@ -491,14 +715,14 @@ if (isset($_SESSION['msg-error'])) {
         </form>
     </div>
 </div>
-<form id="form-create-quotation" action="quotation_create.php?ref_id=<?=$workorder_id?>" method="post">
+<form id="form-create-quotation" action="quotation_create.php?ref_id=<?= $workorder_id ?>" method="post">
     <input type="hidden" class="user-recid" value="" name="ref_id">
 </form>
 <form id="form-close-work" action="workorderclose.php" method="post">
-    <input type="hidden" class="user-recid" value="<?=$workorder_id?>" name="ref_id">
+    <input type="hidden" class="user-recid" value="<?= $workorder_id ?>" name="ref_id">
 </form>
 <form id="form-close-work-final" action="workorder_action.php" method="post">
-    <input type="hidden" class="user-recid" value="<?=$workorder_id?>" name="recid">
+    <input type="hidden" class="user-recid" value="<?= $workorder_id ?>" name="recid">
     <input type="hidden" name="action_type" value="complete">
 </form>
 <div class="modal" id="findCenterModal">
@@ -543,6 +767,106 @@ if (isset($_SESSION['msg-error'])) {
 include "footer.php";
 ?>
 <script>
+    $(function () {
+        $(".before-1-photo").change(function () {
+            const file = this.files[0];
+            //alert(file);
+            if (file) {
+                $("#btn-add-before-photo-1").hide();
+                $("#blah").show();
+                $("#blah").attr("src", URL.createObjectURL(file));
+                $(".btn-del-1").show();
+            } else {
+                $(".btn-del-1").hide();
+            }
+        });
+    });
+    $(function () {
+        $(".before-2-photo").change(function () {
+            //alert('2');
+            const file = this.files[0];
+            //alert(file);
+            if (file) {
+                $("#btn-add-before-photo-2").hide();
+                $("#blah2").show();
+                $("#blah2").attr("src", URL.createObjectURL(file));
+                $(".btn-del-2").show();
+            } else {
+                $(".btn-del-2").hide();
+            }
+        });
+    });
+    $(function () {
+        $(".before-3-photo").change(function () {
+            //  alert('2');
+            const file = this.files[0];
+            //alert(file);
+            if (file) {
+                $("#btn-add-before-photo-3").hide();
+                $("#blah3").show();
+                $("#blah3").attr("src", URL.createObjectURL(file));
+                $(".btn-del-3").show();
+            } else {
+                $(".btn-del-3").hide();
+            }
+        });
+    });
+    $(function () {
+        $(".before-4-photo").change(function () {
+            // alert('2');
+            const file = this.files[0];
+            //alert(file);
+            if (file) {
+                $("#btn-add-before-photo-4").hide();
+                $("#blah4").show();
+                $("#blah4").attr("src", URL.createObjectURL(file));
+                $(".btn-del-4").show();
+            } else {
+                $(".btn-del-4").hide();
+            }
+        });
+    });
+
+    function deletephoto1(e) {
+        // alert();
+        if ($("#blah").attr("src") != null) {
+            $("#blah").attr("src", "");
+            $(".btn-del-1").hide();
+            $("#btn-add-before-photo-1").show();
+            $("#blah").hide();
+        }
+    }
+
+    function deletephoto2(e) {
+        // alert();
+        if ($("#blah2").attr("src") != null) {
+            $("#blah2").attr("src", "");
+            $(".btn-del-2").hide();
+            $("#btn-add-before-photo-2").show();
+            $("#blah2").hide();
+        }
+    }
+
+    function deletephoto3(e) {
+        // alert();
+        if ($("#blah3").attr("src") != null) {
+            $("#blah3").attr("src", "");
+            $(".btn-del-3").hide();
+            $("#btn-add-before-photo-3").show();
+            $("#blah3").hide();
+        }
+    }
+
+    function deletephoto4(e) {
+        // alert();
+        if ($("#blah4").attr("src") != null) {
+            $("#blah4").attr("src", "");
+            $(".btn-del-4").hide();
+            $("#btn-add-before-photo-4").show();
+            $("#blah4").hide();
+        }
+    }
+
     notify();
     $('.work-finish-date').datetimepicker({format: "DD-MM-yyyy"});
     //        var TinyDatePicker = DateRangePicker.TinyDatePicker;
@@ -554,12 +878,12 @@ include "footer.php";
     //
     //        })
 
-    $(".btn-receive").click(function(){
+    $(".btn-receive").click(function () {
         $(".update-status").val(1);
         $("form#form-workorder").submit();
     });
 
-    $(".btn-close-final").click(function(){
+    $(".btn-close-final").click(function () {
         $(".update-status").val(4);
         $("form#form-workorder").submit();
     });
@@ -634,7 +958,6 @@ include "footer.php";
 
         ],
     });
-
 
 
     function recDelete(e) {
@@ -849,10 +1172,12 @@ include "footer.php";
         // alert('hi');return;
         var id = e.attr('data-var');
         var name = e.closest('tr').find('.line-find-name').val();
+        var address = e.closest('tr').find('.line-find-address').val();
 
         if (id) {
             $(".center-id").val(id);
             $(".center-name").val(name);
+            $(".center-address").val(address);
         }
 
         $("#findCenterModal").modal("hide");
@@ -869,4 +1194,40 @@ include "footer.php";
             $(".btn-product-selected").addClass('btn-outline-success');
         }
     }
+
+    function before1photo(e) {
+        $(".before-1-photo").trigger("click");
+    }
+
+    function before2photo(e) {
+        $(".before-2-photo").trigger("click");
+    }
+
+    function before3photo(e) {
+        $(".before-3-photo").trigger("click");
+    }
+
+    function before4photo(e) {
+        $(".before-4-photo").trigger("click");
+    }
+
+
+    function showCustomerAddress(e){
+        var id = e.val();
+        if(id == 1){
+            $(".customer-address").show();
+        }else{
+            $(".customer-address").hide();
+        }
+
+    }
+
+    // function showpic(e){
+    //
+    //    const file = e.files;
+    //     alert(file);
+    //     if(file){
+    //         $("#blah").src = URL.createObjectURL(file);
+    //     }
+    // }
 </script>

@@ -9,6 +9,8 @@ if (!isset($_SESSION['userid'])) {
 //include "models/UserModel.php";
 include "models/MemberTypeModel.php";
 include "models/WorkorderModel.php";
+include "models/BannerModel.php";
+include "models/UserReviewModel.php";
 
 $noti_ok = '';
 $noti_error = '';
@@ -30,6 +32,12 @@ $onlineuser = mt_rand($onlineran + 1, 3000);
 
 $is_verified = getMemberverifiedstatus($connect, $member_id);
 $is_center = findIsCenter($connect, $member_id);
+
+
+$banner_data = getBannermodel($connect);
+$user_review_data = getUserReviewmodel($connect);
+
+
 ?>
 
 <div class="row">
@@ -131,11 +139,11 @@ $is_center = findIsCenter($connect, $member_id);
 
                                 <div class="text-center mt-2">
                                     <h3 class="text-130 text-dark-m3">
-                                        <?php if($is_verified == 1){
-                                          echo getMemberFullname($connect, $member_id);
-                                        }else{
-                                           echo getUserDisplayname($_SESSION['userid'], $connect);
-                                        }?>
+                                        <?php if ($is_verified == 1) {
+                                            echo getMemberFullname($connect, $member_id);
+                                        } else {
+                                            echo getUserDisplayname($_SESSION['userid'], $connect);
+                                        } ?>
 
                                     </h3>
 
@@ -153,7 +161,7 @@ $is_center = findIsCenter($connect, $member_id);
                                         <!--                                <i class="fa fa-link w-4 text-120"></i>-->
                                         <!--                            </a>-->
                                         <input type="hidden" id="member-url"
-                                               value="<?= $is_center == 1?'':getMemberurl($connect, $member_id) ?>">
+                                               value="<?= $is_center == 1 ? '' : getMemberurl($connect, $member_id) ?>">
                                         <span>แนะนำเพื่อน </span>
                                         <a href="#"
                                            class="btn btn-white btn-text-info btn-h-info btn-a-info radius-1 py-2 px-1 shadow-sm"
@@ -171,11 +179,11 @@ $is_center = findIsCenter($connect, $member_id);
                                 <div class="col-lg-12">
                                     <div class="row"
                                          style="background-color: lightgrey;border-radius: 10px;padding: 2px;">
-                                        <?php if($is_center==0):?>
-                                        <div class="col-lg-12" style="text-align: left">
-                                            <b>Link:</b> <span> </span> <?= getMemberurl($connect, $member_id) ?>
-                                        </div>
-                                        <?php endif;?>
+                                        <?php if ($is_center == 0): ?>
+                                            <div class="col-lg-12" style="text-align: left">
+                                                <b>Link:</b> <span> </span> <?= getMemberurl($connect, $member_id) ?>
+                                            </div>
+                                        <?php endif; ?>
                                     </div>
                                 </div>
                             </div>
@@ -221,7 +229,7 @@ $is_center = findIsCenter($connect, $member_id);
                                 <?php
                                 $url = $is_verified ? 'dropoff.php?element=1' : '#';
                                 ?>
-                                <a class="btn" href="<?= $url ?>"
+                                <a class="btn" href="#"
                                    style="background-color: white;border-color: #66CC00;width: 100%;border-width: 2px;border-radius: 10px;margin: 5px;">
                                     <div class="row">
                                         <div class="col-lg-4">
@@ -244,7 +252,7 @@ $is_center = findIsCenter($connect, $member_id);
                                 <?php
                                 $url = $is_verified ? 'walletlist.php?element=1' : '#';
                                 ?>
-                                <a class="btn" href="<?=$url?>"
+                                <a class="btn" href="<?= $url ?>"
                                    style="background-color: white;border-color: #66CC00;width: 100%;border-width: 2px;border-radius: 10px;margin: 5px;">
                                     <div class="row">
                                         <div class="col-lg-4">
@@ -264,7 +272,7 @@ $is_center = findIsCenter($connect, $member_id);
                                 <?php
                                 $url = $is_verified ? 'witdrawlist.php?element=1' : '#';
                                 ?>
-                                <a class="btn" href="<?=$url?>"
+                                <a class="btn" href="<?= $url ?>"
                                    style="background-color: white;border-color: #66CC00;width: 100%;border-width: 2px;border-radius: 10px;margin: 5px;">
                                     <div class="row">
                                         <div class="col-lg-4">
@@ -304,7 +312,7 @@ $is_center = findIsCenter($connect, $member_id);
                                 <?php
                                 $url = $is_verified ? 'member_teamlist.php?element=1' : '#';
                                 ?>
-                                <a class="btn" href="<?=$url?>"
+                                <a class="btn" href="<?= $url ?>"
                                    style="background-color: white;border-color: #66CC00;width: 100%;border-width: 2px;border-radius: 10px;margin: 5px;">
                                     <div class="row">
                                         <div class="col-lg-4">
@@ -335,7 +343,7 @@ $is_center = findIsCenter($connect, $member_id);
                             <div style="height: 10px;"></div>
                             <div class="row">
                                 <div class="col-lg-12" style="text-align: center;color: white">
-                                    <h1><?= number_format(getMemberAllPoint($connect, $member_id)) ?></h1>
+                                    <h1><?= number_format(getMemberAllPoint($connect, $member_id), 2) ?></h1>
                                 </div>
                             </div>
 
@@ -350,7 +358,7 @@ $is_center = findIsCenter($connect, $member_id);
                             <div class="row">
                                 <div class="col-lg-12" style="text-align: center;">
                                     <b>รายได้วันนี้ <?= date('d-m-Y'); ?></b>
-                                    <h2><?= number_format(getPointtoday($connect, $member_id)) ?></h2>
+                                    <h2><?= number_format(getPointtoday($connect, $member_id) + getPointTranstoday($connect, $member_id), 2) ?></h2>
                                 </div>
                             </div>
                         </a>
@@ -361,7 +369,7 @@ $is_center = findIsCenter($connect, $member_id);
                             <div class="row">
                                 <div class="col-lg-12" style="text-align: center;">
                                     <b>รายได้ 7 วันที่ผ่านมา</b>
-                                    <h2><?= number_format(getPointsevenday($connect, $member_id)) ?></h2>
+                                    <h2><?= number_format(getPointsevenday($connect, $member_id) + getPointTransSevenDay($connect, $member_id), 2) ?></h2>
                                 </div>
                             </div>
                         </a>
@@ -372,7 +380,7 @@ $is_center = findIsCenter($connect, $member_id);
                             <div class="row">
                                 <div class="col-lg-12" style="text-align: center;">
                                     <b>รายได้สะสมเดือนนี้</b>
-                                    <h2><?= number_format(getPointthismonth($connect, $member_id)) ?></h2>
+                                    <h2><?= number_format(getPointthismonth($connect, $member_id) + getPointTransthismonth($connect, $member_id), 2) ?></h2>
                                 </div>
                             </div>
                         </a>
@@ -383,7 +391,7 @@ $is_center = findIsCenter($connect, $member_id);
                             <div class="row">
                                 <div class="col-lg-12" style="text-align: center;">
                                     <b>รายได้สะสมคงเหลือ</b>
-                                    <h2><?= number_format(getCurrentPoint($connect, $member_id)) ?></h2>
+                                    <h2><?= number_format(getCurrentPoint($connect, $member_id), 2) ?></h2>
                                 </div>
                             </div>
                         </a>
@@ -398,24 +406,37 @@ $is_center = findIsCenter($connect, $member_id);
                     </div>
                 </div>
                 <br/>
-                <div class="row">
-                    <div class="col-lg-3" style="margin-top: 5px;">
-                        <img alt="review image"
-                             src="assets/image/review/review.jpg" style="width: 100%"/>
+                <?php if ($user_review_data != null): ?>
+                    <div class="row">
+                    <?php for ($xx = 0; $xx <= count($user_review_data) - 1; $xx++): ?>
+
+                            <div class="col-lg-12">
+                                <img src="uploads/user_review/<?= $user_review_data[$xx]['photo'] ?>"
+                                     style="width: 100%;margin-top: 10px;"/>
+                            </div>
+
+                    <?php endfor; ?>
                     </div>
-                    <div class="col-lg-3" style="margin-top: 5px;">
-                        <img alt="review image"
-                             src="assets/image/review/review.jpg" style="width: 100%"/>
+                <?php else: ?>
+                    <div class="row">
+                        <div class="col-lg-3" style="margin-top: 5px;">
+                            <img alt="review image"
+                                 src="assets/image/review/review.jpg" style="width: 100%"/>
+                        </div>
+                        <div class="col-lg-3" style="margin-top: 5px;">
+                            <img alt="review image"
+                                 src="assets/image/review/review.jpg" style="width: 100%"/>
+                        </div>
+                        <div class="col-lg-3" style="margin-top: 5px;">
+                            <img alt="review image"
+                                 src="assets/image/review/review.jpg" style="width: 100%"/>
+                        </div>
+                        <div class="col-lg-3" style="margin-top: 5px;">
+                            <img alt="review image"
+                                 src="assets/image/review/review.jpg" style="width: 100%"/>
+                        </div>
                     </div>
-                    <div class="col-lg-3" style="margin-top: 5px;">
-                        <img alt="review image"
-                             src="assets/image/review/review.jpg" style="width: 100%"/>
-                    </div>
-                    <div class="col-lg-3" style="margin-top: 5px;">
-                        <img alt="review image"
-                             src="assets/image/review/review.jpg" style="width: 100%"/>
-                    </div>
-                </div>
+                <?php endif; ?>
                 <br/>
                 <div style="height: 20px;"></div>
                 <div class="row">
@@ -465,22 +486,36 @@ $is_center = findIsCenter($connect, $member_id);
                 </a>
             </div>
         </div>
-        <div class="row">
-            <div class="col-lg-12">
-                <img src="assets/iCOn/iCOn/banner.jpg" style="width: 100%;margin-top: 10px;"/>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-lg-12">
-                <img src="assets/iCOn/iCOn/banner.jpg" style="width: 100%;margin-top: 10px;"/>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-lg-12">
-                <img src="assets/iCOn/iCOn/banner.jpg" style="width: 100%;margin-top: 10px;"/>
-            </div>
-        </div>
 
+        <!--         banner section-->
+
+
+        <?php if ($banner_data != null): ?>
+            <?php for ($xx = 0; $xx <= count($banner_data) - 1; $xx++): ?>
+                <div class="row">
+                    <div class="col-lg-12">
+                        <img src="uploads/banner/<?= $banner_data[$xx]['photo'] ?>"
+                             style="width: 100%;margin-top: 10px;"/>
+                    </div>
+                </div>
+            <?php endfor; ?>
+        <?php else: ?>
+            <div class="row">
+                <div class="col-lg-12">
+                    <img src="assets/iCOn/iCOn/banner.jpg" style="width: 100%;margin-top: 10px;"/>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-12">
+                    <img src="assets/iCOn/iCOn/banner.jpg" style="width: 100%;margin-top: 10px;"/>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-12">
+                    <img src="assets/iCOn/iCOn/banner.jpg" style="width: 100%;margin-top: 10px;"/>
+                </div>
+            </div>
+        <?php endif; ?>
     </div>
 
 

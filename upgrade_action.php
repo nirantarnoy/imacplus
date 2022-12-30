@@ -210,11 +210,33 @@ function updateParentMemberPoint($connect, $parentid, $new_point)
 
     $sql = "UPDATE member SET point='$update_new_point',all_point='$new_all_point' WHERE id='$parentid'";
     if ($connect->query($sql)) {
-        return 1;
+        if(createMpointTrans($connect,$parentid,$new_point,1)){
+            return 1;
+        }
+
     } else {
         return 0;
     }
 
+}
+
+function createMpointTrans($connect, $parent_id, $new_point, $cal_from_type)
+{
+    $cdate = date('Y-m-d H:i:s');
+    $res = 0;
+    //cal_from_type
+    // 1 = upgrade member type
+    // 2 = point from workorder complete
+    // 3 = member withdraw point
+
+
+    $sql = "INSERT INTO point_trans(member_id,trans_date,trans_point,cal_from_type,activity_type,status)
+    VALUES('$parent_id','$cdate','$new_point','$cal_from_type',1,1)";
+
+    if ($connect->query($sql)) {
+        $res += 1;
+    }
+    return $res;
 }
 
 function updateMemberType($connect, $member_id, $upgrade_to_member_type)

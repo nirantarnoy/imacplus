@@ -10,7 +10,22 @@ include "header.php";
 include("models/StatusModel.php");
 include("models/MemberTypeModel.php");
 
+include("models/ProvinceModel.php");
+include("models/CityModel.php");
+include("models/DistrictModel.php");
 
+$province_data = getProvincemodel($connect);
+$city_data = getCitymodel($connect);
+$district_data = getDistrictmodel($connect);
+
+
+$province_id = -1;
+$city_id = -1;
+$district_id = -1;
+$zipcode = '';
+$address = '';
+$street = '';
+$contact_phone = '';
 //$position_data = getPositionmodel($connect);
 //$per_check = checkPer($user_position,"is_product_cat", $connect);
 //if(!$per_check){
@@ -36,8 +51,6 @@ $member_type_data = getMemberTypeData($connect);
 $selected = '';
 
 
-
-
 ?>
 <input type="hidden" class="msg-ok" value="<?= $noti_ok ?>">
 <input type="hidden" class="msg-error" value="<?= $noti_error ?>">
@@ -49,7 +62,7 @@ $selected = '';
         <select name="member_type_filter" class="form-control member-type-filter" id="" onchange="takeFilter($(this))">
             <option value="">-- ทั้งหมด --</option>
             <?php for ($x = 0; $x <= count($member_type_data) - 1; $x++): ?>
-<!--                --><?php //if ($member_type_filter_selected == $x) {
+                <!--                --><?php //if ($member_type_filter_selected == $x) {
 //                    $selected = "selected";
 //                } ?>
                 <option value="<?= $member_type_data[$x]['id'] ?>"><?= $member_type_data[$x]['name'] ?></option>
@@ -195,6 +208,104 @@ $selected = '';
                     </div>
                     <br>
 
+                    <hr/>
+                    <div class="row">
+                        <div class="col-lg-2"></div>
+                        <div class="col-lg-10">
+                            <h4>ที่ตั้ง</h4>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="row">
+                        <div class="col-lg-2"></div>
+                        <div class="col-lg-8">
+                            <table style="width: 100%">
+                                <tr>
+                                    <td style="width: 20%">ที่อยู่</td>
+                                    <td style="padding: 5px;">
+                                        <input type="text" class="form-control address" name="address"
+                                               value="<?= $address ?>">
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="width: 20%">ถนน</td>
+                                    <td style="padding: 5px;">
+                                        <input type="text" class="form-control street" name="street"
+                                               value="<?= $street ?>">
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="width: 20%">จังหวัด</td>
+                                    <td style="padding: 5px;">
+                                        <select name="province_id" class="form-control province-id" id=""
+                                                onchange="getCity($(this))">
+                                            <option value="-1">--เลือกจังหวัด--</option>
+                                            <?php for ($i = 0; $i <= count($province_data) - 1; $i++): ?>
+                                                <?php $selected = '';
+                                                if ($province_id == $province_data[$i]['id']) {
+                                                    $selected = 'selected';
+                                                }
+                                                ?>
+                                                <option value="<?= $province_data[$i]['id'] ?>" <?= $selected ?>><?= $province_data[$i]['name'] ?></option>
+                                            <?php endfor; ?>
+                                        </select>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="width: 20%">อำเภอ</td>
+                                    <td style="padding: 5px;">
+                                        <select name="city_id" class="form-control city-id" id=""
+                                                onchange="getDistrict($(this))">
+                                            <option value="-1">--เลือกอำเภอ--</option>
+                                            <?php for ($i = 0; $i <= count($city_data) - 1; $i++): ?>
+                                                <?php $selected = '';
+                                                if ($city_id == $city_data[$i]['id']) {
+                                                    $selected = 'selected';
+                                                }
+                                                ?>
+                                                <option value="<?= $city_data[$i]['id'] ?>" <?= $selected ?>><?= $city_data[$i]['name'] ?></option>
+                                            <?php endfor; ?>
+                                        </select>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="width: 20%">ตำบล</td>
+                                    <td style="padding: 5px;">
+                                        <select name="district_id" class="form-control district-id" id="">
+                                            <option value="-1">--เลือกตำบล--</option>
+                                            <?php for ($i = 0; $i <= count($district_data) - 1; $i++): ?>
+                                                <?php $selected = '';
+                                                if ($district_id == $district_data[$i]['id']) {
+                                                    $selected = 'selected';
+                                                }
+                                                ?>
+                                                <option value="<?= $district_data[$i]['id'] ?>" <?= $selected ?>><?= $district_data[$i]['name'] ?></option>
+                                            <?php endfor; ?>
+                                        </select>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="width: 20%">รหัสไปรษณีย์</td>
+                                    <td style="padding: 5px;">
+                                        <input type="text" class="form-control zipcode" name="zipcode"
+                                               value="<?= $zipcode ?>" readonly>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="width: 20%">เบอร์โทร</td>
+                                    <td style="padding: 5px;">
+                                        <input type="text" class="form-control center-phone" name="center_phone"
+                                               value="<?= $contact_phone ?>" readonly>
+                                    </td>
+                                </tr>
+
+
+
+                            </table>
+                        </div>
+                        <div class="col-lg-2"></div>
+                    </div>
+
 
                 </div>
 
@@ -235,7 +346,7 @@ include "footer.php";
             data: function (data) {
                 // Read values
                 var member_type = $('.member-type-filter').val();
-               // alert(member_type);
+                // alert(member_type);
                 // var plate = $('#search-plate').val();
                 // var prod = $('#search-prod').val();
                 // var index = $('#search-index').val();
@@ -254,14 +365,16 @@ include "footer.php";
 
         ],
     });
-     //dataTablex.draw();
 
-    function takeFilter(e){
+    //dataTablex.draw();
+
+    function takeFilter(e) {
 
         dataTablex.draw();
 
     }
-    function takefilter(e){
+
+    function takefilter(e) {
         // alert(e.val());
 
         // $("#dataTable").dataTable({
@@ -306,7 +419,6 @@ include "footer.php";
     }
 
 
-
     function showaddbank(e) {
         $(".description").val('');
         $(".user-recid").val('');
@@ -339,6 +451,16 @@ include "footer.php";
             var url = '';
             var point = '';
             var status = '';
+
+
+            var address = '';
+            var street = '';
+            var province_id = -1;
+            var city_id = -1;
+            var district_id = -1;
+            var zipcode = '';
+            var phone = '';
+
             $.ajax({
                 'type': 'post',
                 'dataType': 'json',
@@ -359,9 +481,21 @@ include "footer.php";
                         url = data[0]['url'];
                         point = data[0]['point'];
                         status = data[0]['status'];
+
+                        if (data[0]['address_data'].length > 0) {
+                            address = data[0]['address_data'][0]['address'];
+                            street = data[0]['address_data'][0]['street'];
+                            district_id = data[0]['address_data'][0]['district_id'];
+                            city_id = data[0]['address_data'][0]['city_id'];
+                            province_id = data[0]['address_data'][0]['province_id'];
+                            zipcode = data[0]['address_data'][0]['zipcode'];
+                            phone = data[0]['address_data'][0]['phone'];
+                        }
                     }
                 }
             });
+
+          //  alert(city_id);
 
             $(".user-recid").val(recid);
             $(".status").val(status);
@@ -375,6 +509,15 @@ include "footer.php";
             $(".line-id").val(line_id);
             $(".member-url").val(url);
             $(".member-point").val(point);
+
+            $(".address").val(address);
+            $(".street").val(street);
+            $(".province-id").val(province_id).change();
+            $(".city-id").val(city_id).change();
+            $(".district-id").val(district_id).change();
+
+            $(".zipcode").val(zipcode).change();
+            $(".center-phone").val(phone);
 
 
             $(".modal-title").html('แก้ไขข้อมูลสมาชิก');
@@ -519,5 +662,56 @@ include "footer.php";
             // });
         }
 
+    }
+
+    function getCity(e) {
+        var id = e.val();
+        if (id != '') {
+            //alert(id);
+            $.ajax({
+                type: "post",
+                dataType: "html",
+                url: "models/getCityData.php",
+                async: false,
+                data: {'province_id': id},
+                success: function (data) {
+                    $(".city-id").html(data);
+                }
+            });
+        }
+    }
+
+    function getDistrict(e) {
+        var id = e.val();
+        if (id != '') {
+            //alert(id);
+            $.ajax({
+                type: "post",
+                dataType: "html",
+                url: "models/getDistrictData.php",
+                async: false,
+                data: {'city_id': id},
+                success: function (data) {
+                    $(".district-id").html(data);
+                    getZipcode(id);
+                }
+            });
+        }
+    }
+
+    function getZipcode(e) {
+        if (e != '') {
+            //alert(id);
+            $.ajax({
+                type: "post",
+                dataType: "html",
+                url: "models/getZipcode.php",
+                async: false,
+                data: {'city_id': e},
+                success: function (data) {
+                    $(".zipcode").val(data);
+                }
+            });
+        }
     }
 </script>

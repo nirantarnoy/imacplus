@@ -1,6 +1,7 @@
 <?php
 include("common/dbcon.php");
-//include("models/PromotionModel.php");
+//include("models/MemberModel.php");
+
 $id = '';
 $data = [];
 
@@ -45,12 +46,90 @@ if ($id) {
             'url'=>$row['url'],
             'point'=>$row['point'],
             'status'=>$row['status'],
+            'address_data' => getCenterAddress($connect, $row['id']),
+
         ]);
     }
 
     echo json_encode($data);
 }else{
     echo json_encode($data);
+}
+
+function getCenterAddress($connect, $center_id){
+    $data = [];
+    if($center_id > 0){
+        if(checkIsCenter($connect, $center_id) == 1){
+            $query = "SELECT t1.address,t1.street,t1.district_id,t1.city_id,t1.province_id,t1.zipcode FROM center_address as t1 WHERE member_id='$center_id'";
+            $statement = $connect->prepare($query);
+            $statement->execute();
+            $result = $statement->fetchAll();
+            $filtered_rows = $statement->rowCount();
+            if ($filtered_rows > 0) {
+                foreach ($result as $row) {
+                   array_push($data,[
+                       'address'=>$row['address'],
+                       'street'=>$row['street'],
+                       'district_id'=>$row['district_id'],
+                       'city_id'=>$row['city_id'],
+                       'province_id'=>$row['province_id'],
+                       'zipcode'=>$row['zipcode'],
+                       'phone'=>$row['phone'],
+                   ]);
+                }
+
+            }
+        }else{
+            array_push($data,[
+                'address'=>'xx',
+                'street'=>'',
+                'district_id'=>'',
+                'city_id'=>'',
+                'province_id'=>'',
+                'zipcode'=>'',
+                'phone'=>'',
+            ]);
+        }
+
+    }
+
+    return $data;
+}
+function checkIsCenter($connect, $member_id)
+{
+    $iscenter = 0;
+    $member_type_id = 0;
+    $query = "SELECT * FROM member WHERE id = '$member_id'";
+    $statement = $connect->prepare($query);
+    $statement->execute();
+    $result = $statement->fetchAll();
+    $filtered_rows = $statement->rowCount();
+    //return $filtered_rows;
+    if ($filtered_rows > 0) {
+        foreach ($result as $row) {
+            $member_type_id = $row['member_type_id'];
+        }
+
+        $query2 = "SELECT * FROM member_type WHERE id = '$member_type_id'";
+        $statement2 = $connect->prepare($query2);
+        $statement2->execute();
+        $result2 = $statement2->fetchAll();
+        $filtered_rows2 = $statement2->rowCount();
+        //return $filtered_rows;
+        if ($filtered_rows2 > 0) {
+            $find_word = 'MINI';
+            foreach ($result2 as $row2) {
+                $is_mini = strpos($row2['name'], $find_word)!== false?1:0;
+                if($row2['is_center'] == 1 || $is_mini > 0 ){
+                    $iscenter = 1;
+                }
+
+            }
+        }
+    }
+
+
+    return $iscenter;
 }
 
 function getLastTurnoverAmt($member_id, $connect)

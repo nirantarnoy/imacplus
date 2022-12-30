@@ -7,6 +7,8 @@ include("models/MemberModel.php");
 
 $user_id = $_SESSION['userid'];
 $wallet_pay = 0;
+$wallet_pay_total = 0;
+$wallet_pay_vat = 0;
 $slip = 0;
 
 
@@ -18,6 +20,12 @@ $recid = 0;
 //}
 if (isset($_POST['wallet_pay'])) {
     $wallet_pay = $_POST['wallet_pay'];
+}
+if (isset($_POST['wallet_pay'])) {
+    $wallet_pay_vat = $_POST['wallet_pay_vat'];
+}
+if (isset($_POST['wallet_pay'])) {
+    $wallet_pay_total = $_POST['wallet_pay_total'];
 }
 
 

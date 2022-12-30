@@ -227,8 +227,9 @@ if($action == 'confirm') {
     if ($quotation_confirm_id > 0) {
         $sql_confirm = "UPDATE quotation SET status=1 WHERE id='$quotation_confirm_id' ";
         if ($result_confirm = $connect->query($sql_confirm)) {
-            if(deductStock($connect, $quotation_confirm_id)){
-                updateWorkorder($connect, $quotation_confirm_id);
+            if(deductStock($connect, $quotation_confirm_id)){ // หักสตํอก
+                updateWorkorder($connect, $quotation_confirm_id); // อัพเดทสถานะ workorder
+                deductWalletAmount($connect, $workorder_id, $quotation_confirm_id); // หัก wallet ทันที
             }
             $_SESSION['msg-success'] = 'ทำรายการสำเร็จ';
             header('location:quotation.php');
@@ -288,6 +289,54 @@ function updateWorkorder($connect, $quotation_id){
             }
         }
     }
+}
+
+
+function deductWalletAmount($connect, $workorder_id, $quotation_id){
+    if($workorder_id > 0 && $quotation_id > 0){ // ค้นหาคนสร้างใบงาน
+        $created_by = 0;
+        $deduct_amount = 0;
+        $query = "SELECT created_by FROM workorders WHERE id='$workorder_id'";
+        if ($result2 = $connect->query($query)) {
+            foreach ($result2 as $row) {
+                $created_by =$row['created_by'];
+            }
+        }
+        if($created_by > 0){ // ค้นหาจำนวนที่ต้องหัก
+            $query = "SELECT sum(line_total) as amount FROM quotation_line WHERE quotation_id='$quotation_id'";
+            if ($result2 = $connect->query($query)) {
+                foreach ($result2 as $row) {
+                    $deduct_amount = $row['amount'];
+                }
+            }
+        }
+
+        if($created_by > 0 && $deduct_amount > 0){ // ตรวจสอบ member และยอดที่ต้องหัก
+           $wallet_balance = getMemberWalletAmount($connect,$created_by); // ดึงยอดคงเหลือ
+           if($wallet_balance > 0 && $wallet_balance >= $deduct_amount){ // ตรวจสอบว่ายอดคงเหลือพอหักหรือไม่
+               $new_balance =  ($wallet_balance - $deduct_amount);
+               $sql3 = "UPDATE member SET wallet_amount='$new_balance' WHERE id='$created_by'";
+               if ($result3 = $connect->query($sql3)) {
+               }
+           }
+        }
+    }
+}
+
+function getMemberWalletAmount($connect, $id)
+{
+    $point = 0;
+    $query = "SELECT * FROM member WHERE id='$id'";
+    $statement = $connect->prepare($query);
+    $statement->execute();
+    $result = $statement->fetchAll();
+    $filtered_rows = $statement->rowCount();
+    if ($filtered_rows > 0) {
+        foreach ($result as $row) {
+            $point = $row['wallet_amount'] == null ? 0 : $row['wallet_amount'];
+        }
+    }
+    return $point;
 }
 
 //if ($id) {

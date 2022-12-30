@@ -215,6 +215,33 @@ $is_verified = getMemberverifiedstatus($connect, $member_id);
 
                         </li>
 
+                        <li class="nav-item">
+                            <a class="nav-link dropdown-toggle pl-lg-3 pr-lg-4" href="#"
+                               role="button" aria-haspopup="true" aria-expanded="false">
+                                <!--                                <i class="fa fa-money-check text-110 text-white mr-lg-2"></i>-->
+<!--                                <span><img src="assets/iCOn/iCOn/wallet.png" style="width: 20px;" alt=""> </span>-->
+                                <span style="color: yellow;padding-left: 10px;"> <span style="color: white;">mPoint</span> <br><?= number_format(getMemberPoint($connect, $member_id),2) ?></span>
+                                <span class="d-inline-block d-lg-none ml-2">Notifications</span>
+
+                                <i class="caret fa fa-angle-left d-block d-lg-none"></i>
+                                <div class="dropdown-caret brc-white"></div>
+                            </a>
+
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link dropdown-toggle pl-lg-3 pr-lg-4" href="#"
+                               role="button" aria-haspopup="true" aria-expanded="false">
+                                <!--                                <i class="fa fa-money-check text-110 text-white mr-lg-2"></i>-->
+<!--                                <span><img src="assets/iCOn/iCOn/wallet.png" style="width: 20px;" alt=""> </span>-->
+                                <span style="color: yellow;padding-left: 10px;"> <span style="color: white;">Wallet</span> <br><?= number_format(getMemberWallerAmount($connect, $member_id),2) ?></span>
+                                <span class="d-inline-block d-lg-none ml-2">Notifications</span>
+
+                                <i class="caret fa fa-angle-left d-block d-lg-none"></i>
+                                <div class="dropdown-caret brc-white"></div>
+                            </a>
+
+                        </li>
+
 
                         <li class="nav-item dropdown order-first order-lg-last">
                             <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button"
@@ -429,18 +456,18 @@ $is_verified = getMemberverifiedstatus($connect, $member_id);
                                 </a>
                                 <b class="sub-arrow"></b>
                             </li>
-                            <li class="nav-item">
-                                <?php
-                                $url = $is_verified ? 'dropoff.php' : '#';
-                                ?>
-                                <a href="<?= $url ?>" class="nav-link">
-                                    <img src="assets/iCOn/iCOn/DropOff.png" class="nav-icon" style="width: 10%" alt="">
-                                    <span class="nav-text fadeable">
-                                  <span>Drop Off</span>
-                                </span>
-                                </a>
-                                <b class="sub-arrow"></b>
-                            </li>
+<!--                            <li class="nav-item">-->
+<!--                                --><?php
+//                                $url = $is_verified ? 'dropoff.php' : '#';
+//                                ?>
+<!--                                <a href="--><?//= $url ?><!--" class="nav-link">-->
+<!--                                    <img src="assets/iCOn/iCOn/DropOff.png" class="nav-icon" style="width: 10%" alt="">-->
+<!--                                    <span class="nav-text fadeable">-->
+<!--                                  <span>Drop Off</span>-->
+<!--                                </span>-->
+<!--                                </a>-->
+<!--                                <b class="sub-arrow"></b>-->
+<!--                            </li>-->
                             <li class="nav-item">
                                 <?php
                                 $url = $is_verified ? 'walletlist.php' : '#';
@@ -496,15 +523,15 @@ $is_verified = getMemberverifiedstatus($connect, $member_id);
                                 </a>
                                 <b class="sub-arrow"></b>
                             </li>
-                            <li class="nav-item">
-                                <a href="#" class="nav-link">
-                                    <img src="assets/iCOn/iCOn/return.png" class="nav-icon" style="width: 10%" alt="">
-                                    <span class="nav-text fadeable">
-                                  <span>คืนเงิน/คืนสินค้า</span>
-                                </span>
-                                </a>
-                                <b class="sub-arrow"></b>
-                            </li>
+<!--                            <li class="nav-item">-->
+<!--                                <a href="#" class="nav-link">-->
+<!--                                    <img src="assets/iCOn/iCOn/return.png" class="nav-icon" style="width: 10%" alt="">-->
+<!--                                    <span class="nav-text fadeable">-->
+<!--                                  <span>คืนเงิน/คืนสินค้า</span>-->
+<!--                                </span>-->
+<!--                                </a>-->
+<!--                                <b class="sub-arrow"></b>-->
+<!--                            </li>-->
                             <li class="nav-item">
                                 <a href="qandapage.php" class="nav-link">
                                     <img src="assets/iCOn/iCOn/qa.png" class="nav-icon" style="width: 10%" alt="">
@@ -611,7 +638,7 @@ $is_verified = getMemberverifiedstatus($connect, $member_id);
                             </li>
                         <?php endif; ?>
 
-                        <?php if ($isadmin == 1): ?>
+                        <?php if ($isadmin == 1 ): ?>
                             <li class="nav-item">
                                 <a href="#" class="nav-link dropdown-toggle collapsed">
                                     <i class="nav-icon fa fa-wrench"></i>
@@ -728,6 +755,13 @@ $is_verified = getMemberverifiedstatus($connect, $member_id);
                                         <li class="nav-item">
                                             <a href="upgradestandard.php" class="nav-link">
                                           <span class="nav-text">
+                                              <span>ตั้งค่าอัพเกรด mPoint</span>
+                                          </span>
+                                            </a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a href="pointstandard.php" class="nav-link">
+                                          <span class="nav-text">
                                               <span>ตั้งค่าคำนวน mPoint</span>
                                           </span>
                                             </a>
@@ -765,7 +799,43 @@ $is_verified = getMemberverifiedstatus($connect, $member_id);
                                 <b class="sub-arrow"></b>
                             </li>
                         <?php endif; ?>
+                        <?php if ($isadmin == 1): ?>
+                            <li class="nav-item">
+                                <a href="#" class="nav-link dropdown-toggle collapsed">
+                                    <i class="nav-icon fa fa-images"></i>
+                                    <span class="nav-text fadeable">
+                                  <span>จัดการแบนเนอร์</span>
+                                </span>
+                                    <b class="caret fa fa-angle-left rt-n90"></b>
+                                    <!-- or you can use custom icons. first add `d-style` to 'A' -->
+                                    <!--
+                                        <b class="caret d-n-collapsed fa fa-minus text-80"></b>
+                                        <b class="caret d-collapsed fa fa-plus text-80"></b>
+                                    -->
+                                </a>
+                                <div class="hideable submenu collapse">
+                                    <ul class="submenu-inner">
 
+                                        <li class="nav-item">
+
+                                            <a href="banner.php" class="nav-link">
+                                          <span class="nav-text">
+                                              <span>แบนเนอร์</span>
+                                          </span>
+                                            </a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a href="user_review.php" class="nav-link">
+                                          <span class="nav-text">
+                                              <span>รีวิวลูกค้า</span>
+                                          </span>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <b class="sub-arrow"></b>
+                            </li>
+                        <?php endif; ?>
                         <?php if ($isadmin == 1): ?>
                             <li class="nav-item-caption">
                                 <span class="fadeable pl-3">สิทธิ์การใช้งาน</span>

@@ -10,20 +10,27 @@ include("common/dbcon.php");
 include("models/StatusModel.php");
 include("models/CustomerModel.php");
 include("models/UserModel.php");
-
-//$current_branch = '';
-//if(isset($_SESSION['branch'])){
-//    $current_branch = $_SESSION['branch'];
-//}
+include("models/MemberModel.php");
 
 
+
+$userid = $_SESSION['userid'];
+$member_id = getMemberIDFromUser($connect, $userid);
+
+$isadmin = checkUserAdmin($connect, $userid);
 
 $stock_type = 0;
 $query_filter = '';
-$query = "SELECT * FROM quotation ";
-//if(isset($_POST["searchByName"])){
-//    $query .= ' AND (quotation_no LIKE "%'.$_POST["searchByName"].'%" OR customer_name LIKE "%'.$_POST["searchByName"].'%")';
-//}
+$query = "";
+if($isadmin ==1){
+    $query = "SELECT * FROM quotation";
+}else{
+    $query = "SELECT * FROM quotation WHERE created_by='$member_id' ";
+}
+
+if(isset($_POST["searchByName"])){
+    $query .= ' AND (quotation_no LIKE "%'.$_POST["searchByName"].'%" OR customer_name LIKE "%'.$_POST["searchByName"].'%")';
+}
 
 
 
@@ -55,7 +62,7 @@ if(isset($_POST["order"]))
 }
 else
 {
-    $query .= ' ORDER BY id ASC ';
+    $query .= ' ORDER BY id DESC ';
 }
 
 
@@ -76,20 +83,13 @@ $i=0;
 foreach ($result as $row){
     $i+=1;
     $sub_array = array();
-
-//    $sub_array[] = '<p style="font-weight: bold;text-align: left">'.$row['prod_code'].'</p>';
-//    $sub_array[] = '<p style="font-weight: bold;text-align: left">'.$row['prod_name'].'</p>';
-//    $sub_array[] = '<p style="font-weight: ;text-align: left">'.$row['code'].'<input type="hidden" class="tool-code" value="'.$row['id'].'"></p>';
-//    $sub_array[] = '<p style="font-weight: ;text-align: center">'.$i.'</p>';
     $sub_array[] = '<p style="font-weight: ;text-align: left">'.$row['quotation_no'].'</p>';
     $sub_array[] = '<p style="font-weight: ;text-align: left">'.date('d/m/Y',strtotime($row['quotation_date'])).'</p>';
     $sub_array[] = '<p style="font-weight: ;text-align: left">'.$row['customer_name'].'</p>';
-//    $sub_array[] = '<p style="font-weight: ;text-align: left">'.$row['customer_name'].'</p>';
     $sub_array[] = '<p style="font-weight: ;text-align: left">'.getStatus($row['status']).'</p>';
     $sub_array[] = '<p style="font-weight: ;text-align: left">'.getUserDisplayname($row['created_by'],$connect).'</p>';
-
-//    $sub_array[] = '<p style="font-weight: bold;text-align: left">'.date('d/m/Y',strtotime($row['trans_date'])).'</p>';
-    $sub_array[] = '<a class="btn btn-secondary" href="quotation_create.php?update_id='.$row['id'].'"><i class="fas fa-edit"></i> แก้ไข</a><span> </span><div class="btn btn-danger" data-id="'.$row['id'].'" onclick="recDelete($(this))"><i class="fas fa-trash-alt"></i> ลบ</div>';
+    $sub_array[] = '';
+//    $sub_array[] = '<a class="btn btn-secondary" href="quotation_create.php?update_id='.$row['id'].'"><i class="fas fa-edit"></i> แก้ไข</a><span> </span><div class="btn btn-danger" data-id="'.$row['id'].'" onclick="recDelete($(this))"><i class="fas fa-trash-alt"></i> ลบ</div>';
 
     //asort($sub_array);
     $data[] = $sub_array;

@@ -136,26 +136,7 @@ if (isset($_SESSION['msg-error'])) {
                         </div>
 
                     </div>
-                    <br>
-                    <div class="row">
-                        <div class="col-lg-12">
-                            <label for=""><b>ค่าบริการหักภาษี ณ ที่จ่าย 3%</b></label>
-                            <input type="text" class="form-control wallet-pay-vat" style="font-size: 25px;text-align: right;"
-                                   name="wallet_pay_vat" value=""
-                                   placeholder="" readonly>
-                        </div>
 
-                    </div>
-                    <br>
-                    <div class="row">
-                        <div class="col-lg-12">
-                            <label for=""><b>จำนวนเงินเข้าระบบ</b></label>
-                            <input type="text" class="form-control wallet-pay-total" style="font-size: 25px;text-align: right;"
-                                   name="wallet_pay_total" value=""
-                                   placeholder="" readonly>
-                        </div>
-                    </div>
-                    <br>
                     <hr>
                     <div class="row">
                         <div class="col-lg-12">

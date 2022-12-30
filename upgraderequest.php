@@ -3,6 +3,7 @@ include("header.php");
 include("models/MemberTypeModel.php");
 
 $package_data = getMemberTypeData($connect);
+$parent_member_id = findCurrentParentId($connect, $member_id);
 ?>
 <style>
     .error-form-validate {
@@ -163,6 +164,62 @@ $package_data = getMemberTypeData($connect);
     </form>
 </div>
 
+
+<div class="modal" id="myModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+                <!-- Modal Header -->
+<!--                <div class="modal-header">-->
+<!--                    <h4 class="modal-title" style="color: #1c606a">ยืนยันการขออัพเกรดสมาชิก</h4>-->
+<!--                    <button type="button" class="close" data-dismiss="modal">&times;</button>-->
+<!--                </div>-->
+
+                <!-- Modal body -->
+                <div class="modal-body">
+                 <div class="row">
+                     <div class="col-lg-12" style="text-align: center;">
+                         <h5 style="color: #5bb15b"><b>คุณต้องการอัพเกรดสมาชิกด้วยผู้แนะนำนี้หรือไม่</b></h5>
+                     </div>
+                 </div>
+                    <br />
+                    <?php if ($parent_member_id != '' || $parent_member_id != null): ?>
+                        <?php //if (1 > 0): ?>
+                        <?php
+
+                        $member_data = getMemberIntroduceData($connect, $parent_member_id);
+                        ?>
+                        <div class="form-group col-sm-10 offset-sm-1 col-md-8 offset-md-2 col-lg-6 offset-lg-3"
+                             style="text-align: center;">
+                            <p class="text-primary">สมาชิกแนะนำ</p>
+                            <?php if ($member_data[0]['photo'] != null): ?>
+                                <img id="id-navbar-user-image"
+                                     class="d-none d-lg-inline-block radius-round border-2 brc-white-tp1 mr-2 w-6"
+                                     src="uploads/member_photo/<?= $member_data[0]['photo'] == '' ? 'demo.png' : $member_data[0]['photo'] ?>"
+                                     alt="Member 's photo">
+
+                            <?php else: ?>
+                                <i class="fa fa-user-circle fa-5x text-info"></i>
+                            <?php endif; ?>
+                            <p>
+                                <b><?= $member_data[0]['name'] . ' ' . $member_data[0]['lname'] ?></b>
+                            </p>
+                        </div>
+                        <br>
+                    <?php endif; ?>
+                </div>
+
+                <!-- Modal footer -->
+                <div class="modal-footer">
+                    <button class="btn btn-success btn-save" data-dismiss="modalx" onclick="acceptconfirmupgrade()"><i
+                                class="fa fa-check-circle"></i> ยืนยันการอัพเกรด
+                    </button>
+                    <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fa fa-ban"></i> ยกเลิก
+                    </button>
+                </div>
+
+        </div>
+    </div>
+</div>
 <?php
 include "footer.php";
 ?>
@@ -184,29 +241,41 @@ include "footer.php";
     }
 
     function confirmupgrade() {
-        var swalWithBootstrapButtons = Swal.mixin({
-            customClass: {
-                confirmButton: 'btn btn-success mx-2',
-                cancelButton: 'btn btn-danger mx-2'
-            },
-            buttonsStyling: false
-        })
-        swalWithBootstrapButtons.fire({
-            title: 'ยืนยัน?',
-            text: "คุณต้องการทำรายการนี้ใช่หรือไม่!",
-            type: 'warning',
-            showCancelButton: true,
-            scrollbarPadding: false,
-            confirmButtonText: 'ใช่',
-            cancelButtonText: 'ไม่ใช่',
-            reverseButtons: true
-        }).then(function (result) {
-            if (result.value) {
-                $(".package-selected-amount").val(2500);
-                $(".package-selected-name").val("VIP-SHOP");
-                $("#form-upgrade").validate({errorClass: 'error-form-validate'});
-                $("#form-upgrade").submit();
-            }
-        })
+        // var swalWithBootstrapButtons = Swal.mixin({
+        //     customClass: {
+        //         confirmButton: 'btn btn-success mx-2',
+        //         cancelButton: 'btn btn-danger mx-2'
+        //     },
+        //     buttonsStyling: false
+        // })
+        // swalWithBootstrapButtons.fire({
+        //     title: 'ยืนยัน?',
+        //     text: "คุณต้องการทำรายการนี้ใช่หรือไม่!",
+        //     type: 'warning',
+        //     showCancelButton: true,
+        //     scrollbarPadding: false,
+        //     confirmButtonText: 'ใช่',
+        //     cancelButtonText: 'ไม่ใช่',
+        //     reverseButtons: true,
+        //
+        // }).then(function (result) {
+        //     if (result.value) {
+        //         $(".package-selected-amount").val(2500);
+        //         $(".package-selected-name").val("VIP-SHOP");
+        //         $("#form-upgrade").validate({errorClass: 'error-form-validate'});
+        //         $("#form-upgrade").submit();
+        //     }
+        // })
+
+        $("#myModal").modal("show");
+    }
+
+
+
+    function acceptconfirmupgrade(){
+        $(".package-selected-amount").val(2500);
+        $(".package-selected-name").val("VIP-SHOP");
+        $("#form-upgrade").validate({errorClass: 'error-form-validate'});
+        // $("#form-upgrade").submit();
     }
 </script>

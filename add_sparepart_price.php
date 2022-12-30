@@ -8,6 +8,8 @@ include("models/ItemModel.php");
 $item_id = '';
 $price = '';
 $price_vat = null;
+$cal_price = null;
+$cost_price = null;
 $sparepart_type = '';
 
 $recid = 0;
@@ -25,8 +27,14 @@ if (isset($_POST['line_item_price_vat'])) {
 if (isset($_POST['item_sparepart_type'])) {
     $sparepart_type = $_POST['item_sparepart_type'];
 }
+if (isset($_POST['line_item_cal_price'])) {
+    $cal_price = $_POST['line_item_cal_price'];
+}
+if (isset($_POST['line_item_cost_price'])) {
+    $cost_price = $_POST['line_item_cost_price'];
+}
 
-//print_r($price_vat);return;
+//print_r($cost_price);return;
 if (isset($_POST['recid'])) {
     $recid = $_POST['recid'];
 }
@@ -56,14 +64,14 @@ if (1 > 0) {
 
             $statement->execute();
             if ($statement->rowCount() > 0) {
-                $sql = "UPDATE standard_part_price SET platform_price='$new_price',platform_price_include_vat='$new_price_vat',updated_at='$c_timestamp',updated_by='$c_user' WHERE phone_model_id='$item_id[$i]' AND part_type_id='$sparepart_type'";
+                $sql = "UPDATE standard_part_price SET platform_price='$new_price',platform_price_include_vat='$new_price_vat',updated_at='$c_timestamp',updated_by='$c_user',cost='$cost_price[$i]',last_price='$cal_price[$i]' WHERE phone_model_id='$item_id[$i]' AND part_type_id='$sparepart_type'";
 
                 if ($connect->query($sql)) {
                     $res += 1;
                 }
             } else {
-                $sql = "INSERT INTO standard_part_price (phone_model_id,platform_price,platform_price_include_vat,part_type_id,status,created_at,created_by)
-           VALUES ('$item_id[$i]','$new_price','$new_price_vat','$sparepart_type',1,'$c_timestamp','$c_user')";
+                $sql = "INSERT INTO standard_part_price (phone_model_id,platform_price,platform_price_include_vat,part_type_id,status,created_at,created_by,cost,last_price)
+           VALUES ('$item_id[$i]','$new_price','$new_price_vat','$sparepart_type',1,'$c_timestamp','$c_user','$cost_price[$i]','$cal_price[$i]')";
 
                 if ($result = $connect->query($sql)) {
                     $res += 1;
@@ -73,18 +81,23 @@ if (1 > 0) {
 
             // create sparepart
 
-            $sql_check_ref_id = "SELECT * FROM sparepart WHERE item_ref_id='$item_id[$i]'";
+            $sql_check_ref_id = "SELECT * FROM sparepart WHERE item_ref_id='$item_id[$i]' AND part_type_id='$sparepart_type'";
             $statement2 = $connect->prepare($sql_check_ref_id);
 
             $statement2->execute();
-            if ($statement2->rowCount() > 0) {
+            if ($statement2->rowCount() > 0) { // update
+                $sql = "UPDATE sparepart SET cost_price='$cost_price[$i]',cal_price='$cal_price[$i]',sale_price='$new_price_vat' WHERE item_ref_id='$item_id[$i]' AND part_type_id='$sparepart_type'";
 
-            } else {
+                if ($connect->query($sql)) {
+                    $res += 1;
+                }
+              //  echo $sql;return;
+            } else { // create new
 
                 $item_name = getItemName($item_id[$i], $connect);
 //                echo $item_name;return;
-                $sql = "INSERT INTO sparepart (part_type_id,part_name,description,cost_price,item_ref_id,status,created_at,created_by)
-           VALUES ('$sparepart_type','$item_name','$item_name',0,'$item_id[$i]',1,'$c_timestamp','$c_user')";
+                $sql = "INSERT INTO sparepart (part_type_id,part_name,description,cost_price,cal_price,sale_price,item_ref_id,status,created_at,created_by)
+           VALUES ('$sparepart_type','$item_name','$item_name','$cost_price[$i]','$cal_price[$i]','$new_price_vat','$item_id[$i]',1,'$c_timestamp','$c_user')";
 
                 if ($result = $connect->query($sql)) {
                     $res += 1;

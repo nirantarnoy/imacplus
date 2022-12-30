@@ -210,7 +210,7 @@ if ($member_address != null) {
                                     <div class="col-sm-9 pr-0 pr-sm-3">
                                         <input required type="text" name="member_fname"
                                                class="form-control col-11 col-sm-8 col-md-6 member-fname" placeholder=""
-                                               value="<?= $fname ?>"/>
+                                               value="<?= $fname ?>" <?=$is_verified==1?'readonly':''?>/>
                                     </div>
                                 </div>
                                 <div class="form-group row mt-2">
@@ -221,7 +221,7 @@ if ($member_address != null) {
                                     <div class="col-sm-9 pr-0 pr-sm-3">
                                         <input required type="text" name="member_lname"
                                                class="form-control col-11 col-sm-8 col-md-6 member-lname" placeholder=""
-                                               value="<?= $fname ?>"/>
+                                               value="<?= $lname ?>" <?=$is_verified==1?'readonly':''?>/>
                                     </div>
                                 </div>
                                 <div class="form-group row mt-2">
@@ -232,7 +232,7 @@ if ($member_address != null) {
                                     <div class="col-sm-9 pr-0 pr-sm-3">
                                         <input required type="text" name="member_engname"
                                                class="form-control col-11 col-sm-8 col-md-6" placeholder=""
-                                               value="<?= $engname ?>"/>
+                                               value="<?= $engname ?>" <?=$is_verified==1?'readonly':''?>/>
                                     </div>
                                 </div>
                                 <div class="form-group row mt-2">
@@ -243,7 +243,7 @@ if ($member_address != null) {
                                     <div class="col-sm-9 pr-0 pr-sm-3">
                                         <input required type="text" name="member_engsurname"
                                                class="form-control col-11 col-sm-8 col-md-6" placeholder=""
-                                               value="<?= $engsurname ?>"/>
+                                               value="<?= $engsurname ?>" <?=$is_verified==1?'readonly':''?>/>
                                     </div>
                                 </div>
 
@@ -649,7 +649,7 @@ if ($member_address != null) {
                                     </div>
                                 </div>
                                 <br/>
-                                <?php if ($agree_verified == 0): ?>
+                                <?php if ($agree_verified >= 0): ?>
                                     <div class="form-group row mt-4">
                                         <div class="col-sm-9 pr-0 pr-sm-3 pt-1 offset-sm-3">
                                             <h3>
@@ -665,28 +665,97 @@ if ($member_address != null) {
                                                 (กรุณาอ่านตัวอย่าง)<br/>
                                             </p>
                                         </div>
-                                        <div class="col-sm-9 pr-0 pr-sm-3 pt-1 offset-sm-3">
-                                            <h3>
-                                                ตัวอย่างการถ่ายรูปยืนยันตัวตน
-                                            </h3>
+<!--                                        <div class="col-sm-9 pr-0 pr-sm-3 pt-1 offset-sm-3">-->
+<!--                                            <h3>-->
+<!--                                                ตัวอย่างการถ่ายรูปยืนยันตัวตน-->
+<!--                                            </h3>-->
+<!--                                        </div>-->
+<!--                                        <div class="col-sm-9 pr-0 pr-sm-3 pt-1 offset-sm-3">-->
+<!--                                            <p>-->
+<!--                                                - ถือบัตรประชาชนไม่ปิดบังใบหน้า <br/>-->
+<!--                                                - มองเห็นบัตรและ ID ชัดเจน <br/>-->
+<!--                                                - ถือกระดาษที่เขียนว่า imacplus.app พร้อมลงวันที่ <br/>-->
+<!--                                                - ถ่ายรูปท่านเอง พร้อมกับถือบัตรประชาชนและกระดาษที่เขียน <br/>-->
+<!--                                                - กรุณาถ่ายรูปในที่แสงสว่างเพียงพอ ไม่มืด<br/>-->
+<!--                                            </p>-->
+<!--                                        </div>-->
+                                        <br />
+                                        <div class="row">
+                                            <div class="col-lg-3"></div>
+                                            <div class="col-lg-9">
+                                                <img src="uploads/icon/id_01.jpg" style="width: 100%" alt="">
+                                            </div>
+
                                         </div>
-                                        <div class="col-sm-9 pr-0 pr-sm-3 pt-1 offset-sm-3">
-                                            <p>
-                                                - ถือบัตรประชาชนไม่ปิดบังใบหน้า <br/>
-                                                - มองเห็นบัตรและ ID ชัดเจน <br/>
-                                                - ถือกระดาษที่เขียนว่า imacplus.app พร้อมลงวันที่ <br/>
-                                                - ถ่ายรูปท่านเอง พร้อมกับถือบัตรประชาชนและกระดาษที่เขียน <br/>
-                                                - กรุณาถ่ายรูปในที่แสงสว่างเพียงพอ ไม่มืด<br/>
-                                            </p>
+                                        <br />
+                                        <div class="row">
+                                            <div class="col-lg-3"></div>
+                                            <div class="col-lg-9">
+                                                <img src="uploads/icon/id_02.jpg" style="width: 100%" alt="">
+                                            </div>
+
                                         </div>
+                                        <br />
+
                                         <div class="col-sm-9 pr-0 pr-sm-3 pt-1 offset-sm-3">
+
+                                        </div>
+
+<!--                                        <div class="col-sm-9 pr-0 pr-sm-3 pt-1 offset-sm-3">-->
+<!--                                            <input type="file" class="form-control" name="photo_verify">-->
+<!--                                        </div>-->
+                                    </div>
+                                    <div style="height: 20px;"></div>
+                                    <br/>
+                                    <div class="row">
+                                        <div class="col-lg-3">
+
+                                        </div>
+                                        <div class="col-lg-9">
                                             <h3>
                                                 แนบรูปภาพ
                                             </h3>
                                         </div>
-                                        <br/>
-                                        <div class="col-sm-9 pr-0 pr-sm-3 pt-1 offset-sm-3">
-                                            <input type="file" class="form-control" name="photo_verify">
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-lg-3"></div>
+                                        <div class="col-lg-3">
+                                            <div id="btn-add-before-photo-1"
+                                                 style="width: 100%;height: 200px;background-color: lightblue;border-radius: 5px;text-align: center;display: block;justify-content: center;line-height: 200px;"
+                                                 onclick="before1photo($(this))">
+                                                เพิ่มรูป
+                                            </div>
+                                            <img id="blah" src="#" alt="your image"
+                                                 style="width: 150px;height: 200px;display: none;border-radius: 5px;"/>
+                                            <input type="file" style="display: none;" class="before-1-photo" name="upload_file_1"
+                                                   accept="image/jpeg">
+                                            <div style="height: 3px;"></div>
+                                            <div class="btn btn-secondary btn-del-1" style="width: 150px;display: none;"
+                                                 onclick="deletephoto1($(this))">ลบ
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-3">
+                                            <div id="btn-add-before-photo-2"
+                                                 style="width: 100%;height: 200px;background-color: lightblue;border-radius: 5px;text-align: center;display: block;justify-content: center;line-height: 200px;"
+                                                 onclick="before2photo($(this))">
+                                                เพิ่มรูป
+                                            </div>
+                                            <img id="blah2" src="#" alt="your image"
+                                                 style="width: 150px;height: 200px;display: none;border-radius: 5px;"/>
+                                            <input type="file" style="display: none;" class="before-2-photo" name="upload_file_2"
+                                                   accept="image/jpeg">
+                                            <div style="height: 3px;"></div>
+                                            <div class="btn btn-secondary btn-del-2" style="width: 150px;display: none;"
+                                                 onclick="deletephoto2($(this))">ลบ
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-3"></div>
+                                    </div>
+                                    <br/>
+                                    <div class="row">
+                                        <div class="col-lg-6">
+                                            <input style="display: none;" type="file" name="photo_verify[]" multiple accept="image/jpeg">
                                         </div>
                                     </div>
                                 <?php else: ?>
@@ -700,18 +769,21 @@ if ($member_address != null) {
                                     </div>
                                     <?php if ($verify_photo != ''): ?>
                                         <div class="row">
+                                            <div class="col-lg-3"></div>
                                             <div class="col-lg-8">
-                                                <img src="uploads/member_verify/<?= $verify_photo ?>" width="100%"
+                                                <img src="uploads/member_verify/<?= $verify_photo ?>" width="80%"
                                                      alt="">
                                             </div>
-                                            <div class="col-lg-4">
-                                                <div class="col-sm-9 pr-0 pr-sm-3 pt-1 offset-sm-3">
-                                                    <input type="file" class="form-control" name="photo_verify">
-                                                </div>
-                                            </div>
+                                            <div class="col-lg-1"></div>
+<!--                                            <div class="col-lg-4">-->
+<!--                                                <div class="col-sm-9 pr-0 pr-sm-3 pt-1 offset-sm-3">-->
+<!--                                                    <input type="file" class="form-control" name="photo_verify">-->
+<!--                                                </div>-->
+<!--                                            </div>-->
                                         </div>
                                     <?php else: ?>
                                         <div class="row">
+                                            <div class="col-lg-3"></div>
                                             <div class="col-lg-4">
                                                 <input type="file" class="form-control" name="photo_verify">
 
@@ -723,6 +795,7 @@ if ($member_address != null) {
                             </div>
 
                         </div>
+                        <?php if($is_verified == 0):?>
                         <div class="form-group row">
                             <div class="col-sm-3 col-form-label text-sm-right pr-0">
                             </div>
@@ -732,6 +805,7 @@ if ($member_address != null) {
                                 <div class="btn btn-primary" onclick="submitmyform()">บันทึกข้อมูล</div>
                             </div>
                         </div>
+                        <?php endif;?>
 
                     </form>
 
@@ -859,6 +933,56 @@ include("footer.php");
     // });
 
     $(".span-error-account-name").hide();
+
+    $(function () {
+        $(".before-1-photo").change(function () {
+            const file = this.files[0];
+            //alert(file);
+            if (file) {
+                $("#btn-add-before-photo-1").hide();
+                $("#blah").show();
+                $("#blah").attr("src", URL.createObjectURL(file));
+                $(".btn-del-1").show();
+            } else {
+                $(".btn-del-1").hide();
+            }
+        });
+    });
+    $(function () {
+        $(".before-2-photo").change(function () {
+            //alert('2');
+            const file = this.files[0];
+            //alert(file);
+            if (file) {
+                $("#btn-add-before-photo-2").hide();
+                $("#blah2").show();
+                $("#blah2").attr("src", URL.createObjectURL(file));
+                $(".btn-del-2").show();
+            } else {
+                $(".btn-del-2").hide();
+            }
+        });
+    });
+
+    function deletephoto1(e) {
+        // alert();
+        if ($("#blah").attr("src") != null) {
+            $("#blah").attr("src", "");
+            $(".btn-del-1").hide();
+            $("#btn-add-before-photo-1").show();
+            $("#blah").hide();
+        }
+    }
+
+    function deletephoto2(e) {
+        // alert();
+        if ($("#blah2").attr("src") != null) {
+            $("#blah2").attr("src", "");
+            $(".btn-del-2").hide();
+            $("#btn-add-before-photo-2").show();
+            $("#blah2").hide();
+        }
+    }
 
     function copyaddress(e) {
         var val = e.val();
@@ -1097,5 +1221,12 @@ include("footer.php");
             $(".span-error-account-name").show();
             e.val('');
         }
+    }
+    function before1photo(e) {
+        $(".before-1-photo").trigger("click");
+    }
+
+    function before2photo(e) {
+        $(".before-2-photo").trigger("click");
     }
 </script>

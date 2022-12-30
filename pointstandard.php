@@ -43,7 +43,7 @@ $member_type_data = getMemberTypeData($connect);
 //}
 if ($update_id) {
     $action_type = 'update';
-    $sale_data_line = getUpgradeStandardModel($connect, $update_id);
+    $sale_data_line = getPointStandardModel($connect, $update_id);
     $rec_id = $update_id;
 //    print_r($sale_data_line);
 }
@@ -76,7 +76,7 @@ if ($update_id) {
 
 
 <div class="d-sm-flex align-items-center justify-content-between mb-4">
-    <h1 class="h3 mb-0 text-gray-800">จัดการ Upgrade Standard</h1>
+    <h1 class="h3 mb-0 text-gray-800">จัดการคำนวน Point Standard</h1>
 
 </div>
 <div class="card shadow mb-4">
@@ -84,7 +84,7 @@ if ($update_id) {
     <!--        <h6 class="m-0 font-weight-bold text-primary">DataTables Example</h6>-->
     <!--    </div>-->
     <div class="card-body">
-        <form action="upgradestandard_action.php" id="form-position" method="post" enctype="multipart/form-data">
+        <form action="pointstandard_action.php" id="form-position" method="post" enctype="multipart/form-data">
             <input type="hidden" class="remove-line-list" name="remove_line_list" value="">
             <input type="hidden" class="action-type" value="<?= $action_type ?>" name="action_type">
             <input type="hidden" class="recid" value="<?= $rec_id ?>" name="recid">
@@ -93,130 +93,107 @@ if ($update_id) {
                     <table class="table table-bordered table-striped" id="table-list" style="width: 100%">
                         <thead>
                         <tr>
-                            <td style="width: 20%">ประเภทสมาชิก</td>
-                            <td style="width: 20%">ระดับ1</td>
-                            <td style="width: 10%">ระดับ1 Mpoint</td>
-                            <td style="width: 20%">ระดับ2</td>
-                            <td style="width: 10%">ระดับ2 Mpoint</td>
+                            <td style="width: 20%">สมาชิกออกใบแจ้งซ่อม</td>
+                            <td style="width: 20%">คำนวนชั้นที่ 1</td>
+                            <td style="width: 20%">คำนวนชั้นที่ 2</td>
                             <td style="width: 5%">-</td>
                         </tr>
                         </thead>
                         <tbody>
 
-                            <?php if (count($sale_data_line)): ?>
-                                <?php for ($i = 0; $i <= count($sale_data_line) - 1; $i++): ?>
-                                    <tr data-var="<?= $sale_data_line[$i]['id'] ?>">
-                                    <td>
-                                        <input type="hidden" class="form-control line-id" name="line_id[]" value="">
-                                        <select name="line_to_member_type[]" class="form-control line-to-member-type"
-                                                id="">
+                        <?php if (count($sale_data_line)): ?>
+                            <?php for ($i = 0; $i <= count($sale_data_line) - 1; $i++): ?>
+                                <tr data-var="<?= $sale_data_line[$i]['id'] ?>">
+                                <td>
+                                    <input type="hidden" class="form-control line-id" name="line_id[]" value="">
+                                    <select name="line_to_member_type[]" class="form-control line-to-member-type"
+                                            id="">
 
-                                            <option value="">--เลือก--</option>
-                                            <?php for ($x = 0; $x <= count($member_type_data) - 1; $x++): ?>
-                                                <?php
-                                                $selected = '';
-                                                if ($member_type_data[$x]['id'] == $sale_data_line[$i]['member_type_id']) {
-                                                    $selected = "selected";
-                                                }
-                                                ?>
-                                                <option value="<?= $member_type_data[$x]['id'] ?>" <?= $selected ?>><?= $member_type_data[$x]['name'] ?></option>
-                                            <?php endfor; ?>
-                                        </select>
-                                    </td>
-                                    <td>
-                                        <select name="line_parent_1_member_type[]"
-                                                class="form-control line-parent-1-member-type" id="">
-                                            <option value="">--เลือก--</option>
-                                            <?php for ($x = 0; $x <= count($member_type_data) - 1; $x++): ?>
-                                                <?php
-                                                $selected = '';
-                                                if ($member_type_data[$x]['id'] == $sale_data_line[$i]['parent_1']) {
-                                                    $selected = "selected";
-                                                }
-                                                ?>
-                                                <option value="<?= $member_type_data[$x]['id'] ?>" <?=$selected?>><?= $member_type_data[$x]['name'] ?></option>
-                                            <?php endfor; ?>
-                                        </select>
-                                    </td>
-                                    <td>
-                                        <input style="text-align: right" type="number"
-                                               class="form-control line-parent-1-rate"
-                                               name="line_parent_1_rate[]"
-                                               value="<?= $sale_data_line[$i]['parent_1_rate'] ?>"
-                                               onchange="calTotal($(this))">
-                                    </td>
-                                    <td>
-                                        <select name="line_parent_2_member_type[]"
-                                                class="form-control line-parent-2-member-type" id="">
-                                            <option value="">--เลือก--</option>
-                                            <?php for ($x = 0; $x <= count($member_type_data) - 1; $x++): ?>
-                                                <?php
-                                                $selected = '';
-                                                if ($member_type_data[$x]['id'] == $sale_data_line[$i]['parent_2']) {
-                                                    $selected = "selected";
-                                                }
-                                                ?>
-                                                <option value="<?= $member_type_data[$x]['id'] ?>" <?=$selected?>><?= $member_type_data[$x]['name'] ?></option>
-                                            <?php endfor; ?>
-                                        </select>
-                                    </td>
-                                    <td>
-                                        <input style="text-align: right" type="number"
-                                               class="form-control line-parent-2-rate"
-                                               name="line_parent_2_rate[]"
-                                               value="<?= $sale_data_line[$i]['parent_2_rate'] ?>"
-                                               onchange="calTotal($(this))">
-                                    </td>
-                                    <td>
-                                        <div class="btn btn-danger" onclick="removeline($(this))">ลบ</div>
-                                    </td>
-                                <?php endfor; ?>
-                            <?php else: ?>
-                                <tr data-var="">
-                                    <td>
-                                        <input type="hidden" class="form-control line-id" name="line_id[]" value="">
-                                        <select name="line_to_member_type[]" class="form-control line-to-member-type"
-                                                id="">
+                                        <option value="">--เลือก--</option>
+                                        <?php for ($x = 0; $x <= count($member_type_data) - 1; $x++): ?>
+                                            <?php
+                                            $selected = '';
+                                            if ($member_type_data[$x]['id'] == $sale_data_line[$i]['member_type_id']) {
+                                                $selected = "selected";
+                                            }
+                                            ?>
+                                            <option value="<?= $member_type_data[$x]['id'] ?>" <?= $selected ?>><?= $member_type_data[$x]['name'] ?></option>
+                                        <?php endfor; ?>
+                                    </select>
+                                </td>
+                                <td>
+                                    <select name="line_parent_1_member_type[]"
+                                            class="form-control line-parent-1-member-type" id="">
+                                        <option value="">--เลือก--</option>
+                                        <?php for ($x = 0; $x <= count($member_type_data) - 1; $x++): ?>
+                                            <?php
+                                            $selected = '';
+                                            if ($member_type_data[$x]['id'] == $sale_data_line[$i]['parent_1']) {
+                                                $selected = "selected";
+                                            }
+                                            ?>
+                                            <option value="<?= $member_type_data[$x]['id'] ?>" <?=$selected?>><?= $member_type_data[$x]['name'] ?></option>
+                                        <?php endfor; ?>
+                                    </select>
+                                </td>
 
-                                            <option value="">--เลือก--</option>
-                                            <?php for ($i = 0; $i <= count($member_type_data) - 1; $i++): ?>
-                                                <option value="<?= $member_type_data[$i]['id'] ?>"><?= $member_type_data[$i]['name'] ?></option>
-                                            <?php endfor; ?>
-                                        </select>
-                                    </td>
-                                    <td>
-                                        <select name="line_parent_1_member_type[]"
-                                                class="form-control line-parent-1-member-type" id="">
-                                            <option value="">--เลือก--</option>
-                                            <?php for ($i = 0; $i <= count($member_type_data) - 1; $i++): ?>
-                                                <option value="<?= $member_type_data[$i]['id'] ?>"><?= $member_type_data[$i]['name'] ?></option>
-                                            <?php endfor; ?>
-                                        </select>
-                                    </td>
-                                    <td>
-                                        <input style="text-align: right" type="number"
-                                               class="form-control line-parent-1-rate"
-                                               name="line_parent_1_rate[]" value="" onchange="calTotal($(this))">
-                                    </td>
-                                    <td>
-                                        <select name="line_parent_2_member_type[]"
-                                                class="form-control line-parent-2-member-type" id="">
-                                            <option value="">--เลือก--</option>
-                                            <?php for ($i = 0; $i <= count($member_type_data) - 1; $i++): ?>
-                                                <option value="<?= $member_type_data[$i]['id'] ?>"><?= $member_type_data[$i]['name'] ?></option>
-                                            <?php endfor; ?>
-                                        </select>
-                                    </td>
-                                    <td>
-                                        <input style="text-align: right" type="number"
-                                               class="form-control line-parent-2-rate"
-                                               name="line_parent_2_rate[]" value="" onchange="calTotal($(this))">
-                                    </td>
-                                    <td>
-                                        <div class="btn btn-danger" onclick="removeline($(this))">ลบ</div>
-                                    </td>
-                                </tr>
-                            <?php endif; ?>
+                                <td>
+                                    <select name="line_parent_2_member_type[]"
+                                            class="form-control line-parent-2-member-type" id="">
+                                        <option value="">--เลือก--</option>
+                                        <?php for ($x = 0; $x <= count($member_type_data) - 1; $x++): ?>
+                                            <?php
+                                            $selected = '';
+                                            if ($member_type_data[$x]['id'] == $sale_data_line[$i]['parent_2']) {
+                                                $selected = "selected";
+                                            }
+                                            ?>
+                                            <option value="<?= $member_type_data[$x]['id'] ?>" <?=$selected?>><?= $member_type_data[$x]['name'] ?></option>
+                                        <?php endfor; ?>
+                                    </select>
+                                </td>
+
+                                <td>
+                                    <div class="btn btn-danger" onclick="removeline($(this))">ลบ</div>
+                                </td>
+                            <?php endfor; ?>
+                        <?php else: ?>
+                            <tr data-var="">
+                                <td>
+                                    <input type="hidden" class="form-control line-id" name="line_id[]" value="">
+                                    <select name="line_to_member_type[]" class="form-control line-to-member-type"
+                                            id="">
+
+                                        <option value="">--เลือก--</option>
+                                        <?php for ($i = 0; $i <= count($member_type_data) - 1; $i++): ?>
+                                            <option value="<?= $member_type_data[$i]['id'] ?>"><?= $member_type_data[$i]['name'] ?></option>
+                                        <?php endfor; ?>
+                                    </select>
+                                </td>
+                                <td>
+                                    <select name="line_parent_1_member_type[]"
+                                            class="form-control line-parent-1-member-type" id="">
+                                        <option value="">--เลือก--</option>
+                                        <?php for ($i = 0; $i <= count($member_type_data) - 1; $i++): ?>
+                                            <option value="<?= $member_type_data[$i]['id'] ?>"><?= $member_type_data[$i]['name'] ?></option>
+                                        <?php endfor; ?>
+                                    </select>
+                                </td>
+                                <td>
+                                    <select name="line_parent_2_member_type[]"
+                                            class="form-control line-parent-2-member-type" id="">
+                                        <option value="">--เลือก--</option>
+                                        <?php for ($i = 0; $i <= count($member_type_data) - 1; $i++): ?>
+                                            <option value="<?= $member_type_data[$i]['id'] ?>"><?= $member_type_data[$i]['name'] ?></option>
+                                        <?php endfor; ?>
+                                    </select>
+                                </td>
+
+                                <td>
+                                    <div class="btn btn-danger" onclick="removeline($(this))">ลบ</div>
+                                </td>
+                            </tr>
+                        <?php endif; ?>
 
                         </tbody>
                         <tfoot>
@@ -227,10 +204,7 @@ if ($update_id) {
                                 </div>
                             </td>
 
-                            <td></td>
                             <td style="text-align: right;vertical-align: middle;"></td>
-                            <td>
-                            </td>
 
                             <td></td>
                         </tr>
@@ -264,69 +238,15 @@ if ($update_id) {
     <input type="hidden" class="delete-id" name="delete_id" value="">
 </form>
 
-<div id="findModal" class="modal fade" role="dialog">
-    <div class="modal-dialog modal-xl">
-        <!-- Modal content-->
-        <div class="modal-content">
-            <div class="modal-header">
-                <div class="row" style="width: 100%">
-                    <div class="col-lg-11">
-                        <div class="input-group">
-                            <input type="text" class="form-control search-item" placeholder="ค้นหาสินค้า">
-                            <span class="input-group-addon">
-                                        <button type="submit" class="btn btn-primary btn-search-submit">
-                                            <span class="fa fa-search"></span>
-                                        </button>
-                                    </span>
-                        </div>
-                    </div>
-                    <div class="col-lg-1">
-                        <button type="button" class="close" data-dismiss="modal">&times;</button>
-                    </div>
-                </div>
-
-            </div>
-            <!--            <div class="modal-body" style="white-space:nowrap;overflow-y: auto">-->
-            <!--            <div class="modal-body" style="white-space:nowrap;overflow-y: auto;scrollbar-x-position: top">-->
-
-            <div class="modal-body">
-
-                <input type="hidden" name="line_qc_product" class="line_qc_product" value="">
-                <table class="table table-bordered table-striped table-find-list" width="100%">
-                    <thead>
-                    <tr>
-                        <th style="text-align: center">เลือก</th>
-                        <th>อะไหล่</th>
-                        <th>รายละเอียด</th>
-                        <th>ประเภท</th>
-                        <th>คลัง</th>
-                        <th>ราคา</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-
-                    </tbody>
-                </table>
-            </div>
-
-            <div class="modal-footer">
-                <button class="btn btn-outline-success btn-product-selected" data-dismiss="modalx" disabled><i
-                            class="fa fa-check"></i> ตกลง
-                </button>
-                <button type="button" class="btn btn-default" data-dismiss="modal"><i
-                            class="fa fa-close text-danger"></i> ปิดหน้าต่าง
-                </button>
-            </div>
-        </div>
-
-    </div>
-</div>
 
 
 <?php
 include "footer.php";
 ?>
 <script>
+    var removelist = [];
+    var selecteditem = [];
+
     notify();
     alltotal();
     // $('.quotation-date').datetimepicker({dateFormat: 'dd-mm-yy'});
@@ -334,8 +254,6 @@ include "footer.php";
     $(".btn-upload").click(function () {
         $("#myModal").modal("show");
     });
-    var removelist = [];
-    var selecteditem = [];
 
     var dataTablex = $("#dataTable").DataTable({
         "processing": true,
@@ -492,23 +410,14 @@ include "footer.php";
                 removelist.push(e.parent().parent().attr("data-var"));
                 $(".remove-line-list").val(removelist);
             }
-
-            // alert(removelist);
-
             if ($("#table-list tbody tr").length == 1) {
                 $("#table-list tbody tr").each(function () {
                     $(this).find(":text").val("");
                     $(this).find(':input[type="number"]').val("");
-                    // $(this).find(".line-prod-photo").attr('src', '');
-                    // $(this).find(".line-qty").val(1);
-                    // cal_num();
                 });
             } else {
                 e.parent().parent().remove();
             }
-            alltotal();
-            // cal_linenum();
-            // cal_all();
         }
         $(".action-type").val('delete');
     }

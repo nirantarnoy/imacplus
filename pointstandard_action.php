@@ -22,6 +22,8 @@ $remove_line = '';
 $action = null;
 $userid = 0;
 
+//print_r($_POST);
+
 if (isset($_SESSION['userid'])) {
     $userid = $_SESSION['userid'];
 }
@@ -44,8 +46,6 @@ if (isset($_POST['line_parent_2_rate'])) {
 if (isset($_POST['line_id'])) {
     $line_id = $_POST['line_id'];
 }
-
-
 //echo $to_member_type[0];return;
 
 if (isset($_POST['status'])) {
@@ -71,36 +71,30 @@ if ($action == 'create') {
 //    $created_by = $userid;
     if (count($to_member_type)) {
         for ($i = 0; $i <= count($to_member_type) - 1; $i++) {
-            $sql = "INSERT INTO upgrade_standard(member_type_id,parent_1,parent_1_rate,parent_2,parent_2_rate)
-            VALUES('$to_member_type[$i]','$member_type_1[$i]','$member_type_1_rate[$i]','$member_type_2[$i]','$member_type_2_rate[$i]')";
+            $sql = "INSERT INTO point_cal_standard(member_type_id,parent_type_id,parent_type_2_id)
+            VALUES('$to_member_type[$i]','$member_type_1[$i]','$member_type_2[$i]')";
             if ($result = $connect->query($sql)) {
                 $_SESSION['msg-success'] = 'บันทึกข้อมูลเรียบร้อยแล้ว';
-                header('location:upgradestandard.php');
+                header('location:pointstandard.php');
             }
         }
     }
-//    $sql = "INSERT INTO upgrade_standard(member_type_id,parent_1,parent_1_rate,parent_2,parent_2_rate)
-//            VALUES('$to_member_type','$member_type_1','$member_type_1_rate','$member_type_2','$member_type_2_rate')";
-//    if ($result = $connect->query($sql)) {
-//        $_SESSION['msg-success'] = 'บันทึกข้อมูลเรียบร้อยแล้ว';
-//        header('location:upgradestandard.php');
-//    }
+
 }
 
 if ($action == 'update') {
-//    print_r($to_member_type);return;
     $created_at = time();
     $created_by = $userid;
     if ($id > 0) {
-        $sql3 = "DELETE FROM upgrade_standard";
+        $sql3 = "DELETE FROM point_cal_standard";
         if ($result3 = $connect->query($sql3)) {
-            if (count($to_member_type)) {
+            if ($to_member_type != null) {
                 for ($i = 0; $i <= count($to_member_type) - 1; $i++) {
-                    $sql = "INSERT INTO upgrade_standard(member_type_id,parent_1,parent_1_rate,parent_2,parent_2_rate)
-            VALUES('$to_member_type[$i]','$member_type_1[$i]','$member_type_1_rate[$i]','$member_type_2[$i]','$member_type_2_rate[$i]')";
+                    $sql = "INSERT INTO point_cal_standard(member_type_id,parent_type_id,parent_type_2_id)
+            VALUES('$to_member_type[$i]','$member_type_1[$i]','$member_type_2[$i]')";
                     if ($result = $connect->query($sql)) {
                         $_SESSION['msg-success'] = 'บันทึกข้อมูลเรียบร้อยแล้ว';
-                        header('location:upgradestandard.php');
+                        header('location:pointstandard.php');
                     }
                 }
             }
@@ -109,30 +103,26 @@ if ($action == 'update') {
 }
 
 if ($action == 'delete') {
-    if ($remove_line > 0) {
-        $sql3 = "DELETE FROM upgrade_standard WHERE id='$remove_line'";
-        if ($result3 = $connect->query($sql3)) {
+    $remove = explode(',',$remove_line);
+
+    if ($remove_line != null) {
+        $res = 0;
+        for($i=0;$i<=count($remove)-1;$i++){
+            $sql3 = "DELETE FROM point_cal_standard WHERE id='$remove[$i]'";
+            if($result3 = $connect->query($sql3)){
+                $res +=1;
+            }
+        }
+
+        if ($res > 0) {
             $_SESSION['msg-success'] = 'ลบข้อมูลเรียบร้อยแล้ว';
-            header('location:upgradestandard.php');
+            header('location:pointstandard.php');
         } else {
             echo "no";
             return;
         }
     }
 }
-//} else {
-//    $_SESSION['msg-error'] = 'Save data error';
-//    header('location:productcat.php');
-//    $sql = "UPDATE product_group SET code='$code',name='$name',description='$description'";
-//    $sql.=" WHERE id='$recid'";
-//
-//    if ($result = $connect->query($sql)) {
-//        $_SESSION['msg-success'] = 'Saved data successfully';
-//        header('location:productcat.php');
-//    } else {
-//        $_SESSION['msg-error'] = 'Save data error';
-//        header('location:productcat.php');
-//    }
-//}
+
 
 ?>

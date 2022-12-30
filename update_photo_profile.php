@@ -58,8 +58,11 @@ if ($id != null || $id !='') {
 
 function imageResize($imageSrc,$imageWidth,$imageHeight) {
 
-$newImageWidth=200;
-$newImageHeight=250;
+//$newImageWidth=200;
+//$newImageHeight=250;
+
+$newImageWidth=84;
+$newImageHeight=84;
 
 $newImageLayer=imagecreatetruecolor($newImageWidth,$newImageHeight);
 imagecopyresampled($newImageLayer,$imageSrc,0,0,0,0,$newImageWidth,$newImageHeight,$imageWidth,$imageHeight);

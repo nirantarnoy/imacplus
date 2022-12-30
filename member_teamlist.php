@@ -8,8 +8,24 @@ if (isset($_SESSION['userid'])) {
 }
 
 $data = [];
+$mdata = [];
 
 if ($member_id > 0) {
+    $mquery = "SELECT * FROM member WHERE id='$member_id' ";
+    $statementm = $connect->prepare($mquery);
+    $statementm->execute();
+    $resultm = $statementm->fetchAll();
+    foreach ($resultm as $rowm) {
+        array_push($mdata,
+            [
+                'id' => $rowm['id'],
+                'first_name' => $rowm['first_name'],
+                'last_name' => $rowm['last_name'],
+                'phone' => $rowm['phone_number'],
+                'member_type' => getMembertypeName($rowm['member_type_id'], $connect),
+            ]);
+    }
+
     $query = "SELECT * FROM member WHERE parent_id='$member_id' ";
     $statement = $connect->prepare($query);
     $statement->execute();
@@ -29,11 +45,52 @@ if ($member_id > 0) {
 ?>
     <div class="row">
         <div class="col-lg-12" style="text-align: center;">
+            <h4><b>ฉัน</b></h4>
+        </div>
+    </div>
+
+    <br/>
+    <div class="row">
+        <div class="col-lg-4"></div>
+        <div class="col-lg-4">
+            <div class="text-center mt-2" style="text-align: center;">
+                <div class="pos-rel">
+                    <img alt="Profile image"
+                         src="uploads/member_photo/<?= getMemberPhoto($connect, $mdata[0]['id']) == '' ? 'demo.png' : getMemberPhoto($connect, $mdata[0]['id']) ?>"
+                         class="radius-round bord1er-2 brc-warning-m1" style="width: 20%;height: 20%"/>
+                </div>
+                <div style="height: 10px;"></div>
+                <span>
+                                          <h5 class="text-130 text-dark-m3">
+                                        <?= $mdata[0]['first_name'] . ' ' . $mdata[0]['last_name'] ?>
+                                    </h5>
+                                    </span>
+
+                <span>
+                                          <h5 class="text-130 text-dark-m3">
+                                        <?= $mdata[0]['phone'] ?>
+                                    </h5>
+                                    </span>
+
+                <span class="d-inline-block radius-round bgc-yellow-d1 text-dark-tp3 text-150 px-25 py-3px mx-2px my-2px">
+                                <?= $mdata[0]['member_type'] ?>
+                                </span>
+
+
+            </div>
+        </div>
+        <div class="col-lg-4"></div>
+    </div>
+    <br/>
+    <br/>
+    <hr />
+    <div class="row">
+        <div class="col-lg-12" style="text-align: center;">
             <h3><b>ทีมงานของฉัน</b></h3>
         </div>
     </div>
     <div class="row">
-        <div class="col-lg-12">
+        <div class="col-lg-12" style="text-align: center;">
 
             <div class="row">
                 <?php for ($i = 0; $i <= count($data) - 1; $i++): ?>
@@ -45,7 +102,7 @@ if ($member_id > 0) {
                                     <div class="pos-rel">
                                         <img alt="Profile image"
                                              src="uploads/member_photo/<?= getMemberPhoto($connect, $data[$i]['id']) == '' ? 'demo.png' : getMemberPhoto($connect, $data[$i]['id']) ?>"
-                                             class="radius-round bord1er-2 brc-warning-m1" style="width: 30%"/>
+                                             class="radius-round bord1er-2 brc-warning-m1" style="width: 30%;height: 30%;"/>
                                     </div>
                                     <div style="height: 10px;"></div>
                                     <span>
@@ -62,7 +119,7 @@ if ($member_id > 0) {
 
                                     <span class="d-inline-block radius-round bgc-yellow-d1 text-dark-tp3 text-150 px-25 py-3px mx-2px my-2px">
                                 <?= $data[$i]['member_type'] ?>
-                            </span>
+                                </span>
 
 
                                 </div>
@@ -78,6 +135,7 @@ if ($member_id > 0) {
     </div>
 <?php if ($data != null): ?>
     <br/>
+    <hr />
     <div class="row">
         <div class="col-lg-12" style="text-align: center;">
             <h3><b>สมาชิกชั้นที่ 2</b></h3>
@@ -97,7 +155,7 @@ if ($member_id > 0) {
                                             <div class="pos-rel">
                                                 <img alt="Profile image"
                                                      src="uploads/member_photo/<?= getMemberPhoto($connect, $data2[$x]['id']) == '' ? 'demo.png' : getMemberPhoto($connect, $data2[$x]['id']) ?>"
-                                                     class="radius-round bord1er-2 brc-warning-m1" style="width: 30%"/>
+                                                     class="radius-round bord1er-2 brc-warning-m1" style="width: 30%;height: 30%"/>
                                             </div>
                                             <div style="height: 10px;"></div>
                                             <span>

@@ -15,11 +15,11 @@ $userid = $_SESSION['userid'];
 $member_id = getMemberIDFromUser($connect, $userid);
 $query_filter = '';
 $query = '';
-
-if(checkUserAdmin($connect , $userid) == 1){
+$isadmin = checkUserAdmin($connect, $_SESSION['userid']);
+if($isadmin == 1){
     $query = "SELECT * FROM workorders WHERE id > 0";
 }else{
-    $query = "SELECT * FROM workorders WHERE id > 0 AND created_by=".$member_id;
+    $query = "SELECT * FROM workorders WHERE id > 0 AND (created_by='$member_id' OR center_id='$member_id')";
 }
 
 
@@ -69,7 +69,22 @@ foreach ($result as $row){
     $sub_array[] = '<p style="font-weight: ;text-align: left">'.$row['work_date'].'</p>';
     $sub_array[] = '<p style="font-weight: ;text-align: left">'.$row['customer_name'].'</p>';
     $sub_array[] = '<p style="font-weight: ;text-align: left">'.getWorkorderStatus($row['status']).'</p>';
-    $sub_array[] = '<a class="btn btn-success btn-sm" target="_blank" href="print_work_doc.php?id='.$row['id'].'"><i class="fas fa-print"></i> Work Doc</a><span> </span><a class="btn btn-warning btn-sm" target="_blank" href="print_bill.php?id='.$row['id'].'"><i class="fas fa-print"></i> Slip</a><span> </span><a class="btn btn-secondary btn-sm" data-id="'.$row['id'].'" href="workorder_create.php?id='.$row['id'].'"><i class="fas fa-edit"></i> Edit</a><span> </span><div class="btn btn-danger btn-sm" data-id="'.$row['id'].'" onclick="recDelete($(this))"><i class="fas fa-trash-alt"></i> Delete</div> </span><a class="btn btn-info btn-sm" data-id="'.$row['id'].'" href="worktrack.php?id='.$row['id'].'"><i class="fas fa-clock"></i> Tracking</a>';
+    if($isadmin == 1){
+        if($row['status'] == 6){
+            $sub_array[] = '<a class="btn btn-secondary btn-sm" data-id="'.$row['id'].'" href="workorder_create.php?id='.$row['id'].'"><i class="fas fa-edit"></i> Edit</a><span> </span><a class="btn btn-success btn-sm" target="_blank" href="print_work_doc.php?id='.$row['id'].'"><i class="fas fa-print"></i> Work Doc</a><span> </span><a class="btn btn-warning btn-sm" target="_blank" href="print_bill.php?id='.$row['id'].'"><i class="fas fa-print"></i> Slip</a><span> </span><div class="btn btn-danger btn-sm" data-id="'.$row['id'].'" onclick="recDelete($(this))"><i class="fas fa-trash-alt"></i> Delete</div> </span><a class="btn btn-info btn-sm" data-id="'.$row['id'].'" href="worktrack.php?id='.$row['id'].'"><i class="fas fa-clock"></i> Tracking</a>';
+        }else{
+            $sub_array[] = '<a class="btn btn-secondary btn-sm" data-id="'.$row['id'].'" href="workorder_create.php?id='.$row['id'].'"><i class="fas fa-edit"></i> Edit</a><span> </span><a class="btn btn-success btn-sm" target="_blank" href="print_work_doc.php?id='.$row['id'].'"><i class="fas fa-print"></i> Work Doc</a><span> </span><div class="btn btn-danger btn-sm" data-id="'.$row['id'].'" onclick="recDelete($(this))"><i class="fas fa-trash-alt"></i> Delete</div> </span><a class="btn btn-info btn-sm" data-id="'.$row['id'].'" href="worktrack.php?id='.$row['id'].'"><i class="fas fa-clock"></i> Tracking</a>';
+        }
+
+
+    }else{
+        if($row['status'] == 6){
+            $sub_array[] = '<a class="btn btn-secondary btn-sm" data-id="'.$row['id'].'" href="workorder_create.php?id='.$row['id'].'"><i class="fas fa-edit"></i> Edit</a><span> </span><a class="btn btn-success btn-sm" target="_blank" href="print_work_doc.php?id='.$row['id'].'"><i class="fas fa-print"></i> Work Doc</a><span> </span><a class="btn btn-warning btn-sm" target="_blank" href="print_bill.php?id='.$row['id'].'"><i class="fas fa-print"></i> Slip</a><span> </span><a class="btn btn-info btn-sm" data-id="'.$row['id'].'" href="worktrack.php?id='.$row['id'].'"><i class="fas fa-clock"></i> Tracking</a>';
+        }else{
+            $sub_array[] = '<a class="btn btn-secondary btn-sm" data-id="'.$row['id'].'" href="workorder_create.php?id='.$row['id'].'"><i class="fas fa-edit"></i> Edit</a><span> </span><a class="btn btn-success btn-sm" target="_blank" href="print_work_doc.php?id='.$row['id'].'"><i class="fas fa-print"></i> Work Doc</a><span> </span><a class="btn btn-info btn-sm" data-id="'.$row['id'].'" href="worktrack.php?id='.$row['id'].'"><i class="fas fa-clock"></i> Tracking</a>';
+        }
+
+    }
 
     $data[] = $sub_array;
 }

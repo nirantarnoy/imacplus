@@ -252,8 +252,8 @@ function getCustomerfromOrderId($connect, $workorder_id)
 function getPointtoday($connect, $member_id)
 {
     $total = 0;
-    $c_month = date('d');
-    $query = "SELECT * FROM workorders WHERE created_by = '$member_id' and day(work_date) ='$c_month' ";
+    $c_month = date('Y-m-d');
+    $query = "SELECT * FROM workorders WHERE created_by = '$member_id' and date(work_date) ='$c_month' and status>=6 ";
     $statement = $connect->prepare($query);
     $statement->execute();
     $result = $statement->fetchAll();
@@ -272,7 +272,7 @@ function getPointsevenday($connect, $member_id)
     $total = 0;
     $today = date('Y-m-d');
     $start_date = date('Y-m-d', strtotime(date('Y-m-d') . " -7 day"));
-    $query = "SELECT * FROM workorders WHERE created_by = '$member_id' and date(work_date) >='$start_date' and date(work_date)<='$today' ";
+    $query = "SELECT * FROM workorders WHERE created_by = '$member_id' and date(work_date) >='$start_date' and date(work_date)<='$today' and status>=6  ";
     $statement = $connect->prepare($query);
     $statement->execute();
     $result = $statement->fetchAll();
@@ -290,7 +290,8 @@ function getPointthismonth($connect, $member_id)
 {
     $total = 0;
     $c_month = date('m');
-    $query = "SELECT * FROM workorders WHERE created_by = '$member_id' and month(work_date) ='$c_month' ";
+    $c_year = date('Y');
+    $query = "SELECT * FROM workorders WHERE created_by = '$member_id' and month(work_date) ='$c_month' and year(work_date)='$c_year' and status>=6 ";
     $statement = $connect->prepare($query);
     $statement->execute();
     $result = $statement->fetchAll();
@@ -299,6 +300,64 @@ function getPointthismonth($connect, $member_id)
     if ($filtered_rows > 0) {
         foreach ($result as $row) {
             $total = ($total + calmpointtrans($connect, $row['id']));
+        }
+    }
+    return $total;
+}
+
+
+function getPointTranstoday($connect, $member_id)
+{
+    $total = 0;
+    $today = date('Y-m-d');
+    $query = "SELECT SUM(trans_point) as trans_point FROM point_trans WHERE member_id = '$member_id' and date(trans_date) ='$today' and  activity_type = 1";
+    $statement = $connect->prepare($query);
+    $statement->execute();
+    $result = $statement->fetchAll();
+    $filtered_rows = $statement->rowCount();
+
+    if ($filtered_rows > 0) {
+        foreach ($result as $row) {
+            $total = $row['trans_point'];
+        }
+    }
+    return $total;
+}
+
+
+function getPointTransSevenDay($connect, $member_id)
+{
+    $total = 0;
+    $today = date('Y-m-d');
+    $start_date = date('Y-m-d', strtotime(date('Y-m-d') . " -7 day"));
+    $query = "SELECT SUM(trans_point) as trans_point FROM point_trans WHERE member_id = '$member_id' and date(trans_date) >='$start_date' and date(trans_date)<='$today' and activity_type = 1 ";
+    $statement = $connect->prepare($query);
+    $statement->execute();
+    $result = $statement->fetchAll();
+    $filtered_rows = $statement->rowCount();
+
+    if ($filtered_rows > 0) {
+        foreach ($result as $row) {
+            $total = $row['trans_point'];
+        }
+    }
+    return $total;
+}
+
+function getPointTransthismonth($connect, $member_id)
+{
+    $total = 0;
+    $c_month = date('m');
+    $c_year = date('Y');
+    $query = "SELECT SUM(trans_point) as trans_point FROM point_trans  WHERE member_id = '$member_id' and month(trans_date) ='$c_month' and year(trans_date)='$c_year' and activity_type = 1";
+    $statement = $connect->prepare($query);
+    $statement->execute();
+    $result = $statement->fetchAll();
+    $filtered_rows = $statement->rowCount();
+
+    if ($filtered_rows > 0) {
+        foreach ($result as $row) {
+            $total = $row['trans_point'];
         }
     }
     return $total;

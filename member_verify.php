@@ -16,6 +16,8 @@ if (isset($_GET['id'])) {
     $member_id = $_GET['id'];
 }
 
+$is_admin = checkUserAdmin($connect, $_SESSION['userid']);
+
 $fname = '';
 $lname = '';
 $engname = '';
@@ -28,6 +30,8 @@ $is_verified = 0;
 $member_income_list = [];
 $address_current_type = 0;
 $agree_verified = 0;
+$verify_photo = '';
+$verify_photo_2 = '';
 $member_data = getMemberProfileData($connect, $member_id);
 if ($member_data != null) {
     $fname = $member_data[0]['fname'];
@@ -41,9 +45,11 @@ if ($member_data != null) {
     $address_current_type = $member_data[0]['address_current_type'];
     $agree_verified = $member_data[0]['agree_verified'];
     $phone = $member_data[0]['phone'];
+    $verify_photo = $member_data[0]['verify_photo'];
+    $verify_photo_2 = $member_data[0]['verify_photo_2'];
 }
 
-//echo $dob;
+//print_r($member_data);return;
 
 $member_income_type_data = getMemberIncomeData($connect, $member_id);
 //if($member_income_type_data != null){
@@ -216,7 +222,7 @@ if ($member_address != null) {
                                     <div class="col-sm-9 pr-0 pr-sm-3">
                                         <input required type="text" name="member_lname"
                                                class="form-control col-11 col-sm-8 col-md-6" placeholder=""
-                                               value="<?= $fname ?>"/>
+                                               value="<?= $lname ?>"/>
                                     </div>
                                 </div>
                                 <div class="form-group row mt-2">
@@ -690,6 +696,33 @@ if ($member_address != null) {
                                         </div>
                                         <br/>
                                     </div>
+                                    <?php if ($verify_photo != ''): ?>
+                                        <div class="row">
+                                            <div class="col-lg-3"></div>
+                                            <div class="col-lg-3">
+                                                <img src="uploads/member_verify/<?= $verify_photo ?>" width="80%"
+                                                     alt="">
+                                            </div>
+                                            <div class="col-lg-3">
+                                                <img src="uploads/member_verify/<?= $verify_photo_2 ?>" width="80%"
+                                                     alt="">
+                                            </div>
+                                            <div class="col-lg-1"></div>
+                                            <!--                                            <div class="col-lg-4">-->
+                                            <!--                                                <div class="col-sm-9 pr-0 pr-sm-3 pt-1 offset-sm-3">-->
+                                            <!--                                                    <input type="file" class="form-control" name="photo_verify">-->
+                                            <!--                                                </div>-->
+                                            <!--                                            </div>-->
+                                        </div>
+                                    <?php else: ?>
+                                        <div class="row">
+                                            <div class="col-lg-3"></div>
+                                            <div class="col-lg-4">
+                                                <input type="file" class="form-control" name="photo_verify">
+
+                                            </div>
+                                        </div>
+                                    <?php endif; ?>
                                 <?php endif; ?>
                                 <!--                                    </form>-->
                             </div>
@@ -706,6 +739,18 @@ if ($member_address != null) {
                                 <div class="btn btn-primary" onclick="submitmyform()">ยืนยันการตรวจสอบ</div>
                             </div>
                         </div>
+
+                        <?php endif;?>
+                        <?php if($is_admin == 1):?>
+                            <div class="form-group row">
+                                <div class="col-sm-3 col-form-label text-sm-right pr-0">
+                                </div>
+
+                                <div class="col-sm-9 pr-0 pr-sm-3">
+                                    <!--                                <input class="btn btn-success" type="submit" value="บันทึก">-->
+                                    <div class="btn btn-primary" onclick="submitmyform()">บันทึกข้อมูล</div>
+                                </div>
+                            </div>
                         <?php endif;?>
                     </form>
 
@@ -941,6 +986,7 @@ include("footer.php");
 
     function submitmyform() {
        // if (!$('#validation-form').valid()) return false;
+        //$(".action-type").val(0);
         document.getElementById('approve-form').submit();
     }
 </script>

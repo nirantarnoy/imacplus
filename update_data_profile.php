@@ -179,14 +179,24 @@ if (($id != null || $id != '') && $verify_member_status == 0) {
         $created_by = $userid;
 
         $slip_doc = '';
-        if (isset($_FILE['photo_verify'])) {
-          //  echo "ok has photo";return;
+        if (isset($_FILES['upload_file_1'])) {
+//            echo "ok has photo";return;
             $errors = array();
-            $file_name = $_FILES['photo_verify']['name'];
-            $file_tmp = $_FILES['photo_verify']['tmp_name'];
+            $file_name = $_FILES['upload_file_1']['name'];
+            $file_tmp = $_FILES['upload_file_1']['tmp_name'];
             //   $file_ext=strtolower(end(explode('.',$_FILES['file_card']['name'])));
             $slip_doc = $file_name;
             move_uploaded_file($file_tmp, "uploads/member_verify/" . $slip_doc);
+        }
+        $slip_doc2 = '';
+        if (isset($_FILES['upload_file_2'])) {
+//            echo "ok has photo";return;
+            $errors = array();
+            $file_name = $_FILES['upload_file_2']['name'];
+            $file_tmp = $_FILES['upload_file_2']['tmp_name'];
+            //   $file_ext=strtolower(end(explode('.',$_FILES['file_card']['name'])));
+            $slip_doc2 = $file_name;
+            move_uploaded_file($file_tmp, "uploads/member_verify/" . $slip_doc2);
         }
 
         $fulldate = explode('/',$dob);
@@ -195,7 +205,7 @@ if (($id != null || $id != '') && $verify_member_status == 0) {
             $dob_new = date('Y-m-d',strtotime($fulldate[2].'/'.$fulldate[1].'/'.$fulldate[0]));
         }
 
-        $sql = "UPDATE member set first_name='$fname', last_name='$lname' ,engname='$engname',engsurname='$engsurname',nation_type='$nation_type',gender='$gender',dob='$dob_new',verify_photo='$slip_doc',address_current_type='$address_current_type',agree_verified='$is_agree' WHERE id='$id'";
+        $sql = "UPDATE member set first_name='$fname', last_name='$lname' ,engname='$engname',engsurname='$engsurname',nation_type='$nation_type',gender='$gender',dob='$dob_new',verify_photo='$slip_doc',verify_photo_2='$slip_doc2',address_current_type='$address_current_type',agree_verified='$is_agree' WHERE id='$id'";
 //        $sql = "UPDATE member set first_name='$fname', last_name='$lname' ,engname='$engname',engsurename='$engsurname',nation_type='$nation_type',id_verify='$id_verify',gender='$gender','dob'='$dob',verify_photo='$slip_doc' WHERE id='$id', is_verified=1";
         //echo $sql;return;
         if ($connect->query($sql)) {
@@ -310,8 +320,154 @@ if (($id != null || $id != '') && $verify_member_status == 0) {
 
     $_SESSION['msg-success'] = 'บันทึกข้อมูลเรียบร้อยแล้ว';
     header('location:profile.php');
-}else{
-    echo "no";
+}else{  // update from admin
+    //  echo $fname.' = '.$lname;return;
+    if ($fname != '' && $lname != '') {
+        $created_at = time();
+        $created_by = $userid;
+
+//        $slip_doc = '';
+//        if (isset($_FILES['upload_file_1'])) {
+////            echo "ok has photo";return;
+//            $errors = array();
+//            $file_name = $_FILES['upload_file_1']['name'];
+//            $file_tmp = $_FILES['upload_file_1']['tmp_name'];
+//            //   $file_ext=strtolower(end(explode('.',$_FILES['file_card']['name'])));
+//            $slip_doc = $file_name;
+//            move_uploaded_file($file_tmp, "uploads/member_verify/" . $slip_doc);
+//        }
+//        $slip_doc2 = '';
+//        if (isset($_FILES['upload_file_2'])) {
+////            echo "ok has photo";return;
+//            $errors = array();
+//            $file_name = $_FILES['upload_file_2']['name'];
+//            $file_tmp = $_FILES['upload_file_2']['tmp_name'];
+//            //   $file_ext=strtolower(end(explode('.',$_FILES['file_card']['name'])));
+//            $slip_doc2 = $file_name;
+//            move_uploaded_file($file_tmp, "uploads/member_verify/" . $slip_doc2);
+//        }
+
+        $fulldate = explode('/',$dob);
+        $dob_new = date('Y-m-d');
+        if(count($fulldate)>1){
+            $dob_new = date('Y-m-d',strtotime($fulldate[2].'/'.$fulldate[1].'/'.$fulldate[0]));
+        }
+
+        $sql = "UPDATE member set first_name='$fname', last_name='$lname' ,engname='$engname',engsurname='$engsurname',nation_type='$nation_type',gender='$gender',dob='$dob_new',address_current_type='$address_current_type' WHERE id='$id'";
+//        $sql = "UPDATE member set first_name='$fname', last_name='$lname' ,engname='$engname',engsurename='$engsurname',nation_type='$nation_type',id_verify='$id_verify',gender='$gender','dob'='$dob',verify_photo='$slip_doc' WHERE id='$id', is_verified=1";
+        //echo $sql;return;
+        if ($connect->query($sql)) {
+            $res += 1;
+        }
+    }
+    if ($bank_id != '' && $account_no != '' && $account_name != '') {
+        $query = "SELECT * FROM member_account WHERE member_id='$id'";
+        $statement = $connect->prepare($query);
+        $statement->execute();
+        $result = $statement->fetchAll();
+        $filtered_rows = $statement->rowCount();
+        if ($filtered_rows > 0) {
+            $created_at = time();
+            $created_by = $id;
+            $sql = "UPDATE member_account set bank_id='$bank_id', account_no='$account_no',account_name='$account_name' WHERE member_id='$id'";
+            if ($result = $connect->query($sql)) {
+                $res += 1;
+            }
+        } else {
+            $created_at = time();
+            $created_by = $id;
+            $sql = "INSERT INTO member_account(member_id,bank_id,account_no,account_name,created_at,created_by)VALUES('$id','$bank_id','$account_no','$account_name','$created_at','$created_by')";
+            if ($result = $connect->query($sql)) {
+                $res += 1;
+            }
+        }
+
+    }
+
+    if ($address != '' && $zipcode != '') {
+        $query = "SELECT * FROM member_address WHERE member_id='$id'";
+        $statement = $connect->prepare($query);
+        $statement->execute();
+        $result = $statement->fetchAll();
+        $filtered_rows = $statement->rowCount();
+        if ($filtered_rows > 0) {
+            $created_at = time();
+            $created_by = $userid;
+            $sql = "UPDATE member_address set address='$address', street='$street',province_id='$province',city_id='$city',district_id='$district',zipcode='$zipcode', status=1 WHERE member_id='$id'";
+            if ($result = $connect->query($sql)) {
+                $res += 1;
+            }
+        } else {
+            $created_at = time();
+            $created_by = $userid;
+            $sql = "INSERT INTO member_address(member_id,address,street,province_id,city_id,district_id,zipcode)VALUES('$id','$address','$street','$province','$city','$district','$zipcode')";
+            if ($result = $connect->query($sql)) {
+                $res += 1;
+            }
+        }
+
+    }
+
+    if($address_current_type == 1){
+        $query = "SELECT * FROM member_address_current WHERE member_id='$id'";
+        $statement = $connect->prepare($query);
+        $statement->execute();
+        $result = $statement->fetchAll();
+        $filtered_rows = $statement->rowCount();
+        if ($filtered_rows > 0) {
+            $created_at = time();
+            $created_by = $userid;
+            $sql = "UPDATE member_address_current set address='$address', street='$street',province_id='$province',city_id='$city',district_id='$district',zipcode='$zipcode' WHERE member_id='$id'";
+            if ($result = $connect->query($sql)) {
+                $res += 1;
+            }
+        } else {
+            $created_at = time();
+            $created_by = $userid;
+            $sql = "INSERT INTO member_address_current(member_id,address,street,province_id,city_id,district_id,zipcode)VALUES('$id','$address','$street','$province','$city','$district','$zipcode')";
+            if ($result = $connect->query($sql)) {
+                $res += 1;
+            }
+        }
+    }else if($address_current_type == 2){
+        $query = "SELECT * FROM member_address_current WHERE member_id='$id'";
+        $statement = $connect->prepare($query);
+        $statement->execute();
+        $result = $statement->fetchAll();
+        $filtered_rows = $statement->rowCount();
+        if ($filtered_rows > 0) {
+            $created_at = time();
+            $created_by = $userid;
+            $sql = "UPDATE member_address_current set address='$address_current', street='$street_current',province_id='$province_current_id',city_id='$city_current_id',district_id='$district_current_id',zipcode='$zipcode_current' WHERE member_id='$id'";
+            if ($result = $connect->query($sql)) {
+                $res += 1;
+            }
+        } else {
+            $created_at = time();
+            $created_by = $userid;
+            $sql = "INSERT INTO member_address_current(member_id,address,street,province_id,city_id,district_id,zipcode)VALUES('$id','$address_current','$street_current','$province_current_id','$city_current_id','$district_current_id','$zipcode_current')";
+            if ($result = $connect->query($sql)) {
+                $res += 1;
+            }
+        }
+    }
+
+    if($income_list != ""){
+        $xlist = explode(",",$income_list);
+        if(count($xlist)>0){
+            //  echo $xlist[1];return;
+            for($x=0;$x<=count($xlist)-1;$x++){
+                $sql = "INSERT INTO member_income_type(member_id,income_type_id,status)VALUES('$id','$xlist[$x]',1)";
+                if ($connect->query($sql)) {
+
+                }
+            }
+        }
+
+    }
+
+    $_SESSION['msg-success'] = 'บันทึกข้อมูลเรียบร้อยแล้ว';
+    header('location:member.php');
 }
 
 

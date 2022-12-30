@@ -401,9 +401,14 @@ $verify_code = mt_rand(100000, 999999);
                                             <!--                                            </div>-->
 
 
+<!--                                            <div class="col-sm-10 offset-sm-1 col-md-8 offset-md-2 col-lg-6 offset-lg-3 text-right text-md-right mt-n2 mb-2">-->
+<!--                                                <a href="forgotpass.php" class="text-primary-m1 text-95" data-toggle="tab"-->
+<!--                                                   data-target="#id-tab-forgot">-->
+<!--                                                    Forgot Password?-->
+<!--                                                </a>-->
+<!--                                            </div>-->
                                             <div class="col-sm-10 offset-sm-1 col-md-8 offset-md-2 col-lg-6 offset-lg-3 text-right text-md-right mt-n2 mb-2">
-                                                <a href="#" class="text-primary-m1 text-95" data-toggle="tab"
-                                                   data-target="#id-tab-forgot">
+                                                <a href="forgotpass.php" class="text-primary-m1 text-95">
                                                     Forgot Password?
                                                 </a>
                                             </div>
@@ -1269,6 +1274,10 @@ $verify_code = mt_rand(100000, 999999);
 <script>
     $("#xx").click(function(){
         $("#myModalVerify").modal("show");
+    });
+
+    $("#id-signup-phone").on("keyup",function(){
+        this.value = this.value.replace(/\D/g,'');
     });
     function readok(e) {
         if ($('input[name=check_read_ok]').is(':checked') && $('input[name=check_pdpa_ok]').is(':checked')) {

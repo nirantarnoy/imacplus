@@ -1,5 +1,5 @@
 <?php
-include("common/dbcon.php");
+//include("common/dbcon.php");
 //include("models/WorkorderModel.php");
 
 $id = '';
@@ -42,7 +42,7 @@ function getQuotationDataupdate($id, $connect)
             'customer_id' => $row['customer_id'],
             'customer_name' => $row['customer_name'],
             'status' => $row['status'],
-            'workorder_id' =>$row['workorder_id'],
+            'workorder_id' => $row['workorder_id'],
 //            'workorder_no' =>getOrderNobyId($connect,$row['workorder_id']),
         ]);
     }
@@ -68,11 +68,44 @@ function getQuotationDataupdateline($id, $connect)
             'qty' => $row['qty'],
             'price' => $row['price'],
             'line_total' => $row['line_total'],
+            'item_type_name' => findTypedata($connect, $row['item_id']),
 //            'status' => $row['status'],
         ]);
     }
 
     return $data;
+}
+
+function findTypedata($connect, $id)
+{
+    $name = '';
+    $query = "SELECT * FROM sparepart WHERE id='$id'";
+    $statement = $connect->prepare($query);
+    $statement->execute();
+    $result = $statement->fetchAll();
+    $filtered_rows = $statement->rowCount();
+    if ($filtered_rows > 0) {
+        foreach ($result as $row) {
+            $name = findtypeName($connect, $row['part_type_id']);
+        }
+    }
+    return $name;
+}
+
+function findtypeName($connect, $id)
+{
+    $name = '';
+    $query = "SELECT * FROM sparepart_type WHERE id='$id'";
+    $statement = $connect->prepare($query);
+    $statement->execute();
+    $result = $statement->fetchAll();
+    $filtered_rows = $statement->rowCount();
+    if ($filtered_rows > 0) {
+        foreach ($result as $row) {
+            $name = $row['name'];
+        }
+    }
+    return $name;
 }
 
 ?>

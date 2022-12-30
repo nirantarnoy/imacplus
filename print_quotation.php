@@ -3,11 +3,17 @@ include('header.php');
 include('models/ItemModel.php');
 include("models/ChecklistModel.php");
 include("models/WorkorderModel.php");
+include("get_quotation_update.php");
 
 $id = 0;
 if (isset($_GET['id'])) {
     $id = $_GET['id'];
 }
+
+//echo $id;
+
+
+$member_id =  getMemberIDFromUser($connect, $_SESSION['userid']);
 
 $quotation_line = [];
 $quotation_id = 0;
@@ -18,6 +24,8 @@ $customer_name = '';
 $customer_phone = '';
 $workorder_id = 0;
 $status = 0;
+
+$member_mpoint= 0;
 
 if ($id > 0) {
     $query = "SELECT * FROM quotation WHERE id ='$id'";
@@ -56,11 +64,12 @@ if ($id > 0) {
     }
 }
 
-
+$member_mpoint = getMemberWallerAmount($connect, $member_id);
 ?>
 <div id="print-area">
 
     <input type="hidden" id="rec-id" value="<?= $id ?>">
+    <input type="hidden" id="member-mpoint" value="<?=$member_mpoint?>">
     <table style="width: 100%;border: none;">
         <tr>
             <td colspan="2" style="text-align: center;"><h3>ใบเสนอราคาซ่อม</h3></td>
@@ -117,7 +126,7 @@ if ($id > 0) {
             ?>
         <tr>
             <td style="width: 5%;border: 1px solid grey;text-align: center;"><?=$x?></td>
-            <td style="border: 1px solid grey;"><?=$quotation_line[$i]['item_name']?></td>
+            <td style="border: 1px solid grey;"><?=$quotation_line[$i]['item_name'].' '.'('.findTypedata($connect, $quotation_line[$i]['item_id']).')'?></td>
             <td style="text-align: right;border: 1px solid grey;"><?=$quotation_line[$i]['qty']?></td>
             <td style="text-align: right;border: 1px solid grey;"><?=number_format($quotation_line[$i]['price'],2)?></td>
             <td style="text-align: right;border: 1px solid grey;"><?=number_format($quotation_line[$i]['line_total'],2)?></td>
@@ -131,7 +140,7 @@ if ($id > 0) {
         </tr>
         </tfoot>
     </table>
-
+    <input type="hidden" id="quotation-total-amount" value="<?=$total?>">
 </div>
 <br/>
 <div class="row">
@@ -140,6 +149,7 @@ if ($id > 0) {
         <form id="form-confirm" action="quotation_action.php" method="post">
             <input type="hidden" name="action_type" value="confirm">
             <input type="hidden" name="quotation_confirm_id" value="<?=$quotation_id?>">
+            <input type="hidden" name="workorder_id" value="<?=$workorder_id?>">
             <div class="btn btn-success" onclick="quotationaccept()">ยอมรับและยืนยัน</div>
         </form>
        <?php endif;?>
@@ -149,6 +159,7 @@ if ($id > 0) {
         <!--        <div class="btn btn-info" onclick="printPage('print_work_doc.php')">พิมพ์</div>-->
     </div>
 </div>
+<form id="form-goto-wallet" action="walletlist.php"></form>
 <?php
 include('footer.php');
 ?>
@@ -197,9 +208,40 @@ include('footer.php');
     }
 
     function quotationaccept(){
-        if(confirm("ต้องการยืนยันการทำรายการใช่หรือไม่ ?")){
-            $("form#form-confirm").submit();
+        var quo_total = $("#quotation-total-amount").val();
+        var mpoint = $("#member-mpoint").val();
+        if(parseFloat(quo_total) > parseFloat(mpoint)){
+           // alert("จำนวน mpoint ไม่พอสำหรับใบเสนอราคานี้");
+
+            var swalWithBootstrapButtons = Swal.mixin({
+                customClass: {
+                    confirmButton: 'btn btn-success mx-2',
+                    cancelButton: 'btn btn-danger mx-2'
+                },
+                buttonsStyling: false
+            })
+            swalWithBootstrapButtons.fire({
+                title: 'แจ้งให้ทราบ?',
+                text: "จำนวน Wallet ไม่พอสำหรับใบเสนอราคานี้ กรุณาเติม wallet",
+                type: 'warning',
+                showCancelButton: true,
+                scrollbarPadding: false,
+                confirmButtonText: 'ไปที่หน้าเติม Wallet',
+                cancelButtonText: 'ยกเลิก',
+                reverseButtons: true
+            }).then(function (result) {
+                if (result.value) {
+                    $("#form-goto-wallet").submit();
+                }
+            })
+
+            return false;
+        }else{
+            if (confirm("ต้องการยืนยันการทำรายการใช่หรือไม่ ?")) {
+                $("form#form-confirm").submit();
+            }
         }
+
     }
 
     function closePrint() {

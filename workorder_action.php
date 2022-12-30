@@ -30,6 +30,12 @@ $delete_id = '';
 $action = null;
 $userid = 0;
 $member_id = 0;
+$center_address = '';
+
+$upload_file_1 = null;
+$upload_file_2 = null;
+$upload_file_3 = null;
+$upload_file_4 = null;
 
 if (isset($_POST['customer_id'])) {
     $customer_id = $_POST['customer_id'];
@@ -159,6 +165,57 @@ if ($userid != null || $userid > 0) {
                     }
                 }
 
+                if (isset($_FILES['upload_file_1'])) {
+
+                   // $countfiles = count($_FILES['upload_file_1']['name']);
+                  //  for ($x = 0; $x <= $countfiles - 1; $x++) {
+                        $filename = time() + (0 + 1) . ".jpg";//$_FILES['upload_file']['name'][$x];
+                        //echo $filename; return;
+                        $file_tmp = $_FILES['upload_file_1']['tmp_name'];
+                        $sql_photo = "INSERT INTO workorder_photo(workorder_id,photo) VALUES ('$maxid','$filename')";
+                        if ($connect->query($sql_photo)) {
+                            move_uploaded_file($file_tmp, "uploads/workorder/" . $filename);
+                        }
+                  //  }
+                }
+                if (isset($_FILES['upload_file_2'])) {
+                   // echo "photo 2";return;
+//                    $countfiles = count($_FILES['upload_file_2']['name']);
+//                    for ($x = 0; $x <= $countfiles - 1; $x++) {
+                        $filename = time() + (1 + 1) . ".jpg";//$_FILES['upload_file']['name'][$x];
+                        //echo $filename; return;
+                        $file_tmp = $_FILES['upload_file_2']['tmp_name'];
+                        $sql_photo = "INSERT INTO workorder_photo(workorder_id,photo) VALUES ('$maxid','$filename')";
+                        if ($connect->query($sql_photo)) {
+                            move_uploaded_file($file_tmp, "uploads/workorder/" . $filename);
+                        }
+//                    }
+                }
+                if (isset($_FILES['upload_file_3'])) {
+//                    $countfiles = count($_FILES['upload_file_3']['name']);
+//                    for ($x = 0; $x <= $countfiles - 1; $x++) {
+                        $filename = time() + (2 + 1) . ".jpg";//$_FILES['upload_file']['name'][$x];
+                        //echo $filename; return;
+                        $file_tmp = $_FILES['upload_file_3']['tmp_name'];
+                        $sql_photo = "INSERT INTO workorder_photo(workorder_id,photo) VALUES ('$maxid','$filename')";
+                        if ($connect->query($sql_photo)) {
+                            move_uploaded_file($file_tmp, "uploads/workorder/" . $filename);
+                        }
+//                    }
+                }
+                if (isset($_FILES['upload_file_4'])) {
+//                    $countfiles = count($_FILES['upload_file_4']['name']);
+//                    for ($x = 0; $x <= $countfiles - 1; $x++) {
+                        $filename = time() + (3 + 1) . ".jpg";//$_FILES['upload_file']['name'][$x];
+                        //echo $filename; return;
+                        $file_tmp = $_FILES['upload_file_4']['tmp_name'];
+                        $sql_photo = "INSERT INTO workorder_photo(workorder_id,photo) VALUES ('$maxid','$filename')";
+                        if ($connect->query($sql_photo)) {
+                            move_uploaded_file($file_tmp, "uploads/workorder/" . $filename);
+                        }
+//                    }
+                }
+
                 $sql_trans = "INSERT INTO transactions (trans_date,trans_type,trans_ref_id,qty,amount,status,created_at,created_by)
                       VALUES ('$new_order_date',4,'$maxid',1,'$pre_pay',1,'$created_at','$created_by')";
                 if ($result_trans = $connect->query($sql_trans)) {
@@ -220,6 +277,25 @@ if ($userid != null || $userid > 0) {
     if ($action == 'delete') {
 
         if ($delete_id > 0) {
+
+            $query = "SELECT id FROM quotation WHERE workorder_id='$delete_id'";
+            $statement = $connect->prepare($query);
+            $statement->execute();
+            $result = $statement->fetchAll();
+            $filtered_rows = $statement->rowCount();
+            if ($filtered_rows > 0) {
+                foreach ($result as $row) {
+                    $quotation_id = $row['id'];
+                    $sql_delete_line = "DELETE FROM quotation_line WHERE quotation_id='$quotation_id'";
+                    if ($result5 = $connect->query($sql_delete_line)) {
+                        $sql_delete = "DELETE FROM quotation WHERE id='$quotation_id'";
+                        if ($result6 = $connect->query($sql_delete)) {
+
+                        }
+                    }
+                }
+            }
+
             $sql3 = "DELETE FROM workorders WHERE id='$delete_id'";
             if ($result3 = $connect->query($sql3)) {
                 $_SESSION['msg-success'] = 'ลบข้อมูลเรียบร้อยแล้ว';

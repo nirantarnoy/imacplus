@@ -1,15 +1,38 @@
 <?php
 include "header.php";
-include "models/WorkorderModel.php";
+//include "models/WorkorderModel.php";
+include "models/ItemModel.php";
 
-$id = '';
+$id = 0;
 if (isset($_GET['id'])) {
     $id = $_GET['id'];
 }
 
 //echo $_GET['id'];
-$workorder_data = getWorkorder($connect,$id);
+//$workorder_data = getWorkorder($connect,$id);
+//$data = [];
+$workorder_data = [];
+if($id >0){
+    $query = "SELECT * FROM workorders WHERE id='$id'";
+    $statement = $connect->prepare($query);
+    $statement->execute();
+    $result = $statement->fetchAll();
+    $filtered_rows = $statement->rowCount();
+    if ($filtered_rows > 0) {
+        foreach ($result as $row) {
+            array_push($workorder_data, [
+                'id' => $row['id'],
+                'work_no' => $row['work_no'],
+                'work_date' => $row['work_date'],
+                'phone_model_id' => getItemName($row['phone_model_id'], $connect),
+                'status' => $row['status'],
+            ]);
+        }
+    }
+}
+
 //print_r($workorder_data);
+//return;
 
 ?>
 <input type="hidden" class="msg-ok" value="<?= $noti_ok ?>">

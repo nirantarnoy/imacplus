@@ -14,6 +14,7 @@ if($city_id > 0){
     $result = $statement->fetchAll();
     $filtered_rows = $statement->rowCount();
     if($filtered_rows > 0){
+        $html.='<option value="-1">--เลือกตำบล--</option>';
         foreach($result as $row){
             $html.='<option value="'.$row['DISTRICT_ID'].'">'.$row['DISTRICT_NAME'];
             $html.='</option>';

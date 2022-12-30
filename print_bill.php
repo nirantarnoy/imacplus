@@ -7,6 +7,7 @@ include("models/CustomerModel.php");
 include("models/MemberModel.php");
 include("models/ChecklistModel.php");
 include("models/ItemModel.php");
+include("models/QuotationModel.php");
 //include("vendor/mpdf/mpdf/src/Mpdf.php");
 // Require composer autoload
 require_once __DIR__ . '/vendor/autoload.php';
@@ -60,6 +61,7 @@ $item_type_id = 0;
 $item_name = "";
 $item_color = '';
 $estimate_price = 0;
+$quotation_amt = 0;
 $prepay = 0;
 
 $problem_list = [];
@@ -86,6 +88,7 @@ foreach ($result as $row) {
     $item_color = $row['phone_color_id'];
     $estimate_price = $row['estimate_price'];
     $prepay = $row['pre_pay'];
+    $quotation_amt = getQuotationAmountByWork($connect,$id);
 //    array_push($trans_data, [
 //        'customer_id' => $row['customer_id'],
 //        'loan_no' => $row['loan_no'],
@@ -226,7 +229,7 @@ $total_all = 0;
             <b>ยอดรวม</b>
         </td>
         <td style="text-align: right;padding-right: 10px;">
-            <?php echo number_format($estimate_price,2) ?>
+            <?php echo number_format($quotation_amt,2) ?>
         </td>
     </tr>
     <tr>
@@ -242,7 +245,7 @@ $total_all = 0;
             <b>ยอดเงิน</b>
         </td>
         <td style="text-align: right;padding-right: 10px;border-bottom: 1px solid black;">
-            <?php echo number_format($estimate_price,2) ?>
+            <?php echo number_format($quotation_amt,2) ?>
         </td>
     </tr>
 <!--    <tr>-->

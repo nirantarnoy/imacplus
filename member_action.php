@@ -17,8 +17,8 @@ $member_type_id = '';
 $phone = '';
 $email = '';
 $line_id = '';
-$url= '';
-$point= '';
+$url = '';
+$point = '';
 $is_center = 0;
 $is_vipshop = 0;
 
@@ -27,6 +27,14 @@ $recid = 0;
 $delete_id = '';
 $action = null;
 $userid = 0;
+
+$address = '';
+$street = '';
+$province = '';
+$city = '';
+$district = '';
+$zipcode = '';
+$contact_phone = '';
 
 if (isset($_SESSION['userid'])) {
     $userid = $_SESSION['userid'];
@@ -81,7 +89,29 @@ if (isset($_POST['is_center'])) {
     $is_center = $_POST['is_center'];
 }
 if (isset($_POST['is_vipshop'])) {
-    $is_vipshop= $_POST['is_vipshop'];
+    $is_vipshop = $_POST['is_vipshop'];
+}
+
+if (isset($_POST['address'])) {
+    $address = $_POST['address'];
+}
+if (isset($_POST['street'])) {
+    $street = $_POST['street'];
+}
+if (isset($_POST['province_id'])) {
+    $province = $_POST['province_id'];
+}
+if (isset($_POST['city_id'])) {
+    $city = $_POST['city_id'];
+}
+if (isset($_POST['district_id'])) {
+    $district = $_POST['district_id'];
+}
+if (isset($_POST['zipcode'])) {
+    $zipcode = $_POST['zipcode'];
+}
+if (isset($_POST['center_phone'])) {
+    $contact_phone = $_POST['center_phone'];
 }
 //print_r($action);return;
 
@@ -91,6 +121,32 @@ if ($action == 'create') {
     $sql = "INSERT INTO member(first_name,last_name,zone_id,parent_id,member_type_id,phone_number,email,line_id,url,point,status,created_at,created_by)
             VALUES('$fode','$lname','$zone_id','$parent_id','$member_type_id','$phone','$email','$line_id','$point','$status','$created_at','$created_by')";
     if ($result = $connect->query($sql)) {
+        $res = 0;
+        if ($address != '' && $zipcode != '') {
+            $query = "SELECT * FROM center_address WHERE member_id='$id'";
+            $statement = $connect->prepare($query);
+            $statement->execute();
+            $result = $statement->fetchAll();
+            $filtered_rows = $statement->rowCount();
+            if ($filtered_rows > 0) {
+                $created_at = time();
+                $created_by = $userid;
+                $sql = "UPDATE center_address set address='$address', street='$street',province_id='$province',city_id='$city',district_id='$district',zipcode='$zipcode',phone='$contact_phone', status=1 WHERE member_id='$id'";
+                if ($result = $connect->query($sql)) {
+                    $res += 1;
+                }
+            } else {
+                $created_at = time();
+                $created_by = $userid;
+                $sql = "INSERT INTO center_address(member_id,address,street,province_id,city_id,district_id,zipcode,phone)VALUES('$id','$address','$street','$province','$city','$district','$zipcode','$contact_phone')";
+                if ($result = $connect->query($sql)) {
+                    $res += 1;
+                }
+            }
+
+        }
+
+
         $_SESSION['msg-success'] = 'บันทึกข้อมูลเรียบร้อยแล้ว';
         header('location:member.php');
     }
@@ -99,28 +155,66 @@ if ($action == 'create') {
 if ($action == 'update') {
     $created_at = time();
     $created_by = $userid;
-    if($id > 0){
-//        echo $status;return;
+    if ($id > 0) {
+
         $created_at = time();
         $created_by = $userid;
         $sql2 = "UPDATE member SET first_name='$fname',last_name='$lname',zone_id='$zone_id',parent_id='$parent_id',member_type_id='$member_type_id',phone_number='$phone',email='$email',line_id='$line_id',url='$url',point='$point',status='$status',updated_at='$created_at',updated_by='$created_by' WHERE id='$id'";
         if ($result2 = $connect->query($sql2)) {
+
+            $sql_user = "UPDATE user set username='$email' WHERE id='$userid'";
+            if ($result_user = $connect->query($sql_user)) {
+
+            }
+
+            $res = 0;
+            if ($address != '' && $zipcode != '') {
+
+                $query = "SELECT * FROM center_address WHERE member_id='$id'";
+                $statement = $connect->prepare($query);
+                $statement->execute();
+                $result = $statement->fetchAll();
+                $filtered_rows = $statement->rowCount();
+                if ($filtered_rows > 0) {
+
+                    $created_at = time();
+                    $created_by = $userid;
+                    $sql = "UPDATE center_address set address='$address', street='$street',province_id='$province',city_id='$city',district_id='$district',zipcode='$zipcode', status=1,phone='$contact_phone' WHERE member_id='$id'";
+                    if ($result2 = $connect->query($sql)) {
+                        $res += 1;
+                      //  echo "update ok";return;
+                    }else{
+                      //  echo "not update";return;
+                    }
+                } else {
+                    //echo "not ok";return;
+                    $created_at = time();
+                    $created_by = $userid;
+                    $sql = "INSERT INTO center_address(member_id,address,street,province_id,city_id,district_id,zipcode,phone)VALUES('$id','$address','$street','$province','$city','$district','$zipcode','$contact_phone')";
+                    if ($result2 = $connect->query($sql)) {
+                        $res += 1;
+                    }
+                }
+
+            }
             $_SESSION['msg-success'] = 'บันทึกข้อมูลเรียบร้อยแล้ว';
             header('location:member.php');
-        }else{
-            echo "no";return;
+        } else {
+            echo "no";
+            return;
         }
     }
 }
 
-if($action == 'delete'){
-    if($delete_id > 0){
+if ($action == 'delete') {
+    if ($delete_id > 0) {
         $sql3 = "DELETE FROM member WHERE id='$delete_id'";
         if ($result3 = $connect->query($sql3)) {
             $_SESSION['msg-success'] = 'ลบข้อมูลเรียบร้อยแล้ว';
             header('location:member.php');
-        }else{
-            echo "no";return;
+        } else {
+            echo "no";
+            return;
         }
     }
 }

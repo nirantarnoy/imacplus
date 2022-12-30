@@ -46,17 +46,18 @@ function getMemberProfileData($connect, $id)
             array_push($data, [
                 'fname' => $row['first_name'],
                 'lname' => $row['last_name'],
-                'engname'=>$row['engname'],
-                'engsurname'=>$row['engsurname'],
-                'gender'=> $row['gender'],
-                'nation_type'=> $row['nation_type'],
-                'dob'=>date('dmY',strtotime($row['dob'])),
-                'is_verified'=> $row['is_verified'],
-                'address_current_type'=>$row['address_current_type'],
-                'agree_verified'=>$row['agree_verified'],
-                'otp_number'=>'',
-                'phone'=>$row['phone_number'],
-                'verify_photo'=> $row['verify_photo'],
+                'engname' => $row['engname'],
+                'engsurname' => $row['engsurname'],
+                'gender' => $row['gender'],
+                'nation_type' => $row['nation_type'],
+                'dob' => date('dmY', strtotime($row['dob'])),
+                'is_verified' => $row['is_verified'],
+                'address_current_type' => $row['address_current_type'],
+                'agree_verified' => $row['agree_verified'],
+                'otp_number' => '',
+                'phone' => $row['phone_number'],
+                'verify_photo' => $row['verify_photo'],
+                'verify_photo_2' => $row['verify_photo_2'],
             ]);
         }
     }
@@ -165,6 +166,7 @@ function getMemberBankAddress($connect, $id)
     }
     return $data;
 }
+
 function getMemberCurrentAddress($connect, $id)
 {
     $data = [];
@@ -202,6 +204,7 @@ function getMembername($connect, $code)
     }
 
 }
+
 function getMemberFullname($connect, $member_id)
 {
     $name = '';
@@ -212,10 +215,10 @@ function getMemberFullname($connect, $member_id)
     $filtered_rows = $statement->rowCount();
     if ($filtered_rows > 0) {
         foreach ($result as $row) {
-            $name =  $row['first_name'].' '.$row['last_name'];
+            $name = $row['first_name'] . ' ' . $row['last_name'];
         }
     }
-   return $name;
+    return $name;
 }
 
 function getMemberurl($connect, $id)
@@ -389,6 +392,23 @@ function getMemberPoint($connect, $id)
     return $point;
 }
 
+
+function getMemberWallerAmount($connect, $id)
+{
+    $point = 0;
+    $query = "SELECT * FROM member WHERE id='$id'";
+    $statement = $connect->prepare($query);
+    $statement->execute();
+    $result = $statement->fetchAll();
+    $filtered_rows = $statement->rowCount();
+    if ($filtered_rows > 0) {
+        foreach ($result as $row) {
+            $point = $row['wallet_amount'] == null ? 0 : $row['wallet_amount'];
+        }
+    }
+    return $point;
+}
+
 function getMemberAllPoint($connect, $id)
 {
     $point = 0;
@@ -400,6 +420,22 @@ function getMemberAllPoint($connect, $id)
     if ($filtered_rows > 0) {
         foreach ($result as $row) {
             $point = $row['all_point'] == null ? 0 : $row['all_point'];
+        }
+    }
+    return $point;
+}
+
+function getMemberPointAllTrans($connect, $id)
+{
+    $point = 0;
+    $query = "SELECT sum(trans_point) as trans_point FROM point_trans WHERE member_id='$id'";
+    $statement = $connect->prepare($query);
+    $statement->execute();
+    $result = $statement->fetchAll();
+    $filtered_rows = $statement->rowCount();
+    if ($filtered_rows > 0) {
+        foreach ($result as $row) {
+            $point = $row['trans_point'] == null ? 0 : $row['trans_point'];
         }
     }
     return $point;
@@ -499,7 +535,7 @@ function findIsVip($connect, $member_type_id)
 
 function findIsCenter($connect, $member_id)
 {
-    $iscenter = 1;
+    $iscenter = 0;
     $query = "SELECT * FROM member WHERE id = '$member_id'";
     $statement = $connect->prepare($query);
     $statement->execute();
@@ -508,13 +544,24 @@ function findIsCenter($connect, $member_id)
     //return $filtered_rows;
     if ($filtered_rows > 0) {
         foreach ($result as $row) {
-            $iscenter = $row['is_center'];
+            $member_type_id = $row['member_type_id'];
+            if ($member_type_id > 0) {
+                $query2 = "SELECT * FROM member_type WHERE id = '$member_type_id'";
+                $statement2 = $connect->prepare($query2);
+                $statement2->execute();
+                $result2 = $statement2->fetchAll();
+                $filtered_rows2 = $statement2->rowCount();
+                if ($filtered_rows2 > 0) {
+                    foreach ($result2 as $row2) {
+                        $iscenter = $row2['is_center'];
+                    }
+                }
+            }
         }
-    } else {
-        return 0;
     }
     return $iscenter;
 }
+
 
 function findParentForRegister($connect, $token)
 {

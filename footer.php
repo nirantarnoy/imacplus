@@ -1,7 +1,7 @@
 <footer class="footer d-none d-sm-block">
     <div class="footer-inner bgc-white-tp1">
         <div class="pt-3 border-none border-t-3 brc-grey-l2">
-            <span class="text-secondary-m1 font-bolder text-120">iMac Plus</span>
+            <span class="text-secondary-m1 font-bolder text-120">iMacPlus</span>
             <span class="text-grey">Application &copy; <?=date('Y')?> version 1.0</span>
 
             <span class="mx-3 action-buttons">
@@ -106,6 +106,7 @@
 <script src="views/pages/page-profile/@page-script.js"></script>
 <script src="views/pages/form-wizard/@page-script.js"></script>
 <script src="views/pages/form-basic/@page-script.js"></script>
+<script src="views/pages/form-upload/@page-script.js"></script>
 </body>
 
 </html>

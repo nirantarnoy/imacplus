@@ -67,7 +67,6 @@ $member_id =  getMemberIDFromUser($connect, $_SESSION['userid']);
                 <thead>
                 <tr>
                     <td>#</td>
-
                     <th>เลขที่รายการ</th>
                     <th>วันที่ทำรายการ</th>
                     <th>จำนวนถอน</th>
@@ -116,6 +115,26 @@ $member_id =  getMemberIDFromUser($connect, $_SESSION['userid']);
                         </div>
 
                     </div>
+                    <br>
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <label for=""><b>หักภาษี ณ ที่จ่าย 3%</b></label>
+                            <input type="text" class="form-control witdraw-pay-vat" style="font-size: 25px;text-align: right;"
+                                   name="witdraw_vat_amount" value=""
+                                   placeholder="" readonly>
+                        </div>
+
+                    </div>
+                    <br>
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <label for=""><b>จำนวนเงินที่จะได้รับ</b></label>
+                            <input type="text" class="form-control witdraw-pay-total" style="font-size: 25px;text-align: right;"
+                                   name="witdraw_total_amount" value=""
+                                   placeholder="" readonly>
+                        </div>
+                    </div>
+                    <br>
                     <div style="height: 10px;"></div>
                     <div class="row">
                         <div class="col-lg-12">
@@ -175,7 +194,20 @@ include "footer.php";
 
         ],
     });
+    function cal_amount() {
+        var click_amount = $(".witdraw-amount").val();
+        var vat_rate = 3;
+        if (parseFloat(click_amount) > 0) {
+            var vat3 = (click_amount * 3) / 100;
+            var total = (click_amount - vat3);
+            $(".witdraw-pay").val(click_amount);
+            $(".witdraw-pay-vat").val(vat3);
+            $(".witdraw-pay-total").val(total);
 
+        } else {
+            $(".witdraw-pay").val(0);
+        }
+    }
     function showaddWallet(e) {
         $("#myModal").modal("show");
     }
@@ -187,6 +219,7 @@ include "footer.php";
             e.val(0);
             return false;
         }
+        cal_amount();
     }
 
     function notify() {

@@ -52,6 +52,7 @@ $customer_data = getCustomermodel($connect);
 $status_data = getQuotationStatusData();
 
 
+
 ?>
 <!-- Page Heading -->
 <input type="hidden" class="msg-ok" value="<?= $noti_ok ?>">
@@ -74,21 +75,21 @@ $status_data = getQuotationStatusData();
             <div class="row">
                 <div class="col-lg-3">
                     <label for="">เลขที่</label>
-                    <input type="text" class="form-control quotation-no" name="quotation_no" value="<?= count($sale_data)>0?$sale_data[0]['quotation_no']:'' ?>" readonly>
+                    <input type="text" class="form-control quotation-no" name="quotation_no" value="<?= $sale_data != null ?$sale_data[0]['quotation_no']:'' ?>" readonly>
                 </div>
                 <div class="col-lg-3">
                     <label for="">วันที่</label>
-                    <input type="text" class="form-control quotation-date" name="quotation_date" value="<?= count($sale_data)>0?$sale_data[0]['quotation_date']: date('d-m-Y') ?>" autocomplete="off">
+                    <input type="text" class="form-control quotation-date" name="quotation_date" value="<?= $sale_data != null ?$sale_data[0]['quotation_date']: date('d-m-Y') ?>" autocomplete="off">
                 </div>
                 <div class="col-lg-3">
                     <label for="">ลูกค้า</label>
 <!--                    <input type="text" class="form-control customer-name" value="--><?//= $sale_data[0]['customer_name']?><!--" name="customer_name">-->
-                    <input type="text" class="form-control customer-name" value="<?= count($sale_data)>0?getCustomerfromOrderId($connect,$sale_data[0]['workorder_id']): getCustomerfromOrderId($connect,$workorder_id)?>" name="customer_name">
+                    <input type="text" class="form-control customer-name" value="<?= $sale_data != null ?getCustomerfromOrderId($connect,$sale_data[0]['workorder_id']): getCustomerfromOrderId($connect,$workorder_id)?>" name="customer_name">
                 </div>
                 <div class="col-lg-3">
                     <label for="">เลขที่ใบแจ้งซ่อม</label>
                     <input type="hidden" class="workorder-id" name="workorder_id" value="<?= $workorder_id ?>">
-                    <input type="text" class="form-control workorder-no" value="<?= count($sale_data)>0?getOrderNobyId($connect,$sale_data[0]['workorder_id']): getOrderNobyId($connect,$workorder_id) ?>" name="workorder_no" readonly>
+                    <input type="text" class="form-control workorder-no" value="<?= $sale_data != null ?getOrderNobyId($connect,$sale_data[0]['workorder_id']): getOrderNobyId($connect,$workorder_id) ?>" name="workorder_no" readonly>
                 </div>
             </div>
             <br />
@@ -117,6 +118,7 @@ $status_data = getQuotationStatusData();
                         <thead>
                         <tr>
                             <td style="width: 25%" >สินค้า</td>
+                            <td style="width: 10%" >ประเภท</td>
                             <td style="width: 10%">จำนวน</td>
                             <td style="width: 10%">ราคา/หน่วย</td>
                             <td style="width: 15%;text-align: right;">รวม</td>
@@ -131,10 +133,13 @@ $status_data = getQuotationStatusData();
                                     <input type="text" class="form-control line-product-name" name="line_product_name[]" value="">
                                 </td>
                                 <td>
+                                    <input type="text" class="form-control line-product-type" value="" readonly>
+                                </td>
+                                <td>
                                     <input type="number" class="form-control line-qty" name="line_qty[]" value="" onchange="calTotal($(this))">
                                 </td>
                                 <td>
-                                    <input style="text-align: right" type="number" class="form-control line-price" name="line_price[]" value="" onchange="calTotal($(this))">
+                                    <input style="text-align: right" type="number" class="form-control line-price" name="line_price[]" value="" readonly onchange="calTotal($(this))">
                                 </td>
                                 <td>
                                     <input type="hidden" class="form-control line-total" name="line_total[]" value="">
@@ -156,10 +161,13 @@ $status_data = getQuotationStatusData();
                                             <input type="text" class="form-control line-product-name" name="line_product_name[]" value="<?= getSparepartname($connect,$sale_data_line[$i]['item_id']) ?>">
                                         </td>
                                         <td>
+                                            <input type="text" class="form-control line-product-type" readonly value="<?= $sale_data_line[$i]['item_type_name'] ?>">
+                                        </td>
+                                        <td>
                                             <input type="number" class="form-control line-qty" name="line_qty[]" value="<?= $sale_data_line[$i]['qty'] ?>" onchange="calTotal($(this))">
                                         </td>
                                         <td>
-                                            <input style="text-align: right" type="number" class="form-control line-price" name="line_price[]" value="<?= $sale_data_line[$i]['price'] ?>" onchange="calTotal($(this))">
+                                            <input style="text-align: right" type="number" class="form-control line-price" name="line_price[]" readonly value="<?= $sale_data_line[$i]['price'] ?>" onchange="calTotal($(this))">
                                         </td>
 
                                         <td>
@@ -179,10 +187,13 @@ $status_data = getQuotationStatusData();
                                         <input type="text" class="form-control line-product-name" name="line_product_name[]" value="">
                                     </td>
                                     <td>
+                                        <input type="text" class="form-control line-product-type" value="" readonly>
+                                    </td>
+                                    <td>
                                         <input type="number" class="form-control line-qty" name="line_qty[]" value="" onchange="calTotal($(this))">
                                     </td>
                                     <td>
-                                        <input style="text-align: right" type="number" class="form-control line-price" name="line_price[]" value="" onchange="calTotal($(this))">
+                                        <input style="text-align: right" type="number" class="form-control line-price" name="line_price[]" readonly value="" onchange="calTotal($(this))">
                                     </td>
                                     <td>
                                         <input type="hidden" class="form-control line-total" name="line_total[]" value="">
@@ -204,6 +215,7 @@ $status_data = getQuotationStatusData();
                                 </div>
                             </td>
 
+                            <td></td>
                             <td></td>
                             <td style="text-align: right;vertical-align: middle;"><b>รวม</b></td>
                             <td>
