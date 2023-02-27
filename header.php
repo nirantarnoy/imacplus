@@ -252,7 +252,7 @@ $is_verified = getMemberverifiedstatus($connect, $member_id);
                                      alt="Admin 's photo">
                                 <span class="d-inline-block d-lg-none d-xl-inline-block">
                               <span class="text-90 text-white" id="id-user-welcome">Welcome,</span>
-                    <span class="nav-user-name text-white"><?= getUserDisplayname($_SESSION['userid'], $connect) ?></span>
+                    <span class="nav-user-name text-white"><?php echo getUserDisplayname($_SESSION['userid'], $connect).' id is'.$_SESSION['userid'] ?></span>
                     </span>
 
                                 <i class="caret fa fa-angle-down text-white d-none d-xl-block"></i>

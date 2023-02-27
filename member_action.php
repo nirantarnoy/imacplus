@@ -161,15 +161,16 @@ if ($action == 'update') {
         $created_by = $userid;
         $sql2 = "UPDATE member SET first_name='$fname',last_name='$lname',zone_id='$zone_id',parent_id='$parent_id',member_type_id='$member_type_id',phone_number='$phone',email='$email',line_id='$line_id',url='$url',point='$point',status='$status',updated_at='$created_at',updated_by='$created_by' WHERE id='$id'";
         if ($result2 = $connect->query($sql2)) {
+            $line_user_id = getUserIdfromMember($connect, $line_id);
 
-            $sql_user = "UPDATE user set username='$email' WHERE id='$userid'";
+            $sql_user = "UPDATE user set username='$email' WHERE id='$line_user_id'";
             if ($result_user = $connect->query($sql_user)) {
 
             }
 
             $res = 0;
             if ($address != '' && $zipcode != '') {
-
+                //echo "has address";return;
                 $query = "SELECT * FROM center_address WHERE member_id='$id'";
                 $statement = $connect->prepare($query);
                 $statement->execute();
@@ -182,17 +183,20 @@ if ($action == 'update') {
                     $sql = "UPDATE center_address set address='$address', street='$street',province_id='$province',city_id='$city',district_id='$district',zipcode='$zipcode', status=1,phone='$contact_phone' WHERE member_id='$id'";
                     if ($result2 = $connect->query($sql)) {
                         $res += 1;
-                      //  echo "update ok";return;
-                    }else{
-                      //  echo "not update";return;
+                         // echo "update ok";return;
+                    } else {
+                         // echo "not update";return;
                     }
                 } else {
                     //echo "not ok";return;
                     $created_at = time();
                     $created_by = $userid;
-                    $sql = "INSERT INTO center_address(member_id,address,street,province_id,city_id,district_id,zipcode,phone)VALUES('$id','$address','$street','$province','$city','$district','$zipcode','$contact_phone')";
-                    if ($result2 = $connect->query($sql)) {
+                    $sql2 = "INSERT INTO center_address(member_id,address,street,province_id,city_id,district_id,zipcode,phone)VALUES('$id','$address','$street','$province','$city','$district','$zipcode','$contact_phone')";
+                    if ($result3 = $connect->query($sql2)) {
                         $res += 1;
+                       // echo "create address ok";return;
+                    }else{
+                       // echo "not created ".$sql2;return;
                     }
                 }
 
@@ -218,6 +222,23 @@ if ($action == 'delete') {
         }
     }
 }
+
+function getUserIdfromMember($connect, $member_id)
+{
+    $user_id = 0;
+    $query = "SELECT * FROM user WHERE member_ref_id='$member_id'";
+    $statement = $connect->prepare($query);
+    $statement->execute();
+    $result = $statement->fetchAll();
+    $filtered_rows = $statement->rowCount();
+    if ($filtered_rows > 0) {
+        foreach ($result as $row) {
+            $user_id = $row['id'];
+        }
+    }
+    return $user_id;
+}
+
 //} else {
 //    $_SESSION['msg-error'] = 'Save data error';
 //    header('location:productcat.php');

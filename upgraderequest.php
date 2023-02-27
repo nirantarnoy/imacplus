@@ -276,6 +276,6 @@ include "footer.php";
         $(".package-selected-amount").val(2500);
         $(".package-selected-name").val("VIP-SHOP");
         $("#form-upgrade").validate({errorClass: 'error-form-validate'});
-        // $("#form-upgrade").submit();
+        $("#form-upgrade").submit();
     }
 </script>

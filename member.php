@@ -445,7 +445,6 @@ include "footer.php";
             var zone_id = '';
             var parent_id = '';
             var member_type_id = '';
-            var phone = '';
             var email = '';
             var line_id = '';
             var url = '';
@@ -460,6 +459,7 @@ include "footer.php";
             var district_id = -1;
             var zipcode = '';
             var phone = '';
+            var phone2 = '';
 
             $.ajax({
                 'type': 'post',
@@ -489,7 +489,7 @@ include "footer.php";
                             city_id = data[0]['address_data'][0]['city_id'];
                             province_id = data[0]['address_data'][0]['province_id'];
                             zipcode = data[0]['address_data'][0]['zipcode'];
-                            phone = data[0]['address_data'][0]['phone'];
+                            phone2 = data[0]['address_data'][0]['phone'];
                         }
                     }
                 }
@@ -517,7 +517,7 @@ include "footer.php";
             $(".district-id").val(district_id).change();
 
             $(".zipcode").val(zipcode).change();
-            $(".center-phone").val(phone);
+            $(".center-phone").val(phone2);
 
 
             $(".modal-title").html('แก้ไขข้อมูลสมาชิก');

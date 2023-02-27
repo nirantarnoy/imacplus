@@ -30,6 +30,8 @@ if ($username != '' && $password != '') {
             foreach ($result as $row) {
                 $_SESSION['userid'] = $row['id'];
 
+               // echo $_SESSION['userid'];return;
+
                 if (!empty($_POST["remember"])) {
                     setcookie("member_login", $_POST["username"], time() + (10 * 365 * 24 * 60 * 60));
                 } else {
